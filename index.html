@@ -9,20 +9,21 @@
 <body>
 
 <div id="content" ng-controller="contentCtrl">
-  <div ng-hide="distributionStarted" class="row">
+  <div ng-hide="distributionStarted">
     <form>
-      <div class="large-12 columns">
-        <label>Entrez la date du jour
-          <input type="text" ng-model="distributionDate" />
-        </label>
-        <button type="submit" ng-click="distributionStarted=true" class="round button">Commencer la distribution</button>
+      <div class="row">
+        <div class="large-3 columns"><label>Entrez la date du jour</label></div>
+        <div class="large-3 columns"><input type="text" ng-model="distributionDate" /></div>
+        <button type="submit" ng-click="distributionStarted=true" class="large-3 columns round button">Commencer la distribution</button>
       </div>
     </form>
   </div>
   
   <div ng-show="distributionStarted" class="row">
-    <h1>Distribution du {{distributionDate}}</h1>
-    <div class="row">
+    <div class="large-12 columns">
+      <h1>Distribution du {{distributionDate}}</h1>
+    </div>
+    <div class="large-3 columns">
       <a href="#" ng-click="distributionStarted=false" class="round button">Fermer la distribution</a>
     </div>
   </div>
