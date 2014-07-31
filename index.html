@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="mardisDolivier">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Distribution Tool</title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <script src="js/vendor/modernizr.js"></script>
+</head>
+<body>
+
+<div id="content" ng-controller="contentCtrl">
+    <div ng-hide="distributionStarted">
+
+        <form>
+            <div class="row">
+                <div>
+                    <label>Entrez la date du jour
+                        <input type="text" ng-model="distributionDate" />
+                    </label>
+                    <button type="submit" ng-click="distributionStarted=true" class="round button">Commencer la distribution</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div ng-show="distributionStarted">
+
+        <h1>Distribution du {{distributionDate}}</h1>
+        <div class="row">
+            <a href="#" ng-click="distributionStarted=false" class="round button">Fermer la distribution</a>
+        </div>
+    </div>
+</div>
+
+<script src="js/angular.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/vendor/jquery.js"></script>
+<script src="js/foundation.min.js"></script>
+<script>
+    $(document).foundation();
+</script>
+</body>
+</html>
