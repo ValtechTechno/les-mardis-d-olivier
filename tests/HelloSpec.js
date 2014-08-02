@@ -29,4 +29,12 @@ describe('Initialisation check', function() {
 
         expect(scope.beneficiaires.length).toBe(1);
     });
+
+    it('should not allow to add a beneficiaire with empty first name or last name', function () {
+        scope.addBeneficiaire('', '');
+        scope.addBeneficiaire('John', '');
+        scope.addBeneficiaire('', 'Rambo');
+
+        expect(scope.beneficiaires.length).toBe(0);
+    });
 });

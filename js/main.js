@@ -10,6 +10,12 @@
             }).length > 0) {
                 return;
             }
+            if (firstName === undefined || firstName.length == 0) {
+                return;
+            }
+            if (lastName === undefined || lastName.length == 0) {
+                return;
+            }
             $scope.beneficiaires.push({firstName:firstName, lastName:lastName});
         };
             $scope.beneficiaires = [];
