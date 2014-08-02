@@ -1,4 +1,4 @@
-describe("Initialisation check", function() {
+describe('Initialisation check', function() {
 
     var scope;
 
@@ -12,7 +12,7 @@ describe("Initialisation check", function() {
         });
     }));
     
-    it("the date should be defined.", function () {
-        expect(scope.distributionDate).toBe("24/12/1981");
-    })
+    it('should have the date defined', function () {
+        expect(scope.distributionDate).toBe('24/12/1981');
+    });
 });
