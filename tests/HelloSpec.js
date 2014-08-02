@@ -21,4 +21,12 @@ describe('Initialisation check', function() {
 
         expect(scope.beneficiaires).toContain({firstName:'John',lastName:'Rambo'});
     });
+
+    it('should not allow to add an existing beneficiaire', function () {
+        scope.beneficiaires.push({firstName:'John',lastName:'Rambo'});
+
+        scope.addBeneficiaire('John', 'Rambo');
+
+        expect(scope.beneficiaires.length).toBe(1);
+    });
 });
