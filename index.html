@@ -5,33 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Distribution Tool</title>
   <link rel="stylesheet" href="css/foundation.min.css" />
+  <style media="screen" type="text/css">
+  .top-bar { height: 95px; }
+  .name { margin-top: 10px !important; }
+  </style>
 </head>
 <body>
 
 <div class="row">
-  <div class="large-3 columns">
-    <h1><img src="http://placehold.it/400x100&text=les-mardis-d-olivier" /></h1>
-  </div>
-</div>
+  <div class="large-12 columns">
 
-<div id="content" ng-controller="contentCtrl">
-  <div ng-hide="distributionStarted">
-    <form>
-      <div class="row">
-        <div class="large-3 columns"><label>Entrez la date du jour</label></div>
-        <div class="large-3 columns"><input type="text" ng-model="distributionDate" /></div>
-        <button type="submit" ng-click="distributionStarted=true" class="large-3 columns round button">Commencer la distribution</button>
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#"><img src="http://placehold.it/200x75&text=les-mardis-d-olivier" /> Les mardis d'Olivier</a></h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+      </ul>
+    </nav>
+
+    <div class="row">
+      <div class="large-12 columns">&nbsp;</div>
+    </div>      
+
+    <div id="content" ng-controller="contentCtrl">
+
+      <div class="row" ng-hide="distributionStarted">
+        <div class="large-12 columns">
+          <form>
+            <div class="row">
+              <div class="large-3 columns"><label>Entrez la date du jour</label></div>
+              <div class="large-3 columns"><input type="text" ng-model="distributionDate" /></div>
+              <div class="large-4 columns">
+                <button type="submit" ng-click="distributionStarted=true" class="round button expand">Commencer la distribution</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
-  </div>
   
-  <div ng-show="distributionStarted" class="row">
-    <div class="large-12 columns">
-      <h1>Distribution du {{distributionDate}}</h1>
+      <div class="row" ng-show="distributionStarted">
+        <div class="large-12 columns">
+          <h1>Distribution du {{distributionDate}}</h1>
+        </div>
+        <div class="large-3 columns">
+          <a href="#" ng-click="distributionStarted=false" class="round button">Fermer la distribution</a>
+        </div>
+      </div>
+    
     </div>
-    <div class="large-3 columns">
-      <a href="#" ng-click="distributionStarted=false" class="round button">Fermer la distribution</a>
-    </div>
+
   </div>
 </div>
 
