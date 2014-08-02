@@ -15,4 +15,10 @@ describe('Initialisation check', function() {
     it('should have the date defined', function () {
         expect(scope.distributionDate).toBe('24/12/1981');
     });
+
+    it('should add a beneficiaire', function () {
+        scope.addBeneficiaire('John', 'Rambo');
+
+        expect(scope.beneficiaires).toContain({firstName:'John',lastName:'Rambo'});
+    });
 });
