@@ -3,10 +3,11 @@ describe("Initialisation check", function() {
     var scope;
 
     beforeEach(angular.mock.module('mardisDolivier'));
-    beforeEach(angular.mock.inject(function($rootScope, $controller){
+    beforeEach(angular.mock.inject(function($rootScope, $controller, $filter){
         scope = $rootScope.$new();
         $controller('contentCtrl', {
             $scope: scope,
+            $filter: $filter,
             Date: new Date(1981, 11, 24)
         });
     }));
