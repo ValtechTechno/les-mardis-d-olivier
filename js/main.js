@@ -18,7 +18,13 @@
             }
             $scope.beneficiaires.push({firstName:firstName, lastName:lastName});
         };
+        $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
+        if ($scope.beneficiaires === null) {
             $scope.beneficiaires = [];
+        }
+        $scope.$watch('beneficiaires', function(newValue, oldValue) {
+            localStorage.setItem('beneficiaires', angular.toJson($scope.beneficiaires));
+        }, true);
     });
 
     app.factory('Date',function() {

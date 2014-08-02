@@ -3,6 +3,9 @@ describe('Initialisation check', function() {
     var scope;
 
     beforeEach(angular.mock.module('mardisDolivier'));
+    beforeEach(function() {
+        localStorage.clear()
+    });
     beforeEach(angular.mock.inject(function($rootScope, $controller, $filter){
         scope = $rootScope.$new();
         $controller('contentCtrl', {
@@ -36,5 +39,12 @@ describe('Initialisation check', function() {
         scope.addBeneficiaire('', 'Rambo');
 
         expect(scope.beneficiaires.length).toBe(0);
+    });
+
+    it('should save beneficiaires to localStorage', function () {
+        scope.addBeneficiaire('foo', 'bar');
+        scope.$digest();
+        
+        expect(localStorage.getItem('beneficiaires')).toBe('[{"firstName":"foo","lastName":"bar"}]');
     });
 });
