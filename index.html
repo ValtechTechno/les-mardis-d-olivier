@@ -1,86 +1,84 @@
 <!DOCTYPE html>
 <html ng-app="mardisDolivier">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Distribution Tool</title>
-  <link rel="stylesheet" href="css/foundation.min.css" />
-  <style media="screen" type="text/css">
-  .top-bar { height: 95px; }
-  .name { margin-top: 10px !important; }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Distribution Tool</title>
+    <link rel="stylesheet" href="css/foundation.min.css" />
+    <link rel="stylesheet" href="css/ng-table.css" />
+    <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
 
 <div class="row">
-  <div class="large-12 columns">
+    <div class="large-12 columns">
 
-    <nav class="top-bar" data-topbar>
-      <ul class="title-area">
-        <li class="name">
-          <h1><a href="#"><img src="http://placehold.it/200x75&text=les-mardis-d-olivier" /> Les mardis d'Olivier</a></h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
-      </ul>
-    </nav>
+        <nav class="top-bar" data-topbar>
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#"><img src="http://placehold.it/200x75&text=les-mardis-d-olivier" /> Les mardis d'Olivier</a></h1>
+                </li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+            </ul>
+        </nav>
 
-    <div class="row">
-      <div class="large-12 columns">&nbsp;</div>
-    </div>      
+        <div class="row">
+            <div class="large-12 columns">&nbsp;</div>
+        </div>
 
-    <div id="content" ng-controller="contentCtrl">
+        <div id="content" ng-controller="contentCtrl">
 
-      <div class="row" ng-hide="distributionStarted">
-        <div class="large-12 columns">
-          <form>
-            <div class="row">
-              <div class="large-3 columns"><label>Date de la nouvelle distribution :</label></div>
-              <div class="large-3 columns"><input type="text" ng-model="distributionDate" /></div>
-              <div class="large-4 columns">
-                <button type="submit" ng-click="distributionStarted=true" class="round button small expand">Commencer la distribution</button>
-              </div>
+            <div class="row" ng-hide="distributionStarted">
+                <div class="large-12 columns">
+                    <form>
+                        <div class="row">
+                            <div class="large-3 columns"><label>Date de la nouvelle distribution :</label></div>
+                            <div class="large-3 columns"><input type="text" ng-model="distributionDate" /></div>
+                            <div class="large-4 columns">
+                                <button type="submit" ng-click="distributionStarted=true" class="round button small expand">Commencer la distribution</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </form>
-        </div>
-      </div>
-  
-      <div ng-show="distributionStarted">
-        <div class="large-12 columns">
-          <h2>Distribution du {{distributionDate}}</h2>
-        </div>
-        <div class="large-12 columns">
-          <table>
-            <thead>
-              <tr>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <form>
-                  <td><input type="text" ng-model="firstName" required /></td>
-                  <td><input type="text" ng-model="lastName" required /></td>
-                  <td><button ng-click="addBeneficiaire(firstName, lastName)" class="tiny button">Ajouter un bénéficiaire</button></td>
-                </form>
-              </tr>
-              <tr ng-repeat="beneficiaire in beneficiaires">
-                <td>{{beneficiaire.firstName}}</td>
-                <td>{{beneficiaire.lastName}}</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="large-4 columns">
-          <a href="#" ng-click="distributionStarted=false" class="round button small expand">Fermer la distribution</a>
-        </div>
-      </div>
-    
-    </div>
 
-  </div>
+            <div ng-show="distributionStarted">
+                <div class="large-12 columns">
+                    <h2>Distribution du {{distributionDate}}</h2>
+                </div>
+                <div class="large-12 columns">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <form>
+                                <td><input type="text" ng-model="firstName" required /></td>
+                                <td><input type="text" ng-model="lastName" required /></td>
+                                <td><button ng-click="addBeneficiaire(firstName, lastName)" class="tiny button">Ajouter un bénéficiaire</button></td>
+                            </form>
+                        </tr>
+                        <tr ng-repeat="beneficiaire in beneficiaires">
+                            <td>{{beneficiaire.firstName}}</td>
+                            <td>{{beneficiaire.lastName}}</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="large-4 columns">
+                    <a href="#" ng-click="distributionStarted=false" class="round button small expand">Fermer la distribution</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
 <script src="js/vendor/modernizr.js"></script>
