@@ -31,7 +31,9 @@
 
     $scope.$watch('beneficiaires', function(newValue, oldValue) {
       localStorage.setItem('beneficiaires', angular.toJson($scope.beneficiaires));
-      $scope.beneficiairesTableParams.reload();
+      if(!$scope.beneficiairesTableParams){
+        $scope.beneficiairesTableParams.reload();
+      }
     }, true);
 
     $scope.showAllDistribution = function() {

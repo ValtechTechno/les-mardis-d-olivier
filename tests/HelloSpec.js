@@ -2,16 +2,17 @@ describe('Initialisation check', function() {
 
   var scope;
 
-  beforeEach(angular.mock.module('mardisDolivier', ['ngTable']));
+  beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(function() {
     localStorage.clear()
   });
-  beforeEach(angular.mock.inject(function($rootScope, $controller, $filter){
+  beforeEach(angular.mock.inject(function($rootScope, $controller, $filter, ngTableParams){
     scope = $rootScope.$new();
     $controller('contentCtrl', {
       $scope: scope,
       $filter: $filter,
-      Date: new Date(1981, 11, 24)
+      Date: new Date(1981, 11, 24),
+      ngTableParams: ngTableParams
     });
   }));
 
@@ -22,7 +23,7 @@ describe('Initialisation check', function() {
   it('should add a beneficiaire', function () {
     scope.addBeneficiaire('John', 'Rambo');
 
-    expect(scope.beneficiaires).toContain({firstName:'John',lastName:'Rambo'});
+    expect(scope.beneficiaires).toContain({code:'', firstName:'John',lastName:'Rambo'});
   });
 
   it('should not allow to add an existing beneficiaire', function () {
@@ -45,7 +46,7 @@ describe('Initialisation check', function() {
     scope.addBeneficiaire('foo', 'bar');
     scope.$digest();
 
-    expect(localStorage.getItem('beneficiaires')).toBe('[{"firstName":"foo","lastName":"bar"}]');
+    expect(localStorage.getItem('beneficiaires')).toBe('[{"code":"","firstName":"foo","lastName":"bar"}]');
   });
 
   it("is is possible to save a new distribution", function () {
