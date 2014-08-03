@@ -14,6 +14,9 @@ les-mardis-d-olivier
 ## Tests
 
 Tests are using the karma test framework with jasmine. You can either install karma on you dev environment or use docker.
+With a local karma you will need the following plugin (using 'npm install -g <nom-du-plugin> --save-dev'):
+ - karma-phantomjs-launcher
+ - karma-jasmine
 
 ### Run tests with docker
 
