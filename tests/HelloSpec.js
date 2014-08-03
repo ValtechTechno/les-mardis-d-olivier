@@ -14,7 +14,7 @@ describe('Initialisation check', function() {
             Date: new Date(1981, 11, 24)
         });
     }));
-    
+
     it('should have the date defined', function () {
         expect(scope.distributionDate).toBe('24/12/1981');
     });
@@ -44,7 +44,14 @@ describe('Initialisation check', function() {
     it('should save beneficiaires to localStorage', function () {
         scope.addBeneficiaire('foo', 'bar');
         scope.$digest();
-        
+
         expect(localStorage.getItem('beneficiaires')).toBe('[{"firstName":"foo","lastName":"bar"}]');
     });
+
+    it("is is possible to save a new distribution", function () {
+        scope.distributionNbPlannedMeals = "50";
+        scope.distributionDate = "12/12/2012"
+        scope.saveNewDistribution();
+        expect(retrieveAllDistribution()).toEqual([{"date":"12/12/2012", "nbPlannedMeals":"50"}]);
+    })
 });
