@@ -53,5 +53,26 @@ describe('Initialisation check', function() {
         scope.distributionDate = "12/12/2012"
         scope.saveNewDistribution();
         expect(retrieveAllDistribution()).toEqual([{"date":"12/12/2012", "nbPlannedMeals":"50"}]);
+    });
+
+    it("shouldn't be possible to save two distribution at the same date", function () {
+        scope.distributionNbPlannedMeals = "50";
+        scope.distributionDate = "12/12/2012"
+        scope.saveNewDistribution();
+        try{scope.saveNewDistribution();}catch(err){}
+        expect(retrieveAllDistribution()).toEqual([{"date":"12/12/2012", "nbPlannedMeals":"50"}]);
     })
+
+    it('should not allow to add a distribution with empty date or number of meals', function () {
+        scope.distributionNbPlannedMeals = "";
+        scope.distributionDate = ""
+        try{scope.saveNewDistribution();}catch(err){}
+        scope.distributionNbPlannedMeals = "50";
+        scope.distributionDate = ""
+        try{scope.saveNewDistribution();}catch(err){}
+        scope.distributionNbPlannedMeals = "";
+        scope.distributionDate = "12/12/2012"
+        try{scope.saveNewDistribution();}catch(err){}
+        expect(retrieveAllDistribution()).toEqual([]);
+    });
 });

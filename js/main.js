@@ -39,7 +39,12 @@
         $scope.showAllDistribution();
 
         $scope.startNewDistribution = function(){
-            $scope.saveNewDistribution();
+            try {
+                $scope.saveNewDistribution();
+            }catch(err){
+                alert(err);
+                return;
+            }
             $scope.showAllDistribution();
             $scope.distributionStarted = true;
         };
@@ -69,10 +74,21 @@ retrieveAllDistribution = function(){
 }
 
 storeDistribution = function(distribution){
+    if (distribution.date === undefined || distribution.date.length == 0) {
+        throw "merci de renseigner la date";
+    }
+    if (distribution.nbPlannedMeals === undefined || distribution.nbPlannedMeals.length == 0) {
+        throw "merci de renseigner le nombre de repas";
+    }
     var distributions = angular.fromJson(localStorage.getItem('distributions'));
     if (distributions==null){
         distributions = [];
+    }else if (distributions.filter(function (storedDistribution) {
+        return distribution.date === storedDistribution.date;
+    }).length > 0) {
+        throw "Une distribution a cette date existe déjà";
     }
+
     distributions.push(distribution);
     localStorage.setItem('distributions',angular.toJson(distributions));
 }

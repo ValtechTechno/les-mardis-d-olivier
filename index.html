@@ -73,18 +73,21 @@
                         <th>&nbsp;</th>
                     </tr>
                     <tr>
-                        <th>
-                            <input type="text" ng-model="distributionDate" />
-                        </th>
-                        <th>
-                            <input type="text" ng-model="distributionNbPlannedMeals" />
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
-                        <th>
-                            <button ng-click="startNewDistribution()" class="button">Commencer la distribution</button>
-                        </th>
+
+                        <form>
+                            <th>
+                                <input type="text" ng-model="distributionDate" required />
+                            </th>
+                            <th>
+                                <input type="text" ng-model="distributionNbPlannedMeals" required />
+                            </th>
+                            <th>
+                                &nbsp;
+                            </th>
+                            <th>
+                                <button ng-click="startNewDistribution()" class="button">Commencer la distribution</button>
+                            </th>
+                        </form>
                     </tr>
                     </thead>
                     <tbody>
