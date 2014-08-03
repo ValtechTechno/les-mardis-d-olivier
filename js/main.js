@@ -3,9 +3,9 @@
     alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
   }
 
-  var app = angular.module('mardisDolivier', []);
+  var app = angular.module('mardisDolivier', ['ngTable']);
 
-  app.controller('contentCtrl', function($scope, $filter, Date) {
+  app.controller('contentCtrl', function($scope, $filter, Date, ngTableParams) {
     var today = Date;
     $scope.distributionDate = $filter('date')(today, 'dd/MM/yyyy');
 
@@ -21,7 +21,7 @@
       if (lastName === undefined || lastName.length == 0) {
         return;
       }
-      $scope.beneficiaires.push({firstName:firstName, lastName:lastName});
+      $scope.beneficiaires.push({code:'', firstName:firstName, lastName:lastName});
     };
 
     $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
@@ -31,6 +31,7 @@
 
     $scope.$watch('beneficiaires', function(newValue, oldValue) {
       localStorage.setItem('beneficiaires', angular.toJson($scope.beneficiaires));
+      $scope.beneficiairesTableParams.reload();
     }, true);
 
     $scope.showAllDistribution = function() {
@@ -55,7 +56,28 @@
         "nbPlannedMeals":$scope.distributionNbPlannedMeals
       });
     };
-  });
+
+	$scope.beneficiairesTableParams = new ngTableParams({
+		page : 1,
+		count : 100,
+		filter : {
+			code : '',
+			lastName : '',
+			firstName : '',
+		}
+	}, {
+		total : 100, // length of data
+		getData : function($defer, params) {
+			var data =  $scope.beneficiaires.slice(0);
+			var orderedData = params.filter() ? $filter('filter')(
+					data, params.filter()) : data;
+					data = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+
+		    params.total(orderedData.length); // set total for recalc pagination
+			$defer.resolve(data);
+		}
+	});
+});
 
   app.factory('Date',function() {
     return new Date();

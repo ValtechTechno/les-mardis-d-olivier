@@ -19,6 +19,7 @@ module.exports = function(config) {
         'js/angular.min.js',
         'js/vendor/jquery.js',
         'js/foundation.min.js',
+        'js/ng-table.min.js',
         'js/main.js',
         'tests/angular-mocks.js',
         'tests/**/*Spec.js'

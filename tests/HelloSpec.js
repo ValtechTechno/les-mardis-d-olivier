@@ -2,7 +2,7 @@ describe('Initialisation check', function() {
 
   var scope;
 
-  beforeEach(angular.mock.module('mardisDolivier'));
+  beforeEach(angular.mock.module('mardisDolivier', ['ngTable']));
   beforeEach(function() {
     localStorage.clear()
   });

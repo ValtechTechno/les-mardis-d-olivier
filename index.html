@@ -32,29 +32,38 @@
           <h2>Distribution du {{distributionDate}}</h2>
         </div>
         <div class="large-12 columns">
-          <table>
-            <thead>
+        <table>
+        <thead>
               <tr>
-                <th>Prénom</th>
                 <th>Nom</th>
+                <th>Prénom</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody>
               <tr>
-                <form>
-                  <td><input type="text" ng-model="firstName" required /></td>
+                <form name="addBeneficiaireForm">
                   <td><input type="text" ng-model="lastName" required /></td>
+                  <td><input type="text" ng-model="firstName" required /></td>
                   <td><button ng-click="addBeneficiaire(firstName, lastName)" class="tiny button">Ajouter un bénéficiaire</button></td>
                 </form>
               </tr>
-              <tr ng-repeat="beneficiaire in beneficiaires">
-                <td>{{beneficiaire.firstName}}</td>
-                <td>{{beneficiaire.lastName}}</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+         </table>
+          <table ng-table="beneficiairesTableParams" show-filter="true" class="table">
+	        <tr ng-repeat="user in $data">
+	            <td data-title="'Code'" width="100px" filter="{ 'code': 'text' }">
+	                <span>{{user.code}}</span>
+	            </td>
+	            <td data-title="'Nom'" filter="{ 'lastName': 'text' }">
+	                <span>{{user.lastName}}</span>
+	            </td>
+	          	<td data-title="'Prénom'" filter="{ 'firstName': 'text' }">
+	                <span>{{user.firstName}}</span>
+	            </td>
+	            <td data-title="'Présent'" width="20">
+	               <input class="form-control" type="checkbox" ng-model="user.isHere" /></div>
+	            </td>
+	        </tr>
+    	</table>
         </div>
         <div class="large-4 columns">
           <a href="#" ng-click="distributionStarted=false" class="round button small expand">Fermer la distribution</a>
@@ -99,6 +108,7 @@
 <script src="js/main.js"></script>
 <script src="js/vendor/jquery.js"></script>
 <script src="js/foundation.min.js"></script>
+<script src="js/ng-table.min.js"></script>
 <script>
     $(document).foundation();
 </script>
