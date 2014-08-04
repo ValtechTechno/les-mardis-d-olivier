@@ -1,7 +1,19 @@
+select{
+  background-color: white;
+}
+
 .top-bar {
   height: 95px;
 }
 
 .name {
   margin-top: 10px !important;
+}
+
+.edit-row{
+  background-color: mediumpurple !important;
+}
+
+.small-select{
+  width: 100px !important;
 }

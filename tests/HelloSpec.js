@@ -16,10 +16,6 @@ describe('Initialisation check', function() {
     });
   }));
 
-  it('should have the date defined', function () {
-    expect(scope.distributionDate).toBe('24/12/1981');
-  });
-
   it('should add a beneficiaire', function () {
     scope.addBeneficiaire('John', 'Rambo');
 
@@ -51,29 +47,111 @@ describe('Initialisation check', function() {
 
   it("is is possible to save a new distribution", function () {
     scope.distributionNbPlannedMeals = "50";
-    scope.distributionDate = "12/12/2012"
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear = "2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
     scope.saveNewDistribution();
-    expect(retrieveAllDistribution()).toEqual([{"date":"12/12/2012", "nbPlannedMeals":"50"}]);
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "mardi";
+    scope.distributionDateDayNumber = "05";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear = "2014";
+    scope.distributionDateLabel = "mardi 05 août 2014";
+    scope.saveNewDistribution();
+    expect(retrieveAllDistribution())
+      .toEqual([
+        {
+          "distributionDateLabel":"mardi 05 août 2014",
+          "distributionDateDayLabel":"mardi",
+          "distributionDateDayNumber":"05",
+          "distributionDateMonthLabel":"août",
+          "distributionDateYear":"2014",
+          "nbPlannedMeals":"50"
+        },
+        {
+          "distributionDateLabel":"lundi 04 août 2014",
+          "distributionDateDayLabel":"lundi",
+          "distributionDateDayNumber":"04",
+          "distributionDateMonthLabel":"août",
+          "distributionDateYear":"2014",
+          "nbPlannedMeals":"50"
+        }
+      ]);
   });
 
   it("shouldn't be possible to save two distribution at the same date", function () {
     scope.distributionNbPlannedMeals = "50";
-    scope.distributionDate = "12/12/2012"
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
     scope.saveNewDistribution();
     try{scope.saveNewDistribution();}catch(err){}
-    expect(retrieveAllDistribution()).toEqual([{"date":"12/12/2012", "nbPlannedMeals":"50"}]);
+
+    expect(retrieveAllDistribution())
+      .toEqual([{
+        "distributionDateLabel":"lundi 04 août 2014",
+        "distributionDateDayLabel":"lundi",
+        "distributionDateDayNumber":"04",
+        "distributionDateMonthLabel":"août",
+        "distributionDateYear":"2014",
+        "nbPlannedMeals":"50"
+      }]);
   })
 
   it('should not allow to add a distribution with empty date or number of meals', function () {
     scope.distributionNbPlannedMeals = "";
-    scope.distributionDate = ""
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
     scope.distributionNbPlannedMeals = "50";
-    scope.distributionDate = ""
+    scope.distributionDateDayLabel = "";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
+    try{scope.saveNewDistribution();}catch(err){}
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
+    try{scope.saveNewDistribution();}catch(err){}
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
+    try{scope.saveNewDistribution();}catch(err){}
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="";
+    scope.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
     scope.distributionNbPlannedMeals = "";
-    scope.distributionDate = "12/12/2012"
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
     expect(retrieveAllDistribution()).toEqual([]);
   });
+
+  it('should be able to retrieve the name of a day based on the date', function () {
+    expect(findDayLabel("4", "septembre", "2014")).toEqual("jeudi"); // jour sur un chiffre
+    expect(findDayLabel("14", "septembre", "2014")).toEqual("dimanche"); // jour sur deux chiffres
+    expect(findDayLabel("12", "août", "2014")).toEqual("mardi"); // mois avec accent
+  })
+
 });
