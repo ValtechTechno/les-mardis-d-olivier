@@ -19,7 +19,20 @@ describe('Initialisation check', function() {
   it('should add a beneficiaire', function () {
     scope.addBeneficiaire('John', 'Rambo');
 
-    expect(scope.beneficiaires).toContain({code:'', firstName:'John',lastName:'Rambo'});
+    expect(scope.beneficiaires).toContain({code:'1', firstName:'John',lastName:'Rambo'});
+  });
+
+  it('calculates the beneficiaire code by incrementing the last code in the list', function () {
+    scope.addBeneficiaire('John', 'Rambo');
+    scope.addBeneficiaire('Micheline', 'Rambo');
+    scope.addBeneficiaire('Pierrot', 'Rambo');
+    expect(scope.beneficiaires).toEqual(
+      [
+        { code : '1', firstName : 'John', lastName : 'Rambo' },
+        { code : '2', firstName : 'Micheline', lastName : 'Rambo' },
+        { code : '3', firstName : 'Pierrot', lastName : 'Rambo' }
+      ]
+    );
   });
 
   it('should not allow to add an existing beneficiaire', function () {
@@ -42,7 +55,7 @@ describe('Initialisation check', function() {
     scope.addBeneficiaire('foo', 'bar');
     scope.$digest();
 
-    expect(localStorage.getItem('beneficiaires')).toBe('[{"code":"","firstName":"foo","lastName":"bar"}]');
+    expect(localStorage.getItem('beneficiaires')).toBe('[{"code":"1","firstName":"foo","lastName":"bar"}]');
   });
 
   it("is is possible to save a new distribution", function () {
@@ -68,7 +81,8 @@ describe('Initialisation check', function() {
           "distributionDateDayNumber":"05",
           "distributionDateMonthLabel":"août",
           "distributionDateYear":"2014",
-          "nbPlannedMeals":"50"
+          "nbPlannedMeals":"50",
+          id : 2
         },
         {
           "distributionDateLabel":"lundi 04 août 2014",
@@ -76,7 +90,62 @@ describe('Initialisation check', function() {
           "distributionDateDayNumber":"04",
           "distributionDateMonthLabel":"août",
           "distributionDateYear":"2014",
-          "nbPlannedMeals":"50"
+          "nbPlannedMeals":"50",
+          id : 1
+        }
+      ]);
+  });
+
+  it("calculates the distribution id by incrementing the last id in the list", function () {
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear = "2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.saveNewDistribution();
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "mardi";
+    scope.distributionDateDayNumber = "05";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear = "2014";
+    scope.distributionDateLabel = "mardi 05 août 2014";
+    scope.saveNewDistribution();
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "mercredi";
+    scope.distributionDateDayNumber = "06";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear = "2014";
+    scope.distributionDateLabel = "mercredi 06 août 2014";
+    scope.saveNewDistribution();
+    expect(retrieveAllDistribution())
+      .toEqual([
+        {
+          "distributionDateLabel":"mercredi 06 août 2014",
+          "distributionDateDayLabel":"mercredi",
+          "distributionDateDayNumber":"06",
+          "distributionDateMonthLabel":"août",
+          "distributionDateYear":"2014",
+          "nbPlannedMeals":"50",
+          id : 3
+        },
+        {
+          "distributionDateLabel":"mardi 05 août 2014",
+          "distributionDateDayLabel":"mardi",
+          "distributionDateDayNumber":"05",
+          "distributionDateMonthLabel":"août",
+          "distributionDateYear":"2014",
+          "nbPlannedMeals":"50",
+          id : 2
+        },
+        {
+          "distributionDateLabel":"lundi 04 août 2014",
+          "distributionDateDayLabel":"lundi",
+          "distributionDateDayNumber":"04",
+          "distributionDateMonthLabel":"août",
+          "distributionDateYear":"2014",
+          "nbPlannedMeals":"50",
+          id : 1
         }
       ]);
   });
@@ -98,7 +167,8 @@ describe('Initialisation check', function() {
         "distributionDateDayNumber":"04",
         "distributionDateMonthLabel":"août",
         "distributionDateYear":"2014",
-        "nbPlannedMeals":"50"
+        "nbPlannedMeals":"50",
+        id : 1
       }]);
   })
 
@@ -154,4 +224,51 @@ describe('Initialisation check', function() {
     expect(findDayLabel("12", "août", "2014")).toEqual("mardi"); // mois avec accent
   })
 
+  it('should be possible to save the info that a beneficiaire is present to a distribution', function () {
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.distributionId = scope.saveNewDistribution();
+    scope.addBeneficiaire('John', 'Rambo');
+    scope.$digest();
+
+    beneficiaireCode = scope.beneficiaires[0].code;
+
+    scope.isPresent(beneficiaireCode);
+
+    expect(retrieveBeneficiairesByDistribution(scope.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
+  })
+
+  it('should return an empty list when the distribution has nobody present', function(){
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.saveNewDistribution();
+
+    expect(retrieveBeneficiairesByDistribution(scope.distributionId)).toEqual([]);
+  })
+
+  it('should be only returns the present beneficiaire from a distribution', function () {
+    scope.distributionNbPlannedMeals = "50";
+    scope.distributionDateDayLabel = "lundi";
+    scope.distributionDateDayNumber = "04";
+    scope.distributionDateMonthLabel = "août";
+    scope.distributionDateYear="2014";
+    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.distributionId = scope.saveNewDistribution();
+    scope.addBeneficiaire('John', 'Rambo');
+    scope.addBeneficiaire('Michel', 'Rambo');
+    scope.$digest();
+
+    beneficiaireCode = scope.beneficiaires[0].code;
+
+    scope.isPresent(beneficiaireCode);
+    expect(retrieveBeneficiairesByDistribution(scope.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
+  })
 });

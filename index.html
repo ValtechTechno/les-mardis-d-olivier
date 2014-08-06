@@ -60,7 +60,7 @@
                 <span>{{user.firstName}}</span>
               </td>
               <td data-title="'Présent'" width="20">
-                <input class="form-control" type="checkbox" ng-model="user.isHere" />
+                <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.code)" />
               </td>
             </tr>
           </table>
@@ -99,7 +99,7 @@
               </th>
               <th><input type="text" ng-model="distributionNbPlannedMeals" required /></th>
               <th>&nbsp;</th>
-              <th><button ng-click="startNewDistribution()" class="tiny round button secondary">Commencer la distribution</button></th>
+              <th><button ng-click="startNewDistribution()" class="tiny button secondary">Commencer la distribution</button></th>
             </form>
           </tr>
           </thead>

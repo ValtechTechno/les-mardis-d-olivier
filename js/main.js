@@ -80,7 +80,15 @@ var dayLabels = [
       if (lastName === undefined || lastName.length == 0) {
         return;
       }
-      $scope.beneficiaires.push({code:'', firstName:firstName, lastName:lastName});
+
+      var nextCode;
+      if ($scope.beneficiaires.length == 0){
+        nextCode = '1';
+      }else{
+        nextCode = parseInt($scope.beneficiaires[$scope.beneficiaires.length-1].code)+1+'';
+      }
+
+      $scope.beneficiaires.push({code:nextCode, firstName:firstName, lastName:lastName});
     };
 
     $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
@@ -104,7 +112,7 @@ var dayLabels = [
       $scope.distributionDateDayLabel = findDayLabel($scope.distributionDateDayNumber, $scope.distributionDateMonthLabel, $scope.distributionDateYear);
       $scope.distributionDateLabel = datePrintFormat($scope.distributionDateDayLabel, $scope.distributionDateDayNumber, $scope.distributionDateMonthLabel, $scope.distributionDateYear);
       try {
-        $scope.saveNewDistribution();
+        $scope.distributionId = $scope.saveNewDistribution();
       }catch(err){
         alert(err);
         return;
@@ -114,7 +122,7 @@ var dayLabels = [
     };
 
     $scope.saveNewDistribution = function() {
-      storeDistribution({
+      return storeDistribution({
         "distributionDateLabel":$scope.distributionDateLabel,
         "distributionDateDayLabel":$scope.distributionDateDayLabel,
         "distributionDateDayNumber":$scope.distributionDateDayNumber,
@@ -155,6 +163,10 @@ var dayLabels = [
         $scope.distributionDateDayLabel = findDayLabel($scope.distributionDateDayNumber, $scope.distributionDateMonthLabel, $scope.distributionDateYear);
       }
     };
+
+    $scope.isPresent = function(beneficiaireCode){
+      storeRelationDistributionBeneficiaire($scope.distributionId, beneficiaireCode);
+    }
   });
 
   app.factory('Date',function() {
@@ -185,8 +197,10 @@ storeDistribution = function(distribution){
     throw "merci de renseigner le nombre de repas";
   }
   var distributions = angular.fromJson(localStorage.getItem('distributions'));
+  var nextId;
   if (distributions == null) {
     distributions = [];
+    nextId = 1;
   } else if (distributions.filter(function (storedDistribution) {
     return (
       distribution.distributionDateLabel === storedDistribution.distributionDateLabel &&
@@ -197,10 +211,46 @@ storeDistribution = function(distribution){
       );
   }).length > 0) {
     throw "Une distribution a cette date existe déjà";
+  }else{
+    nextId = distributions[distributions.length-1].id+1;
   }
 
+  distribution.id = nextId;
   distributions.push(distribution);
   localStorage.setItem('distributions',angular.toJson(distributions));
+  return nextId;
+}
+
+storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireCode){
+  var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
+  if (beneficiairesPresentByDistribution == null) {
+    beneficiairesPresentByDistribution = [];
+  }
+  beneficiairesPresentByDistribution.push({"distributionId":distributionId, "beneficiaireCode":beneficiaireCode});
+  localStorage.setItem('beneficiairesPresentByDistribution',angular.toJson(beneficiairesPresentByDistribution));
+}
+
+retrieveBeneficiairesByDistribution = function(distributionId){
+  var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
+  if (beneficiairesPresentByDistribution==null){
+    return [];
+  }
+  var codeBeneficiairesPresent = [];
+  for(var i= 0; i < beneficiairesPresentByDistribution.length; i++)
+  {
+    if (beneficiairesPresentByDistribution[i].distributionId == distributionId){
+      codeBeneficiairesPresent.push(beneficiairesPresentByDistribution[i].distributionId)
+    }
+  }
+  var beneficiairesPresent = [];
+  var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
+  for(var i= 0; i < beneficiaires.length; i++)
+  {
+    if (beneficiaires[i].code == codeBeneficiairesPresent){
+      beneficiairesPresent.push(beneficiaires[i]);
+    }
+  }
+  return beneficiairesPresent;
 }
 
 datePrintFormat = function(dayLabel, dayNumber, monthLabel, year){
