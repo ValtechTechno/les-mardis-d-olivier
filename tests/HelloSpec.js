@@ -59,19 +59,19 @@ describe('Initialisation check', function() {
   });
 
   it("is is possible to save a new distribution", function () {
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear = "2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear = "2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     scope.saveNewDistribution();
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "mardi";
-    scope.distributionDateDayNumber = "05";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear = "2014";
-    scope.distributionDateLabel = "mardi 05 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "mardi";
+    scope.currentDistribution.distributionDateDayNumber = "05";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear = "2014";
+    scope.currentDistribution.distributionDateLabel = "mardi 05 août 2014";
     scope.saveNewDistribution();
     expect(retrieveAllDistribution())
       .toEqual([
@@ -97,26 +97,26 @@ describe('Initialisation check', function() {
   });
 
   it("calculates the distribution id by incrementing the last id in the list", function () {
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear = "2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear = "2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     scope.saveNewDistribution();
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "mardi";
-    scope.distributionDateDayNumber = "05";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear = "2014";
-    scope.distributionDateLabel = "mardi 05 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "mardi";
+    scope.currentDistribution.distributionDateDayNumber = "05";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear = "2014";
+    scope.currentDistribution.distributionDateLabel = "mardi 05 août 2014";
     scope.saveNewDistribution();
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "mercredi";
-    scope.distributionDateDayNumber = "06";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear = "2014";
-    scope.distributionDateLabel = "mercredi 06 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "mercredi";
+    scope.currentDistribution.distributionDateDayNumber = "06";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear = "2014";
+    scope.currentDistribution.distributionDateLabel = "mercredi 06 août 2014";
     scope.saveNewDistribution();
     expect(retrieveAllDistribution())
       .toEqual([
@@ -151,12 +151,12 @@ describe('Initialisation check', function() {
   });
 
   it("shouldn't be possible to save two distribution at the same date", function () {
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     scope.saveNewDistribution();
     try{scope.saveNewDistribution();}catch(err){}
 
@@ -173,47 +173,47 @@ describe('Initialisation check', function() {
   })
 
   it('should not allow to add a distribution with empty date or number of meals', function () {
-    scope.distributionNbPlannedMeals = "";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
-    scope.distributionNbPlannedMeals = "";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     try{scope.saveNewDistribution();}catch(err){}
     expect(retrieveAllDistribution()).toEqual([]);
   });
@@ -225,13 +225,13 @@ describe('Initialisation check', function() {
   })
 
   it('should be possible to save the info that a beneficiaire is present to a distribution', function () {
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
-    scope.distributionId = scope.saveNewDistribution();
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionId = scope.saveNewDistribution();
     scope.addBeneficiaire('John', 'Rambo');
     scope.$digest();
 
@@ -239,29 +239,29 @@ describe('Initialisation check', function() {
 
     scope.isPresent(beneficiaireCode);
 
-    expect(retrieveBeneficiairesByDistribution(scope.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
+    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
   })
 
   it('should return an empty list when the distribution has nobody present', function(){
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     scope.saveNewDistribution();
 
-    expect(retrieveBeneficiairesByDistribution(scope.distributionId)).toEqual([]);
+    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId)).toEqual([]);
   })
 
   it('should be only returns the present beneficiaire from a distribution', function () {
-    scope.distributionNbPlannedMeals = "50";
-    scope.distributionDateDayLabel = "lundi";
-    scope.distributionDateDayNumber = "04";
-    scope.distributionDateMonthLabel = "août";
-    scope.distributionDateYear="2014";
-    scope.distributionDateLabel = "lundi 04 août 2014";
-    scope.distributionId = scope.saveNewDistribution();
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
+    scope.currentDistribution.distributionId = scope.saveNewDistribution();
     scope.addBeneficiaire('John', 'Rambo');
     scope.addBeneficiaire('Michel', 'Rambo');
     scope.$digest();
@@ -269,6 +269,6 @@ describe('Initialisation check', function() {
     beneficiaireCode = scope.beneficiaires[0].code;
 
     scope.isPresent(beneficiaireCode);
-    expect(retrieveBeneficiairesByDistribution(scope.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
+    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
   })
 });

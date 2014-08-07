@@ -67,7 +67,8 @@ var dayLabels = [
   app.controller('contentCtrl', function($scope, $filter, Date, ngTableParams) {
     $scope.monthLabels = monthLabels;
     $scope.dayNumbers = dayNumbers;
-
+    $scope.currentDistribution = {};
+    
     $scope.addBeneficiaire = function(firstName, lastName) {
       if ($scope.beneficiaires.filter(function (beneficiaire) {
         return beneficiaire.firstName === firstName && beneficiaire.lastName === lastName;
@@ -109,10 +110,10 @@ var dayLabels = [
     $scope.showAllDistribution();
 
     $scope.startNewDistribution = function() {
-      $scope.distributionDateDayLabel = findDayLabel($scope.distributionDateDayNumber, $scope.distributionDateMonthLabel, $scope.distributionDateYear);
-      $scope.distributionDateLabel = datePrintFormat($scope.distributionDateDayLabel, $scope.distributionDateDayNumber, $scope.distributionDateMonthLabel, $scope.distributionDateYear);
+      $scope.currentDistribution.distributionDateDayLabel = findDayLabel($scope.currentDistribution.distributionDateDayNumber, $scope.currentDistribution.distributionDateMonthLabel, $scope.currentDistribution.distributionDateYear);
+      $scope.currentDistribution.distributionDateLabel = datePrintFormat($scope.currentDistribution.distributionDateDayLabel, $scope.currentDistribution.distributionDateDayNumber, $scope.currentDistribution.distributionDateMonthLabel, $scope.currentDistribution.distributionDateYear);
       try {
-        $scope.distributionId = $scope.saveNewDistribution();
+        $scope.currentDistribution.distributionId = $scope.saveNewDistribution();
       }catch(err){
         alert(err);
         return;
@@ -123,12 +124,12 @@ var dayLabels = [
 
     $scope.saveNewDistribution = function() {
       return storeDistribution({
-        "distributionDateLabel":$scope.distributionDateLabel,
-        "distributionDateDayLabel":$scope.distributionDateDayLabel,
-        "distributionDateDayNumber":$scope.distributionDateDayNumber,
-        "distributionDateMonthLabel":$scope.distributionDateMonthLabel,
-        "distributionDateYear":$scope.distributionDateYear,
-        "nbPlannedMeals":$scope.distributionNbPlannedMeals
+        "distributionDateLabel":$scope.currentDistribution.distributionDateLabel,
+        "distributionDateDayLabel":$scope.currentDistribution.distributionDateDayLabel,
+        "distributionDateDayNumber":$scope.currentDistribution.distributionDateDayNumber,
+        "distributionDateMonthLabel":$scope.currentDistribution.distributionDateMonthLabel,
+        "distributionDateYear":$scope.currentDistribution.distributionDateYear,
+        "nbPlannedMeals":$scope.currentDistribution.distributionNbPlannedMeals
       });
     };
 
@@ -153,19 +154,39 @@ var dayLabels = [
       }
     });
 
+     $scope.loadDistribution = function(distributionId, readOnly) {
+       $scope.currentDistribution = {};
+       var allDistributions = angular.fromJson(localStorage.getItem('distributions'));
+        for(var i= 0; i < allDistributions.length; i++){
+          if(allDistributions[i].id == distributionId){
+            $scope.currentDistribution = allDistributions[i];
+          }
+        }
+        if($scope.currentDistribution == {}){
+           alert("Impossible d'afficher la distribution.");
+        }else{
+          $scope.distributionStarted = true;
+        }
+    };
+
+     $scope.leftCurrentDistribution = function(){
+       $scope.currentDistribution = {};
+       $scope.distributionStarted = false;
+     };
+
     $scope.updateDayLabel = function(){
-      if ($scope.distributionDateDayNumber === undefined || $scope.distributionDateDayNumber.length == 0 ||
-        $scope.distributionDateMonthLabel === undefined || $scope.distributionDateMonthLabel.length == 0 ||
-        $scope.distributionDateYear === undefined || $scope.distributionDateYear.length == 0
+      if ($scope.currentDistribution.distributionDateDayNumber === undefined || $scope.currentDistribution.distributionDateDayNumber.length == 0 ||
+        $scope.currentDistribution.distributionDateMonthLabel === undefined || $scope.currentDistribution.distributionDateMonthLabel.length == 0 ||
+        $scope.currentDistribution.distributionDateYear === undefined || $scope.currentDistribution.distributionDateYear.length == 0
         ){
-        $scope.distributionDateDayLabel = "";
+        $scope.currentDistribution.distributionDateDayLabel = "";
       }else{
-        $scope.distributionDateDayLabel = findDayLabel($scope.distributionDateDayNumber, $scope.distributionDateMonthLabel, $scope.distributionDateYear);
+        $scope.currentDistribution.distributionDateDayLabel = findDayLabel($scope.currentDistribution.distributionDateDayNumber, $scope.currentDistribution.distributionDateMonthLabel, $scope.currentDistribution.distributionDateYear);
       }
     };
 
     $scope.isPresent = function(beneficiaireCode){
-      storeRelationDistributionBeneficiaire($scope.distributionId, beneficiaireCode);
+      storeRelationDistributionBeneficiaire($scope.currentDistribution.distributionId, beneficiaireCode);
     }
   });
 

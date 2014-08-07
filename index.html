@@ -29,12 +29,13 @@
 
       <div ng-show="distributionStarted">
         <div class="large-12 columns">
-          <h2>Distribution du {{distributionDateLabel}}</h2>
+           <button href="#" ng-click="leftCurrentDistribution()" class="backbutton">Retour</button><h2 style="float:right"><span>Distribution du {{currentDistribution.distributionDateLabel}}</span></h2>
         </div>
         <div class="large-12 columns">
           <table>
             <thead>
             <tr>
+              <th></th>
               <th>Nom</th>
               <th>Prénom</th>
               <th></th>
@@ -65,9 +66,6 @@
             </tr>
           </table>
         </div>
-        <div class="large-4 columns">
-          <a href="#" ng-click="distributionStarted=false" class="round button small expand">Fermer la distribution</a>
-        </div>
       </div>
 
       <div class="row" ng-hide="distributionStarted">
@@ -82,22 +80,22 @@
           <tr class="edit-row">
             <form>
               <th>
-                {{distributionDateDayLabel}}
+                {{currentDistribution.distributionDateDayLabel}}
               </th>
               <th>
-                <select class="small-select" ng-model="distributionDateDayNumber" ng-options="day for day in  dayNumbers" ng-blur="updateDayLabel()" required>
+                <select class="small-select" ng-model="currentDistribution.distributionDateDayNumber" ng-options="day for day in  dayNumbers" ng-blur="updateDayLabel()" required>
                   <option value="">-- jour --</option>
                 </select>
               </th>
               <th>
-                <select class="small-select" ng-model="distributionDateMonthLabel" ng-options="month for month in  monthLabels" ng-blur="updateDayLabel()" required>
+                <select class="small-select" ng-model="currentDistribution.distributionDateMonthLabel" ng-options="month for month in  monthLabels" ng-blur="updateDayLabel()" required>
                   <option value="">-- mois --</option>
                 </select>
               </th>
               <th>
-                <input class="year" type="text" ng-model="distributionDateYear" placeholder="-- année --" ng-blur="updateDayLabel()" required />
+                <input class="year" type="text" ng-model="currentDistribution.distributionDateYear" placeholder="-- année --" ng-blur="updateDayLabel()" required />
               </th>
-              <th><input type="text" ng-model="distributionNbPlannedMeals" required /></th>
+              <th><input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" required /></th>
               <th>&nbsp;</th>
               <th><button ng-click="startNewDistribution()" class="tiny button secondary">Commencer la distribution</button></th>
             </form>
@@ -108,7 +106,10 @@
             <td colspan="4">{{distribution.distributionDateLabel}}</td>
             <td>{{distribution.nbPlannedMeals}}</td>
             <td>{{distribution.nbServedMeals}}</td>
-            <td></td>
+            <td>
+              <button class="tiny button secondary" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>
+              <button class="tiny button secondary" ng-click="loadDistribution(distribution.id, true)" ng-hide="$first">Afficher</button>
+            </td>
           </tr>
           </tbody>
         </table>
