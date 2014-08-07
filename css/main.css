@@ -17,3 +17,7 @@ select{
 .small-select{
   width: 100px !important;
 }
+
+.distributionTitle{
+float:right;
+};

@@ -68,7 +68,8 @@ var dayLabels = [
     $scope.monthLabels = monthLabels;
     $scope.dayNumbers = dayNumbers;
     $scope.currentDistribution = {};
-    
+    $scope.readOnly = false;
+
     $scope.addBeneficiaire = function(firstName, lastName) {
       if ($scope.beneficiaires.filter(function (beneficiaire) {
         return beneficiaire.firstName === firstName && beneficiaire.lastName === lastName;
@@ -98,9 +99,11 @@ var dayLabels = [
     }
 
     $scope.$watch('beneficiaires', function(newValue, oldValue) {
-      localStorage.setItem('beneficiaires', angular.toJson($scope.beneficiaires));
-      if(!$scope.beneficiairesTableParams){
-        $scope.beneficiairesTableParams.reload();
+      if($scope.readOnly == false){
+        localStorage.setItem('beneficiaires', angular.toJson($scope.beneficiaires));
+        if(!$scope.beneficiairesTableParams){
+          $scope.beneficiairesTableParams.reload();
+        }
       }
     }, true);
 
@@ -113,12 +116,16 @@ var dayLabels = [
       $scope.currentDistribution.distributionDateDayLabel = findDayLabel($scope.currentDistribution.distributionDateDayNumber, $scope.currentDistribution.distributionDateMonthLabel, $scope.currentDistribution.distributionDateYear);
       $scope.currentDistribution.distributionDateLabel = datePrintFormat($scope.currentDistribution.distributionDateDayLabel, $scope.currentDistribution.distributionDateDayNumber, $scope.currentDistribution.distributionDateMonthLabel, $scope.currentDistribution.distributionDateYear);
       try {
-        $scope.currentDistribution.distributionId = $scope.saveNewDistribution();
+        $scope.currentDistribution.id = $scope.saveNewDistribution();
       }catch(err){
         alert(err);
         return;
       }
       $scope.showAllDistribution();
+      $scope.readOnly = false;
+      for(var i= 0; i < $scope.beneficiaires.length; i++){
+            $scope.beneficiaires[i].isPresent = false;
+        }
       $scope.distributionStarted = true;
     };
 
@@ -144,7 +151,7 @@ var dayLabels = [
     }, {
       total : 100, // length of data
       getData : function($defer, params) {
-        var data =  $scope.beneficiaires.slice(0);
+        var data = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
         var orderedData = params.filter() ? $filter('filter')(
           data, params.filter()) : data;
         data = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
@@ -155,6 +162,7 @@ var dayLabels = [
     });
 
      $scope.loadDistribution = function(distributionId, readOnly) {
+       $scope.readOnly = readOnly;
        $scope.currentDistribution = {};
        var allDistributions = angular.fromJson(localStorage.getItem('distributions'));
         for(var i= 0; i < allDistributions.length; i++){
@@ -165,6 +173,7 @@ var dayLabels = [
         if($scope.currentDistribution == {}){
            alert("Impossible d'afficher la distribution.");
         }else{
+          $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
           $scope.distributionStarted = true;
         }
     };
@@ -186,8 +195,10 @@ var dayLabels = [
     };
 
     $scope.isPresent = function(beneficiaireCode){
-      storeRelationDistributionBeneficiaire($scope.currentDistribution.distributionId, beneficiaireCode);
+    if($scope.readOnly == false){
+      storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaireCode);
     }
+  };
   });
 
   app.factory('Date',function() {
@@ -243,15 +254,26 @@ storeDistribution = function(distribution){
 }
 
 storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireCode){
-  var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
-  if (beneficiairesPresentByDistribution == null) {
-    beneficiairesPresentByDistribution = [];
-  }
-  beneficiairesPresentByDistribution.push({"distributionId":distributionId, "beneficiaireCode":beneficiaireCode});
-  localStorage.setItem('beneficiairesPresentByDistribution',angular.toJson(beneficiairesPresentByDistribution));
+    var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
+    if (beneficiairesPresentByDistribution == null) {
+      beneficiairesPresentByDistribution = [];
+    }
+    var isRelationExisting = false;
+    for(var i= 0; i < beneficiairesPresentByDistribution.length; i++)
+    {
+      if(beneficiairesPresentByDistribution[i].distributionId == distributionId && beneficiairesPresentByDistribution[i].beneficiaireCode == beneficiaireCode){
+        isRelationExisting = true;
+        beneficiairesPresentByDistribution.pop(i);
+        break;
+      }
+    }
+    if(isRelationExisting == false){
+      beneficiairesPresentByDistribution.push({"distributionId":distributionId.toString(), "beneficiaireCode":beneficiaireCode});
+    }
+    localStorage.setItem('beneficiairesPresentByDistribution',angular.toJson(beneficiairesPresentByDistribution));
 }
 
-retrieveBeneficiairesByDistribution = function(distributionId){
+retrieveBeneficiairesByDistribution = function(distributionId, readOnly){
   var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
   if (beneficiairesPresentByDistribution==null){
     return [];
@@ -260,15 +282,22 @@ retrieveBeneficiairesByDistribution = function(distributionId){
   for(var i= 0; i < beneficiairesPresentByDistribution.length; i++)
   {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId){
-      codeBeneficiairesPresent.push(beneficiairesPresentByDistribution[i].distributionId)
+      codeBeneficiairesPresent.push(beneficiairesPresentByDistribution[i].beneficiaireCode)
     }
   }
   var beneficiairesPresent = [];
-  var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
+  var beneficiaires = [];
+  beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
   for(var i= 0; i < beneficiaires.length; i++)
   {
-    if (beneficiaires[i].code == codeBeneficiairesPresent){
+    if (codeBeneficiairesPresent.indexOf(beneficiaires[i].code) != -1){
+      beneficiaires[i].isPresent = true;
       beneficiairesPresent.push(beneficiaires[i]);
+    }else{
+      beneficiaires[i].isPresent = false;
+      if(readOnly == false){
+         beneficiairesPresent.push(beneficiaires[i]);
+      }
     }
   }
   return beneficiairesPresent;

@@ -29,13 +29,12 @@
 
       <div ng-show="distributionStarted">
         <div class="large-12 columns">
-           <button href="#" ng-click="leftCurrentDistribution()" class="backbutton">Retour</button><h2 style="float:right"><span>Distribution du {{currentDistribution.distributionDateLabel}}</span></h2>
+           <button href="#" ng-click="leftCurrentDistribution()" class="backbutton">Retour</button><h2 class="distributionTitle"><span>Distribution du {{currentDistribution.distributionDateLabel}}</span></h2>
         </div>
         <div class="large-12 columns">
-          <table>
+          <table ng-hide="readOnly">
             <thead>
             <tr>
-              <th></th>
               <th>Nom</th>
               <th>Prénom</th>
               <th></th>
@@ -61,7 +60,8 @@
                 <span>{{user.firstName}}</span>
               </td>
               <td data-title="'Présent'" width="20">
-                <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.code)" />
+                {{user.readOnly}}
+                <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.code)" ng-hide="readOnly" />
               </td>
             </tr>
           </table>
@@ -79,7 +79,7 @@
           </tr>
           <tr class="edit-row">
             <form>
-              <th>
+              <th class="small-select">
                 {{currentDistribution.distributionDateDayLabel}}
               </th>
               <th>
