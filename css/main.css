@@ -1,4 +1,4 @@
-select{
+select {
   background-color: white;
 }
 
@@ -10,14 +10,6 @@ select{
   margin-top: 10px !important;
 }
 
-.edit-row{
-  background-color: mediumpurple !important;
-}
-
-.small-select{
-  width: 100px !important;
-}
-
 .distributionTitle{
-float:right;
+  float:right;
 };
