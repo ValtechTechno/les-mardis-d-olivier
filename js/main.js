@@ -148,13 +148,12 @@ var dayLabels = [
         firstName : ''
       }
     }, {
-      total : 100, // length of data
+      total : $scope.beneficiaires.length,
+      counts: [], // hide page counts control
       getData : function($defer, params) {
         var data = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
-        var orderedData = params.filter() ? $filter('filter')(
-          data, params.filter()) : data;
+        var orderedData = params.filter() ? $filter('filter')(data, params.filter()) : data;
         data = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
         params.total(orderedData.length); // set total for recalc pagination
         $defer.resolve(data);
       }

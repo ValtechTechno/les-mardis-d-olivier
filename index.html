@@ -6,6 +6,7 @@
   <title>Distribution Tool</title>
   <link rel="stylesheet" href="css/foundation.min.css" />
   <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="ng-table.min.css" />
 </head>
 <body>
 
@@ -57,7 +58,7 @@
 
         <div>
           <table ng-table="beneficiairesTableParams" show-filter="true" class="list-table table">
-            <tr ng-repeat="user in beneficiaires">
+            <tr ng-repeat="user in $data">
               <td data-title="'Code'" width="100px" filter="{ 'code': 'text' }">
                 <span>{{user.code}}</span>
               </td>
@@ -68,7 +69,6 @@
                 <span>{{user.firstName}}</span>
               </td>
               <td data-title="'Présent'" width="20">
-                {{user.readOnly}}
                 <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.id)" ng-hide="readOnly" />
               </td>
             </tr>
