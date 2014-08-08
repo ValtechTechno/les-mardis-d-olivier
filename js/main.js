@@ -117,7 +117,6 @@ var dayLabels = [
       $scope.currentDistribution.distributionDateLabel = datePrintFormat($scope.currentDistribution.distributionDateDayLabel, $scope.currentDistribution.distributionDateDayNumber, $scope.currentDistribution.distributionDateMonthLabel, $scope.currentDistribution.distributionDateYear);
       try {
         $scope.currentDistribution.id = $scope.saveNewDistribution();
-        alert(err);
       } catch(err) {
         return;
       }
