@@ -72,9 +72,14 @@ var dayLabels = [
 
     $scope.addBeneficiaire = function(firstName, lastName, code) {
       if ($scope.beneficiaires.filter(function (beneficiaire) {
-        return beneficiaire.firstName === firstName && beneficiaire.lastName === lastName;
+        return (code !== undefined && beneficiaire.code === code) || (code === undefined && beneficiaire.firstName === firstName && beneficiaire.lastName === lastName);
       }).length > 0) {
-        return;
+    	  if(code === undefined){
+    		  alert("Le bénéficiaire "+firstName+" "+lastName+" existe déj�.");
+    	  }else{
+    		  alert("Un bénéficiaire existe déjà avec le code : "+code);
+    	  }
+    	return;
       }
       if (firstName === undefined || firstName.length == 0) {
         return;
@@ -261,28 +266,28 @@ storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireId)
 
 retrieveBeneficiairesByDistribution = function(distributionId, readOnly) {
   var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
-  if (beneficiairesPresentByDistribution==null) {
-    return [];
-  }
   var beneficiairesPresentIds = [];
-  for (var i= 0; i < beneficiairesPresentByDistribution.length; i++) {
-    if (beneficiairesPresentByDistribution[i].distributionId == distributionId) {
-      beneficiairesPresentIds.push(beneficiairesPresentByDistribution[i].beneficiaireId);
+  if (beneficiairesPresentByDistribution != null) {
+    for (var i= 0; i < beneficiairesPresentByDistribution.length; i++) {
+      if (beneficiairesPresentByDistribution[i].distributionId == distributionId) {
+        beneficiairesPresentIds.push(beneficiairesPresentByDistribution[i].beneficiaireId);
+      }
     }
   }
   var beneficiairesPresent = [];
-  var beneficiaires = [];
-  beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
-  for (var i= 0; i < beneficiaires.length; i++) {
-    if (beneficiairesPresentIds.indexOf(beneficiaires[i].id) != -1) {
-      beneficiaires[i].isPresent = true;
-      beneficiairesPresent.push(beneficiaires[i]);
-    } else {
-      beneficiaires[i].isPresent = false;
-      if(readOnly == false){
-         beneficiairesPresent.push(beneficiaires[i]);
-      }
-    }
+  var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
+  if(beneficiaires != null){
+	  for (var i= 0; i < beneficiaires.length; i++) {
+	    if (beneficiairesPresentIds.indexOf(beneficiaires[i].id) != -1) {
+	      beneficiaires[i].isPresent = true;
+	      beneficiairesPresent.push(beneficiaires[i]);
+	    } else {
+	      beneficiaires[i].isPresent = false;
+	      if(readOnly == false){
+	         beneficiairesPresent.push(beneficiaires[i]);
+	      }
+	    }
+	  }
   }
   return beneficiairesPresent;
 }
