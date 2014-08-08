@@ -13,3 +13,7 @@ select {
 .table {
   width: 100%;
 }
+
+.table .button {
+  margin-bottom: 0;
+}
