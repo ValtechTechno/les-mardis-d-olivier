@@ -83,17 +83,17 @@
               <label>Date</label>
               <div class="row">
                 <div class="medium-4 columns">
-                  <select ng-model="currentDistribution.distributionDateDayNumber" ng-options="day for day in  dayNumbers" ng-blur="updateDayLabel()" required>
+                  <select ng-model="currentDistribution.distributionDateDayNumber" ng-options="day for day in  dayNumbers" required>
                     <option value="">-- jour --</option>
                   </select>
                 </div>
                 <div class="medium-4 columns">
-                  <select ng-model="currentDistribution.distributionDateMonthLabel" ng-options="month for month in  monthLabels" ng-blur="updateDayLabel()" required>
+                  <select ng-model="currentDistribution.distributionDateMonthLabel" ng-options="month for month in  monthLabels" required>
                     <option value="">-- mois --</option>
                   </select>
                 </div>
                 <div class="medium-4 columns">
-                  <input type="text" ng-model="currentDistribution.distributionDateYear" placeholder="-- année --" ng-blur="updateDayLabel()" required />
+                  <input type="text" ng-model="currentDistribution.distributionDateYear" placeholder="-- année --" required />
                 </div>
               </div>
             </div>

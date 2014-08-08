@@ -178,18 +178,6 @@ var dayLabels = [
       $scope.distributionStarted = false;
     };
 
-    $scope.updateDayLabel = function(){
-      if (
-        $scope.currentDistribution.distributionDateDayNumber === undefined || $scope.currentDistribution.distributionDateDayNumber.length == 0 ||
-        $scope.currentDistribution.distributionDateMonthLabel === undefined || $scope.currentDistribution.distributionDateMonthLabel.length == 0 ||
-        $scope.currentDistribution.distributionDateYear === undefined || $scope.currentDistribution.distributionDateYear.length == 0
-      ) {
-        $scope.currentDistribution.distributionDateDayLabel = "";
-      } else {
-        $scope.currentDistribution.distributionDateDayLabel = findDayLabel($scope.currentDistribution.distributionDateDayNumber, $scope.currentDistribution.distributionDateMonthLabel, $scope.currentDistribution.distributionDateYear);
-      }
-    };
-
     $scope.isPresent = function(beneficiaireId){
       if ($scope.readOnly == false) {
         storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaireId);
