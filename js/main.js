@@ -95,7 +95,8 @@ var dayLabels = [
         nextId = parseInt($scope.beneficiaires[$scope.beneficiaires.length-1].id)+1+'';
       }
 
-      $scope.beneficiaires.push({id:nextId, code:code, firstName:firstName, lastName:lastName});
+      $scope.beneficiaires.push({id:nextId, code:code, firstName:firstName, lastName:lastName, isPresent : true});
+      $scope.isPresent(nextId);
     };
 
     $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));

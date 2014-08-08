@@ -17,26 +17,30 @@ describe("Les Mardis d'Olivier", function() {
   }));
 
   it('should add a beneficiaire', function () {
-    scope.addBeneficiaire('John', 'Rambo');
+	scope.currentDistribution.id = 1;
+	scope.addBeneficiaire('John', 'Rambo');
 
-    expect(scope.beneficiaires).toContain({id:'1', firstName:'John',lastName:'Rambo'});
+    expect(scope.beneficiaires).toContain({id:'1', firstName:'John',lastName:'Rambo', isPresent : true});
   });
 
   it('calculates the beneficiaire id by incrementing the last id in the list', function () {
-    scope.addBeneficiaire('John', 'Rambo');
+	scope.currentDistribution.id = 1;
+	scope.addBeneficiaire('John', 'Rambo');
     scope.addBeneficiaire('Micheline', 'Rambo');
     scope.addBeneficiaire('Pierrot', 'Rambo');
     expect(scope.beneficiaires).toEqual(
       [
-        { id : '1', firstName : 'John', lastName : 'Rambo' },
-        { id : '2', firstName : 'Micheline', lastName : 'Rambo' },
-        { id : '3', firstName : 'Pierrot', lastName : 'Rambo' }
+        { id : '1', firstName : 'John', lastName : 'Rambo', isPresent : true},
+        { id : '2', firstName : 'Micheline', lastName : 'Rambo', isPresent : true},
+        { id : '3', firstName : 'Pierrot', lastName : 'Rambo', isPresent : true}
       ]
     );
   });
 
   it('should not allow to add an existing beneficiaire', function () {
-    scope.addBeneficiaire('John', 'Rambo');
+	scope.currentDistribution.id = 1;
+
+	scope.addBeneficiaire('John', 'Rambo');
 
     scope.addBeneficiaire('John', 'Rambo');
 
@@ -44,6 +48,7 @@ describe("Les Mardis d'Olivier", function() {
   });
 
   it('should not allow to add a beneficiaire with empty first name or last name', function () {
+	scope.currentDistribution.id = 1;
     scope.addBeneficiaire('', '');
     scope.addBeneficiaire('John', '');
     scope.addBeneficiaire('', 'Rambo');
@@ -52,10 +57,11 @@ describe("Les Mardis d'Olivier", function() {
   });
 
   it('should save beneficiaires to localStorage', function () {
+	scope.currentDistribution.id = 1;
     scope.addBeneficiaire('foo', 'bar');
     scope.$digest();
 
-    expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","firstName":"foo","lastName":"bar"}]');
+    expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","firstName":"foo","lastName":"bar","isPresent":true}]');
   });
 
   it("is is possible to save a new distribution", function () {
@@ -257,8 +263,6 @@ describe("Les Mardis d'Olivier", function() {
     scope.$digest();
 
     beneficiaireCode = scope.beneficiaires[0].id;
-
-    scope.isPresent(beneficiaireCode);
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id);
     expect(beneficiairesList[0].id).toEqual(beneficiaireCode);
