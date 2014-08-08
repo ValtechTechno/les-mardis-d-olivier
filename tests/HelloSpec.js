@@ -36,7 +36,7 @@ describe("Les Mardis d'Olivier", function() {
   });
 
   it('should not allow to add an existing beneficiaire', function () {
-    scope.beneficiaires.push({firstName:'John',lastName:'Rambo'});
+    scope.addBeneficiaire('John', 'Rambo');
 
     scope.addBeneficiaire('John', 'Rambo');
 
