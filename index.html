@@ -28,28 +28,35 @@
     <div id="content" ng-controller="contentCtrl">
 
       <div ng-show="distributionStarted">
-        <div class="medium-12 columns">
-           <button href="#" ng-click="leftCurrentDistribution()" class="backbutton">Retour</button><h2 class="distributionTitle"><span>Distribution du {{currentDistribution.distributionDateLabel}}</span></h2>
+        <div>
+           <button href="#" ng-click="leftCurrentDistribution()" class="button secondary">Revenir à la liste des distributions</button>
         </div>
-        <div class="medium-12 columns">
-          <table ng-hide="readOnly">
-            <thead>
-            <tr>
-              <th>Code</th>
-              <th>Nom</th>
-              <th>Prénom</th>
-            </tr>
-            </thead>
-            <tr>
-              <form name="addBeneficiaireForm">
-                <td><input type="text" ng-model="code" /></td>
-                <td><input type="text" ng-model="lastName" required /></td>
-                <td><input type="text" ng-model="firstName" required /></td>
-                <td><button ng-click="addBeneficiaire(firstName, lastName, code)" class="tiny button">Ajouter un bénéficiaire</button></td>
-              </form>
-            </tr>
-          </table>
-          <table ng-table="beneficiairesTableParams" show-filter="true" class="table">
+        <form name="addBeneficiaireForm">
+          <div class="row" ng-hide="readOnly">
+            <div class="medium-9 columns">
+              <label>Nouveau bénéficiaire</label>
+              <div class="row">
+                <div class="medium-4 columns">
+                  <input type="text" ng-model="code" required placeholder="-- code --" />
+                </div>
+                <div class="medium-4 columns">
+                  <input type="text" ng-model="lastName" required placeholder="-- nom --" />
+                </div>
+                <div class="medium-4 columns">
+                  <input type="text" ng-model="firstName" required placeholder="-- prénom --"/>
+                </div>
+              </div>
+            </div>
+            <div class="medium-3 columns right">
+              <button ng-click="addBeneficiaire(firstName, lastName, code)" class="button secondary expand">Ajouter un bénéficiaire</button>
+            </div>
+          </div>
+        </form>
+
+        <h3>Distribution du {{currentDistribution.distributionDateLabel}} </h3>
+
+        <div>
+          <table ng-table="beneficiairesTableParams" show-filter="true" class="list-table table">
             <tr ng-repeat="user in beneficiaires">
               <td data-title="'Code'" width="100px" filter="{ 'code': 'text' }">
                 <span>{{user.code}}</span>
@@ -70,23 +77,23 @@
       </div>
 
       <div ng-hide="distributionStarted">
-        <form>
+        <form name="addDistributionForm">
           <div class="row">
             <div class="medium-9 columns">
               <label>Date</label>
               <div class="row">
-                <div class="medium-3 columns">
+                <div class="medium-4 columns">
                   <select ng-model="currentDistribution.distributionDateDayNumber" ng-options="day for day in  dayNumbers" ng-blur="updateDayLabel()" required>
                     <option value="">-- jour --</option>
                   </select>
                 </div>
-                <div class="medium-6 columns">
+                <div class="medium-4 columns">
                   <select ng-model="currentDistribution.distributionDateMonthLabel" ng-options="month for month in  monthLabels" ng-blur="updateDayLabel()" required>
                     <option value="">-- mois --</option>
                   </select>
                 </div>
-                <div class="medium-3 columns">
-                  <input class="year" type="text" ng-model="currentDistribution.distributionDateYear" placeholder="-- année --" ng-blur="updateDayLabel()" required />
+                <div class="medium-4 columns">
+                  <input type="text" ng-model="currentDistribution.distributionDateYear" placeholder="-- année --" ng-blur="updateDayLabel()" required />
                 </div>
               </div>
             </div>
@@ -106,11 +113,11 @@
 
         <h3>Distributions</h3>
 
-        <div class="row">
-          <table>
+        <div>
+          <table class="list-table table">
             <thead>
               <tr>
-                <th colspan="4">Date</th>
+                <th>Date</th>
                 <th>Repas prévus</th>
                 <th>Repas servis</th>
                 <th></th>
@@ -118,7 +125,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="distribution in distributions">
-              <td colspan="4">{{distribution.distributionDateLabel}}</td>
+              <td>{{distribution.distributionDateLabel}}</td>
               <td>{{distribution.nbPlannedMeals}}</td>
               <td>{{distribution.nbServedMeals}}</td>
               <td>
