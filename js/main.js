@@ -70,7 +70,7 @@ var dayLabels = [
     $scope.currentDistribution = {};
     $scope.readOnly = false;
 
-    $scope.addBeneficiaire = function(firstName, lastName) {
+    $scope.addBeneficiaire = function(firstName, lastName, code) {
       if ($scope.beneficiaires.filter(function (beneficiaire) {
         return beneficiaire.firstName === firstName && beneficiaire.lastName === lastName;
       }).length > 0) {
@@ -83,14 +83,14 @@ var dayLabels = [
         return;
       }
 
-      var nextCode;
+      var nextId;
       if ($scope.beneficiaires.length == 0){
-        nextCode = '1';
+        nextId = '1';
       }else{
-        nextCode = parseInt($scope.beneficiaires[$scope.beneficiaires.length-1].code)+1+'';
+        nextId = parseInt($scope.beneficiaires[$scope.beneficiaires.length-1].id)+1+'';
       }
 
-      $scope.beneficiaires.push({code:nextCode, firstName:firstName, lastName:lastName});
+      $scope.beneficiaires.push({id:nextId, code:code, firstName:firstName, lastName:lastName});
     };
 
     $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
@@ -194,9 +194,9 @@ var dayLabels = [
       }
     };
 
-    $scope.isPresent = function(beneficiaireCode){
+    $scope.isPresent = function(beneficiaireId){
     if($scope.readOnly == false){
-      storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaireCode);
+      storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaireId);
     }
   };
   });
@@ -253,7 +253,7 @@ storeDistribution = function(distribution){
   return nextId;
 }
 
-storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireCode){
+storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireId){
     var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
     if (beneficiairesPresentByDistribution == null) {
       beneficiairesPresentByDistribution = [];
@@ -261,14 +261,14 @@ storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireCod
     var isRelationExisting = false;
     for(var i= 0; i < beneficiairesPresentByDistribution.length; i++)
     {
-      if(beneficiairesPresentByDistribution[i].distributionId == distributionId && beneficiairesPresentByDistribution[i].beneficiaireCode == beneficiaireCode){
+      if(beneficiairesPresentByDistribution[i].distributionId == distributionId && beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId){
         isRelationExisting = true;
         beneficiairesPresentByDistribution.pop(i);
         break;
       }
     }
     if(isRelationExisting == false){
-      beneficiairesPresentByDistribution.push({"distributionId":distributionId.toString(), "beneficiaireCode":beneficiaireCode});
+      beneficiairesPresentByDistribution.push({"distributionId":distributionId.toString(), "beneficiaireId":beneficiaireId});
     }
     localStorage.setItem('beneficiairesPresentByDistribution',angular.toJson(beneficiairesPresentByDistribution));
 }
@@ -278,11 +278,11 @@ retrieveBeneficiairesByDistribution = function(distributionId, readOnly){
   if (beneficiairesPresentByDistribution==null){
     return [];
   }
-  var codeBeneficiairesPresent = [];
+  var beneficiairesPresentIds = [];
   for(var i= 0; i < beneficiairesPresentByDistribution.length; i++)
   {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId){
-      codeBeneficiairesPresent.push(beneficiairesPresentByDistribution[i].beneficiaireCode)
+      beneficiairesPresentIds.push(beneficiairesPresentByDistribution[i].beneficiaireId)
     }
   }
   var beneficiairesPresent = [];
@@ -290,7 +290,7 @@ retrieveBeneficiairesByDistribution = function(distributionId, readOnly){
   beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
   for(var i= 0; i < beneficiaires.length; i++)
   {
-    if (codeBeneficiairesPresent.indexOf(beneficiaires[i].code) != -1){
+    if (beneficiairesPresentIds.indexOf(beneficiaires[i].id) != -1){
       beneficiaires[i].isPresent = true;
       beneficiairesPresent.push(beneficiaires[i]);
     }else{

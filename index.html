@@ -35,16 +35,17 @@
           <table ng-hide="readOnly">
             <thead>
             <tr>
+              <th>Code</th>
               <th>Nom</th>
               <th>Prénom</th>
-              <th></th>
             </tr>
             </thead>
             <tr>
               <form name="addBeneficiaireForm">
+                <td><input type="text" ng-model="code" /></td>
                 <td><input type="text" ng-model="lastName" required /></td>
                 <td><input type="text" ng-model="firstName" required /></td>
-                <td><button ng-click="addBeneficiaire(firstName, lastName)" class="tiny button">Ajouter un bénéficiaire</button></td>
+                <td><button ng-click="addBeneficiaire(firstName, lastName, code)" class="tiny button">Ajouter un bénéficiaire</button></td>
               </form>
             </tr>
           </table>
@@ -61,7 +62,7 @@
               </td>
               <td data-title="'Présent'" width="20">
                 {{user.readOnly}}
-                <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.code)" ng-hide="readOnly" />
+                <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.id)" ng-hide="readOnly" />
               </td>
             </tr>
           </table>

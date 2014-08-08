@@ -19,18 +19,18 @@ describe('Initialisation check', function() {
   it('should add a beneficiaire', function () {
     scope.addBeneficiaire('John', 'Rambo');
 
-    expect(scope.beneficiaires).toContain({code:'1', firstName:'John',lastName:'Rambo'});
+    expect(scope.beneficiaires).toContain({id:'1', firstName:'John',lastName:'Rambo'});
   });
 
-  it('calculates the beneficiaire code by incrementing the last code in the list', function () {
+  it('calculates the beneficiaire id by incrementing the last id in the list', function () {
     scope.addBeneficiaire('John', 'Rambo');
     scope.addBeneficiaire('Micheline', 'Rambo');
     scope.addBeneficiaire('Pierrot', 'Rambo');
     expect(scope.beneficiaires).toEqual(
       [
-        { code : '1', firstName : 'John', lastName : 'Rambo' },
-        { code : '2', firstName : 'Micheline', lastName : 'Rambo' },
-        { code : '3', firstName : 'Pierrot', lastName : 'Rambo' }
+        { id : '1', firstName : 'John', lastName : 'Rambo' },
+        { id : '2', firstName : 'Micheline', lastName : 'Rambo' },
+        { id : '3', firstName : 'Pierrot', lastName : 'Rambo' }
       ]
     );
   });
@@ -55,7 +55,7 @@ describe('Initialisation check', function() {
     scope.addBeneficiaire('foo', 'bar');
     scope.$digest();
 
-    expect(localStorage.getItem('beneficiaires')).toBe('[{"code":"1","firstName":"foo","lastName":"bar"}]');
+    expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","firstName":"foo","lastName":"bar"}]');
   });
 
   it("is is possible to save a new distribution", function () {
@@ -231,15 +231,19 @@ describe('Initialisation check', function() {
     scope.currentDistribution.distributionDateMonthLabel = "août";
     scope.currentDistribution.distributionDateYear="2014";
     scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
-    scope.currentDistribution.distributionId = scope.saveNewDistribution();
+    scope.currentDistribution.id = scope.saveNewDistribution();
     scope.addBeneficiaire('John', 'Rambo');
     scope.$digest();
 
-    beneficiaireCode = scope.beneficiaires[0].code;
+    beneficiaireCode = scope.beneficiaires[0].id;
 
     scope.isPresent(beneficiaireCode);
 
-    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id);
+    expect(beneficiairesList[0].id).toEqual(beneficiaireCode);
+    expect(beneficiairesList[0].firstName).toEqual("John");
+    expect(beneficiairesList[0].lastName).toEqual("Rambo");
+
   })
 
   it('should return an empty list when the distribution has nobody present', function(){
@@ -261,14 +265,17 @@ describe('Initialisation check', function() {
     scope.currentDistribution.distributionDateMonthLabel = "août";
     scope.currentDistribution.distributionDateYear="2014";
     scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
-    scope.currentDistribution.distributionId = scope.saveNewDistribution();
+    scope.currentDistribution.id = scope.saveNewDistribution();
     scope.addBeneficiaire('John', 'Rambo');
     scope.addBeneficiaire('Michel', 'Rambo');
     scope.$digest();
 
-    beneficiaireCode = scope.beneficiaires[0].code;
+    beneficiaireCode = scope.beneficiaires[0].id;
 
     scope.isPresent(beneficiaireCode);
-    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId)).toEqual([{"code":beneficiaireCode,"firstName":"John","lastName":"Rambo"}]);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id);
+    expect(beneficiairesList[0].id).toEqual(beneficiaireCode);
+    expect(beneficiairesList[0].firstName).toEqual("John");
+    expect(beneficiairesList[0].lastName).toEqual("Rambo");
   })
 });
