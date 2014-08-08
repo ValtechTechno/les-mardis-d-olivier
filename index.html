@@ -28,8 +28,10 @@
     <div ng-controller="contentCtrl">
 
       <div ng-show="distributionStarted">
-        <div>
-          <button href="#" ng-click="leftCurrentDistribution()" class="button secondary">Revenir à la liste des distributions</button>
+        <div class="row">
+          <div class="medium-4 columns">
+            <button href="#" ng-click="leftCurrentDistribution()" class="button secondary expanded">Revenir à la liste des distributions</button>
+          </div>
         </div>
         <form name="addBeneficiaireForm">
           <div class="row" ng-hide="readOnly">
@@ -53,7 +55,9 @@
           </div>
         </form>
 
-        <h3>Distribution du {{currentDistribution.distributionDateLabel}} </h3>
+        <div class="row">
+          <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDateLabel}} </h3>
+        </div>
 
         <div class="row">
           <div class="medium-12 columns">
@@ -112,7 +116,9 @@
           </div>
         </form>
 
-        <h3>Distributions</h3>
+        <div class="row">
+          <h3 class="medium-12 columns">Distributions</h3>
+        </div>
 
         <div class="row">
           <div class="medium-12 columns">
