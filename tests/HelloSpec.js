@@ -217,6 +217,27 @@ describe("Les Mardis d'Olivier", function() {
     try{scope.saveNewDistribution();}catch(err){}
     expect(retrieveAllDistribution()).toEqual([]);
   });
+  
+  it("should be able to init give the next date (working day) of a distribution based on the previous one.", function () {
+	    scope.currentDistribution.distributionNbPlannedMeals = "50";
+	    scope.currentDistribution.distributionDateDayLabel = "vendredi";
+	    scope.currentDistribution.distributionDateDayNumber = "8";
+	    scope.currentDistribution.distributionDateMonthLabel = "août";
+	    scope.currentDistribution.distributionDateYear="2014";
+	    scope.currentDistribution.distributionDateLabel = "vendredi 8 août 2014";
+	    scope.startNewDistribution();
+	    scope.leftCurrentDistribution();
+	    expect(scope.currentDistribution.distributionDateDayNumber).toEqual("11");
+	    expect(scope.currentDistribution.distributionDateMonthLabel).toEqual("août");
+	    expect(scope.currentDistribution.distributionDateYear).toEqual("2014");
+	    scope.currentDistribution.distributionNbPlannedMeals = "50";
+	    scope.currentDistribution.distributionDateLabel = "Lundi 11 août 2014";
+	    scope.startNewDistribution();
+	    scope.leftCurrentDistribution();
+	    expect(scope.currentDistribution.distributionDateDayNumber).toEqual("12");
+	    expect(scope.currentDistribution.distributionDateMonthLabel).toEqual("août");
+	    expect(scope.currentDistribution.distributionDateYear).toEqual("2014");
+  })
 
   it('should be able to retrieve the name of a day based on the date', function () {
     expect(findDayLabel("4", "septembre", "2014")).toEqual("jeudi"); // jour sur un chiffre

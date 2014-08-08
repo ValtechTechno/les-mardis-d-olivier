@@ -114,7 +114,19 @@ var dayLabels = [
 
     $scope.showAllDistribution = function() {
       $scope.distributions = retrieveAllDistribution();
+      $scope.initNextDate();
     };
+    
+    $scope.initNextDate = function(){
+    	if($scope.distributions.length > 0){
+  	      var lastDistribution = $scope.distributions[0];
+  	      date = createNextWorkingDate(lastDistribution.distributionDateDayNumber, monthLabels.indexOf(lastDistribution.distributionDateMonthLabel), lastDistribution.distributionDateYear);
+  	      $scope.currentDistribution.distributionDateDayNumber = date.getDate().toString();
+  	      $scope.currentDistribution.distributionDateMonthLabel = monthLabels[date.getMonth()];
+  	      $scope.currentDistribution.distributionDateYear = date.getFullYear().toString();
+        }
+    };
+    
     $scope.showAllDistribution();
 
     $scope.startNewDistribution = function() {
@@ -128,8 +140,8 @@ var dayLabels = [
       $scope.showAllDistribution();
       $scope.readOnly = false;
       for(var i= 0; i < $scope.beneficiaires.length; i++){
-            $scope.beneficiaires[i].isPresent = false;
-        }
+        $scope.beneficiaires[i].isPresent = false;
+      }
       $scope.distributionStarted = true;
     };
 
@@ -179,6 +191,7 @@ var dayLabels = [
 
     $scope.leftCurrentDistribution = function(){
       $scope.currentDistribution = {};
+      $scope.initNextDate();
       $scope.distributionStarted = false;
     };
 
@@ -299,4 +312,16 @@ datePrintFormat = function(dayLabel, dayNumber, monthLabel, year) {
 findDayLabel = function(dayNumber, monthLabel, year) {
   var date = new Date(year, monthLabels.indexOf(monthLabel), dayNumber);
   return dayLabels[date.getDay()];
+}
+
+createNextWorkingDate = function(dayNumber, monthNumber, yearNumber) {
+	var lastDate = new Date(yearNumber, monthNumber, dayNumber);
+	var nextDate = new Date(lastDate.setDate(lastDate.getDate() + 1));
+	 if(nextDate.getDay() == 0){
+		 nextDate.setDate(nextDate.getDate() + 1);
+	 }
+	 if(nextDate.getDay() == 6){
+		 nextDate.setDate(nextDate.getDate() + 2);
+	 }
+	 return nextDate;
 }
