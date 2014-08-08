@@ -75,7 +75,7 @@ var dayLabels = [
         return (code !== undefined && beneficiaire.code === code) || (code === undefined && beneficiaire.firstName === firstName && beneficiaire.lastName === lastName);
       }).length > 0) {
     	  if(code === undefined){
-    		  alert("Le bénéficiaire "+firstName+" "+lastName+" existe déj�.");
+    		  alert("Le bénéficiaire "+firstName+" "+lastName+" existe déj� .");
     	  }else{
     		  alert("Un bénéficiaire existe déjà avec le code : "+code);
     	  }
