@@ -169,12 +169,8 @@ var dayLabels = [
           $scope.currentDistribution = allDistributions[i];
         }
       }
-      if ($scope.currentDistribution == {}) {
-        alert("Impossible d'afficher la distribution.");
-      } else {
-        $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
-        $scope.distributionStarted = true;
-      }
+      $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
+      $scope.distributionStarted = true;
     };
 
     $scope.leftCurrentDistribution = function(){
