@@ -1,4 +1,4 @@
-describe('Initialisation check', function() {
+describe("Les Mardis d'Olivier", function() {
 
   var scope;
 
