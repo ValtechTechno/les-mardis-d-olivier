@@ -29,7 +29,7 @@
 
       <div ng-show="distributionStarted">
         <div>
-           <button href="#" ng-click="leftCurrentDistribution()" class="button secondary">Revenir à la liste des distributions</button>
+          <button href="#" ng-click="leftCurrentDistribution()" class="button secondary">Revenir à la liste des distributions</button>
         </div>
         <form name="addBeneficiaireForm">
           <div class="row" ng-hide="readOnly">
@@ -55,23 +55,25 @@
 
         <h3>Distribution du {{currentDistribution.distributionDateLabel}} </h3>
 
-        <div>
-          <table ng-table="beneficiairesTableParams" show-filter="true" class="list-table table">
-            <tr ng-repeat="user in $data">
-              <td data-title="'Code'" width="100px" filter="{ 'code': 'text' }">
-                <span>{{user.code}}</span>
-              </td>
-              <td data-title="'Nom'" filter="{ 'lastName': 'text' }">
-                <span>{{user.lastName}}</span>
-              </td>
-              <td data-title="'Prénom'" filter="{ 'firstName': 'text' }">
-                <span>{{user.firstName}}</span>
-              </td>
-              <td data-title="'Présent'" width="20">
-                <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.id)" ng-hide="readOnly" />
-              </td>
-            </tr>
-          </table>
+        <div class="row">
+          <div class="medium-12 columns">
+            <table ng-table="beneficiairesTableParams" show-filter="true" class="table">
+              <tr ng-repeat="user in $data">
+                <td data-title="'Code'" width="100px" filter="{ 'code': 'text' }">
+                  <span>{{user.code}}</span>
+                </td>
+                <td data-title="'Nom'" filter="{ 'lastName': 'text' }">
+                  <span>{{user.lastName}}</span>
+                </td>
+                <td data-title="'Prénom'" filter="{ 'firstName': 'text' }">
+                  <span>{{user.firstName}}</span>
+                </td>
+                <td data-title="'Présent'" width="20">
+                  <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.id)" ng-hide="readOnly" />
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -112,28 +114,30 @@
 
         <h3>Distributions</h3>
 
-        <div>
-          <table class="list-table table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Repas prévus</th>
-                <th>Repas servis</th>
-                <th></th>
+        <div class="row">
+          <div class="medium-12 columns">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Repas prévus</th>
+                  <th>Repas servis</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="distribution in distributions">
+                <td>{{distribution.distributionDateLabel}}</td>
+                <td>{{distribution.nbPlannedMeals}}</td>
+                <td>{{distribution.nbServedMeals}}</td>
+                <td>
+                  <button class="tiny button secondary" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>
+                  <button class="tiny button secondary" ng-click="loadDistribution(distribution.id, true)" ng-hide="$first">Afficher</button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="distribution in distributions">
-              <td>{{distribution.distributionDateLabel}}</td>
-              <td>{{distribution.nbPlannedMeals}}</td>
-              <td>{{distribution.nbServedMeals}}</td>
-              <td>
-                <button class="tiny button secondary" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>
-                <button class="tiny button secondary" ng-click="loadDistribution(distribution.id, true)" ng-hide="$first">Afficher</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
