@@ -19,7 +19,7 @@ module.exports = function(config) {
         'lib/angular-1.2.21/angular.min.js',
         'lib/foundation-5.3.1/js/vendor/jquery.js',
         'lib/foundation-5.3.1/js/foundation.min.js',
-        'js/main.js',
+        'index.js',
         'tests/angular-mocks.js',
         'tests/**/*Spec.js'
     ],
