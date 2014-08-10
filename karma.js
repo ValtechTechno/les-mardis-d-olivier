@@ -16,8 +16,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
         'lib/foundation-5.3.1/js/vendor/modernizr.js',
-        'lib/angular-1.2.21/angular.min.js',
         'lib/foundation-5.3.1/js/vendor/jquery.js',
+        'lib/angular-1.2.21/angular.min.js',
         'lib/foundation-5.3.1/js/foundation.min.js',
         'index.js',
         'tests/angular-mocks.js',
