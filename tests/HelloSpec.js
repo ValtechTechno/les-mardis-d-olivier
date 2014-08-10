@@ -330,24 +330,66 @@ describe("Les Mardis d'Olivier", function() {
     expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId)).toEqual([]);
   });
 
-  it('should be only returns the present beneficiaire from a distribution', function () {
+  it('should be only returns the present beneficiaire from a open distribution', function () {
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDateDayLabel = "lundi";
     scope.currentDistribution.distributionDateDayNumber = "04";
     scope.currentDistribution.distributionDateMonthLabel = "août";
     scope.currentDistribution.distributionDateYear="2014";
     scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
-    scope.currentDistribution.id = scope.saveNewDistribution();
+    scope.startNewDistribution();
+
     addBeneficiaire('John', 'Rambo');
-    addBeneficiaire('Michel', 'Rambo');
+    addBeneficiaire('Alix', 'Rambo');
+    addBeneficiaire('Lana', 'Rambo');
     scope.$digest();
 
-    beneficiaireCode = scope.beneficiaires[0].id;
+    var beneficiaireId = scope.beneficiaires[1].id;
+    scope.isPresent(beneficiaireId);
 
-    scope.isPresent(beneficiaireCode);
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id);
-    expect(beneficiairesList[0].id).toEqual(beneficiaireCode);
-    expect(beneficiairesList[0].firstName).toEqual("John");
-    expect(beneficiairesList[0].lastName).toEqual("Rambo");
+    scope.leftCurrentDistribution();
+    scope.loadDistribution(1, false);
+
+    var beneficiairesList = retrieveBeneficiairesByDistribution(1, false);
+    expect(beneficiairesList.length).toEqual(3);
+    expect(beneficiairesList[0].isPresent).toEqual(true);
+    expect(beneficiairesList[0].firstName).toEqual('John');
+    expect(beneficiairesList[1].isPresent).toEqual(false);
+    expect(beneficiairesList[1].firstName).toEqual('Alix');
+    expect(beneficiairesList[2].isPresent).toEqual(true);
+    expect(beneficiairesList[2].firstName).toEqual('Lana');
+  });
+
+  it('should be only returns the present beneficiaire from a closed distribution', function () {
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateDayLabel = "lundi";
+    scope.currentDistribution.distributionDateDayNumber = "04";
+    scope.currentDistribution.distributionDateMonthLabel = "août";
+    scope.currentDistribution.distributionDateYear="2014";
+    scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
+    scope.startNewDistribution();
+
+    addBeneficiaire('John', 'Rambo');
+    addBeneficiaire('Alix', 'Rambo');
+    addBeneficiaire('Lana', 'Rambo');
+    scope.$digest();
+
+    var beneficiaireId = scope.beneficiaires[1].id;
+    scope.isPresent(beneficiaireId);
+
+    scope.leftCurrentDistribution();
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDateLabel = "Mardi 05 août 2014";
+    scope.startNewDistribution();
+    scope.leftCurrentDistribution();
+
+    scope.loadDistribution(2, true);
+
+    var beneficiairesList = retrieveBeneficiairesByDistribution(1, true);
+    expect(beneficiairesList.length).toEqual(2);
+    expect(beneficiairesList[0].isPresent).toEqual(true);
+    expect(beneficiairesList[0].firstName).toEqual('John');
+    expect(beneficiairesList[1].isPresent).toEqual(true);
+    expect(beneficiairesList[1].firstName).toEqual('Lana');
   });
 });

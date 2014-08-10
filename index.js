@@ -302,7 +302,7 @@ storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireId)
       beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId
     ) {
       isRelationExisting = true;
-      beneficiairesPresentByDistribution.pop(i);
+      beneficiairesPresentByDistribution.splice(i, 1);
       break;
     }
   }
