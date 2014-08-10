@@ -17,15 +17,16 @@ describe("Les Mardis d'Olivier", function() {
   }));
 
   it('should add a beneficiaire', function () {
-	scope.currentDistribution.id = 1;
-	scope.addBeneficiaire('John', 'Rambo');
+    scope.currentDistribution.id = 1;
+
+    scope.addBeneficiaire('John', 'Rambo');
 
     expect(scope.beneficiaires).toContain({id:'1', firstName:'John',lastName:'Rambo', isPresent : true});
   });
 
   it('calculates the beneficiaire id by incrementing the last id in the list', function () {
-	scope.currentDistribution.id = 1;
-	scope.addBeneficiaire('John', 'Rambo');
+    scope.currentDistribution.id = 1;
+    scope.addBeneficiaire('John', 'Rambo');
     scope.addBeneficiaire('Micheline', 'Rambo');
     scope.addBeneficiaire('Pierrot', 'Rambo');
     expect(scope.beneficiaires).toEqual(
@@ -38,9 +39,9 @@ describe("Les Mardis d'Olivier", function() {
   });
 
   it('should not allow to add an existing beneficiaire', function () {
-	scope.currentDistribution.id = 1;
+    scope.currentDistribution.id = 1;
 
-	scope.addBeneficiaire('John', 'Rambo');
+    scope.addBeneficiaire('John', 'Rambo');
 
     scope.addBeneficiaire('John', 'Rambo');
 
@@ -48,7 +49,7 @@ describe("Les Mardis d'Olivier", function() {
   });
 
   it('should not allow to add a beneficiaire with empty first name or last name', function () {
-	scope.currentDistribution.id = 1;
+    scope.currentDistribution.id = 1;
     scope.addBeneficiaire('', '');
     scope.addBeneficiaire('John', '');
     scope.addBeneficiaire('', 'Rambo');
@@ -57,7 +58,7 @@ describe("Les Mardis d'Olivier", function() {
   });
 
   it('should save beneficiaires to localStorage', function () {
-	scope.currentDistribution.id = 1;
+    scope.currentDistribution.id = 1;
     scope.addBeneficiaire('foo', 'bar');
     scope.$digest();
 
@@ -223,26 +224,26 @@ describe("Les Mardis d'Olivier", function() {
     try{scope.saveNewDistribution();}catch(err){}
     expect(retrieveAllDistribution()).toEqual([]);
   });
-  
+
   it("should be able to init give the next date (working day) of a distribution based on the previous one.", function () {
-	    scope.currentDistribution.distributionNbPlannedMeals = "50";
-	    scope.currentDistribution.distributionDateDayLabel = "vendredi";
-	    scope.currentDistribution.distributionDateDayNumber = "8";
-	    scope.currentDistribution.distributionDateMonthLabel = "août";
-	    scope.currentDistribution.distributionDateYear="2014";
-	    scope.currentDistribution.distributionDateLabel = "vendredi 8 août 2014";
-	    scope.startNewDistribution();
-	    scope.leftCurrentDistribution();
-	    expect(scope.currentDistribution.distributionDateDayNumber).toEqual("11");
-	    expect(scope.currentDistribution.distributionDateMonthLabel).toEqual("août");
-	    expect(scope.currentDistribution.distributionDateYear).toEqual("2014");
-	    scope.currentDistribution.distributionNbPlannedMeals = "50";
-	    scope.currentDistribution.distributionDateLabel = "Lundi 11 août 2014";
-	    scope.startNewDistribution();
-	    scope.leftCurrentDistribution();
-	    expect(scope.currentDistribution.distributionDateDayNumber).toEqual("12");
-	    expect(scope.currentDistribution.distributionDateMonthLabel).toEqual("août");
-	    expect(scope.currentDistribution.distributionDateYear).toEqual("2014");
+        scope.currentDistribution.distributionNbPlannedMeals = "50";
+        scope.currentDistribution.distributionDateDayLabel = "vendredi";
+        scope.currentDistribution.distributionDateDayNumber = "8";
+        scope.currentDistribution.distributionDateMonthLabel = "août";
+        scope.currentDistribution.distributionDateYear="2014";
+        scope.currentDistribution.distributionDateLabel = "vendredi 8 août 2014";
+        scope.startNewDistribution();
+        scope.leftCurrentDistribution();
+        expect(scope.currentDistribution.distributionDateDayNumber).toEqual("11");
+        expect(scope.currentDistribution.distributionDateMonthLabel).toEqual("août");
+        expect(scope.currentDistribution.distributionDateYear).toEqual("2014");
+        scope.currentDistribution.distributionNbPlannedMeals = "50";
+        scope.currentDistribution.distributionDateLabel = "Lundi 11 août 2014";
+        scope.startNewDistribution();
+        scope.leftCurrentDistribution();
+        expect(scope.currentDistribution.distributionDateDayNumber).toEqual("12");
+        expect(scope.currentDistribution.distributionDateMonthLabel).toEqual("août");
+        expect(scope.currentDistribution.distributionDateYear).toEqual("2014");
   })
 
   it('should be able to retrieve the name of a day based on the date', function () {
