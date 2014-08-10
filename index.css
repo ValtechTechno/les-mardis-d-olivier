@@ -17,3 +17,9 @@ select {
 .table .button {
   margin-bottom: 0;
 }
+
+.errorMessage {
+  background-color: red;
+  color: white;
+  padding-left: 10px;
+}

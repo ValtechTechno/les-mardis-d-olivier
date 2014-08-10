@@ -68,36 +68,62 @@ var dayLabels = [
     $scope.monthLabels = monthLabels;
     $scope.dayNumbers = dayNumbers;
     $scope.currentDistribution = {};
+    $scope.currentBeneficiaire = {};
     $scope.readOnly = false;
 
-    $scope.addBeneficiaire = function(firstName, lastName, code) {
-      if ($scope.beneficiaires.filter(function (beneficiaire) {
-        return (code !== undefined && beneficiaire.code === code) ||
-          (code === undefined && beneficiaire.firstName === firstName && beneficiaire.lastName === lastName);
-      }).length > 0) {
-    	  if (code === undefined) {
-    		  alert('Le bénéficiaire ' + firstName + ' ' + lastName + ' existe déjà');
-    	  }else{
-    		  alert('Un bénéficiaire existe déjà avec le code : ' + code);
-    	  }
-    	return;
+    $scope.$watch('currentBeneficiaire.lastName', function(newValue, oldValue) {
+      $scope.isLastNameEmpty=false;
+    }, true);
+
+    $scope.$watch('currentBeneficiaire.firstName', function(newValue, oldValue) {
+      $scope.isFirstNameEmpty=false;
+    }, true);
+
+    $scope.resetAddBeneficiareForm = function(){
+      $scope.isBeneficiaireNotUnique=false;
+      $scope.isCodeNotUnique=false;
+      $scope.isFirstNameEmpty=false;
+      $scope.isLastNameEmpty=false;
+      if($scope.addBeneficiaireForm != null) {
+        $scope.addBeneficiaireForm.$setPristine();
       }
-      if (firstName === undefined || firstName.length == 0) {
+    }
+
+    $scope.addBeneficiaireFromDistribution = function(){
+      $scope.resetAddBeneficiareForm();
+      if ($scope.beneficiaires.filter(function (beneficiaire) {
+        return ($scope.currentBeneficiaire.code === undefined && beneficiaire.firstName === $scope.currentBeneficiaire.firstName && beneficiaire.lastName === $scope.currentBeneficiaire.lastName) || ($scope.currentBeneficiaire.code !== undefined && beneficiaire.code === $scope.currentBeneficiaire.code);
+      }).length > 0) {
+        if ($scope.currentBeneficiaire.code === undefined) {
+          $scope.isBeneficiaireNotUnique=true;
+        }else{
+          $scope.isCodeNotUnique=true;
+        }
         return;
       }
-      if (lastName === undefined || lastName.length == 0) {
+      if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
+        $scope.isLastNameEmpty=true;
+        return;
+      }
+      if ($scope.currentBeneficiaire.firstName === undefined || $scope.currentBeneficiaire.firstName.length == 0) {
+        $scope.isFirstNameEmpty=true;
         return;
       }
 
+      $scope.addBeneficiaire();
+      $scope.resetAddBeneficiareForm();
+    }
+
+    $scope.addBeneficiaire = function() {
       var nextId;
       if ($scope.beneficiaires.length == 0) {
         nextId = '1';
       }else{
         nextId = parseInt($scope.beneficiaires[$scope.beneficiaires.length-1].id) + 1 + '';
       }
-
-      $scope.beneficiaires.push({ id:nextId, code:code, firstName:firstName, lastName:lastName, isPresent:true });
+      $scope.beneficiaires.push({ id:nextId, code:$scope.currentBeneficiaire.code, firstName:$scope.currentBeneficiaire.firstName, lastName:$scope.currentBeneficiaire.lastName, isPresent:true });
       $scope.isPresent(nextId);
+      $scope.currentBeneficiaire = { code : $scope.initNextCode() };
     };
 
     $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
@@ -116,8 +142,20 @@ var dayLabels = [
       $scope.initNextDate();
     };
 
-    $scope.initNextDate = function() {
-    	if ($scope.distributions.length > 0) {
+    $scope.initNextCode = function(){
+      var nextCode = 1;
+      if($scope.beneficiaires != null){
+        for (var i= 0; i < $scope.beneficiaires.length; i++) {
+          if(nextCode <= $scope.beneficiaires[i].code ){
+            nextCode = $scope.beneficiaires[i].code+1;
+          }
+        }
+      }
+      return nextCode;
+    };
+
+    $scope.initNextDate = function(){
+    	if($scope.distributions.length > 0){
   	      var lastDistribution = $scope.distributions[0];
   	      date = createNextWorkingDate(
             lastDistribution.distributionDateDayNumber,
@@ -151,8 +189,15 @@ var dayLabels = [
       for(var i= 0; i < $scope.beneficiaires.length; i++) {
         $scope.beneficiaires[i].isPresent = false;
       }
-      $scope.distributionStarted = true;
+      $scope.openDistribution();
     };
+
+    $scope.openDistribution = function () {
+      $scope.distributionStarted = true;
+      if($scope.readOnly == false){
+        $scope.currentBeneficiaire = { code : $scope.initNextCode() };
+      }
+    }
 
     $scope.saveNewDistribution = function() {
       return storeDistribution({
@@ -175,11 +220,12 @@ var dayLabels = [
         }
       }
       $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
-      $scope.distributionStarted = true;
+      $scope.openDistribution();
     };
 
     $scope.leftCurrentDistribution = function() {
       $scope.currentDistribution = {};
+      $scope.resetAddBeneficiareForm();
       $scope.initNextDate();
       $scope.distributionStarted = false;
     };

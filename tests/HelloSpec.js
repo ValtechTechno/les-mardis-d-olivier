@@ -2,6 +2,17 @@ describe("Les Mardis d'Olivier", function() {
 
   var scope;
 
+  addBeneficiaireWithCode = function(firstName, lastName, code){
+    scope.currentBeneficiaire = { code : code };
+    scope.currentBeneficiaire.lastName = lastName;
+    scope.currentBeneficiaire.firstName = firstName;
+    scope.addBeneficiaireFromDistribution();
+  }
+
+  addBeneficiaire = function(firstName, lastName){
+    addBeneficiaireWithCode(firstName, lastName, scope.initNextCode());
+  }
+
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(function() {
     localStorage.clear()
@@ -13,56 +24,67 @@ describe("Les Mardis d'Olivier", function() {
       $filter: $filter,
       Date: new Date(1981, 11, 24)
     });
+    scope.resetAddBeneficiareForm();
+    scope.currentBeneficiaire = { code : scope.initNextCode() };
   }));
 
   it('should add a beneficiaire', function () {
     scope.currentDistribution.id = 1;
 
-    scope.addBeneficiaire('John', 'Rambo');
+    addBeneficiaire('John', 'Rambo');
 
-    expect(scope.beneficiaires).toContain({ id:'1', firstName:'John', lastName:'Rambo', isPresent:true });
+    expect(scope.beneficiaires).toContain({ id:'1', code:1, firstName:'John', lastName:'Rambo', isPresent:true });
+  });
+
+  it('should add a beneficiaire without code', function () {
+    scope.currentDistribution.id = 1;
+
+    addBeneficiaireWithCode('John', 'Rambo', null)
+
+    expect(scope.beneficiaires).toContain({ id:'1', code:null, firstName:'John', lastName:'Rambo', isPresent:true });
   });
 
   it('calculates the beneficiaire id by incrementing the last id in the list', function () {
     scope.currentDistribution.id = 1;
 
-    scope.addBeneficiaire('John', 'Rambo');
-    scope.addBeneficiaire('Micheline', 'Rambo');
-    scope.addBeneficiaire('Pierrot', 'Rambo');
+    addBeneficiaire('John', 'Rambo');
+    addBeneficiaire('Alix', 'Rambo');
+    addBeneficiaire('Lana', 'Rambo');
 
     expect(scope.beneficiaires).toEqual(
       [
-        { id:'1', firstName:'John',      lastName:'Rambo', isPresent:true },
-        { id:'2', firstName:'Micheline', lastName:'Rambo', isPresent:true },
-        { id:'3', firstName:'Pierrot',   lastName:'Rambo', isPresent:true }
+        { id:'1', code:1, firstName:'John', lastName:'Rambo', isPresent:true },
+        { id:'2', code:2, firstName:'Alix', lastName:'Rambo', isPresent:true },
+        { id:'3', code:3, firstName:'Lana', lastName:'Rambo', isPresent:true }
       ]
     );
   });
 
   it('should not allow to add an existing beneficiaire', function () {
     scope.currentDistribution.id = 1;
-    scope.addBeneficiaire('John', 'Rambo');
 
-    scope.addBeneficiaire('John', 'Rambo');
+    addBeneficiaireWithCode('John', 'Rambo', null);
+    addBeneficiaireWithCode('John', 'Rambo', null);
 
     expect(scope.beneficiaires.length).toBe(1);
   });
 
   it('should not allow to add a beneficiaire with empty first name or last name', function () {
     scope.currentDistribution.id = 1;
-    scope.addBeneficiaire('', '');
-    scope.addBeneficiaire('John', '');
-    scope.addBeneficiaire('', 'Rambo');
+
+    addBeneficiaire('', '');
+    addBeneficiaire('John', '');
+    addBeneficiaire('', 'Rambo');
 
     expect(scope.beneficiaires.length).toBe(0);
   });
 
   it('should save beneficiaires to localStorage', function () {
     scope.currentDistribution.id = 1;
-    scope.addBeneficiaire('foo', 'bar');
+    addBeneficiaire('foo', 'bar');
     scope.$digest();
 
-    expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","firstName":"foo","lastName":"bar","isPresent":true}]');
+    expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","code":1,"firstName":"foo","lastName":"bar","isPresent":true}]');
   });
 
   it("should save a new distribution", function () {
@@ -285,7 +307,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.currentDistribution.distributionDateYear="2014";
     scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     scope.currentDistribution.id = scope.saveNewDistribution();
-    scope.addBeneficiaire('John', 'Rambo');
+    addBeneficiaire('John', 'Rambo');
     scope.$digest();
 
     beneficiaireCode = scope.beneficiaires[0].id;
@@ -316,8 +338,8 @@ describe("Les Mardis d'Olivier", function() {
     scope.currentDistribution.distributionDateYear="2014";
     scope.currentDistribution.distributionDateLabel = "lundi 04 août 2014";
     scope.currentDistribution.id = scope.saveNewDistribution();
-    scope.addBeneficiaire('John', 'Rambo');
-    scope.addBeneficiaire('Michel', 'Rambo');
+    addBeneficiaire('John', 'Rambo');
+    addBeneficiaire('Michel', 'Rambo');
     scope.$digest();
 
     beneficiaireCode = scope.beneficiaires[0].id;
