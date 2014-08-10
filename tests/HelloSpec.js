@@ -6,13 +6,12 @@ describe("Les Mardis d'Olivier", function() {
   beforeEach(function() {
     localStorage.clear()
   });
-  beforeEach(angular.mock.inject(function($rootScope, $controller, $filter, ngTableParams){
+  beforeEach(angular.mock.inject(function($rootScope, $controller, $filter){
     scope = $rootScope.$new();
     $controller('contentCtrl', {
       $scope: scope,
       $filter: $filter,
-      Date: new Date(1981, 11, 24),
-      ngTableParams: ngTableParams
+      Date: new Date(1981, 11, 24)
     });
   }));
 

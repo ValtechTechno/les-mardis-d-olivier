@@ -62,9 +62,9 @@ var dayLabels = [
     alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
   }
 
-  var app = angular.module('mardisDolivier', ['ngTable']);
+  var app = angular.module('mardisDolivier', []);
 
-  app.controller('contentCtrl', function($scope, $filter, Date, ngTableParams) {
+  app.controller('contentCtrl', function($scope, $filter, Date) {
     $scope.monthLabels = monthLabels;
     $scope.dayNumbers = dayNumbers;
     $scope.currentDistribution = {};
@@ -107,9 +107,6 @@ var dayLabels = [
     $scope.$watch('beneficiaires', function(newValue, oldValue) {
       if($scope.readOnly == false){
         localStorage.setItem('beneficiaires', angular.toJson($scope.beneficiaires));
-        if(!$scope.beneficiairesTableParams){
-          $scope.beneficiairesTableParams.reload();
-        }
       }
     }, true);
 
@@ -117,7 +114,7 @@ var dayLabels = [
       $scope.distributions = retrieveAllDistribution();
       $scope.initNextDate();
     };
-    
+
     $scope.initNextDate = function(){
     	if($scope.distributions.length > 0){
   	      var lastDistribution = $scope.distributions[0];
@@ -127,7 +124,7 @@ var dayLabels = [
   	      $scope.currentDistribution.distributionDateYear = date.getFullYear().toString();
         }
     };
-    
+
     $scope.showAllDistribution();
 
     $scope.startNewDistribution = function() {
@@ -156,26 +153,6 @@ var dayLabels = [
         "nbPlannedMeals":$scope.currentDistribution.distributionNbPlannedMeals
       });
     };
-
-    $scope.beneficiairesTableParams = new ngTableParams({
-      page : 1,
-      count : 100,
-      filter : {
-        code : '',
-        lastName : '',
-        firstName : ''
-      }
-    }, {
-      total : $scope.beneficiaires.length,
-      counts: [], // hide page counts control
-      getData : function($defer, params) {
-        var data = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
-        var orderedData = params.filter() ? $filter('filter')(data, params.filter()) : data;
-        data = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-        params.total(orderedData.length); // set total for recalc pagination
-        $defer.resolve(data);
-      }
-    });
 
     $scope.loadDistribution = function(distributionId, readOnly) {
       $scope.readOnly = readOnly;
