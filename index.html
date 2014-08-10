@@ -75,9 +75,10 @@
                   <td>Nom</td>
                   <td>Prénom</td>
                   <td>Présent</td>
+                  <td>Commentaire</td>
                 </tr>
                 <tr>
-                  <td colspan="4"><input type="text" ng-model="searchBeneficiaire" placeholder="42, Georges, Henriette, etc."></input></td>
+                  <td colspan="5"><input type="text" ng-model="searchBeneficiaire" placeholder="42, Georges, Henriette, etc."></input></td>
                 </tr>
               </thead>
               <tbody>
@@ -86,6 +87,7 @@
                   <td>{{user.lastName}}</td>
                   <td>{{user.firstName}}</td>
                   <td><input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.id)" ng-disabled="readOnly" /></td>
+                  <td><input class="form-control" type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)" ng-disabled="readOnly || !user.isPresent" /></td>
                 </tr>
               </tbody>
             </table>
@@ -140,6 +142,7 @@
                   <th>Date</th>
                   <th>Repas prévus</th>
                   <th>Repas servis</th>
+                  <th>Commentaires</th>
                   <th></th>
                 </tr>
               </thead>
@@ -148,6 +151,11 @@
                 <td>{{distribution.distributionDateLabel}}</td>
                 <td>{{distribution.nbPlannedMeals}}</td>
                 <td>{{distribution.nbServedMeals}}</td>
+                <td>
+                  <!-- TODO si besoin, trouver une jolie façon de présenter la liste des commentaires -->
+                  <!--<p ng-repeat="comment in distribution.comments">{{comment}}</p>-->
+                  {{distribution.comments.length}}
+                </td>
                 <td>
                   <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>
                   <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, true)" ng-hide="$first">Afficher</button>
