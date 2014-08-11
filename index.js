@@ -126,10 +126,7 @@ var dayLabels = [
       $scope.currentBeneficiaire = { code : $scope.initNextCode() };
     };
 
-    $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
-    if ($scope.beneficiaires === null) {
-      $scope.beneficiaires = [];
-    }
+    $scope.beneficiaires = loadBeneficiaires();
 
     $scope.$watch('beneficiaires', function(newValue, oldValue) {
       if(newValue.length != oldValue.length && $scope.readOnly == false) {
@@ -217,7 +214,7 @@ var dayLabels = [
         return;
       }
       $scope.readOnly = false;
-      $scope.beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
+      $scope.beneficiaires = loadBeneficiaires();
       $scope.openDistribution();
     };
 
@@ -378,24 +375,30 @@ retrieveBeneficiairesByDistribution = function(distributionId, readOnly) {
     }
   }
   var beneficiairesPresent = [];
-  var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
-  if (beneficiaires != null) {
-    for (var i= 0; i < beneficiaires.length; i++) {
-      var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
-      if (index != -1) {
-        beneficiaires[i].isPresent = true;
-        beneficiaires[i].comment = beneficiairesPresentComments[index];
+  var beneficiaires = loadBeneficiaires();
+  for (var i= 0; i < beneficiaires.length; i++) {
+    var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
+    if (index != -1) {
+      beneficiaires[i].isPresent = true;
+      beneficiaires[i].comment = beneficiairesPresentComments[index];
+      beneficiairesPresent.push(beneficiaires[i]);
+    } else {
+      beneficiaires[i].isPresent = false;
+      beneficiaires[i].comment = null;
+      if (readOnly == false) {
         beneficiairesPresent.push(beneficiaires[i]);
-      } else {
-        beneficiaires[i].isPresent = false;
-        beneficiaires[i].comment = null;
-        if (readOnly == false) {
-          beneficiairesPresent.push(beneficiaires[i]);
-        }
       }
     }
   }
   return beneficiairesPresent;
+}
+
+loadBeneficiaires = function() {
+  var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
+  if (beneficiaires === null) {
+    beneficiaires = [];
+  }
+  return beneficiaires;
 }
 
 datePrintFormat = function(dayLabel, dayNumber, monthLabel, year) {
