@@ -161,10 +161,10 @@ var dayLabels = [
               for (var beneficiaireIndex= 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
                 if($scope.beneficiaires[beneficiaireIndex].id == beneficiairesPresentByDistribution[i].beneficiaireId){
                   beneficiaire = $scope.beneficiaires[beneficiaireIndex];
+                  $scope.distributions[distributionIndex].comments.push("("+beneficiaire.code+") "+beneficiaire.lastName+" "+beneficiaire.firstName+" : "+beneficiairesPresentByDistribution[i].comment);
                   break;
                 }
               }
-              $scope.distributions[distributionIndex].comments.push("("+beneficiaire.code+") "+beneficiaire.lastName+" "+beneficiaire.firstName+" : "+beneficiairesPresentByDistribution[i].comment)
             }
           }
         }
