@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Distribution Tool</title>
   <link rel="stylesheet" href="lib/foundation-5.3.1/css/foundation.min.css" />
+  <link rel="stylesheet" href="lib/jquery-ui-1.11.0.custom/jquery-ui.min.css"/>
   <link rel="stylesheet" href="index.css" />
 </head>
 <body>
@@ -63,7 +64,7 @@
         </form>
 
         <div class="row">
-          <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDateLabel}} </h3>
+          <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | dateWithJQueryUiDatePicker}} </h3>
         </div>
 
         <div class="row">
@@ -99,27 +100,15 @@
         <form name="addDistributionForm">
           <div class="row">
             <div class="medium-9 columns">
-              <label>Date</label>
-              <div class="row">
-                <div class="medium-4 columns">
-                  <select ng-model="currentDistribution.distributionDateDayNumber" ng-options="day for day in  dayNumbers" required>
-                    <option value="">-- jour --</option>
-                  </select>
-                </div>
-                <div class="medium-4 columns">
-                  <select ng-model="currentDistribution.distributionDateMonthLabel" ng-options="month for month in  monthLabels" required>
-                    <option value="">-- mois --</option>
-                  </select>
-                </div>
-                <div class="medium-4 columns">
-                  <input type="text" ng-model="currentDistribution.distributionDateYear" placeholder="-- année --" required />
-                </div>
-              </div>
+              <label>
+                Date
+                <input type="text" ui-date="dateOptions" ui-date-format="yy-mm-dd" ng-model="currentDistribution.distributionDate" ng-required="true" />
+              </label>
             </div>
             <div class="medium-3 columns">
               <label>
                 Repas prévus
-              <input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" required />
+                <input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" required />
               </label>
             </div>
           </div>
@@ -147,20 +136,16 @@
                 </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="distribution in distributions">
-                <td>{{distribution.distributionDateLabel}}</td>
-                <td>{{distribution.nbPlannedMeals}}</td>
-                <td>{{distribution.nbServedMeals}}</td>
-                <td>
-                  <!-- TODO si besoin, trouver une jolie façon de présenter la liste des commentaires -->
-                  <!--<p ng-repeat="comment in distribution.comments">{{comment}}</p>-->
-                  {{distribution.comments.length}}
-                </td>
-                <td>
-                  <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>
-                  <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, true)" ng-hide="$first">Afficher</button>
-                </td>
-              </tr>
+                <tr ng-repeat="distribution in distributions">
+                  <td>{{distribution.distributionDate | dateWithJQueryUiDatePicker}}</td>
+                  <td>{{distribution.nbPlannedMeals}}</td>
+                  <td>{{distribution.nbServedMeals}}</td>
+                  <td>{{distribution.comments.length}}</td>
+                  <td>
+                    <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>
+                    <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, true)" ng-hide="$first">Afficher</button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -172,7 +157,10 @@
 
 <script src="lib/foundation-5.3.1/js/vendor/modernizr.js"></script>
 <script src="lib/foundation-5.3.1/js/vendor/jquery.js"></script>
+<script src="lib/jquery-ui-1.11.0.custom/jquery-ui.min.js"></script>
+<script src="lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js"></script>
 <script src="lib/angular-1.2.21/angular.min.js"></script>
+<script src="lib/angular-ui-date/date.js"></script>
 <script src="lib/foundation-5.3.1/js/foundation.min.js"></script>
 <script src="index.js"></script>
 <script>

@@ -1,72 +1,16 @@
-var monthLabels = [
-  'janvier',
-  'février',
-  'mars',
-  'avril',
-  'mai',
-  'juin',
-  'juillet',
-  'août',
-  'septembre',
-  'octobre',
-  'novembre',
-  'décembre'
-];
-
-var dayNumbers = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '22',
-  '23',
-  '24',
-  '25',
-  '26',
-  '27',
-  '28',
-  '29',
-  '30',
-  '31'
-];
-
-var dayLabels = [
-  'dimanche',
-  'lundi',
-  'mardi',
-  'mercredi',
-  'jeudi',
-  'vendredi',
-  'samedi'
-];
-
 (function() {
   if (typeof localStorage == 'undefined') {
     alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
   }
 
-  var app = angular.module('mardisDolivier', []);
+  var app = angular.module('mardisDolivier', ['ui.date']);
 
   app.controller('contentCtrl', function($scope, $filter, Date) {
-    $scope.monthLabels = monthLabels;
-    $scope.dayNumbers = dayNumbers;
+    $.datepicker.setDefaults($.datepicker.regional['fr']);
+    $scope.dateOptions = {
+        dateFormat: 'DD d MM yy'
+    };
+
     $scope.currentDistribution = {};
     $scope.currentBeneficiaire = {};
     $scope.readOnly = false;
@@ -80,11 +24,11 @@ var dayLabels = [
     }, true);
 
     $scope.resetAddBeneficiareForm = function(){
-      $scope.isBeneficiaireNotUnique=false;
-      $scope.isCodeNotUnique=false;
-      $scope.isFirstNameEmpty=false;
-      $scope.isLastNameEmpty=false;
-      if($scope.addBeneficiaireForm != null) {
+      $scope.isBeneficiaireNotUnique = false;
+      $scope.isCodeNotUnique = false;
+      $scope.isFirstNameEmpty = false;
+      $scope.isLastNameEmpty = false;
+      if ($scope.addBeneficiaireForm != null) {
         $scope.addBeneficiaireForm.$setPristine();
       }
     }
@@ -153,15 +97,15 @@ var dayLabels = [
         }
         for (var distributionIndex= 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
           for (var i= 0; i < beneficiairesPresentByDistribution.length; i++) {
-            if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex].id && beneficiairesPresentByDistribution[i].comment != undefined){
-              if($scope.distributions[distributionIndex].comments == null){
+            if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex].id && beneficiairesPresentByDistribution[i].comment != undefined) {
+              if ($scope.distributions[distributionIndex].comments == null) {
                 $scope.distributions[distributionIndex].comments = [];
               }
               var beneficiaire = null;
               for (var beneficiaireIndex= 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
-                if($scope.beneficiaires[beneficiaireIndex].id == beneficiairesPresentByDistribution[i].beneficiaireId){
+                if ($scope.beneficiaires[beneficiaireIndex].id == beneficiairesPresentByDistribution[i].beneficiaireId) {
                   beneficiaire = $scope.beneficiaires[beneficiaireIndex];
-                  $scope.distributions[distributionIndex].comments.push("("+beneficiaire.code+") "+beneficiaire.lastName+" "+beneficiaire.firstName+" : "+beneficiairesPresentByDistribution[i].comment);
+                  $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
                   break;
                 }
               }
@@ -171,11 +115,11 @@ var dayLabels = [
       }
     };
 
-    $scope.initNextCode = function(){
+    $scope.initNextCode = function() {
       var nextCode = 1;
-      if($scope.beneficiaires != null){
+      if ($scope.beneficiaires != null) {
         for (var i= 0; i < $scope.beneficiaires.length; i++) {
-          if(nextCode <= $scope.beneficiaires[i].code ){
+          if (nextCode <= $scope.beneficiaires[i].code) {
             nextCode = $scope.beneficiaires[i].code+1;
           }
         }
@@ -183,31 +127,20 @@ var dayLabels = [
       return nextCode;
     };
 
-    $scope.initNextDate = function(){
-    	if($scope.distributions.length > 0){
-  	      var lastDistribution = $scope.distributions[0];
-  	      date = createNextWorkingDate(
-            lastDistribution.distributionDateDayNumber,
-            monthLabels.indexOf(lastDistribution.distributionDateMonthLabel),
-            lastDistribution.distributionDateYear);
-  	      $scope.currentDistribution.distributionDateDayNumber = date.getDate().toString();
-  	      $scope.currentDistribution.distributionDateMonthLabel = monthLabels[date.getMonth()];
-  	      $scope.currentDistribution.distributionDateYear = date.getFullYear().toString();
-        }
+    $scope.initNextDate = function() {
+      if ($scope.distributions.length > 0) {
+        var lastDistribution = $scope.distributions[0];
+        date = createNextWorkingDate(lastDistribution.distributionDate);
+        var month = (date.getMonth() + 1) + "";
+        var pad = "00";
+        var paddedMonth = pad.substring(0, pad.length - month.length) + month;
+        $scope.currentDistribution.distributionDate = date.getFullYear() + "-" + paddedMonth + "-" + date.getDate();
+      }
     };
 
     $scope.showAllDistribution();
 
     $scope.startNewDistribution = function() {
-      $scope.currentDistribution.distributionDateDayLabel = findDayLabel(
-        $scope.currentDistribution.distributionDateDayNumber,
-        $scope.currentDistribution.distributionDateMonthLabel,
-        $scope.currentDistribution.distributionDateYear);
-      $scope.currentDistribution.distributionDateLabel = datePrintFormat(
-        $scope.currentDistribution.distributionDateDayLabel,
-        $scope.currentDistribution.distributionDateDayNumber,
-        $scope.currentDistribution.distributionDateMonthLabel,
-        $scope.currentDistribution.distributionDateYear);
       try {
         $scope.currentDistribution.id = $scope.saveNewDistribution();
       } catch(err) {
@@ -220,18 +153,14 @@ var dayLabels = [
 
     $scope.openDistribution = function () {
       $scope.distributionStarted = true;
-      if($scope.readOnly == false){
+      if (!$scope.readOnly) {
         $scope.currentBeneficiaire = { code : $scope.initNextCode() };
       }
-    }
+    };
 
     $scope.saveNewDistribution = function() {
       return storeDistribution({
-        'distributionDateLabel':$scope.currentDistribution.distributionDateLabel,
-        'distributionDateDayLabel':$scope.currentDistribution.distributionDateDayLabel,
-        'distributionDateDayNumber':$scope.currentDistribution.distributionDateDayNumber,
-        'distributionDateMonthLabel':$scope.currentDistribution.distributionDateMonthLabel,
-        'distributionDateYear':$scope.currentDistribution.distributionDateYear,
+        'distributionDate':$scope.currentDistribution.distributionDate,
         'nbPlannedMeals':$scope.currentDistribution.distributionNbPlannedMeals
       });
     };
@@ -257,30 +186,30 @@ var dayLabels = [
     };
 
     $scope.isPresent = function(beneficiaireId) {
-      if ($scope.readOnly == false) {
+      if (!$scope.readOnly) {
         storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaireId);
       }
     };
 
     $scope.writeComment = function(beneficiaireId, message) {
-      if ($scope.readOnly == false) {
+      if (!$scope.readOnly) {
         var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
         if (beneficiairesPresentByDistribution == null) {
           beneficiairesPresentByDistribution = [];
         }
-        for (var i= 0; i < beneficiairesPresentByDistribution.length; i++) {
+        for (var i=0; i < beneficiairesPresentByDistribution.length; i++) {
           if (
             beneficiairesPresentByDistribution[i].distributionId == $scope.currentDistribution.id &&
             beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId
-            ) {
+          ) {
             beneficiairesPresentByDistribution.splice(i, 1);
             break;
           }
         }
-        if(message != null && message.length > 0){
+        if (message != null && message.length > 0) {
           beneficiairesPresentByDistribution.push({ "distributionId":$scope.currentDistribution.id.toString(), "beneficiaireId":beneficiaireId, "comment":message });
-        }else{
-          beneficiairesPresentByDistribution.push({ "distributionId":$scope.currentDistribution.id.toString(), "beneficiaireId":beneficiaireId});
+        } else {
+          beneficiairesPresentByDistribution.push({ "distributionId":$scope.currentDistribution.id.toString(), "beneficiaireId":beneficiaireId });
         }
         localStorage.setItem('beneficiairesPresentByDistribution',angular.toJson(beneficiairesPresentByDistribution));
       }
@@ -289,6 +218,12 @@ var dayLabels = [
 
   app.factory('Date',function() {
     return new Date();
+  });
+
+  app.filter('dateWithJQueryUiDatePicker', function() {
+    return function(input) {
+      return $.datepicker.formatDate("DD d MM yy", new Date(input));
+    };
   });
 
 })();
@@ -304,12 +239,7 @@ retrieveAllDistribution = function() {
 }
 
 storeDistribution = function(distribution) {
-  if (
-    distribution.distributionDateDayLabel === undefined || distribution.distributionDateDayLabel.length == 0 ||
-    distribution.distributionDateDayNumber === undefined || distribution.distributionDateDayNumber.length == 0 ||
-    distribution.distributionDateMonthLabel === undefined || distribution.distributionDateMonthLabel.length == 0 ||
-    distribution.distributionDateYear === undefined || distribution.distributionDateYear.length == 0
-  ) {
+  if (distribution.distributionDate === undefined || distribution.distributionDate.length == 0) {
     throw 'merci de renseigner la date';
   }
   if (distribution.nbPlannedMeals === undefined || distribution.nbPlannedMeals.length == 0) {
@@ -322,11 +252,7 @@ storeDistribution = function(distribution) {
     nextId = 1;
   } else if (distributions.filter(function (storedDistribution) {
     return (
-      distribution.distributionDateLabel === storedDistribution.distributionDateLabel &&
-      distribution.distributionDateDayLabel === storedDistribution.distributionDateDayLabel &&
-      distribution.distributionDateDayNumber === storedDistribution.distributionDateDayNumber &&
-      distribution.distributionDateMonthLabel === storedDistribution.distributionDateMonthLabel &&
-      distribution.distributionDateYear === storedDistribution.distributionDateYear
+      distribution.distributionDate === storedDistribution.distributionDate
     );
   }).length > 0) {
     throw 'Une distribution a cette date existe déjà';
@@ -401,23 +327,14 @@ loadBeneficiaires = function() {
   return beneficiaires;
 }
 
-datePrintFormat = function(dayLabel, dayNumber, monthLabel, year) {
-  return dayLabel + ' ' + dayNumber + ' ' + monthLabel + ' ' + year;
-}
-
-findDayLabel = function(dayNumber, monthLabel, year) {
-  var date = new Date(year, monthLabels.indexOf(monthLabel), dayNumber);
-  return dayLabels[date.getDay()];
-}
-
-createNextWorkingDate = function(dayNumber, monthNumber, yearNumber) {
-	var lastDate = new Date(yearNumber, monthNumber, dayNumber);
-	var nextDate = new Date(lastDate.setDate(lastDate.getDate() + 1));
-	 if (nextDate.getDay() == 0) {
-		 nextDate.setDate(nextDate.getDate() + 1);
-	 }
-	 if (nextDate.getDay() == 6) {
-		 nextDate.setDate(nextDate.getDate() + 2);
-	 }
-	 return nextDate;
+createNextWorkingDate = function(dateString) {
+  var lastDate = new Date(dateString);
+  var nextDate = new Date(lastDate.setDate(lastDate.getDate() + 1));
+  if (nextDate.getDay() == 0) {
+    nextDate.setDate(nextDate.getDate() + 1);
+  }
+  if (nextDate.getDay() == 6) {
+    nextDate.setDate(nextDate.getDate() + 2);
+  }
+  return nextDate;
 }

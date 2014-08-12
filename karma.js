@@ -17,7 +17,10 @@ module.exports = function(config) {
     files: [
         'lib/foundation-5.3.1/js/vendor/modernizr.js',
         'lib/foundation-5.3.1/js/vendor/jquery.js',
+        'lib/jquery-ui-1.11.0.custom/jquery-ui.min.js',
+        'lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js',
         'lib/angular-1.2.21/angular.min.js',
+        'lib/angular-ui-date/date.js',
         'lib/foundation-5.3.1/js/foundation.min.js',
         'index.js',
         'tests/angular-mocks.js',
