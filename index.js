@@ -5,7 +5,7 @@
 
   var app = angular.module('mardisDolivier', ['ui.date']);
 
-  app.controller('contentCtrl', function($scope, $filter, Date) {
+  app.controller('contentCtrl', function($scope, $filter) {
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     $scope.dateOptions = {
         dateFormat: 'DD d MM yy'
@@ -214,10 +214,6 @@
         localStorage.setItem('beneficiairesPresentByDistribution',angular.toJson(beneficiairesPresentByDistribution));
       }
     };
-  });
-
-  app.factory('Date',function() {
-    return new Date();
   });
 
   app.filter('dateWithJQueryUiDatePicker', function() {
