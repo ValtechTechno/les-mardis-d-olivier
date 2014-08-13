@@ -8,7 +8,7 @@
   app.controller('contentCtrl', function($scope, $filter) {
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     $scope.dateOptions = {
-        dateFormat: 'DD d MM yy'
+      dateFormat: 'DD d MM yy'
     };
 
     $scope.currentDistribution = {};
@@ -36,13 +36,15 @@
     $scope.addBeneficiaireFromDistribution = function(){
       $scope.resetAddBeneficiareForm();
       if ($scope.beneficiaires.filter(function (beneficiaire) {
-        return ($scope.currentBeneficiaire.code === undefined && beneficiaire.firstName === $scope.currentBeneficiaire.firstName && beneficiaire.lastName === $scope.currentBeneficiaire.lastName) || ($scope.currentBeneficiaire.code !== undefined && beneficiaire.code === $scope.currentBeneficiaire.code);
+        return (beneficiaire.firstName === $scope.currentBeneficiaire.firstName && beneficiaire.lastName === $scope.currentBeneficiaire.lastName);
       }).length > 0) {
-        if ($scope.currentBeneficiaire.code === undefined) {
-          $scope.isBeneficiaireNotUnique=true;
-        }else{
-          $scope.isCodeNotUnique=true;
-        }
+        $scope.isBeneficiaireNotUnique=true;
+        return;
+      }
+      if ($scope.beneficiaires.filter(function (beneficiaire) {
+        return (beneficiaire.code === $scope.currentBeneficiaire.code);
+      }).length > 0) {
+        $scope.isCodeNotUnique=true;
         return;
       }
       if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
@@ -200,8 +202,8 @@
         for (var i=0; i < beneficiairesPresentByDistribution.length; i++) {
           if (
             beneficiairesPresentByDistribution[i].distributionId == $scope.currentDistribution.id &&
-            beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId
-          ) {
+              beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId
+            ) {
             beneficiairesPresentByDistribution.splice(i, 1);
             break;
           }
@@ -249,7 +251,7 @@ storeDistribution = function(distribution) {
   } else if (distributions.filter(function (storedDistribution) {
     return (
       distribution.distributionDate === storedDistribution.distributionDate
-    );
+      );
   }).length > 0) {
     throw 'Une distribution a cette date existe déjà';
   } else {
@@ -271,8 +273,8 @@ storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireId)
   for (var i= 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (
       beneficiairesPresentByDistribution[i].distributionId == distributionId &&
-      beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId
-    ) {
+        beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId
+      ) {
       isRelationExisting = true;
       beneficiairesPresentByDistribution.splice(i, 1);
       break;
