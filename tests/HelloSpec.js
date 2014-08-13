@@ -234,8 +234,7 @@ describe("Les Mardis d'Olivier", function() {
     addBeneficiaire('Lana', 'Rambo');
     scope.$digest();
 
-    var beneficiaireId = scope.beneficiaires[1].id;
-    scope.isPresent(beneficiaireId);
+    scope.isPresent(scope.beneficiaires[1]);
 
     scope.leftCurrentDistribution();
     scope.loadDistribution(1, false);
@@ -262,8 +261,7 @@ describe("Les Mardis d'Olivier", function() {
     addBeneficiaire('Lana', 'Rambo');
     scope.$digest();
 
-    var beneficiaireId = scope.beneficiaires[1].id;
-    scope.isPresent(beneficiaireId);
+    scope.isPresent(scope.beneficiaires[1]);
 
     scope.leftCurrentDistribution();
     scope.currentDistribution.distributionNbPlannedMeals = "50";
@@ -304,4 +302,21 @@ describe("Les Mardis d'Olivier", function() {
   it('should format a date for french people', function() {
     expect(dateWithJQueryUiDatePicker('2014-08-04')).toBe('lundi 4 août 2014');
   });
+
+  it('should retrieve the number of beneficiaires present at a distribution', function (){
+    scope.currentDistribution.distributionNbPlannedMeals = "50";
+    scope.currentDistribution.distributionDate = "2014-08-04";
+    scope.currentDistribution.id = scope.saveNewDistribution();
+    scope.$digest();
+    addBeneficiaire('John', 'Rambo');
+    addBeneficiaire('Michel', 'Rambo');
+    addBeneficiaire('Paul', 'Rambo');
+    scope.$digest();
+
+    var beneficiaireCode = scope.beneficiaires[0].id;
+
+    var beneficiairesList = retrieveAllDistribution();
+
+    expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
+  })
 });

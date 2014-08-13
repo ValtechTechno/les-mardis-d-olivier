@@ -64,7 +64,7 @@
         </form>
 
         <div class="row">
-          <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | dateWithJQueryUiDatePicker}} </h3>
+          <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | dateWithJQueryUiDatePicker}} ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
         </div>
 
         <div class="row">
@@ -87,7 +87,7 @@
                   <td>{{user.code}}</td>
                   <td>{{user.lastName}}</td>
                   <td>{{user.firstName}}</td>
-                  <td><input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user.id)" ng-disabled="readOnly" /></td>
+                  <td><input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user)" ng-disabled="readOnly" /></td>
                   <td><input class="form-control" type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)" ng-disabled="readOnly || !user.isPresent" /></td>
                 </tr>
               </tbody>
@@ -130,7 +130,7 @@
                 <tr>
                   <th>Date</th>
                   <th>Repas prévus</th>
-                  <th>Repas servis</th>
+                  <th>Bénéficiaires présents</th>
                   <th>Commentaires</th>
                   <th></th>
                 </tr>
@@ -139,7 +139,7 @@
                 <tr ng-repeat="distribution in distributions">
                   <td>{{distribution.distributionDate | dateWithJQueryUiDatePicker}}</td>
                   <td>{{distribution.nbPlannedMeals}}</td>
-                  <td>{{distribution.nbServedMeals}}</td>
+                  <td>{{distribution.nbBeneficiaires}}</td>
                   <td>{{distribution.comments.length}}</td>
                   <td>
                     <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>

@@ -7,6 +7,8 @@
 
   app.controller('contentCtrl', function($scope, $filter) {
     $.datepicker.setDefaults($.datepicker.regional['fr']);
+    $scope.numberBeneficiairesPresent = 0;
+
     $scope.dateOptions = {
       dateFormat: 'DD d MM yy'
     };
@@ -67,8 +69,9 @@
       }else{
         nextId = parseInt($scope.beneficiaires[$scope.beneficiaires.length-1].id) + 1 + '';
       }
-      $scope.beneficiaires.push({ id:nextId, code:$scope.currentBeneficiaire.code, firstName:$scope.currentBeneficiaire.firstName, lastName:$scope.currentBeneficiaire.lastName, isPresent:true });
-      $scope.isPresent(nextId);
+      var newBeneficiaire = { id:nextId, code:$scope.currentBeneficiaire.code, firstName:$scope.currentBeneficiaire.firstName, lastName:$scope.currentBeneficiaire.lastName, isPresent:true };
+      $scope.beneficiaires.push(newBeneficiaire);
+      $scope.isPresent(newBeneficiaire);
       $scope.currentBeneficiaire = { code : $scope.initNextCode() };
     };
 
@@ -177,6 +180,17 @@
         }
       }
       $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
+      if ($scope.readOnly){
+        $scope.numberBeneficiairesPresent = $scope.beneficiaires.length;
+      }else{
+        $scope.numberBeneficiairesPresent = 0;
+
+        for (var i= 0; i < $scope.beneficiaires.length; i++) {
+          if ($scope.beneficiaires[i].isPresent){
+            $scope.numberBeneficiairesPresent++;
+          }
+        }
+      }
       $scope.openDistribution();
     };
 
@@ -185,11 +199,17 @@
       $scope.resetAddBeneficiareForm();
       $scope.showAllDistribution();
       $scope.distributionStarted = false;
+      $scope.numberBeneficiairesPresent = 0;
     };
 
-    $scope.isPresent = function(beneficiaireId) {
+    $scope.isPresent = function(beneficiaire) {
       if (!$scope.readOnly) {
-        storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaireId);
+        storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaire.id);
+      }
+      if (beneficiaire.isPresent){
+        $scope.numberBeneficiairesPresent++;
+      }else{
+        $scope.numberBeneficiairesPresent--;
       }
     };
 
@@ -232,6 +252,20 @@ retrieveAllDistribution = function() {
     allDistributions = [];
   } else {
     allDistributions.reverse();
+  }
+
+  var nbBeneficiaireByDistribution = [];
+  var beneficiaire;
+  var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
+  if (beneficiairesPresentByDistribution != null){
+    for (var i = 0; i<beneficiairesPresentByDistribution.length; i++){
+      beneficiaire = nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId]
+      nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId] = beneficiaire?beneficiaire+1:1;
+    }
+
+    for (var i=0; i<allDistributions.length; i++){
+      allDistributions[i].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[i].id];
+    }
   }
   return allDistributions;
 }
