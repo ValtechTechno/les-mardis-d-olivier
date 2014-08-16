@@ -23,8 +23,7 @@ describe("Les Mardis d'Olivier", function() {
     dateWithJQueryUiDatePicker = $filter('dateWithJQueryUiDatePicker');
     $controller('contentCtrl', {
       $scope: scope,
-      $filter: $filter,
-      Date: new Date(1981, 11, 24)
+      $filter: $filter
     });
     scope.resetAddBeneficiareForm();
     scope.currentBeneficiaire = { code : scope.initNextCode() };
