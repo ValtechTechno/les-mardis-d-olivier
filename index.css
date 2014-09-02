@@ -23,3 +23,30 @@ select {
   color: white;
   padding-left: 10px;
 }
+
+#commentsToggle {
+  position:relative;
+  top:0px;
+  left:0px;
+}
+
+#commentsDetail {
+  display: none;
+  top:-10px;
+  padding-top: 20px;
+  vertical-align: middle;
+  text-align: left;
+  width: 400px;
+  background-color:#ccc;
+  color:black;
+  border-radius:5px;
+  position:absolute;
+}
+
+#commentsDetail li{
+  list-style-type: none;
+}
+
+#commentsToggle:hover #commentsDetail{
+  display: inline-block;
+}

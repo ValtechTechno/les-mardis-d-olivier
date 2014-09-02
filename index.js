@@ -77,6 +77,12 @@
 
     $scope.beneficiaires = loadBeneficiaires();
 
+    // Specific filter to avoid search in comments
+    $scope.searchBeneficiaire  = function (beneficiaire) {
+      var reg = new RegExp($scope.searchText, 'i');
+      return !$scope.searchText || reg.test(beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
+    };
+
     $scope.$watch('beneficiaires', function(newValue, oldValue) {
       if(newValue.length != oldValue.length && $scope.readOnly == false) {
         var cleanBeneficiairesList = [];
@@ -139,7 +145,9 @@
         var month = (date.getMonth() + 1) + "";
         var pad = "00";
         var paddedMonth = pad.substring(0, pad.length - month.length) + month;
-        $scope.currentDistribution.distributionDate = date.getFullYear() + "-" + paddedMonth + "-" + date.getDate();
+        var day = date.getDate().toString();
+        if(day.length == 1){day = "0"+day;}
+        $scope.currentDistribution.distributionDate = date.getFullYear() + "-" + paddedMonth + "-" + day;
       }
     };
 
@@ -153,6 +161,9 @@
       }
       $scope.readOnly = false;
       $scope.beneficiaires = loadBeneficiaires();
+      for (var i= 0; i < $scope.beneficiaires.length; i++) {
+        $scope.beneficiaires[i].comments = getLastComments($scope.beneficiaires[i].id, $scope.currentDistribution.id);
+      }
       $scope.openDistribution();
     };
 
@@ -335,6 +346,7 @@ retrieveBeneficiairesByDistribution = function(distributionId, readOnly) {
   var beneficiairesPresent = [];
   var beneficiaires = loadBeneficiaires();
   for (var i= 0; i < beneficiaires.length; i++) {
+    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId);
     var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
     if (index != -1) {
       beneficiaires[i].isPresent = true;
@@ -349,6 +361,32 @@ retrieveBeneficiairesByDistribution = function(distributionId, readOnly) {
     }
   }
   return beneficiairesPresent;
+}
+
+getLastComments = function(beneficiaireId, distributionId){
+  var beneficiaireOldComments = [];
+  var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
+
+  if (beneficiairesPresentByDistribution != null) {
+    beneficiairesPresentByDistribution.reverse();
+    for (var i= 0; i < beneficiairesPresentByDistribution.length; i++) {
+      if(beneficiaireOldComments.length == 5){
+        break;
+      }
+      if (beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId && beneficiairesPresentByDistribution[i].distributionId != distributionId && beneficiairesPresentByDistribution[i].comment != null) {
+        var dateDistrib = "[DATE]";
+        var allDistributions = angular.fromJson(localStorage.getItem('distributions'));
+        for (var distributionNumber= 0; distributionNumber < allDistributions.length; distributionNumber++) {
+          if (allDistributions[distributionNumber].id == beneficiairesPresentByDistribution[i].distributionId) {
+            dateDistrib = allDistributions[distributionNumber].distributionDate;
+            break;
+          }
+        }
+        beneficiaireOldComments.push(dateDistrib+ " : "+ beneficiairesPresentByDistribution[i].comment);
+      }
+    }
+  }
+  return beneficiaireOldComments;
 }
 
 loadBeneficiaires = function() {

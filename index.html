@@ -76,10 +76,10 @@
                   <td>Nom</td>
                   <td>Prénom</td>
                   <td>Présent</td>
-                  <td>Commentaire</td>
+                  <td colspan="2">Commentaire</td>
                 </tr>
                 <tr>
-                  <td colspan="5"><input type="text" ng-model="searchBeneficiaire" placeholder="42, Georges, Henriette, etc."></td>
+                  <td colspan="6"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
                 </tr>
               </thead>
               <tbody>
@@ -87,8 +87,21 @@
                   <td>{{user.code}}</td>
                   <td>{{user.lastName}}</td>
                   <td>{{user.firstName}}</td>
-                  <td><input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user)" ng-disabled="readOnly" /></td>
-                  <td><input class="form-control" type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)" ng-disabled="readOnly || !user.isPresent" /></td>
+                  <td>
+                    <input class="form-control" type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user)" ng-disabled="readOnly" />
+                  </td>
+                  <td ng-hide="readOnly">
+                      <a href="#" id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
+                        <div id="commentsDetail">
+                          <ul ng-repeat="comments in user.comments" >
+                            <li>{{comments}}</li>
+                          </ul>
+                        </div>
+                      </a>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)" ng-disabled="readOnly || !user.isPresent" />
+                  </td>
                 </tr>
               </tbody>
             </table>
