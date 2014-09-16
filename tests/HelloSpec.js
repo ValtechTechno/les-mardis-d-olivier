@@ -317,5 +317,19 @@ describe("Les Mardis d'Olivier", function() {
     var beneficiairesList = retrieveAllDistribution();
 
     expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
-  })
+  });
+
+  it('should see older comments of a user', function() {
+    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
+      {"distributionId":"1", "beneficiaireId":"1", "comment":"message"},
+      {"distributionId":"2", "beneficiaireId":"1", "comment":"message2"}
+    ]));
+    localStorage.setItem("beneficiaires", angular.toJson([{"id":"1","code":1,"firstName":"A1","lastName":"A1"}]));
+    localStorage.setItem("distributions", angular.toJson([{"distributionDate":"2014-09-16","id":1}, {"distributionDate":"2014-09-18", "id":2}]));
+
+    var beneficiaires = retrieveBeneficiairesByDistribution(2, true);
+
+    expect(beneficiaires[0].comment).toEqual("message2");
+    expect(beneficiaires[0].comments[0]).toEqual("2014-09-16 : message");
+  });
 });
