@@ -10,6 +10,11 @@ select {
   margin-top: 10px !important;
 }
 
+.name img {
+  max-height: 75px;
+  max-width: 200px;
+}
+
 .table {
   width: 100%;
 }
