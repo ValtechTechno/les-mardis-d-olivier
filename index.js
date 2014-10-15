@@ -17,22 +17,9 @@
     $scope.currentBeneficiaire = {};
     $scope.readOnly = false;
 
-    $scope.$watch('currentBeneficiaire.lastName', function(newValue, oldValue) {
-      $scope.isLastNameEmpty=false;
-    }, true);
-
-    $scope.$watch('currentBeneficiaire.firstName', function(newValue, oldValue) {
-      $scope.isFirstNameEmpty=false;
-    }, true);
-
     $scope.resetAddBeneficiareForm = function(){
       $scope.isBeneficiaireNotUnique = false;
       $scope.isCodeNotUnique = false;
-      $scope.isFirstNameEmpty = false;
-      $scope.isLastNameEmpty = false;
-      if ($scope.addBeneficiaireForm != null) {
-        $scope.addBeneficiaireForm.$setPristine();
-      }
     }
 
     $scope.addBeneficiaireFromDistribution = function(){
@@ -50,11 +37,9 @@
         return;
       }
       if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
-        $scope.isLastNameEmpty=true;
         return;
       }
       if ($scope.currentBeneficiaire.firstName === undefined || $scope.currentBeneficiaire.firstName.length == 0) {
-        $scope.isFirstNameEmpty=true;
         return;
       }
 

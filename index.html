@@ -35,7 +35,7 @@
             <button href="#" ng-click="leftCurrentDistribution()" class="button secondary expanded">Revenir à la liste des distributions</button>
           </div>
         </div>
-        <form name="addBeneficiaireForm" novalidate>
+        <form name="addBeneficiaireForm">
           <div class="row" ng-hide="readOnly">
             <div class="medium-12 columns">
               <label>Nouveau bénéficiaire</label>
@@ -44,14 +44,10 @@
                   <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code" placeholder="-- code --" required />
                 </div>
                 <div class="medium-3 columns">
-                  <div ng-class="{ 'has-error' : addBeneficiaireForm.lastName.$invalid && !addBeneficiaireForm.lastName.$pristine }">
-                    <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --" required />
-                  </div>
+                  <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --" required />
                 </div>
                 <div class="medium-3 columns">
-                  <div ng-class="{ 'has-error' : addBeneficiaireForm.firstName.$invalid && !addBeneficiaireForm.firstName.$pristine }">
-                    <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --" required />
-                  </div>
+                  <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --" required />
                 </div>
                 <div class="medium-3 columns right">
                   <button ng-click="addBeneficiaireFromDistribution()" class="button secondary expand">Ajouter un bénéficiaire</button>
@@ -59,8 +55,6 @@
               </div>
             </div>
           </div>
-          <p class="errorMessage" ng-show="(addBeneficiaireForm.lastName.$invalid && !addBeneficiaireForm.lastName.$pristine) || isLastNameEmpty" >Veuillez renseigner un nom</p>
-          <p class="errorMessage" ng-show="(addBeneficiaireForm.firstName.$invalid && !addBeneficiaireForm.firstName.$pristine) || isFirstNameEmpty" >Veuillez renseigner un prénom</p>
           <p class="errorMessage" ng-show="isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
           <p class="errorMessage" ng-show="isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
         </form>
