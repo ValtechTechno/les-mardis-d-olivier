@@ -41,16 +41,16 @@
               <label>Nouveau bénéficiaire</label>
               <div class="row">
                 <div class="medium-3 columns">
-                  <input type="number"  min="1" id="code" name="code" ng-model="currentBeneficiaire.code" placeholder="-- code --" required />
+                  <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code" placeholder="-- code --" required />
                 </div>
                 <div class="medium-3 columns">
                   <div ng-class="{ 'has-error' : addBeneficiaireForm.lastName.$invalid && !addBeneficiaireForm.lastName.$pristine }">
-                    <input type="text" name="lastName" class="form-control" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --" required/>
+                    <input type="text" name="lastName" class="form-control" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --" required />
                   </div>
                 </div>
                 <div class="medium-3 columns">
                   <div ng-class="{ 'has-error' : addBeneficiaireForm.firstName.$invalid && !addBeneficiaireForm.firstName.$pristine }">
-                    <input type="text" name="firstName" class="form-control" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --" required/>
+                    <input type="text" name="firstName" class="form-control" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --" required />
                   </div>
                 </div>
                 <div class="medium-3 columns right">
