@@ -312,8 +312,6 @@ describe("Les Mardis d'Olivier", function() {
     addBeneficiaire('Paul', 'Rambo');
     scope.$digest();
 
-    var beneficiaireCode = scope.beneficiaires[0].id;
-
     var beneficiairesList = retrieveAllDistribution();
 
     expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
