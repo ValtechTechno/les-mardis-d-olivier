@@ -9,6 +9,8 @@
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     $scope.numberBeneficiairesPresent = 0;
 
+    $scope.currentPage = { distributionList : true };
+    $scope.currentError = {};
     $scope.dateOptions = {
       dateFormat: 'DD d MM yy'
     };
@@ -18,33 +20,44 @@
     $scope.readOnly = false;
 
     $scope.resetAddBeneficiareForm = function(){
-      $scope.isBeneficiaireNotUnique = false;
-      $scope.isCodeNotUnique = false;
+      $scope.currentError = {};
     }
 
-    $scope.addBeneficiaireFromDistribution = function(){
-      $scope.resetAddBeneficiareForm();
+    $scope.userFormValidation = function(isUpdate){
       if ($scope.beneficiaires.filter(function (beneficiaire) {
         return (beneficiaire.firstName === $scope.currentBeneficiaire.firstName && beneficiaire.lastName === $scope.currentBeneficiaire.lastName);
-      }).length > 0) {
-        $scope.isBeneficiaireNotUnique=true;
-        return;
+      }).length > 0 && isUpdate == false) {
+          $scope.currentError = { isBeneficiaireNotUnique: true };
+          return false;
       }
       if ($scope.beneficiaires.filter(function (beneficiaire) {
         return (beneficiaire.code === $scope.currentBeneficiaire.code);
-      }).length > 0) {
-        $scope.isCodeNotUnique=true;
-        return;
-      }
-      if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
-        return;
-      }
-      if ($scope.currentBeneficiaire.firstName === undefined || $scope.currentBeneficiaire.firstName.length == 0) {
-        return;
+      }).length > 0 && isUpdate == false) {
+        $scope.currentError = { isCodeNotUnique : true };
+        return false;
       }
 
+      if ($scope.beneficiaires.filter(function (beneficiaire) {
+        return (beneficiaire.code === $scope.currentBeneficiaire.code && beneficiaire.id !== $scope.currentBeneficiaire.id);
+      }).length > 0 && isUpdate == true) {
+        $scope.currentError = { isCodeNotUnique : true };
+        return false;
+      }
+
+      if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
+        return false;
+      }
+      if ($scope.currentBeneficiaire.firstName === undefined || $scope.currentBeneficiaire.firstName.length == 0) {
+        return false;
+      }
+      return true;
+      }
+
+    $scope.addBeneficiaireFromDistribution = function(){
+      if($scope.userFormValidation(false)) {
       $scope.addBeneficiaire();
       $scope.resetAddBeneficiareForm();
+    }
     }
 
     $scope.addBeneficiaire = function() {
@@ -152,11 +165,42 @@
       $scope.openDistribution();
     };
 
+    $scope.openAboutPage = function () {
+      var aboutInformation = angular.fromJson(localStorage.getItem('aboutInformation'));
+      if(aboutInformation != null){
+        $scope.aboutInformation = aboutInformation;
+      }
+      $scope.currentPage = { aboutPage : true };
+
+    };
+
+    $scope.openAboutPageUpdate = function () {
+      $scope.currentPage = { aboutPageUpdate : true };
+    };
+
+    $scope.aboutPageSave = function () {
+      localStorage.setItem('aboutInformation', angular.toJson($scope.aboutInformation));
+      $scope.openAboutPage();
+    };
+
     $scope.openDistribution = function () {
-      $scope.distributionStarted = true;
       if (!$scope.readOnly) {
         $scope.currentBeneficiaire = { code : $scope.initNextCode() };
       }
+      $scope.currentPage = { distributionDetail : true };
+    };
+
+    $scope.openBeneficiaireList = function () {
+      $scope.resetAddBeneficiareForm();
+      $scope.currentBeneficiaire = { code : $scope.initNextCode() };
+      $scope.beneficiaires = loadBeneficiaires();
+      $scope.currentPage = { beneficiaireList : true };
+    };
+
+    $scope.openBeneficiaireDetail = function (beneficiaire, fromDistribution) {
+      $scope.currentBeneficiaire = beneficiaire;
+      $scope.fromDistribution = fromDistribution;
+      $scope.currentPage = { beneficiaireDetail : true };
     };
 
     $scope.saveNewDistribution = function() {
@@ -194,7 +238,7 @@
       $scope.currentDistribution = {};
       $scope.resetAddBeneficiareForm();
       $scope.showAllDistribution();
-      $scope.distributionStarted = false;
+      $scope.currentPage = { distributionList : true };
       $scope.numberBeneficiairesPresent = 0;
     };
 

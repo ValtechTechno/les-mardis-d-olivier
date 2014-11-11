@@ -10,11 +10,28 @@
 </head>
 <body>
 
+<div ng-controller="contentCtrl">
+
 <div class="contain-to-grid">
   <nav class="top-bar" data-topbar>
     <ul class="title-area">
       <li class="name">
-        <h1><a href="#"><img src="les-mardis-d-olivier.png" /></a></h1>
+        <h1><a href="#" ng-click="leftCurrentDistribution()"><img src="les-mardis-d-olivier.png" /></a></h1>
+      </li>
+    </ul>
+     <ul class="title-area">
+      <li class="name">
+        <h1><button href="#" ng-click="leftCurrentDistribution()" class="button secondary expanded">Distributions</button></h1>
+      </li>
+    </ul>
+    <ul class="title-area">
+      <li class="name">
+        <h1><button href="#" ng-click="openBeneficiaireList()" class="button secondary expanded">Bénéficiaires</button></h1>
+      </li>
+    </ul>
+    <ul class="title-area">
+      <li class="name">
+        <h1><button href="#" ng-click="openAboutPage()" class="button secondary expanded">A propos</button></h1>
       </li>
     </ul>
   </nav>
@@ -22,26 +39,17 @@
 
 <div class="row">
   <div class="medium-12 columns">
-
     <div class="row">
       <div class="medium-12 columns">&nbsp;</div>
     </div>
-
-    <div ng-controller="contentCtrl">
-
-      <div ng-show="distributionStarted">
-        <div class="row">
-          <div class="medium-4 columns">
-            <button href="#" ng-click="leftCurrentDistribution()" class="button secondary expanded">Revenir à la liste des distributions</button>
-          </div>
-        </div>
+      <div ng-show="currentPage.distributionDetail">
         <form name="addBeneficiaireForm">
           <div class="row" ng-hide="readOnly">
             <div class="medium-12 columns">
               <label>Nouveau bénéficiaire</label>
               <div class="row">
                 <div class="medium-3 columns">
-                  <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code" placeholder="-- code --" required />
+                  <input type="number" min="1" id="distributionDetailCode" name="code" ng-model="currentBeneficiaire.code" placeholder="-- code --" required />
                 </div>
                 <div class="medium-3 columns">
                   <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --" required />
@@ -55,8 +63,8 @@
               </div>
             </div>
           </div>
-          <p class="errorMessage" ng-show="isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
-          <p class="errorMessage" ng-show="isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
+          <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
+          <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
         </form>
 
         <div class="row">
@@ -105,7 +113,7 @@
         </div>
       </div>
 
-      <div ng-hide="distributionStarted">
+      <div ng-show="currentPage.distributionList">
         <form name="addDistributionForm">
           <div class="row">
             <div class="medium-9 columns">

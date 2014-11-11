@@ -68,7 +68,7 @@ describe("Les Mardis d'Olivier", function() {
     addBeneficiaire('John', 'Rambo');
 
     expect(scope.beneficiaires.length).toBe(1);
-    expect(scope.isBeneficiaireNotUnique).toBe(true);
+    expect(scope.currentError.isBeneficiaireNotUnique).toBe(true);
   });
 
   it('should prevent the user to add an existing id for beneficiaire', function () {
@@ -78,7 +78,7 @@ describe("Les Mardis d'Olivier", function() {
     addBeneficiaireWithCode('Michel', 'Rambo', '1');
 
     expect(scope.beneficiaires.length).toBe(1);
-    expect(scope.isCodeNotUnique).toBe(true);
+    expect(scope.currentError.isCodeNotUnique).toBe(true);
   });
 
   it('should not allow to add a beneficiaire with empty first name or last name', function () {
