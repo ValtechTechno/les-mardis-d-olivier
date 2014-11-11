@@ -319,7 +319,7 @@ describe("Les Mardis d'Olivier", function() {
     expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
   });
 
-  it('should see older comments of a user', function() {
+  it('should see older comments of a beneficiaire', function() {
     localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
       {"distributionId":"1", "beneficiaireId":"1", "comment":"message"},
       {"distributionId":"2", "beneficiaireId":"1", "comment":"message2"}

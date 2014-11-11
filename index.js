@@ -129,7 +129,8 @@
       if ($scope.beneficiaires != null) {
         for (var i= 0; i < $scope.beneficiaires.length; i++) {
           if (nextCode <= $scope.beneficiaires[i].code) {
-            nextCode = $scope.beneficiaires[i].code+1;
+            nextCode = $scope.beneficiaires[i].code;
+            nextCode++;
           }
         }
       }
