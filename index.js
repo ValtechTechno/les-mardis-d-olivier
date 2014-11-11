@@ -211,6 +211,53 @@
       });
     };
 
+    $scope.cancelBeneficiaireDetail = function() {
+      if($scope.fromDistribution == true) {
+        $scope.loadDistribution($scope.currentDistribution.id, $scope.readOnly);
+      }else{
+        $scope.openBeneficiaireList();
+      }
+    };
+
+    $scope.saveBeneficiaireDetail = function() {
+      if($scope.userFormValidation(true)) {
+        var beneficiaires = loadBeneficiaires();
+        for (var i = 0; i < beneficiaires.length; i++) {
+          if (beneficiaires[i].id == $scope.currentBeneficiaire.id) {
+            beneficiaires[i] = $scope.currentBeneficiaire;
+            break;
+          }
+        }
+        localStorage.setItem('beneficiaires', angular.toJson(beneficiaires));
+        $scope.cancelBeneficiaireDetail();
+      }
+    };
+
+    $scope.deleteBeneficiaireDetail = function() {
+      var beneficiaires = loadBeneficiaires();
+      var beneficiaireToDeletePosition = -1;
+      for (var i= 0; i < beneficiaires.length; i++) {
+        if(beneficiaires[i].id == $scope.currentBeneficiaire.id){
+          beneficiaireToDeletePosition = i;
+          break;
+        }
+      }
+      beneficiaires.splice(beneficiaireToDeletePosition, 1);
+      localStorage.setItem('beneficiaires', angular.toJson(beneficiaires));
+
+      var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
+      var newBeneficiairesPresentByDistribution = [];
+      var beneficiairePresentByDistributionToDeletePosition = -1;
+      for (var i= 0; i < beneficiairesPresentByDistribution.length; i++) {
+        if(beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire.id){
+          newBeneficiairesPresentByDistribution.push(beneficiairesPresentByDistribution[i]);
+        }
+      }
+      localStorage.setItem('beneficiairesPresentByDistribution', angular.toJson(newBeneficiairesPresentByDistribution));
+
+      $scope.cancelBeneficiaireDetail();
+    };
+
     $scope.loadDistribution = function(distributionId, readOnly) {
       $scope.readOnly = readOnly;
       $scope.currentDistribution = {};
