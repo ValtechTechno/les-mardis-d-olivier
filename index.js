@@ -238,7 +238,7 @@
     };
 
     $scope.aboutPageConfirmPopupCancel = function() {
-      $('a.close-reveal-modal').trigger('click');
+      $('#confirmDeletePopup').foundation('reveal', 'close');
     }
 
     $scope.aboutPageConfirmPopupSave = function() {
