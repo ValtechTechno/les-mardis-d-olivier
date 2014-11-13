@@ -56,9 +56,13 @@ select {
   display: inline-block;
 }
 
-#deleteBeneficiaireDetail {
+#confirmDelete, #deleteBeneficiaireDetail {
   background-color:red;
   color:white;
+}
+
+#confirmDeletePopup {
+  width: 300px;
 }
 
 .editor {

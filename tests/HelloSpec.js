@@ -369,6 +369,9 @@ describe("Les Mardis d'Olivier", function() {
     scope.openBeneficiaireList();
     scope.openBeneficiaireDetail(scope.beneficiaires[0], false);
     scope.deleteBeneficiaireDetail();
+    scope.aboutPageConfirmPopupCancel();
+    scope.deleteBeneficiaireDetail();
+    scope.aboutPageConfirmPopupSave();
     expect(scope.beneficiaires.length).toEqual(1);
   });
 

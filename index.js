@@ -193,8 +193,8 @@
 
     $scope.openBeneficiaireList = function () {
       $scope.resetAddBeneficiareForm();
-      $scope.currentBeneficiaire = { code : $scope.initNextCode() };
       $scope.beneficiaires = loadBeneficiaires();
+      $scope.currentBeneficiaire = { code : $scope.initNextCode() };
       $scope.currentPage = { beneficiaireList : true };
     };
 
@@ -234,6 +234,15 @@
     };
 
     $scope.deleteBeneficiaireDetail = function() {
+      $('#confirmDeletePopup').foundation('reveal', 'open');
+    };
+
+    $scope.aboutPageConfirmPopupCancel = function() {
+      $('a.close-reveal-modal').trigger('click');
+    }
+
+    $scope.aboutPageConfirmPopupSave = function() {
+      $('#confirmDeletePopup').foundation('reveal', 'close');
       var beneficiaires = loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;
       for (var i= 0; i < beneficiaires.length; i++) {
