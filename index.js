@@ -1,4 +1,5 @@
 (function() {
+  'use strict';
   if (typeof localStorage == 'undefined') {
     alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
   }
@@ -142,7 +143,7 @@
     $scope.initNextDate = function() {
       if ($scope.distributions.length > 0) {
         var lastDistribution = $scope.distributions[0];
-        date = createNextWorkingDate(lastDistribution.distributionDate);
+        var date = createNextWorkingDate(lastDistribution.distributionDate);
         var month = (date.getMonth() + 1) + "";
         var pad = "00";
         var paddedMonth = pad.substring(0, pad.length - month.length) + month;
