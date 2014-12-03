@@ -87,7 +87,7 @@
           var beneficiaire = $scope.beneficiaires[i];
           cleanBeneficiairesList.push({ id:beneficiaire.id, code:beneficiaire.code, firstName:beneficiaire.firstName, lastName:beneficiaire.lastName});
         }
-        localStorage.setItem('beneficiaires', angular.toJson(cleanBeneficiairesList));
+        beneficiairesService.saveBeneficiaires(cleanBeneficiairesList);
       }
     }, true);
 
@@ -230,7 +230,7 @@
             break;
           }
         }
-        localStorage.setItem('beneficiaires', angular.toJson(beneficiaires));
+        beneficiairesService.saveBeneficiaires(beneficiaires);
         $scope.cancelBeneficiaireDetail();
       }
     };
@@ -254,7 +254,7 @@
         }
       }
       beneficiaires.splice(beneficiaireToDeletePosition, 1);
-      localStorage.setItem('beneficiaires', angular.toJson(beneficiaires));
+      beneficiairesService.saveBeneficiaires(beneficiaires);
 
       var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
       var newBeneficiairesPresentByDistribution = [];
