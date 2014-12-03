@@ -11,7 +11,9 @@
 
   function beneficiairesService() {
     var service = {
-      loadBeneficiaires : loadBeneficiaires
+      loadBeneficiaires : loadBeneficiaires,
+      allDistributions : allDistributions,
+      saveDistributions : saveDistributions
     };
 
     return service;
@@ -22,6 +24,14 @@
         beneficiaires = [];
       }
       return beneficiaires;
+    };
+    
+    function allDistributions() {
+      return angular.fromJson(localStorage.getItem('distributions'));
+    };
+    
+    function saveDistributions(distributions) {
+      localStorage.setItem('distributions', angular.toJson(distributions));
     };
   }
 })();

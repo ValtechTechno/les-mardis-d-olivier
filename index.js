@@ -163,7 +163,7 @@
       $scope.readOnly = false;
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       for (var i= 0; i < $scope.beneficiaires.length; i++) {
-        $scope.beneficiaires[i].comments = getLastComments($scope.beneficiaires[i].id, $scope.currentDistribution.id);
+        $scope.beneficiaires[i].comments = getLastComments($scope.beneficiaires[i].id, $scope.currentDistribution.id, beneficiairesService);
       }
       $scope.openDistribution();
     };
@@ -210,12 +210,12 @@
       return storeDistribution({
         'distributionDate':$scope.currentDistribution.distributionDate,
         'nbPlannedMeals':$scope.currentDistribution.distributionNbPlannedMeals
-      });
+      }, beneficiairesService);
     };
 
     $scope.cancelBeneficiaireDetail = function() {
       if($scope.fromDistribution == true) {
-        $scope.loadDistribution($scope.currentDistribution.id, $scope.readOnly);
+        $scope.loadDistribution($scope.currentDistribution.id, $scope.readOnly, beneficiairesService);
       }else{
         $scope.openBeneficiaireList();
       }
@@ -269,10 +269,10 @@
       $scope.cancelBeneficiaireDetail();
     };
 
-    $scope.loadDistribution = function(distributionId, readOnly) {
+    $scope.loadDistribution = function(distributionId, readOnly, beneficiairesService) {
       $scope.readOnly = readOnly;
       $scope.currentDistribution = {};
-      var allDistributions = angular.fromJson(localStorage.getItem('distributions'));
+      var allDistributions = beneficiairesService.allDistributions();
       for (var i = 0; i < allDistributions.length; i++) {
         if (allDistributions[i].id == distributionId) {
           $scope.currentDistribution = allDistributions[i];
@@ -343,7 +343,7 @@
 })();
 
 retrieveAllDistribution = function() {
-  var allDistributions = angular.fromJson(localStorage.getItem('distributions'));
+  var allDistributions = beneficiairesService.allDistributions();
   if (allDistributions == null) {
     allDistributions = [];
   } else {
@@ -365,14 +365,14 @@ retrieveAllDistribution = function() {
   return allDistributions;
 }
 
-storeDistribution = function(distribution) {
+storeDistribution = function(distribution, beneficiairesService) {
   if (distribution.distributionDate === undefined || distribution.distributionDate.length == 0) {
     throw 'merci de renseigner la date';
   }
   if (distribution.nbPlannedMeals === undefined || distribution.nbPlannedMeals.length == 0) {
     throw 'merci de renseigner le nombre de repas';
   }
-  var distributions = angular.fromJson(localStorage.getItem('distributions'));
+  var distributions = beneficiairesService.allDistributions();
   var nextId;
   if (distributions == null) {
     distributions = [];
@@ -387,7 +387,7 @@ storeDistribution = function(distribution) {
 
   distribution.id = nextId;
   distributions.push(distribution);
-  localStorage.setItem('distributions', angular.toJson(distributions));
+  beneficiairesService.saveDistributions(distributions);
   return nextId;
 }
 
@@ -426,7 +426,7 @@ retrieveBeneficiairesByDistribution = function(distributionId, beneficiairesServ
   var beneficiairesPresent = [];
   var beneficiaires = beneficiairesService.loadBeneficiaires();
   for (var i= 0; i < beneficiaires.length; i++) {
-    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId);
+    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId, beneficiairesService);
     var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
     if (index != -1) {
       beneficiaires[i].isPresent = true;
@@ -443,7 +443,7 @@ retrieveBeneficiairesByDistribution = function(distributionId, beneficiairesServ
   return beneficiairesPresent;
 }
 
-getLastComments = function(beneficiaireId, distributionId){
+getLastComments = function(beneficiaireId, distributionId, beneficiairesService){
   var beneficiaireOldComments = [];
   var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
 
@@ -457,7 +457,7 @@ getLastComments = function(beneficiaireId, distributionId){
           beneficiairesPresentByDistribution[i].distributionId != distributionId &&
           beneficiairesPresentByDistribution[i].comment != null) {
         var dateDistrib = "[DATE]";
-        var allDistributions = angular.fromJson(localStorage.getItem('distributions'));
+        var allDistributions = beneficiairesService.allDistributions();
         for (var distributionNumber = 0; distributionNumber < allDistributions.length; distributionNumber++) {
           if (allDistributions[distributionNumber].id == beneficiairesPresentByDistribution[i].distributionId) {
             dateDistrib = allDistributions[distributionNumber].distributionDate;

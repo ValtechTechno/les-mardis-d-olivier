@@ -238,7 +238,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.isPresent(scope.beneficiaires[1]);
 
     scope.leftCurrentDistribution();
-    scope.loadDistribution(1, false);
+    scope.loadDistribution(1, false, beneficiairesService);
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, false);
     expect(beneficiairesList.length).toEqual(3);
@@ -270,7 +270,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.startNewDistribution();
     scope.leftCurrentDistribution();
 
-    scope.loadDistribution(2, true);
+    scope.loadDistribution(2, true, beneficiairesService);
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, true);
     expect(beneficiairesList.length).toEqual(2);
