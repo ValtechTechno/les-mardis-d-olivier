@@ -1,12 +1,9 @@
 (function() {
   'use strict';
-  if (typeof localStorage == 'undefined') {
-    alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
-  }
 
   var app = angular.module('mardisDolivier', ['ui.date']);
 
-  app.controller('contentCtrl', function($scope, $filter) {
+  app.controller('contentCtrl', function($scope, $filter, beneficiairesService) {
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     $scope.numberBeneficiairesPresent = 0;
 
@@ -75,7 +72,7 @@
       $scope.currentBeneficiaire = { code : $scope.initNextCode() };
     };
 
-    $scope.beneficiaires = loadBeneficiaires();
+    $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
 
     // Specific filter to avoid search in comments
     $scope.searchBeneficiaire  = function (beneficiaire) {
@@ -164,7 +161,7 @@
         return;
       }
       $scope.readOnly = false;
-      $scope.beneficiaires = loadBeneficiaires();
+      $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       for (var i= 0; i < $scope.beneficiaires.length; i++) {
         $scope.beneficiaires[i].comments = getLastComments($scope.beneficiaires[i].id, $scope.currentDistribution.id);
       }
@@ -198,7 +195,7 @@
 
     $scope.openBeneficiaireList = function () {
       $scope.resetAddBeneficiareForm();
-      $scope.beneficiaires = loadBeneficiaires();
+      $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       $scope.currentBeneficiaire = { code : $scope.initNextCode() };
       $scope.currentPage = { beneficiaireList : true };
     };
@@ -226,7 +223,7 @@
 
     $scope.saveBeneficiaireDetail = function() {
       if($scope.userFormValidation(true)) {
-        var beneficiaires = loadBeneficiaires();
+        var beneficiaires = beneficiairesService.loadBeneficiaires();
         for (var i = 0; i < beneficiaires.length; i++) {
           if (beneficiaires[i].id == $scope.currentBeneficiaire.id) {
             beneficiaires[i] = $scope.currentBeneficiaire;
@@ -248,7 +245,7 @@
 
     $scope.aboutPageConfirmPopupSave = function() {
       $('#confirmDeletePopup').foundation('reveal', 'close');
-      var beneficiaires = loadBeneficiaires();
+      var beneficiaires = beneficiairesService.loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;
       for (var i= 0; i < beneficiaires.length; i++) {
         if(beneficiaires[i].id == $scope.currentBeneficiaire.id){
@@ -281,7 +278,7 @@
           $scope.currentDistribution = allDistributions[i];
         }
       }
-      $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, $scope.readOnly).slice(0);
+      $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, beneficiairesService, $scope.readOnly).slice(0);
       if ($scope.readOnly){
         $scope.numberBeneficiairesPresent = $scope.beneficiaires.length;
       } else {
@@ -414,7 +411,7 @@ storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireId)
   localStorage.setItem('beneficiairesPresentByDistribution',angular.toJson(beneficiairesPresentByDistribution));
 }
 
-retrieveBeneficiairesByDistribution = function(distributionId, readOnly) {
+retrieveBeneficiairesByDistribution = function(distributionId, beneficiairesService, readOnly) {
   var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
   var beneficiairesPresentIds = [];
   var beneficiairesPresentComments = [];
@@ -427,7 +424,7 @@ retrieveBeneficiairesByDistribution = function(distributionId, readOnly) {
     }
   }
   var beneficiairesPresent = [];
-  var beneficiaires = loadBeneficiaires();
+  var beneficiaires = beneficiairesService.loadBeneficiaires();
   for (var i= 0; i < beneficiaires.length; i++) {
     beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId);
     var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
@@ -472,14 +469,6 @@ getLastComments = function(beneficiaireId, distributionId){
     }
   }
   return beneficiaireOldComments;
-}
-
-loadBeneficiaires = function() {
-  var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
-  if (beneficiaires === null) {
-    beneficiaires = [];
-  }
-  return beneficiaires;
 }
 
 createNextWorkingDate = function(dateString) {

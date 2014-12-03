@@ -18,12 +18,14 @@ describe("Les Mardis d'Olivier", function() {
   beforeEach(function() {
     localStorage.clear()
   });
-  beforeEach(angular.mock.inject(function($rootScope, $controller, $filter){
+  beforeEach(angular.mock.inject(function($rootScope, $controller, $filter, $injector){
     scope = $rootScope.$new();
+    beneficiairesService = $injector.get('beneficiairesService');
     dateWithJQueryUiDatePicker = $filter('dateWithJQueryUiDatePicker');
     $controller('contentCtrl', {
       $scope: scope,
-      $filter: $filter
+      $filter: $filter,
+      beneficiairesService: beneficiairesService
     });
     scope.resetAddBeneficiareForm();
     scope.currentBeneficiaire = { code : scope.initNextCode() };
@@ -207,7 +209,7 @@ describe("Les Mardis d'Olivier", function() {
 
     beneficiaireCode = scope.beneficiaires[0].id;
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, beneficiairesService);
     expect(beneficiairesList[0].id).toEqual(beneficiaireCode);
     expect(beneficiairesList[0].firstName).toEqual("John");
     expect(beneficiairesList[0].lastName).toEqual("Rambo");
@@ -218,7 +220,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.currentDistribution.distributionDate = "2014-08-04";
     scope.saveNewDistribution();
 
-    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId)).toEqual([]);
+    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId, beneficiairesService)).toEqual([]);
   });
 
   it('should be only returns the present beneficiaire from a open distribution', function () {
@@ -238,7 +240,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.leftCurrentDistribution();
     scope.loadDistribution(1, false);
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(1, false);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, false);
     expect(beneficiairesList.length).toEqual(3);
     expect(beneficiairesList[0].isPresent).toEqual(true);
     expect(beneficiairesList[0].firstName).toEqual('John');
@@ -270,7 +272,7 @@ describe("Les Mardis d'Olivier", function() {
 
     scope.loadDistribution(2, true);
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(1, true);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, true);
     expect(beneficiairesList.length).toEqual(2);
     expect(beneficiairesList[0].isPresent).toEqual(true);
     expect(beneficiairesList[0].firstName).toEqual('John');
@@ -291,7 +293,7 @@ describe("Les Mardis d'Olivier", function() {
 
     scope.writeComment(beneficiaireId, comment)
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, true);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, beneficiairesService, true);
     expect(beneficiairesList[0].id).toEqual(beneficiaireId);
     expect(beneficiairesList[0].firstName).toEqual("John");
     expect(beneficiairesList[0].lastName).toEqual("Rambo");
@@ -325,7 +327,7 @@ describe("Les Mardis d'Olivier", function() {
     localStorage.setItem("beneficiaires", angular.toJson([{"id":"1","code":1,"firstName":"A1","lastName":"A1"}]));
     localStorage.setItem("distributions", angular.toJson([{"distributionDate":"2014-09-16","id":1}, {"distributionDate":"2014-09-18", "id":2}]));
 
-    var beneficiaires = retrieveBeneficiairesByDistribution(2, true);
+    var beneficiaires = retrieveBeneficiairesByDistribution(2, beneficiairesService, true);
 
     expect(beneficiaires[0].comment).toEqual("message2");
     expect(beneficiaires[0].comments[0]).toEqual("2014-09-16 : message");

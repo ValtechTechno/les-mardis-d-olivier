@@ -23,6 +23,7 @@ module.exports = function(config) {
         'lib/angular-ui-date/date.js',
         'lib/foundation-5.4.5/js/foundation.min.js',
         'index.js',
+        'app/service.js',
         'tests/angular-mocks.js',
         'tests/**/*Spec.js'
     ],
