@@ -14,7 +14,9 @@
       loadBeneficiaires : loadBeneficiaires,
       saveBeneficiaires : saveBeneficiaires,
       allDistributions : allDistributions,
-      saveDistributions : saveDistributions
+      saveDistributions : saveDistributions,
+      beneficiairesPresentByDistribution : beneficiairesPresentByDistribution,
+      saveBeneficiairesPresentByDistribution : saveBeneficiairesPresentByDistribution
     };
 
     return service;
@@ -38,5 +40,18 @@
     function saveDistributions(distributions) {
       localStorage.setItem('distributions', angular.toJson(distributions));
     };
+
+    function beneficiairesPresentByDistribution() {
+      var beneficiairesPresentByDistribution = angular.fromJson(localStorage
+          .getItem('beneficiairesPresentByDistribution'))
+      if (beneficiairesPresentByDistribution == null) {
+        beneficiairesPresentByDistribution = [];
+      }
+      return beneficiairesPresentByDistribution;
+    }
+    
+    function saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution) {
+      localStorage.setItem('beneficiairesPresentByDistribution', angular.toJson(newBeneficiairesPresentByDistribution));
+    }
   }
 })();
