@@ -92,7 +92,7 @@
     }, true);
 
     $scope.showAllDistribution = function() {
-      $scope.distributions = retrieveAllDistribution();
+      $scope.distributions = retrieveAllDistribution(beneficiairesService);
       $scope.getComments();
       $scope.initNextDate();
     };
@@ -212,7 +212,7 @@
 
     $scope.cancelBeneficiaireDetail = function() {
       if($scope.fromDistribution == true) {
-        $scope.loadDistribution($scope.currentDistribution.id, $scope.readOnly, beneficiairesService);
+        $scope.loadDistribution($scope.currentDistribution.id, $scope.readOnly);
       }else{
         $scope.openBeneficiaireList();
       }
@@ -266,7 +266,7 @@
       $scope.cancelBeneficiaireDetail();
     };
 
-    $scope.loadDistribution = function(distributionId, readOnly, beneficiairesService) {
+    $scope.loadDistribution = function(distributionId, readOnly) {
       $scope.readOnly = readOnly;
       $scope.currentDistribution = {};
       var allDistributions = beneficiairesService.allDistributions();
@@ -299,7 +299,7 @@
 
     $scope.isPresent = function(beneficiaire) {
       if (!$scope.readOnly) {
-        storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaire.id);
+        storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaire.id, beneficiairesService);
       }
       if (beneficiaire.isPresent){
         $scope.numberBeneficiairesPresent++;
@@ -336,7 +336,7 @@
 
 })();
 
-retrieveAllDistribution = function() {
+retrieveAllDistribution = function(beneficiairesService) {
   var allDistributions = beneficiairesService.allDistributions();
   if (allDistributions == null) {
     allDistributions = [];
@@ -383,7 +383,7 @@ storeDistribution = function(distribution, beneficiairesService) {
   return nextId;
 }
 
-storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireId) {
+storeRelationDistributionBeneficiaire = function(distributionId, beneficiaireId, beneficiairesService) {
   var isRelationExisting = false;
   var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {

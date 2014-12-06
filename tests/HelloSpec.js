@@ -109,7 +109,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-05";
     scope.saveNewDistribution();
-    expect(retrieveAllDistribution())
+    expect(retrieveAllDistribution(beneficiairesService))
       .toEqual([
         {
           "distributionDate":"2014-08-05",
@@ -134,7 +134,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-06";
     scope.saveNewDistribution();
-    expect(retrieveAllDistribution())
+    expect(retrieveAllDistribution(beneficiairesService))
       .toEqual([
         {
           "distributionDate":"2014-08-06",
@@ -160,7 +160,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.saveNewDistribution();
     try { scope.saveNewDistribution(); } catch (err) {}
 
-    expect(retrieveAllDistribution())
+    expect(retrieveAllDistribution(beneficiairesService))
       .toEqual([{
         "distributionDate":"2014-08-04",
         "nbPlannedMeals":"50",
@@ -174,7 +174,7 @@ describe("Les Mardis d'Olivier", function() {
 
     try { scope.saveNewDistribution(); } catch(err) {}
 
-    expect(retrieveAllDistribution()).toEqual([]);
+    expect(retrieveAllDistribution(beneficiairesService)).toEqual([]);
   });
 
   it('should not allow to add a distribution with empty date', function() {
@@ -183,7 +183,7 @@ describe("Les Mardis d'Olivier", function() {
 
     try { scope.saveNewDistribution(); } catch(err) {}
 
-    expect(retrieveAllDistribution()).toEqual([]);
+    expect(retrieveAllDistribution(beneficiairesService)).toEqual([]);
   });
 
   it("should be able to init give the next date (working day) of a distribution based on the previous one.", function () {
@@ -238,7 +238,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.isPresent(scope.beneficiaires[1]);
 
     scope.leftCurrentDistribution();
-    scope.loadDistribution(1, false, beneficiairesService);
+    scope.loadDistribution(1, false);
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, false);
     expect(beneficiairesList.length).toEqual(3);
@@ -270,7 +270,7 @@ describe("Les Mardis d'Olivier", function() {
     scope.startNewDistribution();
     scope.leftCurrentDistribution();
 
-    scope.loadDistribution(2, true, beneficiairesService);
+    scope.loadDistribution(2, true);
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, true);
     expect(beneficiairesList.length).toEqual(2);
@@ -314,7 +314,7 @@ describe("Les Mardis d'Olivier", function() {
     addBeneficiaire('Paul', 'Rambo');
     scope.$digest();
 
-    var beneficiairesList = retrieveAllDistribution();
+    var beneficiairesList = retrieveAllDistribution(beneficiairesService);
 
     expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
   });
