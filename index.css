@@ -6,13 +6,14 @@ select {
   height: 95px;
 }
 
-.name {
-  margin-top: 10px !important;
-}
-
 .name img {
+  margin-top: 10px !important;
   max-height: 75px;
   max-width: 200px;
+}
+
+.top-bar-section li a {
+  line-height: 95px !important;
 }
 
 .table {

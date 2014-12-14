@@ -13,27 +13,23 @@
 <div ng-controller="contentCtrl">
 
 <div class="contain-to-grid">
-  <nav class="top-bar" data-topbar>
+  <nav class="top-bar" data-topbar role="navigation">
     <ul class="title-area">
       <li class="name">
         <h1><a href="#" ng-click="leftCurrentDistribution()"><img src="les-mardis-d-olivier.png" /></a></h1>
       </li>
     </ul>
-     <ul class="title-area">
-      <li class="name">
-        <h1><button href="#" ng-click="leftCurrentDistribution()" class="button secondary expanded">Distributions</button></h1>
-      </li>
-    </ul>
-    <ul class="title-area">
-      <li class="name">
-        <h1><button href="#" ng-click="openBeneficiaireList()" class="button secondary expanded">Bénéficiaires</button></h1>
-      </li>
-    </ul>
-    <ul class="title-area">
-      <li class="name">
-        <h1><button href="#" ng-click="openAboutPage()" class="button secondary expanded">A propos</button></h1>
-      </li>
-    </ul>
+    <section class="top-bar-section">
+      <ul class="left">
+        <li ng-class="{active: currentPage.distributionList || currentPage.distributionDetail }"><a href="#" ng-click="leftCurrentDistribution()">Distributions</a></li>
+      </ul>
+      <ul class="left">
+        <li ng-class="{active: currentPage.beneficiaireList || currentPage.beneficiaireDetail}"><a href="#" ng-click="openBeneficiaireList()">Bénéficiaires</a></li>
+      </ul>
+      <ul class="left">
+        <li ng-class="{active: currentPage.aboutPage || currentPage.aboutPageUpdate}"><a href="#" ng-click="openAboutPage()">A propos</a></li>
+      </ul>
+    </section>
   </nav>
 </div>
 
