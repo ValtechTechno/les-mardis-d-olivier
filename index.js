@@ -53,11 +53,11 @@
       return true;
       }
 
-    $scope.addBeneficiaireFromDistribution = function(){
+    $scope.addBeneficiaireFromDistribution = function() {
       if($scope.userFormValidation(false)) {
-      $scope.addBeneficiaire();
-      $scope.resetAddBeneficiareForm();
-    }
+        $scope.addBeneficiaire();
+        $scope.resetAddBeneficiareForm();
+      }
     }
 
     $scope.addBeneficiaire = function() {
@@ -214,7 +214,7 @@
     $scope.cancelBeneficiaireDetail = function() {
       if($scope.fromDistribution == true) {
         $scope.loadDistribution($scope.currentDistribution.id, $scope.readOnly);
-      }else{
+      } else {
         $scope.openBeneficiaireList();
       }
     };
