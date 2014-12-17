@@ -22,6 +22,13 @@
     }
 
     $scope.userFormValidation = function(isUpdate){
+      if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
+        return false;
+      }
+      if ($scope.currentBeneficiaire.firstName === undefined || $scope.currentBeneficiaire.firstName.length == 0) {
+        return false;
+      }
+
       if ($scope.beneficiaires.filter(function (beneficiaire) {
         return (beneficiaire.firstName === $scope.currentBeneficiaire.firstName &&
             beneficiaire.lastName === $scope.currentBeneficiaire.lastName);
@@ -29,6 +36,7 @@
         $scope.currentError = { isBeneficiaireNotUnique: true };
         return false;
       }
+
       if ($scope.beneficiaires.filter(function (beneficiaire) {
         return (beneficiaire.code === $scope.currentBeneficiaire.code);
       }).length > 0 && isUpdate == false) {
@@ -40,13 +48,6 @@
         return (beneficiaire.code === $scope.currentBeneficiaire.code && beneficiaire.id !== $scope.currentBeneficiaire.id);
       }).length > 0 && isUpdate == true) {
         $scope.currentError = { isCodeNotUnique : true };
-        return false;
-      }
-
-      if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
-        return false;
-      }
-      if ($scope.currentBeneficiaire.firstName === undefined || $scope.currentBeneficiaire.firstName.length == 0) {
         return false;
       }
       return true;
