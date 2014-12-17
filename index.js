@@ -84,8 +84,8 @@
     $scope.$watch('beneficiaires', function(newValue, oldValue) {
       if(newValue.length != oldValue.length && $scope.readOnly == false) {
         var cleanBeneficiairesList = [];
-        for (var i = 0; i < $scope.beneficiaires.length; i++) {
-          var beneficiaire = $scope.beneficiaires[i];
+        for (var i = 0; i < newValue.length; i++) {
+          var beneficiaire = newValue[i];
           cleanBeneficiairesList.push({ id:beneficiaire.id, code:beneficiaire.code, firstName:beneficiaire.firstName, lastName:beneficiaire.lastName});
         }
         beneficiairesService.saveBeneficiaires(cleanBeneficiairesList);
