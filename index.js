@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var app = angular.module('mardisDolivier', ['ui.date']);
+  var app = angular.module('mardisDolivier', ['ui.date', 'ngRoute']);
 
   app.controller('contentCtrl', function($scope, $filter, beneficiairesService) {
     $.datepicker.setDefaults($.datepicker.regional['fr']);

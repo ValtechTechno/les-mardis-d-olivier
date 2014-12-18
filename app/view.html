@@ -1,0 +1,279 @@
+<div class="contain-to-grid">
+  <nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li class="name">
+        <h1><a href="#" ng-click="leftCurrentDistribution()"><img src="les-mardis-d-olivier.png" /></a></h1>
+      </li>
+      <li class="toggle-topbar menu-icon">
+        <a href="#"><span>menu</span></a>
+      </li>
+    </ul>
+    <section class="top-bar-section">
+      <ul class="left">
+        <li ng-class="{active: currentPage.distributionList || currentPage.distributionDetail }"><a ng-click="leftCurrentDistribution()">Distributions</a></li>
+      </ul>
+      <ul class="left">
+        <li ng-class="{active: currentPage.beneficiaireList || currentPage.beneficiaireDetail}"><a ng-click="openBeneficiaireList()">Bénéficiaires</a></li>
+      </ul>
+      <ul class="left">
+        <li ng-class="{active: currentPage.aboutPage || currentPage.aboutPageUpdate}"><a ng-click="openAboutPage()">A propos</a></li>
+      </ul>
+    </section>
+  </nav>
+</div>
+
+<div class="row">
+  <div class="medium-12 columns">
+    <div class="row">
+      <div class="medium-12 columns">
+        <div class="medium-12 columns">&nbsp;</div>
+      </div>
+    </div>
+    <div ng-show="currentPage.distributionDetail">
+      <form name="addBeneficiaireForm">
+        <div class="row" ng-hide="readOnly">
+          <div class="medium-12 columns">
+            <label>Nouveau bénéficiaire</label>
+            <div class="row">
+              <div class="medium-3 columns">
+                <input type="number" min="1" id="distributionDetailCode" name="code" ng-model="currentBeneficiaire.code" placeholder="-- code --" required />
+              </div>
+              <div class="medium-3 columns">
+                <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --" required />
+              </div>
+              <div class="medium-3 columns">
+                <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --" required />
+              </div>
+              <div class="medium-3 columns right">
+                <button ng-click="addBeneficiaireFromDistribution()" class="button secondary expand">Ajouter un bénéficiaire</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
+        <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
+      </form>
+
+      <div class="row">
+        <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | dateWithJQueryUiDatePicker}} ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
+      </div>
+
+      <div class="row">
+        <div class="medium-12 columns">
+          <table class="table">
+            <thead>
+            <tr>
+              <td>Code</td>
+              <td>Nom</td>
+              <td>Prénom</td>
+              <td>Présent</td>
+              <td colspan="2">Commentaire</td>
+            </tr>
+            <tr>
+              <td colspan="6"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in beneficiaires | filter:searchBeneficiaire">
+              <td>{{user.code}}</td>
+              <td>{{user.lastName}}</td>
+              <td>{{user.firstName}}</td>
+              <td>
+                <input type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user)" ng-disabled="readOnly" />
+              </td>
+              <td ng-hide="readOnly">
+                <a href="#" id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
+                  <div id="commentsDetail">
+                    <ul ng-repeat="comments in user.comments" >
+                      <li>{{comments}}</li>
+                    </ul>
+                  </div>
+                </a>
+              </td>
+              <td>
+                <input type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)" ng-disabled="readOnly || !user.isPresent" />
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div ng-show="currentPage.distributionList">
+      <form name="addDistributionForm">
+        <div class="row">
+          <div class="medium-9 columns">
+            <label>
+              Date
+              <input type="text" ui-date="dateOptions" ui-date-format="yy-mm-dd" ng-model="currentDistribution.distributionDate" ng-required="true" />
+            </label>
+          </div>
+          <div class="medium-3 columns">
+            <label>
+              Repas prévus
+              <input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" required />
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="medium-4 columns right">
+            <button ng-click="startNewDistribution()" class="button secondary expand">Commencer la distribution</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="row">
+        <h3 class="medium-12 columns">Distributions</h3>
+      </div>
+
+      <div class="row">
+        <div class="medium-12 columns">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Date</th>
+              <th>Repas prévus</th>
+              <th>Bénéficiaires présents</th>
+              <th>Commentaires</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="distribution in distributions">
+              <td>{{distribution.distributionDate | dateWithJQueryUiDatePicker}}</td>
+              <td>{{distribution.nbPlannedMeals}}</td>
+              <td>{{distribution.nbBeneficiaires}}</td>
+              <td>{{distribution.comments.length}}</td>
+              <td>
+                <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, false)" ng-hide="!$first">Modifier</button>
+                <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, true)" ng-hide="$first">Afficher</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div ng-show="currentPage.beneficiaireDetail">
+      <form name="addDistributionForm">
+        <div class="row">
+          <div class="medium-9 columns">
+            <label>Code<input type="text" name="code" ng-model="currentBeneficiaire.code" ng-required="true" /></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="medium-9 columns">
+            <label>Nom<input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" ng-required="true" /></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="medium-9 columns">
+            <label>Prénom<input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" ng-required="true" /></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="medium-3 columns left">
+            <button id="deleteBeneficiaireDetail" ng-click="deleteBeneficiaireDetail()" class="button secondary expand">Supprimer</button>
+          </div>
+          <div class="medium-3 columns left">
+            <button id="cancelBeneficiaireDetail" ng-click="cancelBeneficiaireDetail()" class="button secondary expand">Annuler</button>
+          </div>
+          <div class="medium-3 columns left">
+            <button id="saveBeneficiaireDetail" ng-click="saveBeneficiaireDetail()" class="button secondary expand">Enregistrer</button>
+          </div>
+        </div>
+        <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
+        <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div ng-show="currentPage.beneficiaireList">
+  <form name="addBeneficiaireForm">
+    <div class="row" ng-hide="readOnly">
+      <div class="medium-12 columns">
+        <label>Nouveau bénéficiaire</label>
+        <div class="row">
+          <div class="medium-3 columns">
+            <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code" placeholder="-- code --" required />
+          </div>
+          <div class="medium-3 columns">
+            <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --" required />
+          </div>
+          <div class="medium-3 columns">
+            <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --" required />
+          </div>
+          <div class="medium-3 columns right">
+            <button ng-click="addBeneficiaireFromDistribution()" class="button secondary expand">Ajouter un bénéficiaire</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
+    <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
+  </form>
+
+  <div class="row">
+    <div class="medium-12 columns">
+      <table class="table">
+        <thead>
+        <tr>
+          <td>Code</td>
+          <td>Nom</td>
+          <td>Prénom</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="6"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in beneficiaires | filter:searchBeneficiaire">
+          <td>{{user.code}}</td>
+          <td>{{user.lastName}}</td>
+          <td>{{user.firstName}}</td>
+          <td>
+            <a href="#" id="BeneficiaireListDetail" class="ui-icon ui-icon-search" ng-click="openBeneficiaireDetail(user, false)" />
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div ng-show="currentPage.aboutPage">
+  <div class="row">
+    <div class="medium-12 columns">
+      <textarea id="editor" class="editor" ng-model="aboutInformation" disabled></textarea>
+      <div class="medium-4 columns right">
+        <button ng-click="openAboutPageUpdate()" class="button secondary expand">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-show="currentPage.aboutPageUpdate">
+  <div class="row">
+    <div class="medium-12 columns">
+      <textarea id="editorUpdate" class="editor" ng-model="aboutInformation" contenteditable="true"></textarea>
+    </div>
+    <div class="medium-4 columns right">
+      <button ng-click="aboutPageSave()" class="button secondary expand">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirmDeletePopup" class="reveal-modal" data-reveal>
+  <p>Etes vous sûr de vouloir supprimer ce bénéficiaire ?</p>
+  <div class="row">
+    <div class="medium-6 columns left">
+      <button ng-click="aboutPageConfirmPopupCancel()" class="button secondary expand">Annuler</button>
+    </div>
+    <div class="medium-6 columns left">
+      <button id="confirmDelete" ng-click="aboutPageConfirmPopupSave()" class="button secondary expand">Supprimer</button>
+    </div>
+  </div>
+</div>
