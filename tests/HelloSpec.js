@@ -22,7 +22,7 @@ describe("Les Mardis d'Olivier", function() {
     scope = $rootScope.$new();
     beneficiairesService = $injector.get('beneficiairesService');
     dateWithJQueryUiDatePicker = $filter('dateWithJQueryUiDatePicker');
-    $controller('contentCtrl', {
+    $controller('ContentController', {
       $scope: scope,
       $filter: $filter,
       beneficiairesService: beneficiairesService

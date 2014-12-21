@@ -1,8 +1,8 @@
 (function() {
   'use strict';
 
-  var app = angular.module('mardisDolivier');
-
-  app.controller('mainController', function() {});
+  angular
+      .module('mardisDolivier')
+      .controller('mainController', function() {});
 
 })();
