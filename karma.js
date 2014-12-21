@@ -28,7 +28,7 @@ module.exports = function(config) {
         'app/datePicker.filter.js',
         'app/route.config.js',
         'app/menu.controller.js',
-        'app/service.js',
+        'app/beneficiaires.service.js',
         'tests/angular-mocks.js',
         'tests/**/*Spec.js'
     ],
