@@ -1,7 +1,7 @@
 describe("Les Mardis d'Olivier", function() {
 
   var scope;
-  var dateWithJQueryUiDatePicker;
+  var DateWithJQueryUiDatePicker;
 
   addBeneficiaireWithCode = function(firstName, lastName, code){
     scope.currentBeneficiaire = { code : code };
@@ -21,7 +21,7 @@ describe("Les Mardis d'Olivier", function() {
   beforeEach(angular.mock.inject(function($rootScope, $controller, $filter, $injector){
     scope = $rootScope.$new();
     beneficiairesService = $injector.get('beneficiairesService');
-    dateWithJQueryUiDatePicker = $filter('dateWithJQueryUiDatePicker');
+    DateWithJQueryUiDatePicker = $filter('DateWithJQueryUiDatePicker');
     $controller('ContentController', {
       $scope: scope,
       $filter: $filter,
@@ -301,7 +301,7 @@ describe("Les Mardis d'Olivier", function() {
   });
 
   it('should format a date for french people', function() {
-    expect(dateWithJQueryUiDatePicker('2014-08-04')).toBe('lundi 4 août 2014');
+    expect(DateWithJQueryUiDatePicker('2014-08-04')).toBe('lundi 4 août 2014');
   });
 
   it('should retrieve the number of beneficiaires present at a distribution', function (){

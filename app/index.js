@@ -2,9 +2,8 @@
   'use strict';
 
   angular
-      .module('mardisDolivier', ['ui.date', 'ngRoute'])
-      .controller('ContentController', ContentController)
-      .filter('dateWithJQueryUiDatePicker', DateWithJQueryUiDatePicker);
+      .module('mardisDolivier')
+      .controller('ContentController', ContentController);
 
   function ContentController($scope, $filter, beneficiairesService) {
     $.datepicker.setDefaults($.datepicker.regional['fr']);
@@ -329,12 +328,6 @@
         }
         beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
       }
-    };
-  }
-
-  function DateWithJQueryUiDatePicker() {
-    return function(input) {
-      return $.datepicker.formatDate("DD d MM yy", new Date(input));
     };
   }
 

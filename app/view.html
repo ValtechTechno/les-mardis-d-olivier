@@ -55,7 +55,7 @@
       </form>
 
       <div class="row">
-        <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | dateWithJQueryUiDatePicker}} ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
+        <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | DateWithJQueryUiDatePicker}} ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
       </div>
 
       <div class="row">
@@ -141,7 +141,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="distribution in distributions">
-              <td>{{distribution.distributionDate | dateWithJQueryUiDatePicker}}</td>
+              <td>{{distribution.distributionDate | DateWithJQueryUiDatePicker}}</td>
               <td>{{distribution.nbPlannedMeals}}</td>
               <td>{{distribution.nbBeneficiaires}}</td>
               <td>{{distribution.comments.length}}</td>
