@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html ng-app="mardisDolivier">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Distribution Tool</title>
-  <link rel="stylesheet" href="lib/foundation-5.4.5/css/foundation.min.css" />
+  <link rel="stylesheet" href="lib/foundation-5.4.5/css/foundation.min.css"/>
   <link rel="stylesheet" href="lib/jquery-ui-1.11.0.custom/jquery-ui.min.css"/>
-  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="index.css"/>
 </head>
-<body ng-controller="MenuController">
+<body>
 
-<div ng-view></div>
+<div ng-controller="MenuController">
+  <div ng-include="'app/view/menu.html'"></div>
+</div>
+
+<div class="row">
+  <div class="medium-12 columns">
+    <div class="row">
+      <div class="medium-12 columns">
+        <div class="medium-12 columns">&nbsp;</div>
+      </div>
+    </div>
+    <div ng-view></div>
+  </div>
+</div>
 
 <script src="lib/foundation-5.4.5/js/vendor/modernizr.js"></script>
 <script src="lib/foundation-5.4.5/js/vendor/jquery.js"></script>
@@ -21,11 +34,14 @@
 <script src="lib/angular-ui-date/date.js"></script>
 <script src="lib/foundation-5.4.5/js/foundation.min.js"></script>
 <script src="app/mardisDOlivier.module.js"></script>
-<script src="app/content.controller.js"></script>
 <script src="app/datePicker.filter.js"></script>
 <script src="app/route.config.js"></script>
-<script src="app/menu.controller.js"></script>
-<script src="app/beneficiaires.service.js"></script>
+<script src="app/controller/menu.controller.js"></script>
+<script src="app/controller/about.controller.js"></script>
+<script src="app/controller/beneficiaire.controller.js"></script>
+<script src="app/controller/distribution.controller.js"></script>
+<script src="app/service/beneficiaires.service.js"></script>
+<script src="app/service/common.service.js"></script>
 <script>
   $(document).foundation();
 </script>

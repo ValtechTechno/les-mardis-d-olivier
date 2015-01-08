@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Thu Jul 31 2014 20:08:30 GMT+0200 (CEST)
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -15,34 +15,34 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        'lib/foundation-5.4.5/js/vendor/modernizr.js',
-        'lib/foundation-5.4.5/js/vendor/jquery.js',
-        'lib/jquery-ui-1.11.0.custom/jquery-ui.min.js',
-        'lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js',
-        'lib/angular-1.2.21/angular.min.js',
-        'lib/angular-1.2.21/angular-route.min.js',
-        'lib/angular-ui-date/date.js',
-        'lib/foundation-5.4.5/js/foundation.min.js',
-        'app/mardisDOlivier.module.js',
-        'app/content.controller.js',
-        'app/datePicker.filter.js',
-        'app/route.config.js',
-        'app/menu.controller.js',
-        'app/beneficiaires.service.js',
-        'tests/angular-mocks.js',
-        'tests/**/*Spec.js'
+      'lib/foundation-5.4.5/js/vendor/modernizr.js',
+      'lib/foundation-5.4.5/js/vendor/jquery.js',
+      'lib/jquery-ui-1.11.0.custom/jquery-ui.min.js',
+      'lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js',
+      'lib/angular-1.2.21/angular.min.js',
+      'lib/angular-1.2.21/angular-route.min.js',
+      'lib/angular-ui-date/date.js',
+      'lib/foundation-5.4.5/js/foundation.min.js',
+      'app/mardisDOlivier.module.js',
+      'app/datePicker.filter.js',
+      'app/controller/distribution.controller.js',
+      'app/controller/beneficiaire.controller.js',
+      'app/controller/menu.controller.js',
+      'app/controller/about.controller.js',
+      'app/service/beneficiaires.service.js',
+      'app/service/common.service.js',
+      'tests/angular-mocks.js',
+      'tests/**/*Spec.js'
     ],
 
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
+    preprocessors: {},
 
 
     // test results reporter to use

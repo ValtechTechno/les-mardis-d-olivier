@@ -1,16 +1,17 @@
-(function() {
-  'use strict';
+'use strict';
 
-  angular
-      .module('mardisDolivier')
-      .config(route);
-
-  function route($routeProvider) {
+mardisDolivier.config(function ($routeProvider) {
     $routeProvider
-        .when('/', {
-          controller: 'ContentController',
-          templateUrl: 'app/view.html'
-        });
-  }
-
-})();
+      .when('/distribution', {
+        controller: 'DistributionController',
+        templateUrl: 'app/view/distribution.html'
+      })
+      .when('/beneficiaire', {
+        controller: 'BeneficiaireController',
+        templateUrl: 'app/view/beneficiaire.html'
+      })
+      .when('/about', {
+        controller: 'AboutController',
+        templateUrl: 'app/view/about.html'
+      })
+  });
