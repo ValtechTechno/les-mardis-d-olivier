@@ -1,30 +1,30 @@
 (function () {
   'use strict';
 
-  mardisDolivier.controller('BeneficiaireController', function ($scope, $filter, beneficiairesService, beneficiairesCommonService) {
+  mardisDolivier.controller('BeneficiaireController', function ($scope, $filter, beneficiairesService, commonService) {
 
-    beneficiairesCommonService.init($scope, beneficiairesService);
+    commonService.init($scope, beneficiairesService);
 
     $scope.openBeneficiaireList = function () {
-      beneficiairesCommonService.resetAddBeneficiareForm($scope);
+      commonService.resetAddBeneficiareForm($scope);
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
-      $scope.currentBeneficiaire = {code: beneficiairesCommonService.initNextCode($scope)};
+      $scope.currentBeneficiaire = {code: commonService.initNextCode($scope)};
       $scope.currentPage = {beneficiaireList: true};
     };
 
     $scope.searchBeneficiaire = function (beneficiaire) {
-      return beneficiairesCommonService.searchBeneficiaire($scope, beneficiaire);
+      return commonService.searchBeneficiaire($scope, beneficiaire);
     };
 
     $scope.addBeneficiaireFromList = function () {
-      if (beneficiairesCommonService.addBeneficiaire($scope)) {
-        beneficiairesCommonService.resetAddBeneficiareForm($scope);
-        $scope.currentBeneficiaire = {code: beneficiairesCommonService.initNextCode($scope)};
+      if (commonService.addBeneficiaire($scope)) {
+        commonService.resetAddBeneficiareForm($scope);
+        $scope.currentBeneficiaire = {code: commonService.initNextCode($scope)};
       }
     };
 
     $scope.openBeneficiaireDetail = function (beneficiaire, fromDistribution) {
-      beneficiairesCommonService.openBeneficiaireDetail($scope, beneficiaire, fromDistribution)
+      commonService.openBeneficiaireDetail($scope, beneficiaire, fromDistribution)
     };
 
     // UPDATE BENEF
@@ -38,7 +38,7 @@
     };
 
     $scope.saveBeneficiaireDetail = function () {
-      if (beneficiairesCommonService.userFormValidation($scope, true)) {
+      if (commonService.userFormValidation($scope, true)) {
         var beneficiaires = beneficiairesService.loadBeneficiaires();
         for (var i = 0; i < beneficiaires.length; i++) {
           if (beneficiaires[i].id == $scope.currentBeneficiaire.id) {

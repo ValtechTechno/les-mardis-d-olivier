@@ -29,7 +29,7 @@ describe("Les Mardis d'Olivier", function () {
   beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
     beneficiairesService = $injector.get('beneficiairesService');
-    beneficiairesCommonService = $injector.get('beneficiairesCommonService');
+    beneficiairesCommonService = $injector.get('commonService');
     DateWithJQueryUiDatePicker = $filter('DateWithJQueryUiDatePicker');
     $controller('DistributionController', {
       $scope: scope,

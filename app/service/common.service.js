@@ -1,9 +1,9 @@
 (function () {
   'use strict';
 
-  mardisDolivier.service('beneficiairesCommonService', beneficiairesCommonService);
+  mardisDolivier.service('commonService', commonService);
 
-  function beneficiairesCommonService() {
+  function commonService() {
     var service = {
       resetAddBeneficiareForm: resetAddBeneficiareForm,
       initNextCode: initNextCode,

@@ -1,20 +1,20 @@
 (function () {
   'use strict';
 
-  mardisDolivier.controller('DistributionController', function ($scope, $filter, beneficiairesService, beneficiairesCommonService) {
+  mardisDolivier.controller('DistributionController', function ($scope, $filter, beneficiairesService, commonService) {
 
-    beneficiairesCommonService.init($scope, beneficiairesService);
+    commonService.init($scope, beneficiairesService);
 
     $scope.searchBeneficiaire = function (beneficiaire) {
-      return beneficiairesCommonService.searchBeneficiaire($scope, beneficiaire);
+      return commonService.searchBeneficiaire($scope, beneficiaire);
     };
 
     $scope.addBeneficiaireFromDistribution = function () {
-      var newBeneficiaire = beneficiairesCommonService.addBeneficiaire($scope);
+      var newBeneficiaire = commonService.addBeneficiaire($scope);
       if (newBeneficiaire) {
-        beneficiairesCommonService.resetAddBeneficiareForm($scope);
+        commonService.resetAddBeneficiareForm($scope);
         $scope.isPresent(newBeneficiaire);
-        $scope.currentBeneficiaire = {code: beneficiairesCommonService.initNextCode($scope)};
+        $scope.currentBeneficiaire = {code: commonService.initNextCode($scope)};
       }
     };
 
@@ -96,7 +96,7 @@
 
     $scope.openDistribution = function () {
       if (!$scope.readOnly) {
-        $scope.currentBeneficiaire = {code: beneficiairesCommonService.initNextCode($scope)};
+        $scope.currentBeneficiaire = {code: commonService.initNextCode($scope)};
       }
       $scope.currentPage = {distributionDetail: true};
     };
