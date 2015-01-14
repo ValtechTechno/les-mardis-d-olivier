@@ -3,9 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .config(config);
+      .config(routeConfiguration);
 
-  function config ($routeProvider) {
+  function routeConfiguration ($routeProvider) {
     $routeProvider
       .when('/distribution', {
         controller: 'DistributionController',

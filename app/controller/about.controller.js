@@ -3,9 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .controller('AboutController', about);
+      .controller('AboutController', AboutController);
 
-  function about ($scope, $filter, beneficiairesService) {
+  function AboutController ($scope, $filter, beneficiairesService) {
     $scope.openAboutPage = function () {
       var aboutInformation = angular.fromJson(localStorage.getItem('aboutInformation'));
       if (aboutInformation != null) {

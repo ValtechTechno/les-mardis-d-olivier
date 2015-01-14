@@ -3,9 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .controller('BeneficiaireController', beneficiaire);
+      .controller('BeneficiaireController', BeneficiaireController);
 
-  function beneficiaire ($scope, beneficiairesService, commonService) {
+  function BeneficiaireController ($scope, beneficiairesService, commonService) {
 
     commonService.init($scope, beneficiairesService);
 

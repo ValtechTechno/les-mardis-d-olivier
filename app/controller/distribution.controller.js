@@ -3,9 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .controller('DistributionController', distribution);
+      .controller('DistributionController', DistributionController);
 
-  function distribution ($scope, beneficiairesService, commonService) {
+  function DistributionController ($scope, beneficiairesService, commonService) {
 
     commonService.init($scope, beneficiairesService);
 
