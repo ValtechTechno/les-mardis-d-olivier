@@ -37,7 +37,7 @@
 
     function resetAddBeneficiareForm($scope) {
       $scope.currentError = {};
-    };
+    }
 
     function initNextCode($scope) {
       var nextCode = 1;
@@ -50,13 +50,13 @@
         }
       }
       return nextCode;
-    };
+    }
 
     // Specific filter to avoid search in comments
     function searchBeneficiaire($scope, beneficiaire) {
       var reg = new RegExp($scope.searchText, 'i');
       return !$scope.searchText || reg.test(beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
-    };
+    }
 
     function userFormValidation($scope, isUpdate) {
       if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
@@ -110,13 +110,13 @@
       } else {
         return false
       }
-    };
+    }
 
     function openBeneficiaireDetail($scope, beneficiaire, fromDistribution) {
       $scope.currentBeneficiaire = beneficiaire;
       $scope.fromDistribution = fromDistribution;
       $scope.currentPage = {beneficiaireDetail: true};
-    };
+    }
 
   }
 })();

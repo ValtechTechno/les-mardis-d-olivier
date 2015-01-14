@@ -3,7 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .controller('BeneficiaireController', function ($scope, $filter, beneficiairesService, commonService) {
+      .controller('BeneficiaireController', beneficiaire);
+
+  function beneficiaire ($scope, beneficiairesService, commonService) {
 
     commonService.init($scope, beneficiairesService);
 
@@ -88,6 +90,6 @@
     };
 
     $scope.openBeneficiaireList();
-  })
+  }
 
 })();

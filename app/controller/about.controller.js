@@ -3,8 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .controller('AboutController', function ($scope, $filter, beneficiairesService) {
+      .controller('AboutController', about);
 
+  function about ($scope, $filter, beneficiairesService) {
     $scope.openAboutPage = function () {
       var aboutInformation = angular.fromJson(localStorage.getItem('aboutInformation'));
       if (aboutInformation != null) {
@@ -22,6 +23,8 @@
       localStorage.setItem('aboutInformation', angular.toJson($scope.aboutInformation));
       $scope.openAboutPage();
     };
+
     $scope.openAboutPage();
-  })
+  }
+
 })();

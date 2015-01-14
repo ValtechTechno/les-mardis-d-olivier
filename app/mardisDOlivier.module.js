@@ -5,9 +5,11 @@
 
   angular
       .module('mardisDolivier')
-      .run(function ($location) {
+      .run(setInitialPathToDistribution);
+
+  function setInitialPathToDistribution ($location) {
     $location.path("/distribution");
-  });
+  }
 
 })();
 

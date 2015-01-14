@@ -3,7 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .config(function ($routeProvider) {
+      .config(config);
+
+  function config ($routeProvider) {
     $routeProvider
       .when('/distribution', {
         controller: 'DistributionController',
@@ -17,6 +19,6 @@
         controller: 'AboutController',
         templateUrl: 'app/view/about.html'
       });
-  });
+  }
 
 })();

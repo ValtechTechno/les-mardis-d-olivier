@@ -27,7 +27,7 @@
         beneficiaires = [];
       }
       return beneficiaires;
-    };
+    }
 
     function saveBeneficiaires(beneficiaires) {
       localStorage.setItem('beneficiaires', angular.toJson(beneficiaires));
@@ -35,11 +35,11 @@
 
     function allDistributions() {
       return angular.fromJson(localStorage.getItem('distributions'));
-    };
+    }
 
     function saveDistributions(distributions) {
       localStorage.setItem('distributions', angular.toJson(distributions));
-    };
+    }
 
     function beneficiairesPresentByDistribution() {
       var beneficiairesPresentByDistribution = angular.fromJson(localStorage

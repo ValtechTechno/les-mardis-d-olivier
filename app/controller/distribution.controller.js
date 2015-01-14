@@ -3,7 +3,9 @@
 
   angular
       .module('mardisDolivier')
-      .controller('DistributionController', function ($scope, $filter, beneficiairesService, commonService) {
+      .controller('DistributionController', distribution);
+
+  function distribution ($scope, beneficiairesService, commonService) {
 
     commonService.init($scope, beneficiairesService);
 
@@ -170,7 +172,7 @@
       }
     };
 
-  })
+  }
 
 })();
 
