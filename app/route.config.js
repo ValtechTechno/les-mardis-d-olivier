@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
   angular
       .module('mardisDolivier')
@@ -17,3 +18,5 @@
         templateUrl: 'app/view/about.html'
       });
   });
+
+})();
