@@ -1,15 +1,13 @@
 (function () {
   'use strict';
 
+  angular.module('mardisDolivier', ['ui.date', 'ngRoute']);
+
+  angular
+      .module('mardisDolivier')
+      .run(function ($location) {
+    $location.path("/distribution");
+  });
+
 })();
-
-'use strict';
-
-/* App Module */
-
-var mardisDolivier = angular.module('mardisDolivier', ['ui.date', 'ngRoute']);
-
-mardisDolivier.run(function ($location) {
-  $location.path("/distribution");
-});
 

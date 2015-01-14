@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  mardisDolivier.controller('DistributionController', function ($scope, $filter, beneficiairesService, commonService) {
+  angular
+      .module('mardisDolivier')
+      .controller('DistributionController', function ($scope, $filter, beneficiairesService, commonService) {
 
     commonService.init($scope, beneficiairesService);
 

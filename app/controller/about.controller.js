@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  mardisDolivier.controller('AboutController', function ($scope, $filter, beneficiairesService) {
+  angular
+      .module('mardisDolivier')
+      .controller('AboutController', function ($scope, $filter, beneficiairesService) {
 
     $scope.openAboutPage = function () {
       var aboutInformation = angular.fromJson(localStorage.getItem('aboutInformation'));

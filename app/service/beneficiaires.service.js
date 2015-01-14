@@ -5,7 +5,9 @@
     alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
   }
 
-  mardisDolivier.service('beneficiairesService', beneficiairesService);
+  angular
+      .module('mardisDolivier')
+      .service('beneficiairesService', beneficiairesService);
 
   function beneficiairesService() {
     var service = {

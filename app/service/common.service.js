@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  mardisDolivier.service('commonService', commonService);
+  angular
+      .module('mardisDolivier')
+      .service('commonService', commonService);
 
   function commonService() {
     var service = {
