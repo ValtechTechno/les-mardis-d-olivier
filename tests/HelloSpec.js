@@ -423,9 +423,9 @@ describe("Les Mardis d'Olivier", function () {
     scope.openBeneficiaireList();
     scope.openBeneficiaireDetail(scope.beneficiaires[0], false);
     scope.deleteBeneficiaireDetail();
-    scope.aboutPageConfirmPopupCancel();
+    scope.cancelBeneficiaireDetailConfirmPopup();
     scope.deleteBeneficiaireDetail();
-    scope.aboutPageConfirmPopupSave();
+    scope.saveBeneficiaireDetailConfirmPopup();
     expect(scope.beneficiaires.length).toEqual(1);
   });
 
@@ -435,7 +435,7 @@ describe("Les Mardis d'Olivier", function () {
     expect(scope.aboutInformation).toEqual(null);
     scope.openAboutPageUpdate();
     scope.aboutInformation = "test";
-    scope.aboutPageSave();
+    scope.saveAboutPage();
     expect(scope.aboutInformation).toEqual("test");
   });
 

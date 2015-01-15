@@ -59,11 +59,11 @@
       $('#confirmDeletePopup').foundation('reveal', 'open');
     };
 
-    $scope.aboutPageConfirmPopupCancel = function () {
+    $scope.cancelBeneficiaireDetailConfirmPopup = function () {
       $('#confirmDeletePopup').foundation('reveal', 'close');
     }
 
-    $scope.aboutPageConfirmPopupSave = function () {
+    $scope.saveBeneficiaireDetailConfirmPopup = function () {
       $('#confirmDeletePopup').foundation('reveal', 'close');
       var beneficiaires = beneficiairesService.loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;

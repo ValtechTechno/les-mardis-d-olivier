@@ -19,7 +19,7 @@
       $scope.currentPage = {aboutPageUpdate: true};
     };
 
-    $scope.aboutPageSave = function () {
+    $scope.saveAboutPage = function () {
       localStorage.setItem('aboutInformation', angular.toJson($scope.aboutInformation));
       $scope.openAboutPage();
     };
