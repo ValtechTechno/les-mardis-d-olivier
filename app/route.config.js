@@ -18,6 +18,9 @@
       .when('/about', {
         controller: 'AboutController',
         templateUrl: 'app/view/about.html'
+      })
+      .otherwise({
+        redirectTo: '/distribution'
       });
   }
 
