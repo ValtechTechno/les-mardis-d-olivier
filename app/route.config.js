@@ -7,11 +7,11 @@
 
   function routeConfiguration ($routeProvider) {
     $routeProvider
-      .when('/distribution', {
+      .when('/distributions', {
         controller: 'DistributionController',
         templateUrl: 'app/view/distribution.html'
       })
-      .when('/beneficiaire', {
+      .when('/beneficiaires', {
         controller: 'BeneficiaireController',
         templateUrl: 'app/view/beneficiaire.html'
       })
@@ -20,7 +20,7 @@
         templateUrl: 'app/view/about.html'
       })
       .otherwise({
-        redirectTo: '/distribution'
+        redirectTo: '/distributions'
       });
   }
 
