@@ -10,7 +10,6 @@
       resetAddBeneficiareForm: resetAddBeneficiareForm,
       initNextCode: initNextCode,
       searchBeneficiaire: searchBeneficiaire,
-      openBeneficiaireDetail: openBeneficiaireDetail,
       userFormValidation: userFormValidation,
       addBeneficiaire: addBeneficiaire
     };
@@ -110,12 +109,6 @@
       } else {
         return false
       }
-    }
-
-    function openBeneficiaireDetail($scope, beneficiaire, fromDistribution) {
-      $scope.currentBeneficiaire = beneficiaire;
-      $scope.fromDistribution = fromDistribution;
-      $scope.currentPage = {beneficiaireDetail: true};
     }
 
   }

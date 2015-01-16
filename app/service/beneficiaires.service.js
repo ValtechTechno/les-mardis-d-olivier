@@ -12,6 +12,7 @@
   function beneficiairesService() {
     var service = {
       loadBeneficiaires: loadBeneficiaires,
+      findBeneficiaireById: findBeneficiaireById,
       saveBeneficiaires: saveBeneficiaires,
       allDistributions: allDistributions,
       saveDistributions: saveDistributions,
@@ -25,6 +26,16 @@
       var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
       if (beneficiaires === null) {
         beneficiaires = [];
+      }
+      return beneficiaires;
+    }
+
+    function findBeneficiaireById(beneficiaireId, _beneficiaires) {
+      var beneficiaires = _beneficiaires != null ? _beneficiaires : loadBeneficiaires();
+      for (var i = 0; i < beneficiaires.length; i++) {
+        if(beneficiaires[i].id == beneficiaireId){
+          return beneficiaires[i];
+        }
       }
       return beneficiaires;
     }
