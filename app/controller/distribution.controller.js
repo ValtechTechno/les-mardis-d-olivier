@@ -13,15 +13,6 @@
       return commonService.searchBeneficiaire($scope, beneficiaire);
     };
 
-    $scope.addBeneficiaireFromDistribution = function () {
-      var newBeneficiaire = commonService.addBeneficiaire($scope);
-      if (newBeneficiaire) {
-        commonService.resetAddBeneficiareForm($scope);
-        $scope.isPresent(newBeneficiaire);
-        $scope.currentBeneficiaire = {code: commonService.initNextCode($scope)};
-      }
-    };
-
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     $scope.numberBeneficiairesPresent = 0;
 
@@ -99,9 +90,6 @@
     };
 
     $scope.openDistribution = function () {
-      if (!$scope.readOnly) {
-        $scope.currentBeneficiaire = {code: commonService.initNextCode($scope)};
-      }
       $scope.currentPage = {distributionDetail: true};
     };
 

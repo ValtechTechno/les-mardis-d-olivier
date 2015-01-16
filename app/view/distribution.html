@@ -1,35 +1,4 @@
 <div ng-show="currentPage.distributionDetail">
-  <form name="addBeneficiaireForm">
-    <div class="row" ng-hide="readOnly">
-      <div class="medium-12 columns">
-        <label>Nouveau bénéficiaire</label>
-
-        <div class="row">
-          <div class="medium-3 columns">
-            <input type="number" min="1" id="distributionDetailCode" name="code" ng-model="currentBeneficiaire.code"
-                   placeholder="-- code --" required/>
-          </div>
-          <div class="medium-3 columns">
-            <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --"
-                   required/>
-          </div>
-          <div class="medium-3 columns">
-            <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --"
-                   required/>
-          </div>
-          <div class="medium-3 columns right">
-            <button ng-click="addBeneficiaireFromDistribution()" class="button secondary expand">Ajouter un
-              bénéficiaire
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
-
-    <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
-  </form>
-
   <div class="row">
     <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | DateWithJQueryUiDatePicker}}
       ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
@@ -47,7 +16,7 @@
           <td colspan="2">Commentaire</td>
         </tr>
         <tr>
-          <td colspan="6"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+          <td colspan="6"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."/></td>
         </tr>
         </thead>
         <tbody>

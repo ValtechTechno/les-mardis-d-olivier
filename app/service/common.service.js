@@ -7,16 +7,13 @@
 
   function commonService() {
     var service = {
-      resetAddBeneficiareForm: resetAddBeneficiareForm,
-      initNextCode: initNextCode,
-      searchBeneficiaire: searchBeneficiaire,
       userFormValidation: userFormValidation,
-      addBeneficiaire: addBeneficiaire
+      searchBeneficiaire: searchBeneficiaire
     };
 
     service.init = function ($scope, beneficiairesService) {
       $scope.$watch('beneficiaires', function (newValue, oldValue) {
-        if (newValue.length != oldValue.length) { //&& $scope.readOnly == false
+        if (newValue.length != oldValue.length && $scope.readOnly == false){
           var cleanBeneficiairesList = [];
           for (var i = 0; i < newValue.length; i++) {
             var beneficiaire = newValue[i];
@@ -33,23 +30,6 @@
     };
 
     return service;
-
-    function resetAddBeneficiareForm($scope) {
-      $scope.currentError = {};
-    }
-
-    function initNextCode($scope) {
-      var nextCode = 1;
-      if ($scope.beneficiaires != null) {
-        for (var i = 0; i < $scope.beneficiaires.length; i++) {
-          if (nextCode <= $scope.beneficiaires[i].code) {
-            nextCode = $scope.beneficiaires[i].code;
-            nextCode++;
-          }
-        }
-      }
-      return nextCode;
-    }
 
     // Specific filter to avoid search in comments
     function searchBeneficiaire($scope, beneficiaire) {
@@ -88,28 +68,5 @@
       }
       return true;
     }
-
-    function addBeneficiaire($scope) {
-      if (userFormValidation($scope, false)) {
-        var nextId;
-        if ($scope.beneficiaires.length == 0) {
-          nextId = '1';
-        } else {
-          nextId = parseInt($scope.beneficiaires[$scope.beneficiaires.length - 1].id) + 1 + '';
-        }
-        var newBeneficiaire = {
-          id: nextId,
-          code: $scope.currentBeneficiaire.code,
-          firstName: $scope.currentBeneficiaire.firstName,
-          lastName: $scope.currentBeneficiaire.lastName,
-          isPresent: true
-        };
-        $scope.beneficiaires.push(newBeneficiaire);
-        return newBeneficiaire;
-      } else {
-        return false
-      }
-    }
-
   }
 })();

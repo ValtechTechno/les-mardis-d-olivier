@@ -3,20 +3,26 @@ describe("Les Mardis d'Olivier", function () {
   var scope;
   var DateWithJQueryUiDatePicker;
 
+  // TODO refactor this method and the related tests, we cannot add user from distribution anymore
   addBeneficiaireWithCode = function (firstName, lastName, code) {
     scope.currentBeneficiaire = {code: code};
     scope.currentBeneficiaire.lastName = lastName;
     scope.currentBeneficiaire.firstName = firstName;
-    scope.addBeneficiaireFromDistribution();
+    var newBeneficiaire = scope.addBeneficiaire(scope);
+    if (newBeneficiaire) {
+      scope.resetAddBeneficiareForm();
+      scope.isPresent(newBeneficiaire);
+      scope.currentBeneficiaire = {code: scope.initNextCode()};
+    }
   };
 
   addBeneficiaire = function (firstName, lastName) {
-    addBeneficiaireWithCode(firstName, lastName, beneficiairesCommonService.initNextCode(scope));
+    addBeneficiaireWithCode(firstName, lastName, scope.initNextCode());
   };
 
   leftCurrentDistribution = function () {
     scope.currentDistribution = {};
-    beneficiairesCommonService.resetAddBeneficiareForm(scope);
+    scope.resetAddBeneficiareForm();
     scope.showAllDistribution();
     scope.currentPage = {distributionList: true};
     scope.numberBeneficiairesPresent = 0;
@@ -48,8 +54,8 @@ describe("Les Mardis d'Olivier", function () {
       $filter: $filter,
       beneficiairesService: beneficiairesService
     });
-    beneficiairesCommonService.resetAddBeneficiareForm(scope);
-    scope.currentBeneficiaire = {code: beneficiairesCommonService.initNextCode(scope)};
+    scope.resetAddBeneficiareForm();
+    scope.currentBeneficiaire = {code: scope.initNextCode()};
   }));
 
   it('should add a beneficiaire', function () {
@@ -237,10 +243,11 @@ describe("Les Mardis d'Olivier", function () {
     addBeneficiaire('John', 'Rambo');
     scope.$digest();
 
-    beneficiaireCode = scope.beneficiaires[0].id;
+    beneficiaireId = scope.beneficiaires[0].id;
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, beneficiairesService);
-    expect(beneficiairesList[0].id).toEqual(beneficiaireCode);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, beneficiairesService, false);
+
+    expect(beneficiairesList[0].id).toEqual(beneficiaireId);
     expect(beneficiairesList[0].firstName).toEqual("John");
     expect(beneficiairesList[0].lastName).toEqual("Rambo");
   });
