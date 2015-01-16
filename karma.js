@@ -21,7 +21,7 @@ module.exports = function (config) {
       'lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js',
       'lib/angular-1.3.9/angular.min.js',
       'lib/angular-1.3.9/angular-route.min.js',
-      'lib/angular-ui-date/date.js',
+      'lib/angular-ui-date-0.0.7/date.min.js',
       'lib/foundation-5.4.5/js/foundation.min.js',
       'app/mardisDOlivier.module.js',
       'app/datePicker.filter.js',
