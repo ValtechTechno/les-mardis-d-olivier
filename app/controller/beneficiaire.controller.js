@@ -63,7 +63,7 @@
           code: $scope.currentBeneficiaire.code,
           firstName: $scope.currentBeneficiaire.firstName,
           lastName: $scope.currentBeneficiaire.lastName,
-          isPresent: true
+          isPresent: false
         };
         $scope.beneficiaires.push(newBeneficiaire);
         return newBeneficiaire;

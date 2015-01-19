@@ -1,28 +1,10 @@
-describe("Les Mardis d'Olivier", function () {
+describe("DistributionController", function () {
 
   var scope;
   var DateWithJQueryUiDatePicker;
 
-  // TODO refactor this method and the related tests, we cannot add user from distribution anymore
-  addBeneficiaireWithCode = function (firstName, lastName, code) {
-    scope.currentBeneficiaire = {code: code};
-    scope.currentBeneficiaire.lastName = lastName;
-    scope.currentBeneficiaire.firstName = firstName;
-    var newBeneficiaire = scope.addBeneficiaire(scope);
-    if (newBeneficiaire) {
-      scope.resetAddBeneficiareForm();
-      scope.isPresent(newBeneficiaire);
-      scope.currentBeneficiaire = {code: scope.initNextCode()};
-    }
-  };
-
-  addBeneficiaire = function (firstName, lastName) {
-    addBeneficiaireWithCode(firstName, lastName, scope.initNextCode());
-  };
-
   leftCurrentDistribution = function () {
     scope.currentDistribution = {};
-    scope.resetAddBeneficiareForm();
     scope.showAllDistribution();
     scope.currentPage = {distributionList: true};
     scope.numberBeneficiairesPresent = 0;
@@ -43,91 +25,7 @@ describe("Les Mardis d'Olivier", function () {
       beneficiairesService: beneficiairesService,
       beneficiairesCommonService: beneficiairesCommonService
     });
-    $controller('BeneficiaireController', {
-      $scope: scope,
-      $filter: $filter,
-      beneficiairesService: beneficiairesService,
-      beneficiairesCommonService: beneficiairesCommonService
-    });
-    $controller('AboutController', {
-      $scope: scope,
-      $filter: $filter,
-      beneficiairesService: beneficiairesService
-    });
-    scope.resetAddBeneficiareForm();
-    scope.currentBeneficiaire = {code: scope.initNextCode()};
   }));
-
-  it('should add a beneficiaire', function () {
-    scope.currentDistribution.id = 1;
-
-    addBeneficiaire('John', 'Rambo');
-
-    expect(scope.beneficiaires).toContain({id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: true});
-  });
-
-  it('should add a beneficiaire without code', function () {
-    scope.currentDistribution.id = 1;
-
-    addBeneficiaireWithCode('John', 'Rambo', null);
-
-    expect(scope.beneficiaires).toContain({id: '1', code: null, firstName: 'John', lastName: 'Rambo', isPresent: true});
-  });
-
-  it('calculates the beneficiaire id by incrementing the last id in the list', function () {
-    scope.currentDistribution.id = 1;
-
-    addBeneficiaire('John', 'Rambo');
-    addBeneficiaire('Alix', 'Rambo');
-    addBeneficiaire('Lana', 'Rambo');
-
-    expect(scope.beneficiaires).toEqual(
-      [
-        {id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: true},
-        {id: '2', code: 2, firstName: 'Alix', lastName: 'Rambo', isPresent: true},
-        {id: '3', code: 3, firstName: 'Lana', lastName: 'Rambo', isPresent: true}
-      ]
-    );
-  });
-
-  it('should prevent the user to add an existing beneficiaire', function () {
-    scope.currentDistribution.id = 1;
-
-    addBeneficiaire('John', 'Rambo');
-    addBeneficiaire('John', 'Rambo');
-
-    expect(scope.beneficiaires.length).toBe(1);
-    expect(scope.currentError.isBeneficiaireNotUnique).toBe(true);
-  });
-
-  it('should prevent the user to add an existing id for beneficiaire', function () {
-    scope.currentDistribution.id = 1;
-
-    addBeneficiaireWithCode('John', 'Rambo', '1');
-    addBeneficiaireWithCode('Michel', 'Rambo', '1');
-
-    expect(scope.beneficiaires.length).toBe(1);
-    expect(scope.currentError.isCodeNotUnique).toBe(true);
-  });
-
-  it('should not allow to add a beneficiaire with empty first name or last name', function () {
-    scope.currentDistribution.id = 1;
-
-    addBeneficiaire('', '');
-    addBeneficiaire('John', '');
-    addBeneficiaire('', 'Rambo');
-
-    expect(scope.beneficiaires.length).toBe(0);
-  });
-
-  it('should save beneficiaires to localStorage', function () {
-    scope.currentDistribution.id = 1;
-    scope.$digest();
-    addBeneficiaire('foo', 'bar');
-    scope.$digest();
-
-    expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","code":1,"firstName":"foo","lastName":"bar"}]');
-  });
 
   it("should save a new distribution", function () {
     scope.currentDistribution.distributionNbPlannedMeals = "50";
@@ -236,12 +134,15 @@ describe("Les Mardis d'Olivier", function () {
   });
 
   it('should be possible to save beneficiaire presence at a distribution', function () {
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "John",
+      "lastName": "Rambo"
+    }]));
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-04";
-    scope.currentDistribution.id = scope.saveNewDistribution();
-    scope.$digest();
-    addBeneficiaire('John', 'Rambo');
-    scope.$digest();
+    scope.startNewDistribution();
 
     beneficiaireId = scope.beneficiaires[0].id;
 
@@ -261,16 +162,25 @@ describe("Les Mardis d'Olivier", function () {
   });
 
   it('should be only returns the present beneficiaire from a open distribution', function () {
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "John",
+      "lastName": "Rambo"
+    },{
+      "id": "2",
+      "code": 2,
+      "firstName": "Alix",
+      "lastName": "Rambo"
+    },{
+      "id": "3",
+      "code": 3,
+      "firstName": "Lana",
+      "lastName": "Rambo"
+    }]));
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-04";
     scope.startNewDistribution();
-
-    addBeneficiaire('John', 'Rambo');
-    scope.$digest();
-    addBeneficiaire('Alix', 'Rambo');
-    scope.$digest();
-    addBeneficiaire('Lana', 'Rambo');
-    scope.$digest();
 
     scope.isPresent(scope.beneficiaires[1]);
 
@@ -279,27 +189,38 @@ describe("Les Mardis d'Olivier", function () {
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, false);
     expect(beneficiairesList.length).toEqual(3);
-    expect(beneficiairesList[0].isPresent).toEqual(true);
+    expect(beneficiairesList[0].isPresent).toEqual(false);
     expect(beneficiairesList[0].firstName).toEqual('John');
-    expect(beneficiairesList[1].isPresent).toEqual(false);
+    expect(beneficiairesList[1].isPresent).toEqual(true);
     expect(beneficiairesList[1].firstName).toEqual('Alix');
-    expect(beneficiairesList[2].isPresent).toEqual(true);
+    expect(beneficiairesList[2].isPresent).toEqual(false);
     expect(beneficiairesList[2].firstName).toEqual('Lana');
   });
 
   it('should be only returns the present beneficiaire from a closed distribution', function () {
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "John",
+      "lastName": "Rambo"
+    },{
+      "id": "2",
+      "code": 2,
+      "firstName": "Alix",
+      "lastName": "Rambo"
+    },{
+      "id": "3",
+      "code": 3,
+      "firstName": "Lana",
+      "lastName": "Rambo"
+    }]));
+
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-04";
     scope.startNewDistribution();
 
-    addBeneficiaire('John', 'Rambo');
-    scope.$digest();
-    addBeneficiaire('Alix', 'Rambo');
-    scope.$digest();
-    addBeneficiaire('Lana', 'Rambo');
-    scope.$digest();
-
-    scope.isPresent(scope.beneficiaires[1]);
+    scope.isPresent(scope.beneficiaires[0]);
+    scope.isPresent(scope.beneficiaires[2]);
 
     leftCurrentDistribution();
     scope.currentDistribution.distributionNbPlannedMeals = "50";
@@ -318,13 +239,17 @@ describe("Les Mardis d'Olivier", function () {
   });
 
   it('should be possible to save a comment on a beneficiaire during one distribution', function () {
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "John",
+      "lastName": "Rambo"
+    }]));
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-04";
-    scope.currentDistribution.id = scope.saveNewDistribution();
-    scope.$digest();
-    addBeneficiaire('John', 'Rambo');
-    scope.$digest();
+    scope.startNewDistribution();
 
+    scope.isPresent(scope.beneficiaires[0]);
     var beneficiaireId = scope.beneficiaires[0].id;
     var comment = "Pas gentil";
 
@@ -342,21 +267,35 @@ describe("Les Mardis d'Olivier", function () {
   });
 
   it('should retrieve the number of beneficiaires present at a distribution', function () {
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "John",
+      "lastName": "Rambo"
+    },{
+      "id": "2",
+      "code": 2,
+      "firstName": "Michel",
+      "lastName": "Rambo"
+    },{
+      "id": "3",
+      "code": 3,
+      "firstName": "Paul",
+      "lastName": "Rambo"
+    }]));
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-04";
-    scope.currentDistribution.id = scope.saveNewDistribution();
-    scope.$digest();
-    addBeneficiaire('John', 'Rambo');
-    addBeneficiaire('Michel', 'Rambo');
-    addBeneficiaire('Paul', 'Rambo');
-    scope.$digest();
+    scope.startNewDistribution();
+    scope.isPresent(scope.beneficiaires[0]);
+    scope.isPresent(scope.beneficiaires[1]);
+    scope.isPresent(scope.beneficiaires[2]);
 
     var beneficiairesList = retrieveAllDistribution(beneficiairesService);
 
     expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
   });
 
-  it('should see older comments of a beneficiaire', function () {
+  it('should see older comments of a beneficiaire in distribution', function () {
     localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
       {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
       {"distributionId": "2", "beneficiaireId": "1", "comment": "message2"}
@@ -376,16 +315,6 @@ describe("Les Mardis d'Olivier", function () {
 
     expect(beneficiaires[0].comment).toEqual("message2");
     expect(beneficiaires[0].comments[0]).toEqual("2014-09-16 : message");
-  });
-
-  it('should manage about page', function () {
-    scope.$digest();
-    scope.openAboutPage();
-    expect(scope.aboutInformation).toEqual(null);
-    scope.openAboutPageUpdate();
-    scope.aboutInformation = "test";
-    scope.saveAboutPage();
-    expect(scope.aboutInformation).toEqual("test");
   });
 
 });

@@ -13,7 +13,7 @@
 
     service.init = function ($scope, beneficiairesService) {
       $scope.$watch('beneficiaires', function (newValue, oldValue) {
-        if (newValue.length != oldValue.length && $scope.readOnly == false){
+        if (newValue.length != oldValue.length && $scope.readOnly == (false || undefined)){
           var cleanBeneficiairesList = [];
           for (var i = 0; i < newValue.length; i++) {
             var beneficiaire = newValue[i];
