@@ -34,7 +34,7 @@
     // Specific filter to avoid search in comments
     function searchBeneficiaire($scope, beneficiaire) {
       var reg = new RegExp($scope.searchText, 'i');
-      return !$scope.searchText || reg.test(beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
+      return !$scope.searchText || reg.test(beneficiaire.code != undefined && beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
     }
 
     function userFormValidation($scope, isUpdate) {
