@@ -12,6 +12,7 @@
     $scope.openBeneficiaireDetail = function () {
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       $scope.currentBeneficiaire = beneficiairesService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires);
+      $scope.currentBeneficiaire.codeNumber = Number($scope.currentBeneficiaire.code);
       $scope.getComments();
     };
 
