@@ -60,16 +60,8 @@
 
     $scope.initNextDate = function () {
       if ($scope.distributions.length > 0) {
-        var lastDistribution = $scope.distributions[0];
-        var date = createNextWorkingDate(lastDistribution.distributionDate);
-        var month = (date.getMonth() + 1) + "";
-        var pad = "00";
-        var paddedMonth = pad.substring(0, pad.length - month.length) + month;
-        var day = date.getDate().toString();
-        if (day.length == 1) {
-          day = "0" + day;
-        }
-        $scope.currentDistribution.distributionDate = date.getFullYear() + "-" + paddedMonth + "-" + day;
+        var date = createNextWorkingDate($scope.distributions[0].distributionDate);
+        $scope.currentDistribution.distributionDate = formatDate(date);
       }
     };
 
@@ -261,30 +253,41 @@ retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesSer
   return beneficiairesPresent;
 };
 
+/* Get the last 5 comments for distribution showing or all of them for profile page */
 getLastComments = function (beneficiaireId, distributionId, beneficiairesService) {
   var beneficiaireOldComments = [];
+  var allDistributions = beneficiairesService.allDistributions();
   var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
   beneficiairesPresentByDistribution.reverse();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-    if (beneficiaireOldComments.length == 5) {
+    if (distributionId != -1 && beneficiaireOldComments.length == 5) {
       break;
     }
     if (beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId &&
-      beneficiairesPresentByDistribution[i].distributionId != distributionId &&
       beneficiairesPresentByDistribution[i].comment != null) {
-      var dateDistrib = "[DATE]";
-      var allDistributions = beneficiairesService.allDistributions();
-      for (var distributionNumber = 0; distributionNumber < allDistributions.length; distributionNumber++) {
-        if (allDistributions[distributionNumber].id == beneficiairesPresentByDistribution[i].distributionId) {
-          dateDistrib = allDistributions[distributionNumber].distributionDate;
-          break;
-        }
-      }
-      beneficiaireOldComments.push(dateDistrib + " : " + beneficiairesPresentByDistribution[i].comment);
+      beneficiaireOldComments.push(getDateDistribution(allDistributions, beneficiairesPresentByDistribution[i], distributionId) + " : " + beneficiairesPresentByDistribution[i].comment);
     }
   }
   return beneficiaireOldComments;
 };
+
+/* get the date of the comment : depending of the source, from the related distribution or from the date of the object */
+getDateDistribution = function (allDistributions, beneficiairePresent, distributionId) {
+  var dateDistrib = "[DATE]";
+  if(beneficiairePresent.distributionId != -1 && beneficiairePresent.distributionId != distributionId) {
+    for (var distributionNumber = 0; distributionNumber < allDistributions.length; distributionNumber++) {
+      if (allDistributions[distributionNumber].id == beneficiairePresent.distributionId) {
+        dateDistrib = allDistributions[distributionNumber].distributionDate;
+        break;
+      }
+    }
+  }else{
+    if(beneficiairePresent.date != null) {
+      dateDistrib = beneficiairePresent.date;
+    }
+  }
+  return dateDistrib;
+}
 
 createNextWorkingDate = function (dateString) {
   var lastDate = new Date(dateString);

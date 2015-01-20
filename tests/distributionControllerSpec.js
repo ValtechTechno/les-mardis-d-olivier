@@ -314,7 +314,8 @@ describe("DistributionController", function () {
     var beneficiaires = retrieveBeneficiairesByDistribution(2, beneficiairesService, true);
 
     expect(beneficiaires[0].comment).toEqual("message2");
-    expect(beneficiaires[0].comments[0]).toEqual("2014-09-16 : message");
+    expect(beneficiaires[0].comments[1]).toEqual("2014-09-16 : message");
+    expect(beneficiaires[0].comments[0]).toEqual("[DATE] : message2");
   });
 
 });

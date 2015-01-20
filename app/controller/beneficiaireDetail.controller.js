@@ -12,7 +12,12 @@
     $scope.openBeneficiaireDetail = function () {
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       $scope.currentBeneficiaire = beneficiairesService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires);
+      $scope.getComments();
     };
+
+    $scope.getComments = function(){
+      $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire.id, -1, beneficiairesService);
+    }
 
     $scope.cancelBeneficiaireDetail = function () {
       if ($scope.fromDistribution == true) {
@@ -38,6 +43,24 @@
 
     $scope.deleteBeneficiaireDetail = function () {
       $('#confirmDeletePopup').foundation('reveal', 'open');
+    };
+
+    $scope.addCommentaire = function () {
+      if($scope.currentBeneficiaire.newComment == undefined || $scope.currentBeneficiaire.newComment.length == 0){
+        $scope.currentError = {isCommentEmpty: true};
+      }else {
+        var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+        var comment = {
+          distributionId: -1,
+          beneficiaireId: $scope.currentBeneficiaire.id,
+          comment: $scope.currentBeneficiaire.newComment,
+          date: formatDate(new Date())
+        };
+        beneficiairesPresentByDistribution.push(comment);
+        beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
+        $scope.getComments();
+        $scope.currentBeneficiaire.newComment = null;
+      }
     };
 
     $scope.cancelBeneficiaireDetailDeletePopup = function () {

@@ -70,3 +70,17 @@
     }
   }
 })();
+
+formatDate = function (date) {
+  if(date == undefined){
+    date = new Date();
+  }
+  var month = (date.getMonth() + 1) + "";
+  var pad = "00";
+  var paddedMonth = pad.substring(0, pad.length - month.length) + month;
+  var day = date.getDate().toString();
+  if (day.length == 1) {
+    day = "0" + day;
+  }
+  return date.getFullYear() + "-" + paddedMonth + "-" + day;
+};

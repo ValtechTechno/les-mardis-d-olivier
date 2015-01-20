@@ -84,4 +84,52 @@ describe("BeneficiaireDetailController", function () {
     expect(beneficiaires[0].firstName).toEqual("A11");
     expect(beneficiaires[0].lastName).toEqual("A11");
   });
+
+  it('should show an beneficiaire comments', function () {
+    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
+      {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
+      {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19"}
+    ]));
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "A1",
+      "lastName": "A1"
+    }, {"id": "2", "code": 2, "firstName": "A2", "lastName": "A2"}]));
+    localStorage.setItem("distributions", angular.toJson([{
+      "distributionDate": "2014-09-16",
+      "id": 1
+    }]));
+    scope.$digest();
+    scope.openBeneficiaireList();
+    routeParams.beneficiaireId = 1;
+    scope.openBeneficiaireDetail();
+    expect(scope.currentBeneficiaire.comments.length).toEqual(2);
+    expect(scope.currentBeneficiaire.comments[0]).toEqual("2015-01-19 : message2");
+    expect(scope.currentBeneficiaire.comments[1]).toEqual("2014-09-16 : message");
+  });
+
+  it('should add an beneficiaire comment', function () {
+    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
+      {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
+      {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19"}
+    ]));
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "A1",
+      "lastName": "A1"
+    }, {"id": "2", "code": 2, "firstName": "A2", "lastName": "A2"}]));
+    localStorage.setItem("distributions", angular.toJson([{
+      "distributionDate": "2014-09-16",
+      "id": 1
+    }]));
+    scope.$digest();
+    scope.openBeneficiaireList();
+    routeParams.beneficiaireId = 1;
+    scope.openBeneficiaireDetail();
+    scope.currentBeneficiaire.newComment = "Test New Comment";
+    scope.addCommentaire();
+    expect(scope.currentBeneficiaire.comments.length).toEqual(3);
+  });
 });

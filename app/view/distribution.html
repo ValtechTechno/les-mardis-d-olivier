@@ -29,12 +29,10 @@
           </td>
           <td ng-hide="readOnly">
             <a id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
-
-              <div id="commentsDetail">
-                <ul ng-repeat="comments in user.comments">
-                  <li>{{comments}}</li>
-                </ul>
-              </div>
+              <table id="commentsDetail">
+                <tr ng-repeat="comments in user.comments track by $index"><td>{{comments}}</td>
+                </tr>
+              </table>
             </a>
           </td>
           <td>

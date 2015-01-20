@@ -1,4 +1,5 @@
-<form name="addDistributionForm">
+<h3><b>Profil</b></h3>
+<form name="updateBeneficiaireForm">
     <div class="row">
       <div class="medium-9 columns">
         <label>Code<input type="text" name="code" ng-model="currentBeneficiaire.code" ng-required="true"/></label>
@@ -51,4 +52,30 @@
       </button>
     </div>
   </div>
+</div>
+
+<h3><b>Commentaires</b></h3>
+<form name="addCommentaireForm">
+<div class="row">
+  <div class="medium-6 columns left">
+  <input type="text" name="newComment" ng-model="currentBeneficiaire.newComment" placeholder="-- insérer un commentaire --"
+         required/>
+    </div>
+  <div class="medium-3 columns left">
+  <button ng-click="addCommentaire()" class="button secondary expand">Ajouter un commentaire
+  </button>
+    </div>
+</div>
+</form>
+<p class="errorMessage" ng-show="currentError.isCommentEmpty">Veuillez renseigner un commentaire</p>
+
+<div ng-show="currentBeneficiaire.comments.length != 0">
+  <table class="medium-9 columns">
+    <tr ng-repeat="comment in currentBeneficiaire.comments track by $index">
+      <td>{{comment}}</td>
+    </tr>
+  </table>
+</div>
+<div ng-show="currentBeneficiaire.comments.length == 0">
+  Aucun commentaire pour ce bénéficiaire.
 </div>
