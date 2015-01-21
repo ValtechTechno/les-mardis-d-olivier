@@ -29,6 +29,10 @@
         templateUrl: 'app/view/aboutEdit.html',
         controllerAs: 'aboutEdit'
       })
+      .when('/export', {
+        controller: 'ExportController',
+        templateUrl: 'app/view/export.html'
+      })
       .otherwise({
         redirectTo: '/distributions'
       });

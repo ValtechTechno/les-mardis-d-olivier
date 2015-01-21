@@ -1,0 +1,57 @@
+<button id="exportButton" ng-click="exportData()" class="button secondary">Exporter
+</button>
+<div id="toExport">
+  <h3><b>Beneficiaires</b></h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>Nom</th>
+      <th>Prenom</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="benef in beneficiaires">
+      <td>{{benef.code}}</td>
+      <td>{{benef.lastName}}</td>
+      <td>{{benef.firstName}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <h3><b>Distributions</b></h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="distribution in distributions">
+      <td>{{distribution.id}}</td>
+      <td>{{distribution.distributionDate}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <h3><b>Beneficiaires - Distributions</b></h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Distribution Id</th>
+      <th>Beneficiaire Id</th>
+      <th>Date</th>
+      <th>Commentaire</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="beneficiairesPresent in beneficiairesPresentByDistribution">
+      <td>{{beneficiairesPresent.distributionId}}</td>
+      <td>{{beneficiairesPresent.beneficiaireId}}</td>
+      <td>{{beneficiairesPresent.date}}</td>
+      <td>{{beneficiairesPresent.comment}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <h3><b>A propos</b></h3>
+  {{about}}
+</div>
