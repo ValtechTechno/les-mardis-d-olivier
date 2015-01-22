@@ -103,4 +103,5 @@ getNextId = function(list){
   } else {
     nextId = parseInt(list[list.length - 1].id) + 1 + '';
   }
+  return nextId;
 }

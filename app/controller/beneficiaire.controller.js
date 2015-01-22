@@ -52,7 +52,7 @@
 
     $scope.addBeneficiaire = function() {
       if (commonService.userFormValidation($scope, false)) {
-        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.lastName)
+        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName)
         $scope.beneficiaires.push(newBeneficiaire);
         return newBeneficiaire;
       } else {
