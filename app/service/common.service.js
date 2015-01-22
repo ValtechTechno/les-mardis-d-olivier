@@ -84,3 +84,23 @@ formatDate = function (date) {
   }
   return date.getFullYear() + "-" + paddedMonth + "-" + day;
 };
+
+getNewBeneficiaire = function(nextId, code, lastName, firstName){
+  var newBeneficiaire = {
+    id: nextId,
+    code: code,
+    firstName: firstName,
+    lastName: lastName,
+    isPresent: false
+  };
+  return newBeneficiaire;
+}
+
+getNextId = function(list){
+  var nextId;
+  if (list.length == 0) {
+    nextId = '1';
+  } else {
+    nextId = parseInt(list[list.length - 1].id) + 1 + '';
+  }
+}

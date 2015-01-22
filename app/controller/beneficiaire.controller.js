@@ -52,19 +52,7 @@
 
     $scope.addBeneficiaire = function() {
       if (commonService.userFormValidation($scope, false)) {
-        var nextId;
-        if ($scope.beneficiaires.length == 0) {
-          nextId = '1';
-        } else {
-          nextId = parseInt($scope.beneficiaires[$scope.beneficiaires.length - 1].id) + 1 + '';
-        }
-        var newBeneficiaire = {
-          id: nextId,
-          code: $scope.currentBeneficiaire.code,
-          firstName: $scope.currentBeneficiaire.firstName,
-          lastName: $scope.currentBeneficiaire.lastName,
-          isPresent: false
-        };
+        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.lastName)
         $scope.beneficiaires.push(newBeneficiaire);
         return newBeneficiaire;
       } else {

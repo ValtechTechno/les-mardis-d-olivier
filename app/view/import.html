@@ -1,0 +1,25 @@
+<button id="deleteDataButton" ng-show="beneficiaires.length!=0" ng-click="deleteExistingData()" class="button secondary">Supprimer les données existantes.</button>
+<h3><b>Import des beneficiaires</b></h3>
+<p>Copiez les données depuis excel avec Ctrl + V</p>
+<p>Toutes les colonnes sont obligatoires.</p>
+<div ng-show="parsedPaste.length!=0 && currentError.hasImportError == false">
+  Voulez-vous importer les données ?
+  <button id="exportButton" ng-click="importData()" class="button secondary">Importer</button>
+</div>
+<p class="errorMessage" ng-show="currentError.hasImportError">La saisie comporte des erreurs.</p>
+<p class="errorMessage" ng-show="currentError.importErrorDuplicateCode">Il existe un ou plusieurs codes dupliqués.</p>
+<p class="errorMessage" ng-show="currentError.importErrorMissingInformation">Une information est manquante</p>
+<angular-paste ng-model="rawPaste" ng-array="parsedPaste"/>
+<table class="table table-striped table-bordered">
+  <thead>
+  <tr>
+    <th>Code</th>
+    <th>Nom</th>
+    <th>Prenom</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="row in parsedPaste track by $index">
+    <td ng-repeat="col in row track by $index">{{col}}</td>
+  </tr>
+</table>

@@ -33,6 +33,10 @@
         controller: 'ExportController',
         templateUrl: 'app/view/export.html'
       })
+      .when('/import', {
+        controller: 'ImportController',
+        templateUrl: 'app/view/import.html'
+      })
       .otherwise({
         redirectTo: '/distributions'
       });
