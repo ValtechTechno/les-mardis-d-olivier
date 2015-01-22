@@ -3,11 +3,12 @@
 
   angular
       .module('mardisDolivier')
-      .controller('AboutController', AboutController);
+      .controller('AboutEditController', AboutEditController);
 
-  function AboutController() {
+  function AboutEditController($location) {
     var vm = this;
     vm.aboutInformation = null;
+    vm.saveAboutPage = saveAboutPage;
 
     activate();
 
@@ -16,6 +17,11 @@
       if (aboutFromStorage != null) {
         vm.aboutInformation = aboutFromStorage;
       }
+    }
+
+    function saveAboutPage() {
+      localStorage.setItem('aboutInformation', angular.toJson(vm.aboutInformation));
+      $location.path('/about');
     }
   }
 

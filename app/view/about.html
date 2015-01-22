@@ -1,22 +1,9 @@
-<div ng-show="currentPage.aboutPage">
-  <div class="row">
-    <div class="medium-12 columns">
-      <textarea id="editor" class="editor" ng-model="aboutInformation" disabled></textarea>
+<div class="row">
+  <div class="medium-12 columns">
+    <textarea id="editor" class="editor" ng-model="about.aboutInformation" disabled></textarea>
 
-      <div class="medium-4 columns right">
-        <button ng-click="openAboutPageUpdate()" class="button secondary expand">Modifier</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div ng-show="currentPage.aboutPageUpdate">
-  <div class="row">
-    <div class="medium-12 columns">
-      <textarea id="editorUpdate" class="editor" ng-model="aboutInformation" contenteditable="true"></textarea>
-    </div>
     <div class="medium-4 columns right">
-      <button ng-click="saveAboutPage()" class="button secondary expand">Enregistrer</button>
+      <a href="#/about/edit" class="button secondary expand">Modifier</a>
     </div>
   </div>
 </div>

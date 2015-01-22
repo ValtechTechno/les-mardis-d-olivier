@@ -21,7 +21,13 @@
       })
       .when('/about', {
         controller: 'AboutController',
-        templateUrl: 'app/view/about.html'
+        templateUrl: 'app/view/about.html',
+        controllerAs: 'about'
+      })
+      .when('/about/edit', {
+        controller: 'AboutEditController',
+        templateUrl: 'app/view/aboutEdit.html',
+        controllerAs: 'aboutEdit'
       })
       .otherwise({
         redirectTo: '/distributions'
