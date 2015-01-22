@@ -27,7 +27,8 @@
       }
     };
 
-    $scope.openBeneficiaireDetail = function(beneficiaire, fromDistribution) {
+    $scope.openBeneficiaireDetail = function(beneficiaire) {
+      console.log("tres="+beneficiaire.id);
       $location.path("/beneficiaireDetail/"+beneficiaire.id);
     }
 

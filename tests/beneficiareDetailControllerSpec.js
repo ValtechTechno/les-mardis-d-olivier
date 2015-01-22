@@ -75,6 +75,8 @@ describe("BeneficiaireDetailController", function () {
     scope.currentBeneficiaire.code = 2;
     scope.currentBeneficiaire.firstName = "A11";
     scope.currentBeneficiaire.lastName = "A11";
+    scope.currentBeneficiaire.description = "test1";
+    scope.currentBeneficiaire.excluded = true;
     scope.saveBeneficiaireDetail();
     expect(scope.currentError.isCodeNotUnique).toBe(true);
     scope.currentBeneficiaire.code = 3;
@@ -83,9 +85,11 @@ describe("BeneficiaireDetailController", function () {
     expect(beneficiaires[0].code).toEqual(3);
     expect(beneficiaires[0].firstName).toEqual("A11");
     expect(beneficiaires[0].lastName).toEqual("A11");
+    expect(beneficiaires[0].description).toEqual("test1");
+    expect(beneficiaires[0].excluded).toEqual(true);
   });
 
-  it('should show an beneficiaire comments', function () {
+  it('should show an beneficiaire informations', function () {
     localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
       {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
       {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19"}
@@ -107,6 +111,7 @@ describe("BeneficiaireDetailController", function () {
     expect(scope.currentBeneficiaire.comments.length).toEqual(2);
     expect(scope.currentBeneficiaire.comments[0]).toEqual("2015-01-19 : message2");
     expect(scope.currentBeneficiaire.comments[1]).toEqual("2014-09-16 : message");
+    expect(scope.currentBeneficiaire.visiteNumber).toEqual(2);
   });
 
   it('should add an beneficiaire comment', function () {

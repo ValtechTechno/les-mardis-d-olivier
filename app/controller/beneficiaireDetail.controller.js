@@ -14,7 +14,19 @@
       $scope.currentBeneficiaire = beneficiairesService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires);
       $scope.currentBeneficiaire.codeNumber = Number($scope.currentBeneficiaire.code);
       $scope.getComments();
+      $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire.id);
     };
+
+    $scope.getVisiteNumber = function(beneficiaireId) {
+      var visiteNumber = 0;
+      var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+      for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
+        if(beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId){
+          visiteNumber++;
+        }
+      }
+      return visiteNumber;
+    }
 
     $scope.getComments = function(){
       $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire.id, -1, beneficiairesService);
