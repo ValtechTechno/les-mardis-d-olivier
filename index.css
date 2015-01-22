@@ -94,3 +94,7 @@ select {
   outline: none;
   resize: none;
 }
+
+.clickable {
+  cursor: pointer;
+}

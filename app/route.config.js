@@ -15,7 +15,7 @@
         controller: 'BeneficiaireController',
         templateUrl: 'app/view/beneficiaire.html'
       })
-      .when('/beneficiaires/:beneficiaireId?', {
+      .when('/beneficiaires/:beneficiaireId', {
         controller: 'BeneficiaireDetailController',
         templateUrl: 'app/view/beneficiaireDetail.html'
       })

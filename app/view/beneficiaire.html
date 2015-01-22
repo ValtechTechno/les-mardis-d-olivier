@@ -1,60 +1,53 @@
-<div ng-show="currentPage.beneficiaireList">
-  <form name="addBeneficiaireForm">
-    <div class="row" ng-hide="readOnly">
-      <div class="medium-12 columns">
-        <label>Nouveau bénéficiaire</label>
+<form name="addBeneficiaireForm">
+  <div class="row" ng-hide="readOnly">
+    <div class="medium-12 columns">
+      <label>Nouveau bénéficiaire</label>
 
-        <div class="row">
-          <div class="medium-3 columns">
-            <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code"
-                   placeholder="-- code --" required readonly/>
-          </div>
-          <div class="medium-3 columns">
-            <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --"
-                   required/>
-          </div>
-          <div class="medium-3 columns">
-            <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --"
-                   required/>
-          </div>
-          <div class="medium-3 columns right">
-            <button ng-click="addBeneficiaireFromList()" class="button secondary expand">Ajouter un bénéficiaire
-            </button>
-          </div>
+      <div class="row">
+        <div class="medium-3 columns">
+          <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code"
+                 placeholder="-- code --" required readonly/>
+        </div>
+        <div class="medium-3 columns">
+          <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --"
+                 required/>
+        </div>
+        <div class="medium-3 columns">
+          <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --"
+                 required/>
+        </div>
+        <div class="medium-3 columns right">
+          <button ng-click="addBeneficiaireFromList()" class="button secondary expand">Ajouter un bénéficiaire
+          </button>
         </div>
       </div>
     </div>
-    <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
+  </div>
+  <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
 
-    <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
-  </form>
+  <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
+</form>
 
-  <div class="row">
-    <div class="medium-12 columns">
-      <table class="table">
-        <thead>
-        <tr>
-          <td>Code</td>
-          <td>Nom</td>
-          <td>Prénom</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td colspan="6"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="user in beneficiaires | filter:searchBeneficiaire">
-          <td>{{user.code}}</td>
-          <td>{{user.lastName}}</td>
-          <td>{{user.firstName}}</td>
-          <td>
-            <a id="BeneficiaireListDetail" class="ui-icon ui-icon-search"
-               ng-href="{{'#/beneficiaires/' + user.id}}"/>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+<div class="row">
+  <div class="medium-12 columns">
+    <table class="table">
+      <thead>
+      <tr>
+        <td>Code</td>
+        <td>Nom</td>
+        <td>Prénom</td>
+      </tr>
+      <tr>
+        <td colspan="3"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire" ng-click="openBeneficiaireDetail(user.id)">
+        <td>{{user.code}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.firstName}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
