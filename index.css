@@ -71,11 +71,6 @@ select {
   color: white;
 }
 
-#confirmDeletePopup {
-  width: 500px;
-  text-align: center;
-}
-
 .editor {
   max-height: 500px;
   height: 500px;
