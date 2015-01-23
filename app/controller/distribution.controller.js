@@ -115,7 +115,7 @@ storeDistribution = function (distribution, beneficiairesService) {
   }
   var distributions = beneficiairesService.allDistributions();
   var nextId;
-  if (distributions == null) {
+  if (distributions == null || distributions.length == 0) {
     distributions = [];
     nextId = 1;
   } else if (distributions.filter(function (storedDistribution) {

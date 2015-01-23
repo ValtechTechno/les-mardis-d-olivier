@@ -2,7 +2,11 @@
     <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | DateWithJQueryUiDatePicker}}
       ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
   </div>
-
+  <div class="row">
+    <div class="medium-9 columns">
+      <textarea name="description" placeholder="-- insérer un commentaire global --" ng-model="currentDistribution.comment" ng-change="writeDistributionComment(currentDistribution.comment)" ng-model-options="{debounce:1000}" ></textarea>
+    </div>
+  </div>
   <div class="row">
     <div class="medium-12 columns">
       <table class="table">
@@ -35,7 +39,7 @@
             </a>
           </td>
           <td>
-            <input type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)"
+            <input type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)" ng-model-options="{debounce:1000}"
                    ng-disabled="readOnly || !user.isPresent"/>
           </td>
         </tr>

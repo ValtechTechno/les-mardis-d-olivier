@@ -38,6 +38,10 @@
 
     $scope.showDistribution();
 
+    $scope.writeDistributionComment = function (comment) {
+      $scope.currentDistribution.comment = comment;
+      beneficiairesService.updateDistribution($scope.currentDistribution);
+    }
     $scope.writeComment = function (beneficiaireId, message) {
       if (!$scope.readOnly) {
         var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();

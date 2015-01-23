@@ -18,10 +18,22 @@
       saveDistributions: saveDistributions,
       beneficiairesPresentByDistribution: beneficiairesPresentByDistribution,
       saveBeneficiairesPresentByDistribution: saveBeneficiairesPresentByDistribution,
-      findDistributionById: findDistributionById
+      findDistributionById: findDistributionById,
+      updateDistribution: updateDistribution
     };
 
     return service;
+
+    function updateDistribution(distribution) {
+      var distributions = allDistributions();
+      for (var i = 0; i < distributions.length; i++) {
+        if(distributions[i].id == distribution.id){
+          distributions[i] = distribution;
+          break;
+        }
+      }
+      saveDistributions(distributions);
+    }
 
     function loadBeneficiaires() {
       var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
@@ -56,7 +68,11 @@
     }
 
     function allDistributions() {
-      return angular.fromJson(localStorage.getItem('distributions'));
+      var distributions = angular.fromJson(localStorage.getItem('distributions'));
+      if (distributions === null) {
+        distributions = [];
+      }
+      return distributions;
     }
 
     function saveDistributions(distributions) {

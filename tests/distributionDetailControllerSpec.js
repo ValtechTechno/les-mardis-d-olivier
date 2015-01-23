@@ -178,4 +178,24 @@ describe("DistributionDetailController", function () {
     expect(beneficiaires[0].comments[0]).toEqual("[DATE] : message2");
   });
 
+  it('should be possible to save a comment on a distribution', function () {
+    localStorage.setItem("beneficiaires", angular.toJson([{
+      "id": "1",
+      "code": 1,
+      "firstName": "John",
+      "lastName": "Rambo"
+    }]));
+    localStorage.setItem("distributions", angular.toJson([{
+      "distributionDate": "2014-08-04",
+      "id": 1
+    }]));
+    routeParams.distributionId = 1;
+    scope.showDistribution();
+    var commentaireDistribution = "commentaire general";
+    scope.writeDistributionComment(commentaireDistribution);
+
+    var distributions = beneficiairesService.allDistributions();
+    expect(distributions[0].comment).toEqual(commentaireDistribution);
+  });
+
 });
