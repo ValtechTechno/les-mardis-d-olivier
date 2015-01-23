@@ -27,10 +27,6 @@ select {
   width: 100%;
 }
 
-.table .button {
-  margin-bottom: 0;
-}
-
 .errorMessage {
   background-color: red;
   color: white;
