@@ -1,68 +1,72 @@
 <h3><b>Profil</b></h3>
 <form name="updateBeneficiaireForm">
-    <div class="row">
-      <div class="medium-9 columns">
-        <label>Code<input type="number" name="code" ng-model="currentBeneficiaire.codeNumber" ng-required="true" readonly/></label>
-      </div>
+  <div class="row">
+    <div class="medium-2 columns">
+      <label>Code
+        <input type="number" name="code" ng-model="currentBeneficiaire.codeNumber" ng-required="true" readonly/>
+      </label>
     </div>
-    <div class="row">
-      <div class="medium-9 columns">
-        <label>Nom<input type="text" name="lastName" ng-model="currentBeneficiaire.lastName"
-                         ng-required="true"/></label>
-      </div>
+    <div class="medium-5 columns">
+      <label>Nom
+        <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" ng-required="true"/>
+      </label>
     </div>
-    <div class="row">
-      <div class="medium-9 columns">
-        <label>Prénom<input type="text" name="firstName" ng-model="currentBeneficiaire.firstName"
-                            ng-required="true"/></label>
-      </div>
+    <div class="medium-5 columns">
+      <label>Prénom
+        <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" ng-required="true"/>
+      </label>
     </div>
-    <div class="row">
-      <div class="medium-9 columns">
-        <label>Description<textarea name="description" placeholder="-- insérer une description --" ng-model="currentBeneficiaire.description"  ng-required="false"></textarea></label>
-      </div>
+  </div>
+  <div class="row">
+    <div class="medium-9 columns">
+      <label>Description
+        <textarea name="description" placeholder="-- insérer une description --"
+                  ng-model="currentBeneficiaire.description" ng-required="false"></textarea>
+      </label>
     </div>
-    <div class="row">
-      <div class="medium-3 columns">
-        <label>Venues : {{currentBeneficiaire.visiteNumber}}</label>
-      </div>
-      <div class="medium-9 columns">
-        <label>Exclusion <input type="checkbox" name="excluded" ng-model="currentBeneficiaire.excluded"
-                            ng-required="false"/></label>
-      </div>
+    <div class="medium-3 columns">
+      <label>Nombre de présences
+        <input type="text" disabled="disabled" ng-model="currentBeneficiaire.visiteNumber"/>
+      </label>
     </div>
-    <div class="row">
-      <div class="medium-3 columns left">
-        <button id="deleteBeneficiaireDetail" ng-click="deleteBeneficiaireDetail()" class="button secondary expand">
-          Supprimer
-        </button>
-      </div>
-      <div class="medium-3 columns left">
-        <button id="cancelBeneficiaireDetail" ng-click="cancelBeneficiaireDetail()" class="button secondary expand">
-          Annuler
-        </button>
-      </div>
-      <div class="medium-3 columns left">
-        <button id="saveBeneficiaireDetail" ng-click="saveBeneficiaireDetail()" class="button secondary expand">
-          Enregistrer
-        </button>
-      </div>
+    <div class="medium-3 columns">
+      <input type="checkbox" id="excluded" ng-model="currentBeneficiaire.excluded" ng-required="false">
+        <label for="excluded">Exclus</label>
+      </input>
     </div>
-    <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
+  </div>
+  <div class="row">
+    <div class="medium-3 columns right">
+      <button id="saveBeneficiaireDetail" ng-click="saveBeneficiaireDetail()" class="button secondary expand">
+        Enregistrer
+      </button>
+    </div>
+    <div class="medium-3 columns right">
+      <button id="cancelBeneficiaireDetail" ng-click="cancelBeneficiaireDetail()" class="button secondary expand">
+        Annuler
+      </button>
+    </div>
+    <div class="medium-3 columns right">
+      <button id="deleteBeneficiaireDetail" ng-click="deleteBeneficiaireDetail()" class="button secondary expand">
+        Supprimer
+      </button>
+    </div>
+  </div>
+  <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
 
-    <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
-  </form>
-</div>
-</div>
+  <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
+</form>
 
 <div id="confirmDeletePopup" class="reveal-modal" data-reveal>
-  <p>Etes vous sûr de vouloir supprimer ce bénéficiaire ?</p>
+  <p>Êtes-vous sûr de vouloir supprimer ce bénéficiaire ?</p>
+
   <div class="row">
     <div class="medium-6 columns left">
       <button ng-click="cancelBeneficiaireDetailDeletePopup()" class="button secondary expand">Annuler</button>
     </div>
     <div class="medium-6 columns left">
-      <button id="confirmDelete" ng-click="confirmBeneficiaireDetailDeletePopup()" class="button secondary expand">Supprimer
+      <button id="confirmDelete" ng-click="confirmBeneficiaireDetailDeletePopup()" class="button secondary expand">
+        Supprimer
       </button>
     </div>
   </div>
@@ -70,21 +74,22 @@
 
 <h3><b>Commentaires</b></h3>
 <form name="addCommentaireForm">
-<div class="row">
-  <div class="medium-6 columns left">
-  <input type="text" name="newComment" ng-model="currentBeneficiaire.newComment" placeholder="-- insérer un commentaire --"
-         required/>
+  <div class="row">
+    <div class="medium-9 columns left">
+      <input type="text" name="newComment" ng-model="currentBeneficiaire.newComment"
+             placeholder="-- insérer un commentaire --"
+             required/>
     </div>
-  <div class="medium-3 columns left">
-  <button ng-click="addCommentaire()" class="button secondary expand">Ajouter un commentaire
-  </button>
+    <div class="medium-3 columns left">
+      <button ng-click="addCommentaire()" class="button secondary expand">Ajouter un commentaire
+      </button>
     </div>
-</div>
+  </div>
 </form>
 <p class="errorMessage" ng-show="currentError.isCommentEmpty">Veuillez renseigner un commentaire</p>
 
 <div ng-show="currentBeneficiaire.comments.length != 0">
-  <table class="medium-9 columns">
+  <table class="medium-12 columns">
     <tr ng-repeat="comment in currentBeneficiaire.comments track by $index">
       <td>{{comment}}</td>
     </tr>
