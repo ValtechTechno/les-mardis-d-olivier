@@ -17,7 +17,8 @@
       allDistributions: allDistributions,
       saveDistributions: saveDistributions,
       beneficiairesPresentByDistribution: beneficiairesPresentByDistribution,
-      saveBeneficiairesPresentByDistribution: saveBeneficiairesPresentByDistribution
+      saveBeneficiairesPresentByDistribution: saveBeneficiairesPresentByDistribution,
+      findDistributionById: findDistributionById
     };
 
     return service;
@@ -28,6 +29,16 @@
         beneficiaires = [];
       }
       return beneficiaires;
+    }
+
+    function findDistributionById(distributionId, _distributions) {
+      var distributions = _distributions != null ? _distributions : allDistributions();
+      for (var i = 0; i < distributions.length; i++) {
+        if(distributions[i].id == distributionId){
+          return distributions[i];
+        }
+      }
+      return distributions;
     }
 
     function findBeneficiaireById(beneficiaireId, _beneficiaires) {

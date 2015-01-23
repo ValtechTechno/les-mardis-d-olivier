@@ -1,54 +1,4 @@
-<div ng-show="currentPage.distributionDetail">
-  <div class="row">
-    <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | DateWithJQueryUiDatePicker}}
-      ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
-  </div>
-
-  <div class="row">
-    <div class="medium-12 columns">
-      <table class="table">
-        <thead>
-        <tr>
-          <td>Code</td>
-          <td>Nom</td>
-          <td>Prénom</td>
-          <td>Présent</td>
-          <td colspan="2">Commentaire</td>
-        </tr>
-        <tr>
-          <td colspan="6"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."/></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="user in beneficiaires | filter:searchBeneficiaire">
-          <td>{{user.code}}</td>
-          <td>{{user.lastName}}</td>
-          <td>{{user.firstName}}</td>
-          <td>
-            <input type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user)" ng-disabled="readOnly"/>
-          </td>
-          <td ng-hide="readOnly">
-            <a id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
-              <table id="commentsDetail">
-                <tr ng-repeat="comments in user.comments track by $index">
-                  <td>{{comments}}</td>
-                </tr>
-              </table>
-            </a>
-          </td>
-          <td>
-            <input type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)"
-                   ng-disabled="readOnly || !user.isPresent"/>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<div ng-show="currentPage.distributionList">
-  <form name="addDistributionForm">
+<form name="addDistributionForm">
     <div class="row">
       <div class="medium-9 columns">
         <label>
@@ -66,7 +16,7 @@
     </div>
     <div class="row">
       <div class="medium-4 columns right">
-        <button ng-click="startNewDistribution()" class="button secondary expand">Commencer la distribution</button>
+        <a ng-href="{{'#/distributions/' + currentDistribution.id}}"><button ng-click="startNewDistribution()" class="button secondary expand">Commencer la distribution</button></a>
       </div>
     </div>
   </form>
@@ -88,15 +38,13 @@
         </thead>
         <tbody>
         <tr class="clickable" ng-repeat="distribution in distributions"
-            ng-click="loadDistribution(distribution.id, !$first)" title="{{$first ? 'Modifier' : 'Afficher'}}">
+            ng-click="loadDistribution(distribution.id)" title="Modifier">
           <td>{{distribution.distributionDate | DateWithJQueryUiDatePicker}}</td>
           <td>{{distribution.nbPlannedMeals}}</td>
           <td>{{distribution.nbBeneficiaires}}</td>
           <td>{{distribution.comments.length}}</td>
-          </td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
-</div>

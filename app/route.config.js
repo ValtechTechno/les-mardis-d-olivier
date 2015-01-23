@@ -11,6 +11,10 @@
         controller: 'DistributionController',
         templateUrl: 'app/view/distribution.html'
       })
+      .when('/distributions/:distributionId?', {
+        controller: 'DistributionDetailController',
+        templateUrl: 'app/view/distributionDetail.html'
+      })
       .when('/beneficiaires', {
         controller: 'BeneficiaireController',
         templateUrl: 'app/view/beneficiaire.html'

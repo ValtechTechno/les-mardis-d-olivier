@@ -82,7 +82,6 @@ angular
             $scope.validationImport(toReturn);
           }
           catch (err) {
-            console.log('error parsing as tabular data');
             console.log(err);
             $scope.currentError = {hasImportError: true};
             return null;

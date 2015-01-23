@@ -26,6 +26,7 @@ module.exports = function (config) {
       'app/mardisDOlivier.module.js',
       'app/datePicker.filter.js',
       'app/controller/distribution.controller.js',
+      'app/controller/distributionDetail.controller.js',
       'app/controller/beneficiaire.controller.js',
       'app/controller/beneficiaireDetail.controller.js',
       'app/controller/menu.controller.js',
