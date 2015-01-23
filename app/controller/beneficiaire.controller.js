@@ -14,10 +14,15 @@
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       $scope.currentBeneficiaire = {code: $scope.initNextCode()};
       $scope.currentPage = {beneficiaireList: true};
+      $scope.excludedFilter = false;
     };
 
     $scope.searchBeneficiaire = function (beneficiaire) {
       return commonService.searchBeneficiaire($scope, beneficiaire);
+    };
+
+    $scope.searchExcluded = function (beneficiaire) {
+      return ($scope.excludedFilter == true && beneficiaire.excluded == true) || ($scope.excludedFilter == false);
     };
 
     $scope.addBeneficiaireFromList = function () {

@@ -28,6 +28,7 @@
   <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
 </form>
 
+<input type="checkbox" id="excludedFilter" ng-model="excludedFilter"><label for="excludedFilter">Membres exclus seulement</label></<input>
 <div class="row">
   <div class="medium-12 columns">
     <table class="table">
@@ -42,7 +43,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire" ng-click="openBeneficiaireDetail(user.id)">
+      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire | filter:searchExcluded" ng-click="openBeneficiaireDetail(user.id)">
         <td>{{user.code}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.firstName}}</td>
