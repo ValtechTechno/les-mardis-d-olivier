@@ -30,7 +30,8 @@
           <td ng-hide="readOnly">
             <a id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
               <table id="commentsDetail">
-                <tr ng-repeat="comments in user.comments track by $index"><td>{{comments}}</td>
+                <tr ng-repeat="comments in user.comments track by $index">
+                  <td>{{comments}}</td>
                 </tr>
               </table>
             </a>
@@ -83,22 +84,15 @@
           <th>Repas prévus</th>
           <th>Bénéficiaires présents</th>
           <th>Commentaires</th>
-          <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="distribution in distributions">
+        <tr class="clickable" ng-repeat="distribution in distributions"
+            ng-click="loadDistribution(distribution.id, !$first)" title="{{$first ? 'Modifier' : 'Afficher'}}">
           <td>{{distribution.distributionDate | DateWithJQueryUiDatePicker}}</td>
           <td>{{distribution.nbPlannedMeals}}</td>
           <td>{{distribution.nbBeneficiaires}}</td>
           <td>{{distribution.comments.length}}</td>
-          <td>
-            <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, false)"
-                    ng-hide="!$first">Modifier
-            </button>
-            <button class="tiny button secondary expand" ng-click="loadDistribution(distribution.id, true)"
-                    ng-hide="$first">Afficher
-            </button>
           </td>
         </tr>
         </tbody>
