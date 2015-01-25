@@ -25,12 +25,12 @@
       })
       .when('/about', {
         controller: 'AboutController',
-        templateUrl: 'app/view/about.html',
+        templateUrl: 'app/about/about.html',
         controllerAs: 'about'
       })
       .when('/about/edit', {
         controller: 'AboutEditController',
-        templateUrl: 'app/view/aboutEdit.html',
+        templateUrl: 'app/about/about.edit.html',
         controllerAs: 'aboutEdit'
       })
       .when('/export', {
