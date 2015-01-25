@@ -9,11 +9,11 @@
     $routeProvider
       .when('/distributions', {
         controller: 'DistributionController',
-        templateUrl: 'app/view/distribution.html'
+        templateUrl: 'app/distribution/distribution.html'
       })
       .when('/distributions/:distributionId?', {
         controller: 'DistributionDetailController',
-        templateUrl: 'app/view/distributionDetail.html'
+        templateUrl: 'app/distribution/distributionDetail.html'
       })
       .when('/beneficiaires', {
         controller: 'BeneficiaireController',
