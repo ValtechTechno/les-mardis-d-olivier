@@ -17,11 +17,11 @@
       })
       .when('/beneficiaires', {
         controller: 'BeneficiaireController',
-        templateUrl: 'app/view/beneficiaire.html'
+        templateUrl: 'app/beneficiaire/beneficiaire.html'
       })
       .when('/beneficiaires/:beneficiaireId', {
         controller: 'BeneficiaireDetailController',
-        templateUrl: 'app/view/beneficiaireDetail.html'
+        templateUrl: 'app/beneficiaire/beneficiaireDetail.html'
       })
       .when('/about', {
         controller: 'AboutController',
