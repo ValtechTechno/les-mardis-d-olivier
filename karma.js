@@ -30,10 +30,10 @@ module.exports = function (config) {
       'app/beneficiaire/beneficiaires.service.js',
       'app/distribution/distribution.controller.js',
       'app/distribution/distributionDetail.controller.js',
-      'app/controller/menu.controller.js',
+      'app/menu.controller.js',
       'app/about/about.controller.js',
       'app/about/about.edit.controller.js',
-      'app/service/common.service.js',
+      'app/common.service.js',
       'tests/angular-mocks.js',
       'tests/**/*Spec.js'
     ],
