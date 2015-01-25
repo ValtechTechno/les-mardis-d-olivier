@@ -39,7 +39,7 @@
       })
       .when('/import', {
         controller: 'ImportController',
-        templateUrl: 'app/view/import.html'
+        templateUrl: 'app/import/import.html'
       })
       .otherwise({
         redirectTo: '/distributions'
