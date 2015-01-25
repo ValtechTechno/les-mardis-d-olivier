@@ -35,7 +35,7 @@
       })
       .when('/export', {
         controller: 'ExportController',
-        templateUrl: 'app/view/export.html'
+        templateUrl: 'app/export/export.html'
       })
       .when('/import', {
         controller: 'ImportController',
