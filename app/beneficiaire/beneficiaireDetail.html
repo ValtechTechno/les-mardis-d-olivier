@@ -70,27 +70,21 @@
 </div>
 
 <h3><b>Commentaires</b></h3>
-<form name="addCommentaireForm">
-  <div class="row">
-    <div class="medium-9 columns left">
-      <input type="text" name="newComment" ng-model="currentBeneficiaire.newComment"
-             placeholder="-- insérer un commentaire --"
-             required/>
-    </div>
-    <div class="medium-3 columns left">
-      <button ng-click="addCommentaire()" class="button secondary expand">Ajouter un commentaire
-      </button>
-    </div>
-  </div>
-</form>
-<p class="errorMessage" ng-show="currentError.isCommentEmpty">Veuillez renseigner un commentaire</p>
-
 <div ng-show="currentBeneficiaire.comments.length != 0">
-  <table class="medium-12 columns">
-    <tr ng-repeat="comment in currentBeneficiaire.comments track by $index">
-      <td>{{comment}}</td>
-    </tr>
-  </table>
+  <div class="row">
+    <table class="medium-12 columns">
+      <thead>
+      <tr>
+        <td>Commentaire</td>
+        <td>Favoris</td>
+      </tr>
+      </thead>
+      <tr ng-repeat="comment in currentBeneficiaire.comments track by $index">
+        <td>{{comment.text}}</td>
+        <td><input type="checkbox" ng-model="comment.isBookmark" ng-change="isBookmark(comment)"/></td>
+      </tr>
+    </table>
+  </div>
 </div>
 <div ng-show="currentBeneficiaire.comments.length == 0">
   Aucun commentaire pour ce bénéficiaire.

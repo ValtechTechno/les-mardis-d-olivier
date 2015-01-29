@@ -21,25 +21,25 @@ describe("BeneficiaireDetailController", function () {
       beneficiairesCommonService: beneficiairesCommonService
     });
 
-  }));
-
-  it('should delete a beneficiaire', function () {
-    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
-      {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
-      {"distributionId": "2", "beneficiaireId": "1", "comment": "message2"},
-      {"distributionId": "1", "beneficiaireId": "2"},
-      {"distributionId": "2", "beneficiaireId": "2"}
-    ]));
     localStorage.setItem("beneficiaires", angular.toJson([{
       "id": "1",
       "code": 1,
       "firstName": "A1",
       "lastName": "A1"
     }, {"id": "2", "code": 2, "firstName": "A2", "lastName": "A2"}]));
+    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
+      {"distributionId": "1", "beneficiaireId": "1", "comment": "message","isBookmark":false},
+      {"distributionId": "2", "beneficiaireId": "1", "comment": "message2","isBookmark":false},
+      {"distributionId": "1", "beneficiaireId": "2"},
+      {"distributionId": "2", "beneficiaireId": "2"}
+    ]));
     localStorage.setItem("distributions", angular.toJson([{
       "distributionDate": "2014-09-16",
       "id": 1
     }, {"distributionDate": "2014-09-18", "id": 2}]));
+  }));
+
+  it('should delete a beneficiaire', function () {
     scope.$digest();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
@@ -54,20 +54,6 @@ describe("BeneficiaireDetailController", function () {
   });
 
   it('should update an beneficiaire informations', function () {
-    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
-      {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
-      {"distributionId": "2", "beneficiaireId": "1", "comment": "message2"}
-    ]));
-    localStorage.setItem("beneficiaires", angular.toJson([{
-      "id": "1",
-      "code": 1,
-      "firstName": "A1",
-      "lastName": "A1"
-    }, {"id": "2", "code": 2, "firstName": "A2", "lastName": "A2"}]));
-    localStorage.setItem("distributions", angular.toJson([{
-      "distributionDate": "2014-09-16",
-      "id": 1
-    }, {"distributionDate": "2014-09-18", "id": 2}]));
     scope.$digest();
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
@@ -89,46 +75,22 @@ describe("BeneficiaireDetailController", function () {
     expect(beneficiaires[0].excluded).toEqual(true);
   });
 
-  it('should show an beneficiaire informations', function () {
+  it('should show a beneficiaire informations', function () {
     localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
       {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
       {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19"}
     ]));
-    localStorage.setItem("beneficiaires", angular.toJson([{
-      "id": "1",
-      "code": 1,
-      "firstName": "A1",
-      "lastName": "A1"
-    }, {"id": "2", "code": 2, "firstName": "A2", "lastName": "A2"}]));
-    localStorage.setItem("distributions", angular.toJson([{
-      "distributionDate": "2014-09-16",
-      "id": 1
-    }]));
     scope.$digest();
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
     expect(scope.currentBeneficiaire.comments.length).toEqual(2);
-    expect(scope.currentBeneficiaire.comments[0]).toEqual("2015-01-19 : message2");
-    expect(scope.currentBeneficiaire.comments[1]).toEqual("2014-09-16 : message");
+    expect(scope.currentBeneficiaire.comments[0].text).toEqual("2015-01-19 : message2");
+    expect(scope.currentBeneficiaire.comments[1].text).toEqual("2014-09-16 : message");
     expect(scope.currentBeneficiaire.visiteNumber).toEqual(2);
   });
 
   it('should add an beneficiaire comment', function () {
-    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
-      {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
-      {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19"}
-    ]));
-    localStorage.setItem("beneficiaires", angular.toJson([{
-      "id": "1",
-      "code": 1,
-      "firstName": "A1",
-      "lastName": "A1"
-    }, {"id": "2", "code": 2, "firstName": "A2", "lastName": "A2"}]));
-    localStorage.setItem("distributions", angular.toJson([{
-      "distributionDate": "2014-09-16",
-      "id": 1
-    }]));
     scope.$digest();
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
@@ -136,5 +98,20 @@ describe("BeneficiaireDetailController", function () {
     scope.currentBeneficiaire.newComment = "Test New Comment";
     scope.addCommentaire();
     expect(scope.currentBeneficiaire.comments.length).toEqual(3);
+  });
+
+  it('should bookmark an beneficiaire comment', function () {
+    localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
+      {"distributionId": "1", "beneficiaireId": "1", "comment": "message","isBookmark":false},
+      {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19","isBookmark":false}
+    ]));
+    scope.$digest();
+    scope.openBeneficiaireList();
+    routeParams.beneficiaireId = 1;
+    scope.openBeneficiaireDetail();
+    scope.isBookmark({"distributionId": "1","isBookmark":true});
+    var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+    expect(beneficiairesPresentByDistribution[0].isBookmark).toEqual(true);
+    expect(beneficiairesPresentByDistribution[1].isBookmark).toEqual(false);
   });
 });

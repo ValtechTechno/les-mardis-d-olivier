@@ -155,10 +155,11 @@ describe("DistributionDetailController", function () {
     expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
   });
 
-  it('should see older comments of a beneficiaire in distribution', function () {
+  it('should see older bookmarked comments of a beneficiaire in distribution', function () {
     localStorage.setItem("beneficiairesPresentByDistribution", angular.toJson([
-      {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
-      {"distributionId": "2", "beneficiaireId": "1", "comment": "message2"}
+      {"distributionId": "1", "beneficiaireId": "1", "comment": "message", "isBookmark":true},
+      {"distributionId": "2", "beneficiaireId": "1", "comment": "message2","isBookmark":true},
+      {"distributionId": "2", "beneficiaireId": "1", "comment": "message2","isBookmark":false}
     ]));
     localStorage.setItem("beneficiaires", angular.toJson([{
       "id": "1",
@@ -174,8 +175,8 @@ describe("DistributionDetailController", function () {
     var beneficiaires = retrieveBeneficiairesByDistribution(2, beneficiairesService, true);
 
     expect(beneficiaires[0].comment).toEqual("message2");
-    expect(beneficiaires[0].comments[1]).toEqual("2014-09-16 : message");
-    expect(beneficiaires[0].comments[0]).toEqual("[DATE] : message2");
+    expect(beneficiaires[0].comments[1].text).toEqual("2014-09-16 : message");
+    expect(beneficiaires[0].comments[0].text).toEqual("[DATE] : message2");
   });
 
   it('should be possible to save a comment on a distribution', function () {

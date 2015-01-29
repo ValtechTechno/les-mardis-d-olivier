@@ -17,6 +17,17 @@
       $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire.id);
     };
 
+    $scope.isBookmark = function (comment) {
+      var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+      for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
+        if(beneficiairesPresentByDistribution[i].distributionId == comment.distributionId && beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire.id){
+          beneficiairesPresentByDistribution[i].isBookmark = comment.isBookmark;
+          break;
+        }
+      }
+      beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
+    };
+
     $scope.getVisiteNumber = function(beneficiaireId) {
       var visiteNumber = 0;
       var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
@@ -29,7 +40,7 @@
     }
 
     $scope.getComments = function(){
-      $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire.id, -1, beneficiairesService);
+      $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire.id, -1, beneficiairesService, false);
     }
 
     $scope.cancelBeneficiaireDetail = function () {

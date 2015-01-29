@@ -32,7 +32,7 @@
         }
       }
       for (var i = 0; i < $scope.beneficiaires.length; i++) {
-        $scope.beneficiaires[i].comments = getLastComments($scope.beneficiaires[i].id, $scope.currentDistribution.id, beneficiairesService);
+        $scope.beneficiaires[i].comments = getLastComments($scope.beneficiaires[i].id, $scope.currentDistribution.id, beneficiairesService, true);
       }
     };
 
@@ -96,7 +96,7 @@ retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesSer
   var beneficiairesPresent = [];
   var beneficiaires = beneficiairesService.loadBeneficiaires();
   for (var i = 0; i < beneficiaires.length; i++) {
-    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId, beneficiairesService);
+    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId, beneficiairesService, true);
     var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
     if (index != -1) {
       beneficiaires[i].isPresent = true;
@@ -134,7 +134,7 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
 };
 
 /* Get the last 5 comments for distribution showing or all of them for profile page */
-getLastComments = function (beneficiaireId, distributionId, beneficiairesService) {
+getLastComments = function (beneficiaireId, distributionId, beneficiairesService, onlyBookmark) {
   var beneficiaireOldComments = [];
   var allDistributions = beneficiairesService.allDistributions();
   var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
@@ -144,8 +144,8 @@ getLastComments = function (beneficiaireId, distributionId, beneficiairesService
       break;
     }
     if (beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId &&
-      beneficiairesPresentByDistribution[i].comment != null) {
-      beneficiaireOldComments.push(getDateDistribution(allDistributions, beneficiairesPresentByDistribution[i], distributionId) + " : " + beneficiairesPresentByDistribution[i].comment);
+      beneficiairesPresentByDistribution[i].comment != null && ( onlyBookmark == false || onlyBookmark == true && beneficiairesPresentByDistribution[i].isBookmark == true)) {
+      beneficiaireOldComments.push({distributionId:beneficiairesPresentByDistribution[i].distributionId,text:getDateDistribution(allDistributions, beneficiairesPresentByDistribution[i], distributionId) + " : " + beneficiairesPresentByDistribution[i].comment, isBookmark: beneficiairesPresentByDistribution[i].isBookmark});
     }
   }
   return beneficiaireOldComments;

@@ -33,7 +33,7 @@
           <td ng-hide="readOnly">
             <a id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
               <table id="commentsDetail">
-                <tr ng-repeat="comments in user.comments track by $index"><td>{{comments}}</td>
+                <tr ng-repeat="comments in user.comments track by $index"><td>{{comments.text}}</td>
                 </tr>
               </table>
             </a>
