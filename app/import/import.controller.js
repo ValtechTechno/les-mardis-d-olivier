@@ -60,11 +60,6 @@ angular
       restrict:'E',
       link:function ($scope, element, attrs) {
 
-        //We do not want to eat up chars if some text box is focussed
-        //this variable will be set to true if focus is currently on
-        //a textbox
-        var inFocus = false;
-
         function parseTabular(text) {
           //The array we will return
           var toReturn = [];
@@ -112,7 +107,7 @@ angular
         $document.ready(function () {
           //Handles the Ctrl + V keys for pasting
           function handleKeyDown(e, args) {
-            if (!inFocus && e.which == keyCodes.V && (e.ctrlKey || e.metaKey)) {    // CTRL + V
+            if ($('#parsedPaste').is(':visible') && e.which == keyCodes.V && (e.ctrlKey || e.metaKey)) {    // CTRL + V
               //reset value of our box
               $('#myPasteBox').val('');
               //set it in focus so that pasted text goes inside the box
@@ -128,20 +123,6 @@ angular
               'C':67,
               'V':86
             }
-
-            //Setup live functions for focus check
-            //(we don't want to steal text if user is already
-            //focussed on a text element)
-            $('input').on("focus", 'textarea' , function () {
-              //If this is true, we wont respond to Ctrl + V
-              inFocus = true;
-            });
-
-            $('input').on("blur", 'textarea' ,function () {
-              //We are not on a text element so we will respond
-              //to Ctrl + V
-              inFocus = false;
-            });
 
             //Handle the key down event
             $(document).keydown(handleKeyDown);

@@ -9,7 +9,7 @@
 <p class="errorMessage" ng-show="currentError.hasImportError">La saisie comporte des erreurs.</p>
 <p class="errorMessage" ng-show="currentError.importErrorDuplicateCode">Il existe un ou plusieurs codes dupliqués.</p>
 <p class="errorMessage" ng-show="currentError.importErrorMissingInformation">Une information est manquante</p>
-<angular-paste ng-model="rawPaste" ng-array="parsedPaste"/>
+<angular-paste id="parsedPaste" ng-model="rawPaste" ng-array="parsedPaste"/>
 <table class="table table-striped table-bordered">
   <thead>
   <tr>
@@ -19,6 +19,9 @@
   </tr>
   </thead>
   <tbody>
+  <tr ng-show="parsedPaste.length==0">
+    <td colspan="3">Aucune donnée.</td>
+  </tr>
   <tr ng-repeat="row in parsedPaste track by $index">
     <td ng-repeat="col in row track by $index">{{col}}</td>
   </tr>
