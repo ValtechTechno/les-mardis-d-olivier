@@ -13,7 +13,6 @@
       $scope.resetAddBeneficiareForm();
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       $scope.currentBeneficiaire = {code: $scope.initNextCode()};
-      $scope.currentPage = {beneficiaireList: true};
       $scope.excludedFilter = false;
     };
 

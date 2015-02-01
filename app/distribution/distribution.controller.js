@@ -70,10 +70,6 @@
       $scope.currentDistribution.id = $scope.saveNewDistribution();
     };
 
-    $scope.openDistribution = function () {
-      $scope.currentPage = {distributionDetail: true};
-    };
-
     $scope.saveNewDistribution = function () {
       return storeDistribution({
         'distributionDate': $scope.currentDistribution.distributionDate,
