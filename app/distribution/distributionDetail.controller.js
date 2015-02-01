@@ -7,8 +7,6 @@
 
   function DistributionDetailController ($scope, $routeParams, beneficiairesService, commonService) {
 
-    commonService.init($scope);
-
     $scope.searchBeneficiaire = function (beneficiaire) {
       return commonService.searchBeneficiaire($scope, beneficiaire);
     };

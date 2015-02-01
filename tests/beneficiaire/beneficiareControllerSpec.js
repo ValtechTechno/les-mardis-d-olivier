@@ -14,7 +14,6 @@ describe("BeneficiaireController", function () {
     addBeneficiaireWithCode(firstName, lastName, scope.initNextCode());
   };
 
-
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(function () {
     localStorage.clear()
@@ -36,7 +35,6 @@ describe("BeneficiaireController", function () {
   }));
 
   it('should add a beneficiaire', function () {
-
     addBeneficiaire('John', 'Rambo');
 
     expect(scope.beneficiaires).toContain({id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false});
@@ -49,7 +47,6 @@ describe("BeneficiaireController", function () {
   });
 
   it('calculates the beneficiaire id by incrementing the last id in the list', function () {
-
     addBeneficiaire('John', 'Rambo');
     addBeneficiaire('Alix', 'Rambo');
     addBeneficiaire('Lana', 'Rambo');
@@ -64,7 +61,6 @@ describe("BeneficiaireController", function () {
   });
 
   it('should prevent the user to add an existing beneficiaire', function () {
-
     addBeneficiaire('John', 'Rambo');
     addBeneficiaire('John', 'Rambo');
 
@@ -73,7 +69,6 @@ describe("BeneficiaireController", function () {
   });
 
   it('should prevent the user to add an existing id for beneficiaire', function () {
-
     addBeneficiaireWithCode('John', 'Rambo', '1');
     addBeneficiaireWithCode('Michel', 'Rambo', '1');
 
@@ -82,7 +77,6 @@ describe("BeneficiaireController", function () {
   });
 
   it('should not allow to add a beneficiaire with empty first name or last name', function () {
-
     addBeneficiaire('', '');
     addBeneficiaire('John', '');
     addBeneficiaire('', 'Rambo');
@@ -91,10 +85,8 @@ describe("BeneficiaireController", function () {
   });
 
   it('should save beneficiaires to localStorage', function () {
-    scope.$digest();
     addBeneficiaire('foo', 'bar');
-    scope.$digest();
-    scope.$apply();
+
     expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","code":1,"firstName":"foo","lastName":"bar"}]');
   });
 

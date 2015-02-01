@@ -6,9 +6,6 @@
       .controller('BeneficiaireDetailController', BeneficiaireDetailController);
 
   function BeneficiaireDetailController ($scope, $routeParams, beneficiairesService, commonService, $location) {
-
-    commonService.init($scope);
-
     $scope.openBeneficiaireDetail = function () {
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       $scope.currentBeneficiaire = beneficiairesService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires);

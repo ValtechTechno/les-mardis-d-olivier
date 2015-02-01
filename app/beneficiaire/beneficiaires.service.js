@@ -64,7 +64,19 @@
     }
 
     function saveBeneficiaires(beneficiaires) {
-      localStorage.setItem('beneficiaires', angular.toJson(beneficiaires));
+      var cleanBeneficiairesList = [];
+      for (var i = 0; i < beneficiaires.length; i++) {
+        var beneficiaire = beneficiaires[i];
+        cleanBeneficiairesList.push({
+          id: beneficiaire.id,
+          code: beneficiaire.code,
+          firstName: beneficiaire.firstName,
+          lastName: beneficiaire.lastName,
+          description: beneficiaire.description,
+          excluded: beneficiaire.excluded
+        });
+      }
+      localStorage.setItem('beneficiaires', angular.toJson(cleanBeneficiairesList));
     }
 
     function allDistributions() {

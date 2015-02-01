@@ -40,7 +40,6 @@ describe("BeneficiaireDetailController", function () {
   }));
 
   it('should delete a beneficiaire', function () {
-    scope.$digest();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
     scope.deleteBeneficiaireDetail();
@@ -54,7 +53,6 @@ describe("BeneficiaireDetailController", function () {
   });
 
   it('should update an beneficiaire informations', function () {
-    scope.$digest();
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
@@ -80,7 +78,6 @@ describe("BeneficiaireDetailController", function () {
       {"distributionId": "1", "beneficiaireId": "1", "comment": "message"},
       {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19"}
     ]));
-    scope.$digest();
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
@@ -91,7 +88,6 @@ describe("BeneficiaireDetailController", function () {
   });
 
   it('should add an beneficiaire comment', function () {
-    scope.$digest();
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
@@ -105,7 +101,6 @@ describe("BeneficiaireDetailController", function () {
       {"distributionId": "1", "beneficiaireId": "1", "comment": "message","isBookmark":false},
       {"distributionId": -1, "beneficiaireId": "1", "comment": "message2", "date": "2015-01-19","isBookmark":false}
     ]));
-    scope.$digest();
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();

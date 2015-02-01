@@ -6,9 +6,6 @@
       .controller('BeneficiaireController', BeneficiaireController);
 
   function BeneficiaireController ($scope, beneficiairesService, commonService, $location) {
-
-    commonService.init($scope);
-
     $scope.openBeneficiaireList = function () {
       $scope.resetAddBeneficiareForm();
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
@@ -58,10 +55,10 @@
       if (commonService.userFormValidation($scope, false)) {
         var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName)
         $scope.beneficiaires.push(newBeneficiaire);
+        beneficiairesService.saveBeneficiaires($scope.beneficiaires);
         return newBeneficiaire;
-      } else {
-        return false
       }
+      return false
     }
 
     $scope.openBeneficiaireList();

@@ -11,24 +11,6 @@
       searchBeneficiaire: searchBeneficiaire
     };
 
-    service.init = function ($scope) {
-      $scope.$watch('beneficiaires', function (newValue, oldValue) {
-        if (newValue.length != oldValue.length && $scope.readOnly == (false || undefined)){
-          var cleanBeneficiairesList = [];
-          for (var i = 0; i < newValue.length; i++) {
-            var beneficiaire = newValue[i];
-            cleanBeneficiairesList.push({
-              id: beneficiaire.id,
-              code: beneficiaire.code,
-              firstName: beneficiaire.firstName,
-              lastName: beneficiaire.lastName
-            });
-          }
-          beneficiairesService.saveBeneficiaires(cleanBeneficiairesList);
-        }
-      }, true);
-    };
-
     return service;
 
     // Specific filter to avoid search in comments
