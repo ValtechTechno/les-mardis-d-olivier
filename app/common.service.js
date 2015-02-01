@@ -5,13 +5,13 @@
       .module('mardisDolivier')
       .service('commonService', commonService);
 
-  function commonService() {
+  function commonService(beneficiairesService) {
     var service = {
       userFormValidation: userFormValidation,
       searchBeneficiaire: searchBeneficiaire
     };
 
-    service.init = function ($scope, beneficiairesService) {
+    service.init = function ($scope) {
       $scope.$watch('beneficiaires', function (newValue, oldValue) {
         if (newValue.length != oldValue.length && $scope.readOnly == (false || undefined)){
           var cleanBeneficiairesList = [];

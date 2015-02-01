@@ -7,7 +7,7 @@
 
   function BeneficiaireController ($scope, beneficiairesService, commonService, $location) {
 
-    commonService.init($scope, beneficiairesService);
+    commonService.init($scope);
 
     $scope.openBeneficiaireList = function () {
       $scope.resetAddBeneficiareForm();

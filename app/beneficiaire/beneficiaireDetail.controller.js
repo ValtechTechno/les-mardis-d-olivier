@@ -7,7 +7,7 @@
 
   function BeneficiaireDetailController ($scope, $routeParams, beneficiairesService, commonService, $location) {
 
-    commonService.init($scope, beneficiairesService);
+    commonService.init($scope);
 
     $scope.openBeneficiaireDetail = function () {
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
