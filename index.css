@@ -94,3 +94,7 @@ select {
   height: 88px;
 }
 
+.isExcluded {
+  color:red;
+  font-weight: bold;
+}

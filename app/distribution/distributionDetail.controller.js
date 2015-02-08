@@ -77,6 +77,13 @@
       }
     };
 
+    $scope.isUserExludedLabel = function(value) {
+      if(value == true){
+        return "OUI";
+      }
+      return "";
+    }
+
   }
 
 })();
