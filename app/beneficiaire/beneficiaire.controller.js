@@ -11,6 +11,7 @@
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
       $scope.currentBeneficiaire = {code: $scope.initNextCode()};
       $scope.excludedFilter = false;
+      $scope.hasCardFilter = false;
     };
 
     $scope.searchBeneficiaire = function (beneficiaire) {
@@ -19,6 +20,10 @@
 
     $scope.searchExcluded = function (beneficiaire) {
       return ($scope.excludedFilter == true && beneficiaire.excluded == true) || ($scope.excludedFilter == false);
+    };
+
+    $scope.searchHasCard = function (beneficiaire) {
+      return ($scope.hasCardFilter == true && beneficiaire.hasCard == false) || ($scope.hasCardFilter == false);
     };
 
     $scope.addBeneficiaireFromList = function () {
@@ -60,6 +65,21 @@
       }
       return false
     }
+
+    $scope.hasUserCardLabel = function(value) {
+      if(value == true || value == undefined){
+        return "OUI";
+      }
+      return "NON";
+    }
+
+    $scope.isUserExludedLabel = function(value) {
+      if(value == true){
+        return "OUI";
+      }
+      return "NON";
+    }
+
 
     $scope.openBeneficiaireList();
   }

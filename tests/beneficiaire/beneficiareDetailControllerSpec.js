@@ -61,6 +61,7 @@ describe("BeneficiaireDetailController", function () {
     scope.currentBeneficiaire.lastName = "A11";
     scope.currentBeneficiaire.description = "test1";
     scope.currentBeneficiaire.excluded = true;
+    scope.currentBeneficiaire.hasCard = true;
     scope.saveBeneficiaireDetail();
     expect(scope.currentError.isCodeNotUnique).toBe(true);
     scope.currentBeneficiaire.code = 3;
@@ -71,6 +72,7 @@ describe("BeneficiaireDetailController", function () {
     expect(beneficiaires[0].lastName).toEqual("A11");
     expect(beneficiaires[0].description).toEqual("test1");
     expect(beneficiaires[0].excluded).toEqual(true);
+    expect(beneficiaires[0].hasCard).toEqual(true);
   });
 
   it('should show a beneficiaire informations', function () {

@@ -18,20 +18,25 @@
     </div>
   </div>
   <div class="row">
-    <div class="medium-9 columns">
+    <div class="medium-8 columns">
       <label>Description
-        <textarea name="description" placeholder="-- insérer une description --"
+        <textarea id="currentBeneficiaireDescription" name="description" placeholder="-- insérer une description --"
                   ng-model="currentBeneficiaire.description" ng-required="false"></textarea>
       </label>
     </div>
-    <div class="medium-3 columns">
+    <div class="medium-4 columns">
       <label>Nombre de présences
         <input type="text" disabled="disabled" ng-model="currentBeneficiaire.visiteNumber"/>
       </label>
     </div>
-    <div class="medium-3 columns">
+    <div class="medium-2 columns">
       <input type="checkbox" id="excluded" ng-model="currentBeneficiaire.excluded" ng-required="false">
         <label for="excluded">Exclus</label>
+      </input>
+    </div>
+    <div class="medium-2 columns">
+      <input type="checkbox" id="hasCard" ng-model="currentBeneficiaire.hasCard" ng-required="false">
+      <label for="hasCard">Avec carte</label>
       </input>
     </div>
   </div>

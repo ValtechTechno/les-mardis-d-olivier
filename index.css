@@ -89,3 +89,8 @@ select {
 .clickable {
   cursor: pointer;
 }
+
+#currentBeneficiaireDescription {
+  height: 88px;
+}
+

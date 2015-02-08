@@ -73,7 +73,8 @@
           firstName: beneficiaire.firstName,
           lastName: beneficiaire.lastName,
           description: beneficiaire.description,
-          excluded: beneficiaire.excluded
+          excluded: beneficiaire.excluded,
+          hasCard: beneficiaire.hasCard
         });
       }
       localStorage.setItem('beneficiaires', angular.toJson(cleanBeneficiairesList));

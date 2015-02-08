@@ -12,6 +12,8 @@
       $scope.currentBeneficiaire.codeNumber = Number($scope.currentBeneficiaire.code);
       $scope.getComments();
       $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire.id);
+      // By default, an old user has a card.
+      if($scope.currentBeneficiaire.hasCard == undefined){$scope.currentBeneficiaire.hasCard = true;}
     };
 
     $scope.isBookmark = function (comment) {

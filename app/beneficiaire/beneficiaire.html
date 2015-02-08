@@ -27,8 +27,8 @@
 
   <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
 </form>
-
-<input type="checkbox" id="excludedFilter" ng-model="excludedFilter"><label for="excludedFilter">Membres exclus seulement</label></<input>
+<input type="checkbox" id="excludedFilter" ng-model="excludedFilter"><label for="excludedFilter">Exclus</label></<input>
+<input type="checkbox" id="hasCardFilter" ng-model="hasCardFilter"><label for="hasCardFilter">Sans carte</label></<input>
 <div class="row">
   <div class="medium-12 columns">
     <table class="table">
@@ -37,16 +37,20 @@
         <td>Code</td>
         <td>Nom</td>
         <td>Prénom</td>
+        <td>Carte</td>
+        <td>Exclue</td>
       </tr>
       <tr>
-        <td colspan="3"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+        <td colspan="5"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
       </tr>
       </thead>
       <tbody>
-      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire | filter:searchExcluded" ng-click="openBeneficiaireDetail(user.id)">
+      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire | filter:searchExcluded | filter:searchHasCard" ng-click="openBeneficiaireDetail(user.id)">
         <td>{{user.code}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.firstName}}</td>
+        <td>{{hasUserCardLabel(user.hasCard)}}</td>
+        <td>{{isUserExludedLabel(user.excluded)}}</td>
       </tr>
       </tbody>
     </table>
