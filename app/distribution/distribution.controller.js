@@ -65,6 +65,7 @@
 
     $scope.startNewDistribution = function () {
       $scope.currentDistribution.id = $scope.saveNewDistribution();
+      $location.path('distributions/' + $scope.currentDistribution.id);
     };
 
     $scope.saveNewDistribution = function () {

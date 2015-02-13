@@ -10,13 +10,13 @@
       <div class="medium-3 columns">
         <label>
           Repas prévus
-          <input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" required/>
+          <input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" ng-required="true"/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="medium-4 columns right">
-        <a ng-href="{{'#/distributions/' + currentDistribution.id}}"><button ng-click="startNewDistribution()" class="button secondary expand">Commencer la distribution</button></a>
+        <button ng-click="startNewDistribution()" class="button secondary expand">Commencer la distribution</button>
       </div>
     </div>
   </form>
