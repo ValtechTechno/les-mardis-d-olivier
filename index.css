@@ -27,6 +27,10 @@ select {
   width: 100%;
 }
 
+table input {
+  margin-bottom: 0px !important;
+}
+
 .errorMessage {
   background-color: red;
   color: white;
