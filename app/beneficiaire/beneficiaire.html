@@ -60,7 +60,7 @@
         <td>{{user.code}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.firstName}}</td>
-        <td><i ng-class=" user.hasCard ? 'ui-icon ui-icon-contact' : '' "></i></td>
+        <td><i ng-class=" user.hasCard !== false ? 'ui-icon ui-icon-contact' : '' "></i></td>
         <td><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
       </tr>
       </tbody>
