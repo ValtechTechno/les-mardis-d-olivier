@@ -1,24 +1,35 @@
+<div class="row">
+  <h4 class="medium-12 columns">Nouveau bénéficiaire</h4>
+</div>
 <form name="addBeneficiaireForm">
   <div class="row" ng-hide="readOnly">
     <div class="medium-12 columns">
-      <label>Nouveau bénéficiaire</label>
-
       <div class="row">
-        <div class="medium-3 columns">
-          <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code"
+        <div class="medium-2 columns">
+          <label>
+            <i class="ui-icon ui-icon-tag"></i> Code
+            <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code"
                  placeholder="-- code --" ng-required="true" readonly/>
+          </label>
         </div>
-        <div class="medium-3 columns">
-          <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --"
+        <div class="medium-5 columns">
+          <label>
+            Nom
+            <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --"
+               ng-required="true"/>
+          </label>
+        </div>
+        <div class="medium-5 columns">
+          <label>
+            Prénom
+            <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --"
                  ng-required="true"/>
+          </label>
         </div>
-        <div class="medium-3 columns">
-          <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --"
-                 ng-required="true"/>
-        </div>
-        <div class="medium-3 columns right">
-          <button ng-click="addBeneficiaireFromList()" class="button secondary expand">Ajouter un bénéficiaire
-          </button>
+      </div>
+      <div class="row">
+        <div class="medium-4 columns right">
+          <button ng-click="addBeneficiaireFromList()" class="button secondary expand">Ajouter
         </div>
       </div>
     </div>
@@ -27,18 +38,18 @@
 
   <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
 </form>
-<input type="checkbox" id="excludedFilter" ng-model="excludedFilter"><label for="excludedFilter">Exclus</label></<input>
-<input type="checkbox" id="hasCardFilter" ng-model="hasCardFilter"><label for="hasCardFilter">Sans carte</label></<input>
+<input type="checkbox" id="hasCardFilter" ng-model="hasCardFilter"><label for="hasCardFilter"><i class="ui-icon ui-icon-contact"></i> Sans carte</label></<input>
+<input type="checkbox" id="excludedFilter" ng-model="excludedFilter"><label for="excludedFilter"><i class="ui-icon ui-icon-circle-minus"/></i> Exclus</label></<input>
 <div class="row">
   <div class="medium-12 columns">
     <table class="table">
       <thead>
       <tr>
-        <td>Code</td>
+        <td><i class="ui-icon ui-icon-tag"></i> Code</td>
         <td>Nom</td>
         <td>Prénom</td>
-        <td>Carte</td>
-        <td>Exclue</td>
+        <td><i class="ui-icon ui-icon-contact"></i> Carte</td>
+        <td><i class="ui-icon ui-icon-circle-minus"></i> Exclus</td>
       </tr>
       <tr>
         <td colspan="5"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
@@ -49,8 +60,8 @@
         <td>{{user.code}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.firstName}}</td>
-        <td>{{hasUserCardLabel(user.hasCard)}}</td>
-        <td>{{isUserExludedLabel(user.excluded)}}</td>
+        <td><i ng-class=" user.hasCard ? 'ui-icon ui-icon-contact' : '' "></i></td>
+        <td><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
       </tr>
       </tbody>
     </table>

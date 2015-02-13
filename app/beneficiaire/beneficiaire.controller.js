@@ -66,21 +66,6 @@
       return false
     }
 
-    $scope.hasUserCardLabel = function(value) {
-      if(value == true || value == undefined){
-        return "OUI";
-      }
-      return "NON";
-    }
-
-    $scope.isUserExludedLabel = function(value) {
-      if(value == true){
-        return "OUI";
-      }
-      return "NON";
-    }
-
-
     $scope.openBeneficiaireList();
   }
 

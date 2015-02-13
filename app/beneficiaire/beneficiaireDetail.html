@@ -2,7 +2,7 @@
 <form name="updateBeneficiaireForm">
   <div class="row">
     <div class="medium-2 columns">
-      <label>Code
+      <label><i class="ui-icon ui-icon-tag"></i> Code
         <input type="number" name="code" ng-model="currentBeneficiaire.codeNumber" ng-required="true" readonly/>
       </label>
     </div>
@@ -19,24 +19,24 @@
   </div>
   <div class="row">
     <div class="medium-8 columns">
-      <label>Description
+      <label><i class="ui-icon ui-icon-comment"></i> Description
         <textarea id="currentBeneficiaireDescription" name="description" placeholder="-- insérer une description --"
                   ng-model="currentBeneficiaire.description"></textarea>
       </label>
     </div>
     <div class="medium-4 columns">
-      <label>Nombre de présences
+      <label><i class="ui-icon ui-icon-flag"></i> Nombre de présences
         <input type="text" disabled="disabled" ng-model="currentBeneficiaire.visiteNumber"/>
       </label>
     </div>
     <div class="medium-2 columns">
-      <input type="checkbox" id="excluded" ng-model="currentBeneficiaire.excluded">
-        <label for="excluded">Exclus</label>
+      <input type="checkbox" id="hasCard" ng-model="currentBeneficiaire.hasCard">
+      <label for="hasCard"><i class="ui-icon ui-icon-contact"></i> Avec carte</label>
       </input>
     </div>
     <div class="medium-2 columns">
-      <input type="checkbox" id="hasCard" ng-model="currentBeneficiaire.hasCard">
-      <label for="hasCard">Avec carte</label>
+      <input type="checkbox" id="excluded" ng-model="currentBeneficiaire.excluded">
+        <label for="excluded"><i class="ui-icon ui-icon-circle-minus"></i> Exclus</label>
       </input>
     </div>
   </div>
@@ -80,8 +80,8 @@
     <table class="medium-12 columns">
       <thead>
       <tr>
-        <td>Commentaire</td>
-        <td>Favoris</td>
+        <td><i class="ui-icon ui-icon-comment"></i> Commentaire</td>
+        <td><i class="ui-icon ui-icon-star"></i> Favoris</td>
       </tr>
       </thead>
       <tr ng-repeat="comment in currentBeneficiaire.comments track by $index">

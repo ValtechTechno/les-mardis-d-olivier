@@ -102,3 +102,8 @@ table input {
   color:red;
   font-weight: bold;
 }
+
+i.ui-icon {
+  float: left;
+  margin-right: .5em;
+}

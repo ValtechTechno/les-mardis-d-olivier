@@ -1,22 +1,25 @@
+<div class="row">
+  <h4 class="medium-12 columns">Nouvelle distribution</h4>
+</div>
 <form name="addDistributionForm">
     <div class="row">
       <div class="medium-9 columns">
         <label>
-          Date
+          <i class="ui-icon ui-icon-calendar"></i> Date
           <input type="text" ui-date="dateOptions" ui-date-format="yy-mm-dd"
                  ng-model="currentDistribution.distributionDate" ng-required="true"/>
         </label>
       </div>
       <div class="medium-3 columns">
         <label>
-          Repas prévus
+          <i class="ui-icon ui-icon-cart"></i> Repas prévus
           <input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" ng-required="true"/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="medium-4 columns right">
-        <button ng-click="startNewDistribution()" class="button secondary expand">Commencer la distribution</button>
+        <button ng-click="startNewDistribution()" class="button secondary expand">Commencer</button>
       </div>
     </div>
   </form>
@@ -30,10 +33,10 @@
       <table class="table">
         <thead>
         <tr>
-          <th>Date</th>
-          <th>Repas prévus</th>
-          <th>Bénéficiaires présents</th>
-          <th>Commentaires</th>
+          <th><i class="ui-icon ui-icon-calendar"></i> Date</th>
+          <th><i class="ui-icon ui-icon-cart"></i>Repas prévus</th>
+          <th><i class="ui-icon ui-icon-person"></i> Bénéficiaires présents</th>
+          <th><i class="ui-icon ui-icon-comment"></i> Commentaires</th>
         </tr>
         </thead>
         <tbody>

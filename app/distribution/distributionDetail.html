@@ -12,12 +12,12 @@
       <table class="table">
         <thead>
         <tr>
-          <td>Code</td>
+          <td><i class="ui-icon ui-icon-tag"></i> Code</td>
           <td>Nom</td>
           <td>Prénom</td>
-          <td>Exclue</td>
-          <td>Présent</td>
-          <td colspan="2">Commentaire</td>
+          <td><i class="ui-icon ui-icon-circle-minus"></i> Exclue</td>
+          <td><i class="ui-icon ui-icon-flag"></i> Présent</td>
+          <td colspan="2"><i class="ui-icon ui-icon-comment"></i> Commentaire</td>
         </tr>
         <tr>
           <td colspan="7"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."/></td>
@@ -28,7 +28,7 @@
           <td>{{user.code}}</td>
           <td>{{user.lastName}}</td>
           <td>{{user.firstName}}</td>
-          <td class="isExcluded">{{isUserExludedLabel(user.excluded)}}</td>
+          <td class="isExcluded"><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
           <td>
             <input type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user)" ng-disabled="readOnly"/>
           </td>
