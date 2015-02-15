@@ -34,7 +34,7 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.showDistribution();
+    scope.activate();
     beneficiaireId = scope.beneficiaires[0].id;
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, beneficiairesService, false);
@@ -50,7 +50,7 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.showDistribution();
+    scope.activate();
     expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId, beneficiairesService)).toEqual([]);
   });
 
@@ -76,11 +76,11 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.showDistribution();
+    scope.activate();
 
     scope.isPresent(scope.beneficiaires[1]);
 
-    scope.showDistribution();
+    scope.activate();
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, false);
     expect(beneficiairesList.length).toEqual(3);
@@ -104,7 +104,7 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.showDistribution();
+    scope.activate();
 
     scope.isPresent(scope.beneficiaires[0]);
     var beneficiaireId = scope.beneficiaires[0].id;
@@ -145,7 +145,7 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.showDistribution();
+    scope.activate();
     scope.isPresent(scope.beneficiaires[0]);
     scope.isPresent(scope.beneficiaires[1]);
     scope.isPresent(scope.beneficiaires[2]);
@@ -191,7 +191,7 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.showDistribution();
+    scope.activate();
     var commentaireDistribution = "commentaire general";
     scope.writeDistributionComment(commentaireDistribution);
 

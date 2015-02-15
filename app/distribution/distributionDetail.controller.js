@@ -11,7 +11,7 @@
       return commonService.searchBeneficiaire($scope.searchText, beneficiaire);
     };
 
-    $scope.showDistribution = function () {
+    $scope.activate = function () {
       if($routeParams.distributionId == null){
         return false;
       }
@@ -34,7 +34,7 @@
       }
     };
 
-    $scope.showDistribution();
+    $scope.activate();
 
     $scope.writeDistributionComment = function (comment) {
       $scope.currentDistribution.comment = comment;
