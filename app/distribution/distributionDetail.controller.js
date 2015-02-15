@@ -17,7 +17,7 @@
     activate();
 
     function activate () {
-      if($routeParams.distributionId == null){
+      if ($routeParams.distributionId == null) {
         return false;
       }
       vm.numberBeneficiairesPresent = 0;
@@ -27,12 +27,10 @@
       if (vm.readOnly) {
         vm.numberBeneficiairesPresent = vm.beneficiaires.length;
       } else {
-        vm.numberBeneficiairesPresent = 0;
-        for (var i = 0; i < vm.beneficiaires.length; i++) {
-          if (vm.beneficiaires[i].isPresent) {
-            vm.numberBeneficiairesPresent++;
-          }
-        }
+        var onlyPresent = function (beneficiaire) {
+          return beneficiaire.isPresent;
+        };
+        vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
       }
       for (var i = 0; i < vm.beneficiaires.length; i++) {
         vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i].id, vm.currentDistribution.id, beneficiairesService, true);
