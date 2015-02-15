@@ -8,28 +8,34 @@
         <div class="medium-2 columns">
           <label>
             <i class="ui-icon ui-icon-tag"></i> Code
-            <input type="number" min="1" id="code" name="code" ng-model="currentBeneficiaire.code"
+            <input type="text" min="1" id="code" name="code" ng-model="currentBeneficiaire.code"
                  placeholder="-- code --" ng-required="true" readonly/>
           </label>
         </div>
-        <div class="medium-5 columns">
+        <div class="medium-4 columns">
           <label>
             Nom
             <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" placeholder="-- nom --"
                ng-required="true"/>
           </label>
         </div>
-        <div class="medium-5 columns">
+        <div class="medium-4 columns">
           <label>
             Prénom
             <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" placeholder="-- prénom --"
                  ng-required="true"/>
           </label>
         </div>
+        <div class="medium-2 columns">
+          <label>
+            <i class="ui-icon ui-icon-contact"></i>Avec carte
+            <input type="checkbox" class="hasCard" id="hasCard" name="hasCard" ng-model="currentBeneficiaire.hasCard" />
+          </label>
+        </div>
       </div>
       <div class="row">
         <div class="medium-4 columns right">
-          <button ng-click="addBeneficiaireFromList()" class="button secondary expand">Ajouter
+          <button ng-click="addBeneficiaireFromList()" class="button secondary expand">Ajouter</button>
         </div>
       </div>
     </div>

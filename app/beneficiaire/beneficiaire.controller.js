@@ -9,7 +9,7 @@
     $scope.openBeneficiaireList = function () {
       $scope.resetAddBeneficiareForm();
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
-      $scope.currentBeneficiaire = {code: $scope.initNextCode()};
+      $scope.currentBeneficiaire = {code: $scope.initNextCode(), hasCard: false};
       $scope.excludedFilter = false;
       $scope.hasCardFilter = false;
     };
@@ -58,7 +58,7 @@
 
     $scope.addBeneficiaire = function() {
       if (commonService.userFormValidation($scope, false)) {
-        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName)
+        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
         $scope.beneficiaires.push(newBeneficiaire);
         beneficiairesService.saveBeneficiaires($scope.beneficiaires);
         return newBeneficiaire;

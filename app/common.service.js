@@ -67,13 +67,14 @@ formatDate = function (date) {
   return date.getFullYear() + "-" + paddedMonth + "-" + day;
 };
 
-getNewBeneficiaire = function(nextId, code, lastName, firstName){
+getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
   var newBeneficiaire = {
     id: nextId,
     code: code,
     firstName: firstName,
     lastName: lastName,
-    isPresent: false
+    isPresent: false,
+    hasCard: hasCard
   };
   return newBeneficiaire;
 }
