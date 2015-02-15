@@ -7,7 +7,7 @@
 
   function DistributionController ($scope, beneficiairesService, commonService, $location) {
     $scope.searchBeneficiaire = function (beneficiaire) {
-      return commonService.searchBeneficiaire($scope, beneficiaire);
+      return commonService.searchBeneficiaire($scope.searchText, beneficiaire);
     };
 
     $.datepicker.setDefaults($.datepicker.regional['fr']);

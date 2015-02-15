@@ -15,7 +15,7 @@
     };
 
     $scope.searchBeneficiaire = function (beneficiaire) {
-      return commonService.searchBeneficiaire($scope, beneficiaire);
+      return commonService.searchBeneficiaire($scope.searchText, beneficiaire);
     };
 
     $scope.searchExcluded = function (beneficiaire) {
