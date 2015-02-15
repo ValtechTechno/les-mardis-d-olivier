@@ -65,7 +65,8 @@
 
     function saveBeneficiaires(beneficiaires) {
       var cleanBeneficiairesList = [];
-      for (var i = 0; i < beneficiaires.length; i++) {
+      var  beneficiairesLength = beneficiaires == null ? 0 : beneficiaires.length;
+      for (var i = 0; i < beneficiairesLength ; i++) {
         var beneficiaire = beneficiaires[i];
         cleanBeneficiairesList.push({
           id: beneficiaire.id,

@@ -1,4 +1,4 @@
-<button id="deleteDataButton" ng-show="beneficiaires.length!=0" ng-click="deleteExistingData()" class="button secondary">Supprimer les données existantes.</button>
+<button id="deleteDataButton" ng-show="beneficiaires.length!=0" ng-click="deleteDataPopup()" class="button secondary">Supprimer les données existantes.</button>
 <h3><b>Import des beneficiaires</b></h3>
 <p>Copiez les données depuis excel avec Ctrl + V</p>
 <p>Toutes les colonnes sont obligatoires.</p>
@@ -26,3 +26,15 @@
     <td ng-repeat="col in row track by $index">{{col}}</td>
   </tr>
 </table>
+
+<div id="confirmDataDeletePopup" class="reveal-modal small" data-reveal>
+  <p>Êtes-vous sûr de vouloir supprimer toutes les données de l'application ?</p>
+  <div>
+    <button ng-click="cancelDataDeletePopup()" class="button secondary expand">Annuler</button>
+  </div>
+  <div>
+    <button id="confirmDelete" ng-click="confirmDataDeletePopup()" class="button secondary expand">
+      Supprimer
+    </button>
+  </div>
+</div>

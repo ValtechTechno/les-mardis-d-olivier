@@ -12,6 +12,19 @@
       $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
     };
 
+    $scope.deleteDataPopup = function () {
+      $('#confirmDataDeletePopup').foundation('reveal', 'open');
+    };
+
+    $scope.cancelDataDeletePopup = function () {
+      $('#confirmDataDeletePopup').foundation('reveal', 'close');
+    }
+
+    $scope.confirmDataDeletePopup = function () {
+      $('#confirmDataDeletePopup').foundation('reveal', 'close');
+      $scope.deleteExistingData();
+    }
+
     $scope.importData = function () {
       beneficiairesService.saveBeneficiaires($scope.beneficiairesToImport);
       $location.path("/beneficiaires");
