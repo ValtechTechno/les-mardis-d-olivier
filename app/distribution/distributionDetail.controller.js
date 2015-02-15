@@ -5,46 +5,54 @@
       .module('mardisDolivier')
       .controller('DistributionDetailController', DistributionDetailController);
 
-  function DistributionDetailController ($scope, $routeParams, beneficiairesService, commonService) {
+  function DistributionDetailController ($routeParams, beneficiairesService, commonService) {
+    var vm = this;
+    vm.activate = activate;
+    vm.searchBeneficiaire = searchBeneficiaire;
+    vm.writeDistributionComment = writeDistributionComment;
+    vm.isPresent = isPresent;
+    vm.numberBeneficiairesPresent = 0;
+    vm.writeComment = writeComment;
 
-    $scope.searchBeneficiaire = function (beneficiaire) {
-      return commonService.searchBeneficiaire($scope.searchText, beneficiaire);
-    };
+    activate();
 
-    $scope.activate = function () {
+    function activate () {
       if($routeParams.distributionId == null){
         return false;
       }
-      $scope.numberBeneficiairesPresent = 0;
-      $scope.currentDistribution = beneficiairesService.findDistributionById($routeParams.distributionId);
-      $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
-      $scope.beneficiaires = retrieveBeneficiairesByDistribution($scope.currentDistribution.id, beneficiairesService, false).slice(0);
-      if ($scope.readOnly) {
-        $scope.numberBeneficiairesPresent = $scope.beneficiaires.length;
+      vm.numberBeneficiairesPresent = 0;
+      vm.currentDistribution = beneficiairesService.findDistributionById($routeParams.distributionId);
+      vm.beneficiaires = beneficiairesService.loadBeneficiaires();
+      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution.id, beneficiairesService, false).slice(0);
+      if (vm.readOnly) {
+        vm.numberBeneficiairesPresent = vm.beneficiaires.length;
       } else {
-        $scope.numberBeneficiairesPresent = 0;
-        for (var i = 0; i < $scope.beneficiaires.length; i++) {
-          if ($scope.beneficiaires[i].isPresent) {
-            $scope.numberBeneficiairesPresent++;
+        vm.numberBeneficiairesPresent = 0;
+        for (var i = 0; i < vm.beneficiaires.length; i++) {
+          if (vm.beneficiaires[i].isPresent) {
+            vm.numberBeneficiairesPresent++;
           }
         }
       }
-      for (var i = 0; i < $scope.beneficiaires.length; i++) {
-        $scope.beneficiaires[i].comments = getLastComments($scope.beneficiaires[i].id, $scope.currentDistribution.id, beneficiairesService, true);
+      for (var i = 0; i < vm.beneficiaires.length; i++) {
+        vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i].id, vm.currentDistribution.id, beneficiairesService, true);
       }
-    };
-
-    $scope.activate();
-
-    $scope.writeDistributionComment = function (comment) {
-      $scope.currentDistribution.comment = comment;
-      beneficiairesService.updateDistribution($scope.currentDistribution);
     }
-    $scope.writeComment = function (beneficiaireId, message) {
-      if (!$scope.readOnly) {
+
+    function searchBeneficiaire (beneficiaire) {
+      return commonService.searchBeneficiaire(vm.searchText, beneficiaire);
+    }
+
+    function writeDistributionComment (comment) {
+      vm.currentDistribution.comment = comment;
+      beneficiairesService.updateDistribution(vm.currentDistribution);
+    }
+
+    function writeComment (beneficiaireId, message) {
+      if (!vm.readOnly) {
         var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
         for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-          if (beneficiairesPresentByDistribution[i].distributionId == $scope.currentDistribution.id &&
+          if (beneficiairesPresentByDistribution[i].distributionId == vm.currentDistribution.id &&
             beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
             beneficiairesPresentByDistribution.splice(i, 1);
             break;
@@ -52,13 +60,13 @@
         }
         if (message != null && message.length > 0) {
           beneficiairesPresentByDistribution.push({
-            "distributionId": $scope.currentDistribution.id.toString(),
+            "distributionId": vm.currentDistribution.id.toString(),
             "beneficiaireId": beneficiaireId,
             "comment": message
           });
         } else {
           beneficiairesPresentByDistribution.push({
-            "distributionId": $scope.currentDistribution.id.toString(),
+            "distributionId": vm.currentDistribution.id.toString(),
             "beneficiaireId": beneficiaireId
           });
         }
@@ -66,16 +74,16 @@
       }
     };
 
-    $scope.isPresent = function (beneficiaire) {
-      if (!$scope.readOnly && $scope.currentDistribution != null) {
-        storeRelationDistributionBeneficiaire($scope.currentDistribution.id, beneficiaire.id, beneficiairesService);
+    function isPresent (beneficiaire) {
+      if (!vm.readOnly && vm.currentDistribution != null) {
+        storeRelationDistributionBeneficiaire(vm.currentDistribution.id, beneficiaire.id, beneficiairesService);
       }
       if (beneficiaire.isPresent) {
-        $scope.numberBeneficiairesPresent++;
+        vm.numberBeneficiairesPresent++;
       } else {
-        $scope.numberBeneficiairesPresent--;
+        vm.numberBeneficiairesPresent--;
       }
-    };
+    }
   }
 
 })();
@@ -151,7 +159,7 @@ getLastComments = function (beneficiaireId, distributionId, beneficiairesService
 /* get the date of the comment : depending of the source, from the related distribution or from the date of the object */
 getDateDistribution = function (allDistributions, beneficiairePresent, distributionId) {
   var dateDistrib = "[DATE]";
-  if(beneficiairePresent.distributionId != -1 && beneficiairePresent.distributionId != distributionId) {
+  if (beneficiairePresent.distributionId != -1 && beneficiairePresent.distributionId != distributionId) {
     for (var distributionNumber = 0; distributionNumber < allDistributions.length; distributionNumber++) {
       if (allDistributions[distributionNumber].id == beneficiairePresent.distributionId) {
         dateDistrib = allDistributions[distributionNumber].distributionDate;

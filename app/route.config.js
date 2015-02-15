@@ -13,6 +13,7 @@
       })
       .when('/distributions/:distributionId?', {
         controller: 'DistributionDetailController',
+        controllerAs: 'distributionDetail',
         templateUrl: 'app/distribution/distributionDetail.html'
       })
       .when('/beneficiaires', {

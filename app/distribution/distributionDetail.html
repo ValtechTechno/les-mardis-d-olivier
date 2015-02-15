@@ -1,10 +1,13 @@
   <div class="row">
-    <h3 class="medium-12 columns">Distribution du {{currentDistribution.distributionDate | DateWithJQueryUiDatePicker}}
-      ({{numberBeneficiairesPresent}} bénéficiaires présents)</h3>
+    <h3 class="medium-12 columns">Distribution du {{distributionDetail.currentDistribution.distributionDate | DateWithJQueryUiDatePicker}}
+      ({{distributionDetail.numberBeneficiairesPresent}} bénéficiaires présents)</h3>
   </div>
   <div class="row">
     <div class="medium-9 columns">
-      <textarea name="description" placeholder="-- insérer un commentaire global --" ng-model="currentDistribution.comment" ng-change="writeDistributionComment(currentDistribution.comment)" ng-model-options="{debounce:1000}" ></textarea>
+      <textarea name="description" placeholder="-- insérer un commentaire global --"
+                ng-model="distributionDetail.currentDistribution.comment"
+                ng-change="distributionDetail.writeDistributionComment(distributionDetail.currentDistribution.comment)"
+                ng-model-options="{debounce:1000}" ></textarea>
     </div>
   </div>
   <div class="row">
@@ -20,17 +23,17 @@
           <td colspan="2"><i class="ui-icon ui-icon-comment"></i> Commentaire</td>
         </tr>
         <tr>
-          <td colspan="7"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."/></td>
+          <td colspan="7"><input type="text" ng-model="distributionDetail.searchText" placeholder="42, Georges, Henriette, etc."/></td>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in beneficiaires | filter:searchBeneficiaire">
+        <tr ng-repeat="user in distributionDetail.beneficiaires | filter:distributionDetail.searchBeneficiaire">
           <td>{{user.code}}</td>
           <td>{{user.lastName}}</td>
           <td>{{user.firstName}}</td>
           <td class="isExcluded"><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
           <td>
-            <input type="checkbox" ng-model="user.isPresent" ng-change="isPresent(user)" ng-disabled="readOnly"/>
+            <input type="checkbox" ng-model="user.isPresent" ng-change="distributionDetail.isPresent(user)" ng-disabled="readOnly"/>
           </td>
           <td ng-hide="readOnly">
             <a id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
@@ -41,8 +44,8 @@
             </a>
           </td>
           <td>
-            <input type="text" ng-model="user.comment" ng-change="writeComment(user.id, user.comment)" ng-model-options="{debounce:1000}"
-                   ng-disabled="readOnly || !user.isPresent"/>
+            <input type="text" ng-model="user.comment" ng-change="distributionDetail.writeComment(user.id, user.comment)"
+                   ng-model-options="{debounce:1000}" ng-disabled="distributionDetail.readOnly || !user.isPresent"/>
           </td>
         </tr>
         </tbody>

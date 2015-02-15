@@ -13,7 +13,7 @@ describe("DistributionDetailController", function () {
     beneficiairesService = $injector.get('beneficiairesService');
     beneficiairesCommonService = $injector.get('commonService');
     DateWithJQueryUiDatePicker = $filter('DateWithJQueryUiDatePicker');
-    $controller('DistributionDetailController', {
+    $controller('DistributionDetailController as distributionDetail', {
       $scope: scope,
       $routeParams: routeParams,
       $filter: $filter,
@@ -34,10 +34,10 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.activate();
-    beneficiaireId = scope.beneficiaires[0].id;
+    scope.distributionDetail.activate();
+    beneficiaireId = scope.distributionDetail.beneficiaires[0].id;
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, beneficiairesService, false);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.id, beneficiairesService, false);
 
     expect(beneficiairesList[0].id).toEqual(beneficiaireId);
     expect(beneficiairesList[0].firstName).toEqual("John");
@@ -50,8 +50,8 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.activate();
-    expect(retrieveBeneficiairesByDistribution(scope.currentDistribution.distributionId, beneficiairesService)).toEqual([]);
+    scope.distributionDetail.activate();
+    expect(retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.distributionId, beneficiairesService)).toEqual([]);
   });
 
   it('should be only returns the present beneficiaire from a open distribution', function () {
@@ -76,11 +76,11 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.activate();
+    scope.distributionDetail.activate();
 
-    scope.isPresent(scope.beneficiaires[1]);
+    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[1]);
 
-    scope.activate();
+    scope.distributionDetail.activate();
 
     var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, false);
     expect(beneficiairesList.length).toEqual(3);
@@ -104,15 +104,15 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.activate();
+    scope.distributionDetail.activate();
 
-    scope.isPresent(scope.beneficiaires[0]);
-    var beneficiaireId = scope.beneficiaires[0].id;
+    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[0]);
+    var beneficiaireId = scope.distributionDetail.beneficiaires[0].id;
     var comment = "Pas gentil";
 
-    scope.writeComment(beneficiaireId, comment);
+    scope.distributionDetail.writeComment(beneficiaireId, comment);
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.currentDistribution.id, beneficiairesService, true);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.id, beneficiairesService, true);
     expect(beneficiairesList[0].id).toEqual(beneficiaireId);
     expect(beneficiairesList[0].firstName).toEqual("John");
     expect(beneficiairesList[0].lastName).toEqual("Rambo");
@@ -145,10 +145,10 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.activate();
-    scope.isPresent(scope.beneficiaires[0]);
-    scope.isPresent(scope.beneficiaires[1]);
-    scope.isPresent(scope.beneficiaires[2]);
+    scope.distributionDetail.activate();
+    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[0]);
+    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[1]);
+    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[2]);
 
     var beneficiairesList = retrieveAllDistribution(beneficiairesService);
 
@@ -191,9 +191,9 @@ describe("DistributionDetailController", function () {
       "id": 1
     }]));
     routeParams.distributionId = 1;
-    scope.activate();
+    scope.distributionDetail.activate();
     var commentaireDistribution = "commentaire general";
-    scope.writeDistributionComment(commentaireDistribution);
+    scope.distributionDetail.writeDistributionComment(commentaireDistribution);
 
     var distributions = beneficiairesService.allDistributions();
     expect(distributions[0].comment).toEqual(commentaireDistribution);
