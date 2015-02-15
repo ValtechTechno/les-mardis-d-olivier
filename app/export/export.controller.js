@@ -20,7 +20,14 @@
       saveAs(blobToExport, formatDate(new Date())+ "_beneficiaire.xls");
     };
 
+    $scope.isBooleanUndefined = function (value) {
+      if(value == undefined){
+        return false;
+      }
+      return value;
+    };
     $scope.openExportPage();
   }
+
 
 })();
