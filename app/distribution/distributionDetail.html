@@ -33,9 +33,9 @@
           <td>{{user.firstName}}</td>
           <td class="isExcluded"><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
           <td>
-            <input type="checkbox" ng-model="user.isPresent" ng-change="distributionDetail.isPresent(user)" ng-disabled="readOnly"/>
+            <input type="checkbox" ng-model="user.isPresent" ng-change="distributionDetail.isPresent(user)"/>
           </td>
-          <td ng-hide="readOnly">
+          <td>
             <a id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
               <table id="commentsDetail">
                 <tr ng-repeat="comments in user.comments track by $index"><td>{{comments.text}}</td>
@@ -45,7 +45,7 @@
           </td>
           <td>
             <input type="text" ng-model="user.comment" ng-change="distributionDetail.writeComment(user.id, user.comment)"
-                   ng-model-options="{debounce:1000}" ng-disabled="distributionDetail.readOnly || !user.isPresent"/>
+                   ng-model-options="{debounce:1000}" ng-disabled="!user.isPresent"/>
           </td>
         </tr>
         </tbody>

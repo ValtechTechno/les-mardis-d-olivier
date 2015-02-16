@@ -7,12 +7,16 @@
 
   function DistributionDetailController ($routeParams, beneficiairesService, commonService) {
     var vm = this;
-    vm.activate = activate;
-    vm.searchBeneficiaire = searchBeneficiaire;
-    vm.writeDistributionComment = writeDistributionComment;
-    vm.isPresent = isPresent;
     vm.numberBeneficiairesPresent = 0;
+    vm.currentDistribution = {};
+    vm.beneficiaires = [];
+    vm.searchText = "";
+    vm.readOnly = true;
+    vm.writeDistributionComment = writeDistributionComment;
+    vm.searchBeneficiaire = searchBeneficiaire;
+    vm.isPresent = isPresent;
     vm.writeComment = writeComment;
+    vm.activate = activate;
 
     activate();
 
@@ -20,18 +24,14 @@
       if ($routeParams.distributionId == null) {
         return false;
       }
-      vm.numberBeneficiairesPresent = 0;
       vm.currentDistribution = beneficiairesService.findDistributionById($routeParams.distributionId);
+      vm.numberBeneficiairesPresent = 0;
       vm.beneficiaires = beneficiairesService.loadBeneficiaires();
-      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution.id, beneficiairesService, false).slice(0);
-      if (vm.readOnly) {
-        vm.numberBeneficiairesPresent = vm.beneficiaires.length;
-      } else {
-        var onlyPresent = function (beneficiaire) {
-          return beneficiaire.isPresent;
-        };
-        vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
-      }
+      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution.id, beneficiairesService).slice(0);
+      var onlyPresent = function (beneficiaire) {
+        return beneficiaire.isPresent;
+      };
+      vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
       for (var i = 0; i < vm.beneficiaires.length; i++) {
         vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i].id, vm.currentDistribution.id, beneficiairesService, true);
       }
@@ -47,33 +47,31 @@
     }
 
     function writeComment (beneficiaireId, message) {
-      if (!vm.readOnly) {
-        var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
-        for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-          if (beneficiairesPresentByDistribution[i].distributionId == vm.currentDistribution.id &&
-            beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
-            beneficiairesPresentByDistribution.splice(i, 1);
-            break;
-          }
+      var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+      for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
+        if (beneficiairesPresentByDistribution[i].distributionId == vm.currentDistribution.id &&
+          beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
+          beneficiairesPresentByDistribution.splice(i, 1);
+          break;
         }
-        if (message != null && message.length > 0) {
-          beneficiairesPresentByDistribution.push({
-            "distributionId": vm.currentDistribution.id.toString(),
-            "beneficiaireId": beneficiaireId,
-            "comment": message
-          });
-        } else {
-          beneficiairesPresentByDistribution.push({
-            "distributionId": vm.currentDistribution.id.toString(),
-            "beneficiaireId": beneficiaireId
-          });
-        }
-        beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
       }
-    };
+      if (message != null && message.length > 0) {
+        beneficiairesPresentByDistribution.push({
+          "distributionId": vm.currentDistribution.id.toString(),
+          "beneficiaireId": beneficiaireId,
+          "comment": message
+        });
+      } else {
+        beneficiairesPresentByDistribution.push({
+          "distributionId": vm.currentDistribution.id.toString(),
+          "beneficiaireId": beneficiaireId
+        });
+      }
+      beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
+    }
 
     function isPresent (beneficiaire) {
-      if (!vm.readOnly && vm.currentDistribution != null) {
+      if (vm.currentDistribution != null) {
         storeRelationDistributionBeneficiaire(vm.currentDistribution.id, beneficiaire.id, beneficiairesService);
       }
       if (beneficiaire.isPresent) {
@@ -86,7 +84,7 @@
 
 })();
 
-retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesService, readOnly) {
+retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesService) {
   var beneficiairesPresentIds = [];
   var beneficiairesPresentComments = [];
   var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
@@ -104,14 +102,11 @@ retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesSer
     if (index != -1) {
       beneficiaires[i].isPresent = true;
       beneficiaires[i].comment = beneficiairesPresentComments[index];
-      beneficiairesPresent.push(beneficiaires[i]);
     } else {
       beneficiaires[i].isPresent = false;
       beneficiaires[i].comment = null;
-      if (readOnly == false) {
-        beneficiairesPresent.push(beneficiaires[i]);
-      }
     }
+    beneficiairesPresent.push(beneficiaires[i]);
   }
   return beneficiairesPresent;
 };
