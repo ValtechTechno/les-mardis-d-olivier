@@ -10,14 +10,14 @@ describe("BeneficiaireDetailController", function () {
   beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector, $routeParams) {
     scope = $rootScope.$new();
     routeParams = {};
-    beneficiairesService = $injector.get('beneficiairesService');
+    dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
 
     $controller('BeneficiaireDetailController', {
       $scope: scope,
       $routeParams: routeParams,
       $filter: $filter,
-      beneficiairesService: beneficiairesService,
+      dataService: dataService,
       beneficiairesCommonService: beneficiairesCommonService
     });
 
@@ -107,7 +107,7 @@ describe("BeneficiaireDetailController", function () {
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
     scope.isBookmark({"distributionId": "1","isBookmark":true});
-    var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+    var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
     expect(beneficiairesPresentByDistribution[0].isBookmark).toEqual(true);
     expect(beneficiairesPresentByDistribution[1].isBookmark).toEqual(false);
   });

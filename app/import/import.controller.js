@@ -5,11 +5,11 @@
       .module('mardisDolivier')
       .controller('ImportController', ImportController);
 
-  function ImportController ($scope, beneficiairesService, $location) {
+  function ImportController ($scope, dataService, $location) {
     $scope.openImportPage = function () {
       $scope.rawPaste = '';
       $scope.parsedPaste = [];
-      $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
+      $scope.beneficiaires = dataService.loadBeneficiaires();
     };
 
     $scope.deleteDataPopup = function () {
@@ -26,21 +26,21 @@
     }
 
     $scope.importData = function () {
-      beneficiairesService.saveBeneficiaires($scope.beneficiairesToImport);
+      dataService.saveBeneficiaires($scope.beneficiairesToImport);
       $location.path("/beneficiaires");
     };
 
     $scope.deleteExistingData = function () {
-      beneficiairesService.saveBeneficiaires(null);
-      beneficiairesService.saveDistributions(null);
-      beneficiairesService.saveBeneficiairesPresentByDistribution(null);
-      beneficiairesService.saveBeneficiairesPresentByDistribution(null);
-      $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
+      dataService.saveBeneficiaires(null);
+      dataService.saveDistributions(null);
+      dataService.saveBeneficiairesPresentByDistribution(null);
+      dataService.saveBeneficiairesPresentByDistribution(null);
+      $scope.beneficiaires = dataService.loadBeneficiaires();
     };
 
     $scope.validationImport = function (parsedList) {
       $scope.currentError = {};
-      $scope.beneficiairesToImport = beneficiairesService.loadBeneficiaires();
+      $scope.beneficiairesToImport = dataService.loadBeneficiaires();
       if($scope.beneficiairesToImport == null){
         $scope.beneficiairesToImport = {};
       }

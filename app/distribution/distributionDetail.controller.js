@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .controller('DistributionDetailController', DistributionDetailController);
 
-  function DistributionDetailController ($routeParams, beneficiairesService, commonService) {
+  function DistributionDetailController ($routeParams, dataService, commonService) {
     var vm = this;
     vm.numberBeneficiairesPresent = 0;
     vm.currentDistribution = {};
@@ -24,16 +24,16 @@
       if ($routeParams.distributionId == null) {
         return false;
       }
-      vm.currentDistribution = beneficiairesService.findDistributionById($routeParams.distributionId);
+      vm.currentDistribution = dataService.findDistributionById($routeParams.distributionId);
       vm.numberBeneficiairesPresent = 0;
-      vm.beneficiaires = beneficiairesService.loadBeneficiaires();
-      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution.id, beneficiairesService).slice(0);
+      vm.beneficiaires = dataService.loadBeneficiaires();
+      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution.id, dataService).slice(0);
       var onlyPresent = function (beneficiaire) {
         return beneficiaire.isPresent;
       };
       vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
       for (var i = 0; i < vm.beneficiaires.length; i++) {
-        vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i].id, vm.currentDistribution.id, beneficiairesService, true);
+        vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i].id, vm.currentDistribution.id, dataService, true);
       }
     }
 
@@ -43,11 +43,11 @@
 
     function writeDistributionComment (comment) {
       vm.currentDistribution.comment = comment;
-      beneficiairesService.updateDistribution(vm.currentDistribution);
+      dataService.updateDistribution(vm.currentDistribution);
     }
 
     function writeComment (beneficiaireId, message) {
-      var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+      var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
         if (beneficiairesPresentByDistribution[i].distributionId == vm.currentDistribution.id &&
           beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
@@ -67,12 +67,12 @@
           "beneficiaireId": beneficiaireId
         });
       }
-      beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
+      dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
     }
 
     function isPresent (beneficiaire) {
       if (vm.currentDistribution != null) {
-        storeRelationDistributionBeneficiaire(vm.currentDistribution.id, beneficiaire.id, beneficiairesService);
+        storeRelationDistributionBeneficiaire(vm.currentDistribution.id, beneficiaire.id, dataService);
       }
       if (beneficiaire.isPresent) {
         vm.numberBeneficiairesPresent++;
@@ -84,10 +84,10 @@
 
 })();
 
-retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesService) {
+retrieveBeneficiairesByDistribution = function (distributionId, dataService) {
   var beneficiairesPresentIds = [];
   var beneficiairesPresentComments = [];
-  var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId) {
       beneficiairesPresentIds.push(beneficiairesPresentByDistribution[i].beneficiaireId);
@@ -95,9 +95,9 @@ retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesSer
     }
   }
   var beneficiairesPresent = [];
-  var beneficiaires = beneficiairesService.loadBeneficiaires();
+  var beneficiaires = dataService.loadBeneficiaires();
   for (var i = 0; i < beneficiaires.length; i++) {
-    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId, beneficiairesService, true);
+    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId, dataService, true);
     var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
     if (index != -1) {
       beneficiaires[i].isPresent = true;
@@ -111,9 +111,9 @@ retrieveBeneficiairesByDistribution = function (distributionId, beneficiairesSer
   return beneficiairesPresent;
 };
 
-storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, beneficiairesService) {
+storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, dataService) {
   var isRelationExisting = false;
-  var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId &&
       beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
@@ -128,14 +128,14 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
       "beneficiaireId": beneficiaireId
     });
   }
-  beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
+  dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
 };
 
 /* Get the last 5 comments for distribution showing or all of them for profile page */
-getLastComments = function (beneficiaireId, distributionId, beneficiairesService, onlyBookmark) {
+getLastComments = function (beneficiaireId, distributionId, dataService, onlyBookmark) {
   var beneficiaireOldComments = [];
-  var allDistributions = beneficiairesService.allDistributions();
-  var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+  var allDistributions = dataService.allDistributions();
+  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
   beneficiairesPresentByDistribution.reverse();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (distributionId != -1 && beneficiaireOldComments.length == 5) {

@@ -27,7 +27,7 @@ module.exports = function (config) {
       'app/datePicker.filter.js',
       'app/beneficiaire/beneficiaire.controller.js',
       'app/beneficiaire/beneficiaireDetail.controller.js',
-      'app/beneficiaire/beneficiaires.service.js',
+      'app/data/data.service.js',
       'app/distribution/distribution.controller.js',
       'app/distribution/distributionDetail.controller.js',
       'app/menu.controller.js',

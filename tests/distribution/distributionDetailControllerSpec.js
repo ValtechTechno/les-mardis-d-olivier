@@ -10,14 +10,14 @@ describe("DistributionDetailController", function () {
   beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector, $routeParams) {
     scope = $rootScope.$new();
     routeParams = {};
-    beneficiairesService = $injector.get('beneficiairesService');
+    dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
     DateWithJQueryUiDatePicker = $filter('DateWithJQueryUiDatePicker');
     $controller('DistributionDetailController as distributionDetail', {
       $scope: scope,
       $routeParams: routeParams,
       $filter: $filter,
-      beneficiairesService: beneficiairesService,
+      dataService: dataService,
       beneficiairesCommonService: beneficiairesCommonService
     });
   }));
@@ -37,7 +37,7 @@ describe("DistributionDetailController", function () {
     scope.distributionDetail.activate();
     beneficiaireId = scope.distributionDetail.beneficiaires[0].id;
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.id, beneficiairesService, false);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.id, dataService, false);
 
     expect(beneficiairesList[0].id).toEqual(beneficiaireId);
     expect(beneficiairesList[0].firstName).toEqual("John");
@@ -51,7 +51,7 @@ describe("DistributionDetailController", function () {
     }]));
     routeParams.distributionId = 1;
     scope.distributionDetail.activate();
-    expect(retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.distributionId, beneficiairesService)).toEqual([]);
+    expect(retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.distributionId, dataService)).toEqual([]);
   });
 
   it('should be only returns the present beneficiaire from a open distribution', function () {
@@ -82,7 +82,7 @@ describe("DistributionDetailController", function () {
 
     scope.distributionDetail.activate();
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(1, beneficiairesService, false);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(1, dataService, false);
     expect(beneficiairesList.length).toEqual(3);
     expect(beneficiairesList[0].isPresent).toEqual(false);
     expect(beneficiairesList[0].firstName).toEqual('John');
@@ -112,7 +112,7 @@ describe("DistributionDetailController", function () {
 
     scope.distributionDetail.writeComment(beneficiaireId, comment);
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.id, beneficiairesService, true);
+    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.id, dataService, true);
     expect(beneficiairesList[0].id).toEqual(beneficiaireId);
     expect(beneficiairesList[0].firstName).toEqual("John");
     expect(beneficiairesList[0].lastName).toEqual("Rambo");
@@ -150,7 +150,7 @@ describe("DistributionDetailController", function () {
     scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[1]);
     scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[2]);
 
-    var beneficiairesList = retrieveAllDistribution(beneficiairesService);
+    var beneficiairesList = retrieveAllDistribution(dataService);
 
     expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
   });
@@ -172,7 +172,7 @@ describe("DistributionDetailController", function () {
       "id": 1
     }, {"distributionDate": "2014-09-18", "id": 2}]));
 
-    var beneficiaires = retrieveBeneficiairesByDistribution(2, beneficiairesService, true);
+    var beneficiaires = retrieveBeneficiairesByDistribution(2, dataService, true);
 
     expect(beneficiaires[0].comment).toEqual("message2");
     expect(beneficiaires[0].comments[1].text).toEqual("2014-09-16 : message");
@@ -195,7 +195,7 @@ describe("DistributionDetailController", function () {
     var commentaireDistribution = "commentaire general";
     scope.distributionDetail.writeDistributionComment(commentaireDistribution);
 
-    var distributions = beneficiairesService.allDistributions();
+    var distributions = dataService.allDistributions();
     expect(distributions[0].comment).toEqual(commentaireDistribution);
   });
 

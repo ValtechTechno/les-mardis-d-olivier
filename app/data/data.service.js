@@ -1,4 +1,4 @@
-(function () {
+(function(){
   'use strict';
 
   if (typeof localStorage == 'undefined') {
@@ -7,9 +7,9 @@
 
   angular
       .module('mardisDolivier')
-      .service('beneficiairesService', beneficiairesService);
+      .service('dataService', dataService);
 
-  function beneficiairesService() {
+  function dataService() {
     var service = {
       loadBeneficiaires: loadBeneficiaires,
       findBeneficiaireById: findBeneficiaireById,
@@ -105,5 +105,6 @@
     function saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution) {
       localStorage.setItem('beneficiairesPresentByDistribution', angular.toJson(newBeneficiairesPresentByDistribution));
     }
+
   }
 })();

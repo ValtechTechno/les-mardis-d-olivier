@@ -5,11 +5,11 @@
       .module('mardisDolivier')
       .controller('ExportController', ExportController);
 
-  function ExportController ($scope, $filter, beneficiairesService) {
+  function ExportController ($scope, $filter, dataService) {
     $scope.openExportPage = function () {
-      $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
-      $scope.distributions = beneficiairesService.allDistributions();
-      $scope.beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+      $scope.beneficiaires = dataService.loadBeneficiaires();
+      $scope.distributions = dataService.allDistributions();
+      $scope.beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
       $scope.about = angular.fromJson(localStorage.getItem('aboutInformation'));
     };
 

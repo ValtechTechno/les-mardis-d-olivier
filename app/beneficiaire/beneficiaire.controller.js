@@ -5,10 +5,10 @@
       .module('mardisDolivier')
       .controller('BeneficiaireController', BeneficiaireController);
 
-  function BeneficiaireController ($scope, beneficiairesService, commonService, $location) {
+  function BeneficiaireController ($scope, dataService, commonService, $location) {
     $scope.openBeneficiaireList = function () {
       $scope.resetAddBeneficiareForm();
-      $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
+      $scope.beneficiaires = dataService.loadBeneficiaires();
       $scope.currentBeneficiaire = {code: $scope.initNextCode(), hasCard: false};
       $scope.excludedFilter = false;
       $scope.hasCardFilter = false;
@@ -60,7 +60,7 @@
       if (commonService.userFormValidation($scope, false)) {
         var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
         $scope.beneficiaires.push(newBeneficiaire);
-        beneficiairesService.saveBeneficiaires($scope.beneficiaires);
+        dataService.saveBeneficiaires($scope.beneficiaires);
         return newBeneficiaire;
       }
       return false

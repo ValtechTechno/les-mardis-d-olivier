@@ -9,13 +9,13 @@ describe("DistributionController", function () {
   });
   beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
-    beneficiairesService = $injector.get('beneficiairesService');
+    dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
     DateWithJQueryUiDatePicker = $filter('DateWithJQueryUiDatePicker');
     $controller('DistributionController', {
       $scope: scope,
       $filter: $filter,
-      beneficiairesService: beneficiairesService,
+      dataService: dataService,
       beneficiairesCommonService: beneficiairesCommonService
     });
   }));
@@ -27,7 +27,7 @@ describe("DistributionController", function () {
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-05";
     scope.saveNewDistribution();
-    expect(retrieveAllDistribution(beneficiairesService))
+    expect(retrieveAllDistribution(dataService))
       .toEqual([
         {
           "distributionDate": "2014-08-05",
@@ -52,7 +52,7 @@ describe("DistributionController", function () {
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-06";
     scope.saveNewDistribution();
-    expect(retrieveAllDistribution(beneficiairesService))
+    expect(retrieveAllDistribution(dataService))
       .toEqual([
         {
           "distributionDate": "2014-08-06",
@@ -81,7 +81,7 @@ describe("DistributionController", function () {
     } catch (err) {
     }
 
-    expect(retrieveAllDistribution(beneficiairesService))
+    expect(retrieveAllDistribution(dataService))
       .toEqual([{
         "distributionDate": "2014-08-04",
         "nbPlannedMeals": "50",
@@ -98,7 +98,7 @@ describe("DistributionController", function () {
     } catch (err) {
     }
 
-    expect(retrieveAllDistribution(beneficiairesService)).toEqual([]);
+    expect(retrieveAllDistribution(dataService)).toEqual([]);
   });
 
   it('should not allow to add a distribution with empty date', function () {
@@ -110,7 +110,7 @@ describe("DistributionController", function () {
     } catch (err) {
     }
 
-    expect(retrieveAllDistribution(beneficiairesService)).toEqual([]);
+    expect(retrieveAllDistribution(dataService)).toEqual([]);
   });
 
   it("should be able to init give the next date (working day) of a distribution based on the previous one.", function () {

@@ -22,13 +22,13 @@ describe("BeneficiaireController", function () {
   beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
     routeParams = {};
-    beneficiairesService = $injector.get('beneficiairesService');
+    dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
 
     $controller('BeneficiaireController', {
       $scope: scope,
       $filter: $filter,
-      beneficiairesService: beneficiairesService,
+      dataService: dataService,
       beneficiairesCommonService: beneficiairesCommonService
     });
     scope.resetAddBeneficiareForm();

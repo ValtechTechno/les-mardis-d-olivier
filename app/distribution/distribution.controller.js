@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .controller('DistributionController', DistributionController);
 
-  function DistributionController ($scope, beneficiairesService, commonService, $location) {
+  function DistributionController ($scope, dataService, commonService, $location) {
     $scope.searchBeneficiaire = function (beneficiaire) {
       return commonService.searchBeneficiaire($scope.searchText, beneficiaire);
     };
@@ -18,10 +18,10 @@
     };
 
     $scope.currentDistribution = {};
-    $scope.beneficiaires = beneficiairesService.loadBeneficiaires();
+    $scope.beneficiaires = dataService.loadBeneficiaires();
 
     $scope.showAllDistribution = function () {
-      $scope.distributions = retrieveAllDistribution(beneficiairesService);
+      $scope.distributions = retrieveAllDistribution(dataService);
       $scope.getComments();
       $scope.initNextDate();
     };
@@ -32,7 +32,7 @@
 
       $scope.getComments = function () {
       if ($scope.distributions != null) {
-        var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+        var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
         for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
           for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
             if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex].id &&
@@ -72,15 +72,15 @@
       return storeDistribution({
         'distributionDate': $scope.currentDistribution.distributionDate,
         'nbPlannedMeals': $scope.currentDistribution.distributionNbPlannedMeals
-      }, beneficiairesService);
+      }, dataService);
     };
 
   }
 
 })();
 
-retrieveAllDistribution = function (beneficiairesService) {
-  var allDistributions = beneficiairesService.allDistributions();
+retrieveAllDistribution = function (dataService) {
+  var allDistributions = dataService.allDistributions();
   if (allDistributions == null) {
     allDistributions = [];
   } else {
@@ -88,7 +88,7 @@ retrieveAllDistribution = function (beneficiairesService) {
   }
   var nbBeneficiaireByDistribution = [];
   var beneficiaire;
-  var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     beneficiaire = nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId];
     nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId] = beneficiaire ? beneficiaire + 1 : 1;
@@ -100,14 +100,14 @@ retrieveAllDistribution = function (beneficiairesService) {
   return allDistributions;
 };
 
-storeDistribution = function (distribution, beneficiairesService) {
+storeDistribution = function (distribution, dataService) {
   if (distribution.distributionDate === undefined || distribution.distributionDate.length == 0) {
     throw 'merci de renseigner la date';
   }
   if (distribution.nbPlannedMeals === undefined || distribution.nbPlannedMeals.length == 0) {
     throw 'merci de renseigner le nombre de repas';
   }
-  var distributions = beneficiairesService.allDistributions();
+  var distributions = dataService.allDistributions();
   var nextId;
   if (distributions == null || distributions.length == 0) {
     distributions = [];
@@ -122,13 +122,13 @@ storeDistribution = function (distribution, beneficiairesService) {
 
   distribution.id = nextId;
   distributions.push(distribution);
-  beneficiairesService.saveDistributions(distributions);
+  dataService.saveDistributions(distributions);
   return nextId;
 };
 
-storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, beneficiairesService) {
+storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, dataService) {
   var isRelationExisting = false;
-  var beneficiairesPresentByDistribution = beneficiairesService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId &&
       beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
@@ -143,7 +143,7 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
       "beneficiaireId": beneficiaireId
     });
   }
-  beneficiairesService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
+  dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
 };
 
 /* get the date of the comment : depending of the source, from the related distribution or from the date of the object */
