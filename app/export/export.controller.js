@@ -10,7 +10,7 @@
       $scope.beneficiaires = dataService.loadBeneficiaires();
       $scope.distributions = dataService.allDistributions();
       $scope.beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
-      $scope.about = angular.fromJson(localStorage.getItem('aboutInformation'));
+      $scope.about = dataService.about();
     };
 
     $scope.exportData = function () {

@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .controller('AboutEditController', AboutEditController);
 
-  function AboutEditController($location) {
+  function AboutEditController($location, dataService) {
     var vm = this;
     vm.aboutInformation = null;
     vm.saveAboutPage = saveAboutPage;
@@ -13,10 +13,7 @@
     activate();
 
     function activate() {
-      var aboutFromStorage = angular.fromJson(localStorage.getItem('aboutInformation'));
-      if (aboutFromStorage != null) {
-        vm.aboutInformation = aboutFromStorage;
-      }
+      vm.aboutInformation = dataService.about();
     }
 
     function saveAboutPage() {

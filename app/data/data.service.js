@@ -19,7 +19,8 @@
       beneficiairesPresentByDistribution: beneficiairesPresentByDistribution,
       saveBeneficiairesPresentByDistribution: saveBeneficiairesPresentByDistribution,
       findDistributionById: findDistributionById,
-      updateDistribution: updateDistribution
+      updateDistribution: updateDistribution,
+      about: about
     };
 
     return service;
@@ -104,6 +105,10 @@
 
     function saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution) {
       localStorage.setItem('beneficiairesPresentByDistribution', angular.toJson(newBeneficiairesPresentByDistribution));
+    }
+
+    function about() {
+      return angular.fromJson(localStorage.getItem('aboutInformation'));
     }
 
   }
