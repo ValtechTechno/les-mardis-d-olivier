@@ -27,14 +27,5 @@
   </tr>
 </table>
 
-<div id="confirmDataDeletePopup" class="reveal-modal small" data-reveal>
-  <p>Êtes-vous sûr de vouloir supprimer toutes les données de l'application ?</p>
-  <div>
-    <button ng-click="cancelDataDeletePopup()" class="button secondary expand">Annuler</button>
-  </div>
-  <div>
-    <button id="confirmDelete" ng-click="confirmDataDeletePopup()" class="button secondary expand">
-      Supprimer
-    </button>
-  </div>
-</div>
+<popup-directive popup-label="Êtes-vous sûr de vouloir supprimer toutes les données de l'application ?"
+                 first-button="Supprimer" second-button="Annuler" first-action="confirmDataDeletePopup()" second-action="cancelDataDeletePopup()"></popup-directive>

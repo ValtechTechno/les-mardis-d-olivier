@@ -13,15 +13,15 @@
     };
 
     $scope.deleteDataPopup = function () {
-      $('#confirmDataDeletePopup').foundation('reveal', 'open');
+      $('#popupDirective').foundation('reveal', 'open');
     };
 
     $scope.cancelDataDeletePopup = function () {
-      $('#confirmDataDeletePopup').foundation('reveal', 'close');
+      $('#popupDirective').foundation('reveal', 'close');
     }
 
     $scope.confirmDataDeletePopup = function () {
-      $('#confirmDataDeletePopup').foundation('reveal', 'close');
+      $('#popupDirective').foundation('reveal', 'close');
       $scope.deleteExistingData();
     }
 

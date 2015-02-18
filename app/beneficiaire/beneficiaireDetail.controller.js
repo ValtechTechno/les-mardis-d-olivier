@@ -65,7 +65,7 @@
     };
 
     $scope.deleteBeneficiaireDetail = function () {
-      $('#confirmDeletePopup').foundation('reveal', 'open');
+      $('#popupDirective').foundation('reveal', 'open');
     };
 
     $scope.addCommentaire = function () {
@@ -87,11 +87,11 @@
     };
 
     $scope.cancelBeneficiaireDetailDeletePopup = function () {
-      $('#confirmDeletePopup').foundation('reveal', 'close');
+      $('#popupDirective').foundation('reveal', 'close');
     }
 
     $scope.confirmBeneficiaireDetailDeletePopup = function () {
-      $('#confirmDeletePopup').foundation('reveal', 'close');
+      $('#popupDirective').foundation('reveal', 'close');
       var beneficiaires = dataService.loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;
       for (var i = 0; i < beneficiaires.length; i++) {

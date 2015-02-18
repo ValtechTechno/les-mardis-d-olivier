@@ -62,17 +62,8 @@
   <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
 </form>
 
-<div id="confirmDeletePopup" class="reveal-modal small" data-reveal>
-  <p>Êtes-vous sûr de vouloir supprimer ce bénéficiaire ?</p>
-  <div>
-    <button ng-click="cancelBeneficiaireDetailDeletePopup()" class="button secondary expand">Annuler</button>
-  </div>
-  <div>
-    <button id="confirmDelete" ng-click="confirmBeneficiaireDetailDeletePopup()" class="button secondary expand">
-      Supprimer
-    </button>
-  </div>
-</div>
+<popup-directive popup-label="Êtes-vous sûr de vouloir supprimer ce bénéficiaire ?"
+                 first-button="Supprimer" second-button="Annuler" first-action="confirmBeneficiaireDetailDeletePopup()" second-action="cancelBeneficiaireDetailDeletePopup()"></popup-directive>
 
 <h3><b>Commentaires</b></h3>
 <div ng-show="currentBeneficiaire.comments.length != 0">
