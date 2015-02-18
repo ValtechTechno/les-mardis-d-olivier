@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .service('commonService', commonService);
 
-  function commonService(beneficiairesService) {
+  function commonService() {
     var service = {
       userFormValidation: userFormValidation,
       searchBeneficiaire: searchBeneficiaire
