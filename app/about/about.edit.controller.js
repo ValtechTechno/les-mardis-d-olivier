@@ -17,7 +17,7 @@
     }
 
     function saveAboutPage() {
-      localStorage.setItem('aboutInformation', angular.toJson(vm.aboutInformation));
+      dataService.saveAbout(vm.aboutInformation);
       $location.path('/about');
     }
   }

@@ -20,7 +20,8 @@
       saveBeneficiairesPresentByDistribution: saveBeneficiairesPresentByDistribution,
       findDistributionById: findDistributionById,
       updateDistribution: updateDistribution,
-      about: about
+      about: about,
+      saveAbout: saveAbout
     };
 
     return service;
