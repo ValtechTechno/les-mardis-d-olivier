@@ -16,9 +16,9 @@ describe("BeneficiaireController", function () {
   };
 
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(function () {
-    localStorage.clear()
-  });
+  beforeEach(inject(function (dataService) {
+    dataService.clear()
+  }));
   beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
     routeParams = {};
@@ -85,10 +85,10 @@ describe("BeneficiaireController", function () {
     expect(scope.beneficiaires.length).toBe(0);
   });
 
-  it('should save beneficiaires to localStorage', function () {
+  it('should save beneficiaires to dataService', function () {
     addBeneficiaire('foo', 'bar');
 
-    expect(localStorage.getItem('beneficiaires')).toBe('[{"id":"1","code":1,"firstName":"foo","lastName":"bar","hasCard":false}]');
+    expect(dataService.loadBeneficiaires()).toEqual([{id:'1',code:1,firstName:'foo',lastName:'bar',hasCard:false}]);
   });
 
 });

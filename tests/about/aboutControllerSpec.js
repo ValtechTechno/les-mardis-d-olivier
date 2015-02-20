@@ -2,14 +2,16 @@ describe("AboutController", function () {
 
   var scope;
   var controller;
+  var dataService;
 
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(function () {
-    localStorage.clear()
-  });
-  beforeEach(angular.mock.inject(function ($rootScope, $controller) {
+  beforeEach(inject(function (dataService) {
+    dataService.clear();
+  }));
+  beforeEach(angular.mock.inject(function ($rootScope, $controller, $injector) {
     scope = $rootScope.$new();
     controller = $controller;
+    dataService = $injector.get('dataService');
   }));
 
   function createController(){
@@ -23,7 +25,7 @@ describe("AboutController", function () {
   });
 
   it('with any about information', function () {
-    localStorage.setItem('aboutInformation', angular.toJson("foobar"));
+    dataService.saveAbout("foobar");
 
     createController();
 

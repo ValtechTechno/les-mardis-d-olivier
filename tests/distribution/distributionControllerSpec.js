@@ -4,9 +4,9 @@ describe("DistributionController", function () {
   var DateWithJQueryUiDatePicker;
 
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(function () {
-    localStorage.clear()
-  });
+  beforeEach(inject(function (dataService) {
+    dataService.clear()
+  }));
   beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
     dataService = $injector.get('dataService');

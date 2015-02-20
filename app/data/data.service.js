@@ -11,6 +11,7 @@
 
   function dataService() {
     var service = {
+      clear: clear, // @VisibleForTesting
       loadBeneficiaires: loadBeneficiaires,
       findBeneficiaireById: findBeneficiaireById,
       saveBeneficiaires: saveBeneficiaires,
@@ -25,6 +26,10 @@
     };
 
     return service;
+
+    function clear() {
+      localStorage.clear();
+    }
 
     function updateDistribution(distribution) {
       var distributions = allDistributions();
@@ -96,8 +101,7 @@
     }
 
     function beneficiairesPresentByDistribution() {
-      var beneficiairesPresentByDistribution = angular.fromJson(localStorage
-        .getItem('beneficiairesPresentByDistribution'))
+      var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'))
       if (beneficiairesPresentByDistribution == null) {
         beneficiairesPresentByDistribution = [];
       }
@@ -110,6 +114,10 @@
 
     function about() {
       return angular.fromJson(localStorage.getItem('aboutInformation'));
+    }
+
+    function saveAbout(about) {
+      localStorage.setItem('aboutInformation', angular.toJson(about));
     }
 
   }
