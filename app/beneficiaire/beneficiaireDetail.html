@@ -52,18 +52,13 @@
       </button>
     </div>
     <div class="medium-3 columns right">
-      <button id="deleteBeneficiaireDetail" ng-click="deleteBeneficiaireDetail()" class="button secondary expand">
-        Supprimer
-      </button>
+      <popup-directive popup-button="deletePopupButtons" popup-label="Êtes-vous sûr de vouloir supprimer ce bénéficiaire ?" button-label="Supprimer" ></popup-directive>
     </div>
   </div>
   <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
 
   <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
 </form>
-
-<popup-directive popup-label="Êtes-vous sûr de vouloir supprimer ce bénéficiaire ?"
-                 first-button="Supprimer" second-button="Annuler" first-action="confirmBeneficiaireDetailDeletePopup()" second-action="cancelBeneficiaireDetailDeletePopup()"></popup-directive>
 
 <h3><b>Commentaires</b></h3>
 <div ng-show="currentBeneficiaire.comments.length != 0">

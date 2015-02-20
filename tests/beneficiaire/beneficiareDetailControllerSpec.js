@@ -40,10 +40,7 @@ describe("BeneficiaireDetailController", function () {
   it('should delete a beneficiaire', function () {
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
-    scope.deleteBeneficiaireDetail();
-    scope.cancelBeneficiaireDetailDeletePopup();
-    scope.deleteBeneficiaireDetail();
-    scope.confirmBeneficiaireDetailDeletePopup();
+    scope.$emit('confirmBeneficiaireDetailDeletePopup');
     var beneficiaires = dataService.loadBeneficiaires();
     expect(beneficiaires.length).toEqual(1);
     var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();

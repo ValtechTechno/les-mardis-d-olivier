@@ -10,33 +10,24 @@
       $scope.rawPaste = '';
       $scope.parsedPaste = [];
       $scope.beneficiaires = dataService.loadBeneficiaires();
+      $scope.deletePopupButtons = [
+        {text: "Supprimer", event: "deleteExistingData", close: true, style: "redButton"},
+        {text: "Annuler", event: "", close: true, style: ""}
+      ];
     };
-
-    $scope.deleteDataPopup = function () {
-      $('#popupDirective').foundation('reveal', 'open');
-    };
-
-    $scope.cancelDataDeletePopup = function () {
-      $('#popupDirective').foundation('reveal', 'close');
-    }
-
-    $scope.confirmDataDeletePopup = function () {
-      $('#popupDirective').foundation('reveal', 'close');
-      $scope.deleteExistingData();
-    }
 
     $scope.importData = function () {
       dataService.saveBeneficiaires($scope.beneficiairesToImport);
       $location.path("/beneficiaires");
     };
 
-    $scope.deleteExistingData = function () {
+    $scope.$on('deleteExistingData', function () {
       dataService.saveBeneficiaires(null);
       dataService.saveDistributions(null);
       dataService.saveBeneficiairesPresentByDistribution(null);
       dataService.saveBeneficiairesPresentByDistribution(null);
       $scope.beneficiaires = dataService.loadBeneficiaires();
-    };
+    });
 
     $scope.validationImport = function (parsedList) {
       $scope.currentError = {};

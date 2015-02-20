@@ -13,7 +13,13 @@
       $scope.getComments();
       $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire.id);
       // By default, an old user has a card.
-      if($scope.currentBeneficiaire.hasCard == undefined){$scope.currentBeneficiaire.hasCard = true;}
+      if ($scope.currentBeneficiaire.hasCard == undefined) {
+        $scope.currentBeneficiaire.hasCard = true;
+      }
+      $scope.deletePopupButtons = [
+        {text: "Supprimer", event: "confirmBeneficiaireDetailDeletePopup", close: true, style: "redButton"},
+        {text: "Annuler", event: "", close: true, style: ""}
+      ];
     };
 
     $scope.isBookmark = function (comment) {
@@ -64,10 +70,6 @@
       }
     };
 
-    $scope.deleteBeneficiaireDetail = function () {
-      $('#popupDirective').foundation('reveal', 'open');
-    };
-
     $scope.addCommentaire = function () {
       if($scope.currentBeneficiaire.newComment == undefined || $scope.currentBeneficiaire.newComment.length == 0){
         $scope.currentError = {isCommentEmpty: true};
@@ -86,12 +88,7 @@
       }
     };
 
-    $scope.cancelBeneficiaireDetailDeletePopup = function () {
-      $('#popupDirective').foundation('reveal', 'close');
-    }
-
-    $scope.confirmBeneficiaireDetailDeletePopup = function () {
-      $('#popupDirective').foundation('reveal', 'close');
+    $scope.$on('confirmBeneficiaireDetailDeletePopup', function () {
       var beneficiaires = dataService.loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;
       for (var i = 0; i < beneficiaires.length; i++) {
@@ -114,7 +111,7 @@
       dataService.saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution);
 
       $scope.cancelBeneficiaireDetail();
-    };
+    });
 
     $scope.openBeneficiaireList = function () {
       $location.path("/beneficiaires");
