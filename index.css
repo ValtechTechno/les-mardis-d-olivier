@@ -113,3 +113,6 @@ input[type="checkbox"].hasCard{
   height: 1em;
   margin-top: 0.9em;
 }
+input[type="checkbox"] + label{
+  margin-right: 0.1em;
+}

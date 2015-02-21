@@ -44,8 +44,14 @@
 
   <p class="errorMessage" ng-show="currentError.isBeneficiaireNotUnique">Le bénéficiaire existe déjà</p>
 </form>
+<div class="medium-12 columns">
+  <div class="medium-3 columns">
 <input type="checkbox" id="hasCardFilter" ng-model="hasCardFilter"><label for="hasCardFilter"><i class="ui-icon ui-icon-contact"></i> Sans carte</label></<input>
-<input type="checkbox" id="excludedFilter" ng-model="excludedFilter"><label for="excludedFilter"><i class="ui-icon ui-icon-circle-minus"/></i> Exclus</label></<input>
+  </div>
+  <div class="medium-3 columns left">
+  <input type="checkbox" id="excludedFilter" ng-model="excludedFilter"><label for="excludedFilter"><i class="ui-icon ui-icon-circle-minus"/></i> Exclus</label></<input>
+  </div>
+</div>
 <div class="row">
   <div class="medium-12 columns">
     <table class="table">
