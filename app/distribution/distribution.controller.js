@@ -28,7 +28,7 @@
 
     $scope.loadDistribution = function (distributionId) {
       $location.path("/distributions/" + distributionId);
-    }
+    };
 
       $scope.getComments = function () {
       if ($scope.distributions != null) {

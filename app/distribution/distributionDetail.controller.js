@@ -164,7 +164,7 @@ getDateDistribution = function (allDistributions, beneficiairePresent, distribut
     }
   }
   return dateDistrib;
-}
+};
 
 createNextWorkingDate = function (dateString) {
   var lastDate = new Date(dateString);

@@ -42,7 +42,7 @@
         }
       }
       return visiteNumber;
-    }
+    };
 
     $scope.getComments = function(){
       $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire.id, -1, dataService, false);
@@ -115,7 +115,7 @@
 
     $scope.openBeneficiaireList = function () {
       $location.path("/beneficiaires");
-    }
+    };
 
     $scope.openBeneficiaireDetail();
   }

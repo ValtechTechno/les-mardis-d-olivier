@@ -33,12 +33,12 @@
 
     $scope.openBeneficiaireDetail = function(beneficiaireId) {
       $location.path("/beneficiaires/" + beneficiaireId);
-    }
+    };
 
     $scope.resetAddBeneficiareForm = function() {
       $scope.currentBeneficiaire = {code: $scope.initNextCode(), hasCard: false};
       $scope.currentError = {};
-    }
+    };
 
     $scope.initNextCode = function() {
       var nextCode = 1;
@@ -51,7 +51,7 @@
         }
       }
       return nextCode;
-    }
+    };
 
     $scope.addBeneficiaire = function() {
       if (commonService.userFormValidation($scope, false)) {
@@ -61,7 +61,7 @@
         return newBeneficiaire;
       }
       return false
-    }
+    };
 
     $scope.openBeneficiaireList();
   }
