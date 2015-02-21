@@ -11,7 +11,6 @@
     vm.currentDistribution = {};
     vm.beneficiaires = [];
     vm.searchText = "";
-    vm.readOnly = true;
     vm.writeDistributionComment = writeDistributionComment;
     vm.searchBeneficiaire = searchBeneficiaire;
     vm.isPresent = isPresent;

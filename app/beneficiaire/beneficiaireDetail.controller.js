@@ -50,7 +50,7 @@
 
     $scope.cancelBeneficiaireDetail = function () {
       if ($scope.fromDistribution == true) {
-        $scope.loadDistribution($scope.currentDistribution.id, $scope.readOnly);
+        $scope.loadDistribution($scope.currentDistribution.id);
       } else {
         $scope.openBeneficiaireList();
       }
