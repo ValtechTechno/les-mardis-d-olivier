@@ -78,13 +78,11 @@
         }
 
         var hasCardFromString = $scope.getHasCardFromString(parsedList[i][2]);
-        if (parsedList[i].length == 3){
-          if(isFirstColCode == false && hasCardFromString == undefined) {
-            return $scope.createMissingInformationError(i);
-          }
-          if(isFirstColCode == false && hasCardFromString != undefined) {
+        if (parsedList[i].length == 3 && isFirstColCode == false){
+            if(hasCardFromString == undefined) {
+              return $scope.createMissingInformationError(i);
+            }
             hasCard = hasCardFromString;
-          }
         }
 
         if (code === undefined) {
