@@ -70,24 +70,6 @@
       }
     };
 
-    $scope.addCommentaire = function () {
-      if($scope.currentBeneficiaire.newComment == undefined || $scope.currentBeneficiaire.newComment.length == 0){
-        $scope.currentError = {isCommentEmpty: true};
-      }else {
-        var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
-        var comment = {
-          distributionId: -1,
-          beneficiaireId: $scope.currentBeneficiaire.id,
-          comment: $scope.currentBeneficiaire.newComment,
-          date: formatDate(new Date())
-        };
-        beneficiairesPresentByDistribution.push(comment);
-        dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
-        $scope.getComments();
-        $scope.currentBeneficiaire.newComment = null;
-      }
-    };
-
     $scope.$on('confirmBeneficiaireDetailDeletePopup', function () {
       var beneficiaires = dataService.loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;

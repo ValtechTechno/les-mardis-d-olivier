@@ -84,15 +84,6 @@ describe("BeneficiaireDetailController", function () {
     expect(scope.currentBeneficiaire.visiteNumber).toEqual(2);
   });
 
-  it('should add an beneficiaire comment', function () {
-    scope.openBeneficiaireList();
-    routeParams.beneficiaireId = 1;
-    scope.openBeneficiaireDetail();
-    scope.currentBeneficiaire.newComment = "Test New Comment";
-    scope.addCommentaire();
-    expect(scope.currentBeneficiaire.comments.length).toEqual(3);
-  });
-
   it('should bookmark an beneficiaire comment', function () {
     dataService.saveBeneficiairesPresentByDistribution([
       { distributionId: "1", beneficiaireId: '1', comment: 'message',  isBookmark:false },
