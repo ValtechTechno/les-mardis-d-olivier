@@ -1,7 +1,7 @@
 <div class="row">
   <h4 class="medium-12 columns">Nouveau bénéficiaire</h4>
 </div>
-<form name="addBeneficiaireForm">
+<form name="addBeneficiaireForm" ng-submit="addBeneficiaireFromList()">
   <div class="row" ng-hide="readOnly">
     <div class="medium-12 columns">
       <div class="row">
@@ -35,7 +35,7 @@
       </div>
       <div class="row">
         <div class="medium-4 columns right">
-          <button ng-click="addBeneficiaireFromList()" class="button secondary expand">Ajouter</button>
+          <button class="button secondary expand">Ajouter</button>
         </div>
       </div>
     </div>
