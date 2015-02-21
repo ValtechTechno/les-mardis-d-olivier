@@ -7,9 +7,8 @@
 
   function BeneficiaireController ($scope, dataService, commonService, $location) {
     $scope.openBeneficiaireList = function () {
-      $scope.resetAddBeneficiareForm();
       $scope.beneficiaires = dataService.loadBeneficiaires();
-      $scope.currentBeneficiaire = {code: $scope.initNextCode(), hasCard: false};
+      $scope.resetAddBeneficiareForm();
       $scope.excludedFilter = false;
       $scope.hasCardFilter = false;
     };
@@ -29,7 +28,6 @@
     $scope.addBeneficiaireFromList = function () {
       if ($scope.addBeneficiaire()) {
         $scope.resetAddBeneficiareForm();
-        $scope.currentBeneficiaire = {code: $scope.initNextCode()};
       }
     };
 
@@ -37,9 +35,8 @@
       $location.path("/beneficiaires/" + beneficiaireId);
     }
 
-    // add form
-
     $scope.resetAddBeneficiareForm = function() {
+      $scope.currentBeneficiaire = {code: $scope.initNextCode(), hasCard: false};
       $scope.currentError = {};
     }
 
