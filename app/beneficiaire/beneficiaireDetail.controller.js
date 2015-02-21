@@ -46,14 +46,6 @@
 
     $scope.getComments = function(){
       $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire.id, -1, dataService, false);
-    }
-
-    $scope.cancelBeneficiaireDetail = function () {
-      if ($scope.fromDistribution == true) {
-        $scope.loadDistribution($scope.currentDistribution.id);
-      } else {
-        $scope.openBeneficiaireList();
-      }
     };
 
     $scope.saveBeneficiaireDetail = function () {
@@ -66,7 +58,7 @@
           }
         }
         dataService.saveBeneficiaires(beneficiaires);
-        $scope.cancelBeneficiaireDetail();
+        $scope.openBeneficiaireList();
       }
     };
 
@@ -84,7 +76,6 @@
 
       var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
       var newBeneficiairesPresentByDistribution = [];
-      var beneficiairePresentByDistributionToDeletePosition = -1;
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
         if (beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire.id) {
           newBeneficiairesPresentByDistribution.push(beneficiairesPresentByDistribution[i]);
@@ -92,7 +83,7 @@
       }
       dataService.saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution);
 
-      $scope.cancelBeneficiaireDetail();
+      $scope.openBeneficiaireList();
     });
 
     $scope.openBeneficiaireList = function () {
