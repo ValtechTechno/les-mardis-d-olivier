@@ -127,7 +127,7 @@ describe("DistributionDetailController", function () {
 
     expect(beneficiaires[0].comment).toEqual("message2");
     expect(beneficiaires[0].comments[1].text).toEqual("2014-09-16 : message");
-    expect(beneficiaires[0].comments[0].text).toEqual("[DATE] : message2");
+    expect(beneficiaires[0].comments[0].text).toEqual("2014-09-18 : message2");
   });
 
   it('should be possible to save a comment on a distribution', function () {

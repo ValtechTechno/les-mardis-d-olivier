@@ -142,17 +142,17 @@ getLastComments = function (beneficiaireId, distributionId, dataService, onlyBoo
     }
     if (beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId &&
       beneficiairesPresentByDistribution[i].comment != null && ( onlyBookmark == false || onlyBookmark == true && beneficiairesPresentByDistribution[i].isBookmark == true)) {
-      beneficiaireOldComments.push({distributionId:beneficiairesPresentByDistribution[i].distributionId,text:getDateDistribution(allDistributions, beneficiairesPresentByDistribution[i], distributionId) + " : " + beneficiairesPresentByDistribution[i].comment, isBookmark: beneficiairesPresentByDistribution[i].isBookmark});
+      beneficiaireOldComments.push({distributionId:beneficiairesPresentByDistribution[i].distributionId,text:getDateDistribution(allDistributions, beneficiairesPresentByDistribution[i]) + " : " + beneficiairesPresentByDistribution[i].comment, isBookmark: beneficiairesPresentByDistribution[i].isBookmark});
     }
   }
   return beneficiaireOldComments;
 };
 
 /* get the date of the comment : depending of the source, from the related distribution or from the date of the object */
-getDateDistribution = function (allDistributions, beneficiairePresent, distributionId) {
-  var dateDistrib = "[DATE]";
-  if (beneficiairePresent.distributionId != -1 && beneficiairePresent.distributionId != distributionId) {
-    for (var distributionNumber = 0; distributionNumber < allDistributions.length; distributionNumber++) {
+getDateDistribution = function (allDistributions, beneficiairePresent) {
+  var dateDistrib = formatDate(new Date());
+  if (beneficiairePresent.distributionId != -1) {
+    for (var distributionNumber = 0; distributionNumber <= allDistributions.length; distributionNumber++) {
       if (allDistributions[distributionNumber].id == beneficiairePresent.distributionId) {
         dateDistrib = allDistributions[distributionNumber].distributionDate;
         break;

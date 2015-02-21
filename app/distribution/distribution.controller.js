@@ -30,7 +30,7 @@
       $location.path("/distributions/" + distributionId);
     };
 
-      $scope.getComments = function () {
+    $scope.getComments = function () {
       if ($scope.distributions != null) {
         var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
         for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
@@ -145,24 +145,6 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
   }
   dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
 };
-
-/* get the date of the comment : depending of the source, from the related distribution or from the date of the object */
-getDateDistribution = function (allDistributions, beneficiairePresent, distributionId) {
-  var dateDistrib = "[DATE]";
-  if(beneficiairePresent.distributionId != -1 && beneficiairePresent.distributionId != distributionId) {
-    for (var distributionNumber = 0; distributionNumber < allDistributions.length; distributionNumber++) {
-      if (allDistributions[distributionNumber].id == beneficiairePresent.distributionId) {
-        dateDistrib = allDistributions[distributionNumber].distributionDate;
-        break;
-      }
-    }
-  }else{
-    if(beneficiairePresent.date != null) {
-      dateDistrib = beneficiairePresent.date;
-    }
-  }
-  return dateDistrib;
-}
 
 createNextWorkingDate = function (dateString) {
   var lastDate = new Date(dateString);
