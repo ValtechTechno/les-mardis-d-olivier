@@ -1,32 +1,71 @@
-<div ng-show="beneficiaires.length!=0">
+<div class="medium-8 column">
+  <div class="row">
+    <h3><b>Import des beneficiaires</b></h3>
+  </div>
+  <div class="row">
+    <p>Copiez les données depuis excel avec Ctrl + V</p>
+  </div>
+  <div class="row">
+    <p>Les colonnes "Nom" et "Prénom" sont obligatoires.</p>
+  </div>
+  <div class="row">
+    <p>Si la colonne "Code" n'est pas copiée, un code sera généré.</p>
+  </div>
+  <div ng-show="parsedPaste.length!=0 && currentError.hasImportError == false">
+    <div class="row">
+      Voulez-vous importer les données ? ( <input type="checkbox" id="hasCard" ng-model="hasCard"
+                                                  ng-change="validationImport(parsedPaste)"><label for="hasCard"><i
+      class="ui-icon ui-icon-contact"></i>assigner cartes )</label></input>
+    </div>
+    <div class="row">
+      <button id="exportButton" ng-click="importData()" class="button secondary">Importer</button>
+    </div>
+  </div>
+  <p class="errorMessage" ng-show="currentError.hasImportError">La saisie comporte des erreurs</p>
+
+  <p class="errorMessage" ng-show="currentError.importErrorDuplicateCode">Le code
+    {{currentError.importErrorFirstDuplicateCode}} est dupliqué, ligne {{currentError.importErrorLine}}</p>
+
+  <p class="errorMessage" ng-show="currentError.importErrorMissingInformation">Une information est manquante dans la
+    ligne copiée n°{{currentError.importErrorLine}}</p>
+</div>
+
+<div class="medium-4 column">
   <popup-directive popup-button="deletePopupButtons"
                    popup-label="Êtes-vous sûr de vouloir supprimer toutes les données de l'application ?"
-                   button-label="Supprimer les données existantes"></popup-directive>
+                   button-label="Supprimer les données existantes" ng-show="beneficiaires.length!=0"></popup-directive>
 </div>
-<h3><b>Import des beneficiaires</b></h3>
-<p>Copiez les données depuis excel avec Ctrl + V</p>
-<p>Toutes les colonnes sont obligatoires.</p>
-<div ng-show="parsedPaste.length!=0 && currentError.hasImportError == false">
-  Voulez-vous importer les données ?
-  <button id="exportButton" ng-click="importData()" class="button secondary">Importer</button>
+
+<div class="medium-12 column">
+  <angular-paste id="parsedPaste" ng-model="rawPaste" ng-array="parsedPaste"/>
+  <input type="checkbox" id="showFinalList" ng-model="showFinalList"><label for="showFinalList">Voir la liste
+  finale</label></input>
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th><i class="ui-icon ui-icon-tag"></i>Code (nombre)</th>
+      <th>Nom</th>
+      <th>Prenom</th>
+      <td><i class="ui-icon ui-icon-contact"></i> Carte (true/false)</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-show="parsedPaste.length==0 && (!showFinalList || beneficiaires.length==0 && showFinalList) ">
+      <td colspan="3">Aucune donnée.</td>
+    </tr>
+    <tr ng-class="{ added: showFinalList && ($index >= beneficiaires.length) }"
+        ng-repeat="benefToImport in beneficiairesToImport track by $index"
+        ng-show="showFinalList || ($index >= beneficiaires.length)">
+      <td>
+        {{benefToImport.code}}
+      </td>
+      <td>
+        {{benefToImport.lastName}}
+      </td>
+      <td>
+        {{benefToImport.firstName}}
+      </td>
+      <td><i ng-class="benefToImport.hasCard !== false ? 'ui-icon ui-icon-contact' : '' "></i></td>
+    </tr>
+  </table>
 </div>
-<p class="errorMessage" ng-show="currentError.hasImportError">La saisie comporte des erreurs.</p>
-<p class="errorMessage" ng-show="currentError.importErrorDuplicateCode">Il existe un ou plusieurs codes dupliqués.</p>
-<p class="errorMessage" ng-show="currentError.importErrorMissingInformation">Une information est manquante</p>
-<angular-paste id="parsedPaste" ng-model="rawPaste" ng-array="parsedPaste"/>
-<table class="table table-striped table-bordered">
-  <thead>
-  <tr>
-    <th><i class="ui-icon ui-icon-tag"></i>Code</th>
-    <th>Nom</th>
-    <th>Prenom</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr ng-show="parsedPaste.length==0">
-    <td colspan="3">Aucune donnée.</td>
-  </tr>
-  <tr ng-repeat="row in parsedPaste track by $index">
-    <td ng-repeat="col in row track by $index">{{col}}</td>
-  </tr>
-</table>
