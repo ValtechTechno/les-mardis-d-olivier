@@ -31,7 +31,7 @@
           <td>{{user.code}}</td>
           <td>{{user.lastName}}</td>
           <td>{{user.firstName}}</td>
-          <td class="isExcluded"><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
+          <td><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
           <td>
             <input type="checkbox" ng-model="user.isPresent" ng-change="distributionDetail.isPresent(user)"/>
           </td>

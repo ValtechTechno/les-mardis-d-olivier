@@ -96,11 +96,6 @@ table input {
   height: 88px;
 }
 
-.isExcluded {
-  color:red;
-  font-weight: bold;
-}
-
 i.ui-icon {
   float: left;
   margin-right: .5em;
