@@ -1,7 +1,7 @@
 <div class="row">
   <h4 class="medium-12 columns">Nouvelle distribution</h4>
 </div>
-<form name="addDistributionForm">
+<form name="addDistributionForm" ng-submit="startNewDistribution()">
     <div class="row">
       <div class="medium-9 columns">
         <label>
@@ -13,13 +13,13 @@
       <div class="medium-3 columns">
         <label>
           <i class="ui-icon ui-icon-cart"></i> Repas prévus
-          <input type="text" ng-model="currentDistribution.distributionNbPlannedMeals" ng-required="true"/>
+          <input type="number" ng-model="currentDistribution.distributionNbPlannedMeals" ng-required="true"/>
         </label>
       </div>
     </div>
     <div class="row">
       <div class="medium-4 columns right">
-        <button ng-click="startNewDistribution()" class="button secondary expand">Commencer</button>
+        <button class="button secondary expand">Commencer</button>
       </div>
     </div>
   </form>

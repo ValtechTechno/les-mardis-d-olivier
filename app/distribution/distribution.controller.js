@@ -101,12 +101,6 @@ retrieveAllDistribution = function (dataService) {
 };
 
 storeDistribution = function (distribution, dataService) {
-  if (distribution.distributionDate === undefined || distribution.distributionDate.length == 0) {
-    throw 'merci de renseigner la date';
-  }
-  if (distribution.nbPlannedMeals === undefined || distribution.nbPlannedMeals.length == 0) {
-    throw 'merci de renseigner le nombre de repas';
-  }
   var distributions = dataService.allDistributions();
   var nextId;
   if (distributions == null || distributions.length == 0) {
