@@ -19,11 +19,17 @@
       return !searchText || reg.test(beneficiaire.code != undefined && beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
     }
 
-    function userFormValidation(beneficiaires, lastName, firstName, isUpdate) {
+    function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
       if (beneficiaires.filter(function (beneficiaire) {
           return (beneficiaire.firstName === firstName &&
           beneficiaire.lastName === lastName);
         }).length > 0 && isUpdate == false) {
+        throw {type:"functional", message:"Le bénéficiaire existe déjà"};
+      }
+      if (beneficiaires.filter(function (beneficiaire) {
+        return (beneficiaire.firstName === firstName &&
+          beneficiaire.lastName === lastName && beneficiaire.id !== id);
+      }).length > 0 && isUpdate == true) {
         throw {type:"functional", message:"Le bénéficiaire existe déjà"};
       }
       return true;
