@@ -19,34 +19,12 @@
       return !searchText || reg.test(beneficiaire.code != undefined && beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
     }
 
-    function userFormValidation($scope, isUpdate) {
-      if ($scope.currentBeneficiaire.lastName === undefined || $scope.currentBeneficiaire.lastName.length == 0) {
-        return false;
-      }
-      if ($scope.currentBeneficiaire.firstName === undefined || $scope.currentBeneficiaire.firstName.length == 0) {
-        return false;
-      }
-
-      if ($scope.beneficiaires.filter(function (beneficiaire) {
-          return (beneficiaire.firstName === $scope.currentBeneficiaire.firstName &&
-          beneficiaire.lastName === $scope.currentBeneficiaire.lastName);
+    function userFormValidation(beneficiaires, lastName, firstName, isUpdate) {
+      if (beneficiaires.filter(function (beneficiaire) {
+          return (beneficiaire.firstName === firstName &&
+          beneficiaire.lastName === lastName);
         }).length > 0 && isUpdate == false) {
-        $scope.currentError = {isBeneficiaireNotUnique: true};
-        return false;
-      }
-
-      if ($scope.beneficiaires.filter(function (beneficiaire) {
-          return (beneficiaire.code === $scope.currentBeneficiaire.code);
-        }).length > 0 && isUpdate == false) {
-        $scope.currentError = {isCodeNotUnique: true};
-        return false;
-      }
-
-      if ($scope.beneficiaires.filter(function (beneficiaire) {
-          return (beneficiaire.code === $scope.currentBeneficiaire.code && beneficiaire.id !== $scope.currentBeneficiaire.id);
-        }).length > 0 && isUpdate == true) {
-        $scope.currentError = {isCodeNotUnique: true};
-        return false;
+        throw {type:"functional", message:"Le bénéficiaire existe déjà"};
       }
       return true;
     }

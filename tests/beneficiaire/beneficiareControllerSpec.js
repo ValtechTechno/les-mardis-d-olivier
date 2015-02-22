@@ -63,26 +63,12 @@ describe("BeneficiaireController", function () {
 
   it('should prevent the user to add an existing beneficiaire', function () {
     addBeneficiaire('John', 'Rambo');
-    addBeneficiaire('John', 'Rambo');
-
+    try {
+      addBeneficiaire('John', 'Rambo');
+    }catch (exception){
+      expect(exception.type).toBe("functional");
+    }
     expect(scope.beneficiaires.length).toBe(1);
-    expect(scope.currentError.isBeneficiaireNotUnique).toBe(true);
-  });
-
-  it('should prevent the user to add an existing id for beneficiaire', function () {
-    addBeneficiaireWithCode('John', 'Rambo', '1');
-    addBeneficiaireWithCode('Michel', 'Rambo', '1');
-
-    expect(scope.beneficiaires.length).toBe(1);
-    expect(scope.currentError.isCodeNotUnique).toBe(true);
-  });
-
-  it('should not allow to add a beneficiaire with empty first name or last name', function () {
-    addBeneficiaire('', '');
-    addBeneficiaire('John', '');
-    addBeneficiaire('', 'Rambo');
-
-    expect(scope.beneficiaires.length).toBe(0);
   });
 
   it('should save beneficiaires to dataService', function () {

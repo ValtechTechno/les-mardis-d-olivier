@@ -51,18 +51,15 @@ describe("BeneficiaireDetailController", function () {
     scope.openBeneficiaireList();
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
-    scope.currentBeneficiaire.code = 2;
     scope.currentBeneficiaire.firstName = "A11";
     scope.currentBeneficiaire.lastName = "A11";
     scope.currentBeneficiaire.description = "test1";
     scope.currentBeneficiaire.excluded = true;
     scope.currentBeneficiaire.hasCard = true;
     scope.saveBeneficiaireDetail();
-    expect(scope.currentError.isCodeNotUnique).toBe(true);
-    scope.currentBeneficiaire.code = 3;
-    scope.saveBeneficiaireDetail();
+
     var beneficiaires = dataService.loadBeneficiaires();
-    expect(beneficiaires[0].code).toEqual(3);
+    expect(beneficiaires[0].code).toEqual(1);
     expect(beneficiaires[0].firstName).toEqual("A11");
     expect(beneficiaires[0].lastName).toEqual("A11");
     expect(beneficiaires[0].description).toEqual("test1");

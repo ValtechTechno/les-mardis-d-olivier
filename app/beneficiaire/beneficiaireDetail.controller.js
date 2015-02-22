@@ -49,7 +49,7 @@
     };
 
     $scope.saveBeneficiaireDetail = function () {
-      if (commonService.userFormValidation($scope, true)) {
+      if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, true)) {
         var beneficiaires = dataService.loadBeneficiaires();
         for (var i = 0; i < beneficiaires.length; i++) {
           if (beneficiaires[i].id == $scope.currentBeneficiaire.id) {
