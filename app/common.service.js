@@ -19,18 +19,22 @@
       return !searchText || reg.test(beneficiaire.code != undefined && beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
     }
 
+    function notUniqueBeneficiaire(lastName, firstName) {
+      throw {type: "functional", message: "Le bénéficiaire " + lastName + " " + firstName + " existe déjà"};
+    }
+
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
       if (beneficiaires.filter(function (beneficiaire) {
           return (beneficiaire.firstName === firstName &&
           beneficiaire.lastName === lastName);
         }).length > 0 && isUpdate == false) {
-        throw {type:"functional", message:"Le bénéficiaire existe déjà"};
+        notUniqueBeneficiaire(lastName, firstName);
       }
       if (beneficiaires.filter(function (beneficiaire) {
         return (beneficiaire.firstName === firstName &&
           beneficiaire.lastName === lastName && beneficiaire.id !== id);
       }).length > 0 && isUpdate == true) {
-        throw {type:"functional", message:"Le bénéficiaire existe déjà"};
+        notUniqueBeneficiaire(lastName, firstName);
       }
       return true;
     }

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('mardisDolivier', ['ui.date', 'ngRoute']);
+  angular.module('mardisDolivier', ['ui.date', 'ngRoute', 'ngAnimate']);
 
 })();
 

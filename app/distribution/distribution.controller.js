@@ -12,7 +12,6 @@
 
     $.datepicker.setDefaults($.datepicker.regional['fr']);
 
-    $scope.currentError = {};
     $scope.dateOptions = {
       dateFormat: 'DD d MM yy'
     };
@@ -109,7 +108,7 @@ storeDistribution = function (distribution, dataService) {
   } else if (distributions.filter(function (storedDistribution) {
       return (distribution.distributionDate === storedDistribution.distributionDate);
     }).length > 0) {
-    throw 'Une distribution a cette date existe déjà';
+    throw {type:"functional", message:'Une distribution à cette date existe déjà'};
   } else {
     nextId = distributions[distributions.length - 1].id + 1;
   }

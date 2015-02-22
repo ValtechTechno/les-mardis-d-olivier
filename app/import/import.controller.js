@@ -31,7 +31,6 @@
 
     $scope.initDynamicVariable = function (parsedList) {
       $scope.parsedPaste = parsedList;
-      $scope.currentError = {hasImportError: false};
       $scope.beneficiaires = dataService.loadBeneficiaires();
       $scope.beneficiairesToImport = angular.copy($scope.beneficiaires);
       var lastCode = 0;
@@ -41,18 +40,13 @@
       return lastCode;
     };
 
-    $scope.createMissingInformationError = function (lineNumber) {
-      $scope.currentError = {importErrorMissingInformation: true, importErrorLine:lineNumber+1};
-      return false;
-    };
-
     // If you only paste firstname, lastname and hasCard (optionnal), id is generated
     $scope.validationImport = function (parsedList) {
       var lastCode = $scope.initDynamicVariable(parsedList);
 
       for (var i = 0; i < parsedList.length; i++) {
         if (parsedList[i].length < 2) {
-         return $scope.createMissingInformationError(i);
+         createMissingInformationError(i);
         }
 
         lastCode++;
@@ -64,13 +58,13 @@
         var lastNameIndex = isFirstColCode == false ? 0 : 1;
 
         if (parsedList[i].length == 2 && (isFirstColCode == true || $scope.getHasCardFromString(parsedList[i][1]) != undefined)) {
-          return $scope.createMissingInformationError(i);
+          createMissingInformationError(i);
         }
 
         lastName = parsedList[i][lastNameIndex];
         firstName = parsedList[i][lastNameIndex + 1];
         if(lastName.length == 0 || firstName.length == 0) {
-          return $scope.createMissingInformationError(i);
+          createMissingInformationError(i);
         }
 
         if (parsedList[i].length == 2 || (parsedList[i].length == 3 && isFirstColCode == false)) {
@@ -80,7 +74,7 @@
         var hasCardFromString = $scope.getHasCardFromString(parsedList[i][2]);
         if (parsedList[i].length == 3 && isFirstColCode == false){
             if(hasCardFromString == undefined) {
-              return $scope.createMissingInformationError(i);
+              createMissingInformationError(i);
             }
             hasCard = hasCardFromString;
         }
@@ -88,8 +82,7 @@
         if (code === undefined) {
           for (var benefNum = 0; benefNum < $scope.beneficiairesToImport.length; benefNum++) {
             if ($scope.beneficiairesToImport[benefNum].code == parsedList[i][0]) {
-              $scope.currentError = {importErrorDuplicateCode: true, importErrorFirstDuplicateCode: $scope.beneficiairesToImport[benefNum].code, importErrorLine:i+1};
-              return false;
+              throw {type:"functional", message:"Le code " + parsedList[i][0] + " est dupliqué, ligne n°" + (i + 1)};
             }
           }
           code = parsedList[i][0];
@@ -112,8 +105,11 @@
 
     $scope.openImportPage();
   }
-
 })();
+
+createMissingInformationError = function(lineNumber) {
+  throw {type:"functional", message:"Une information est manquante dans la ligne copiée n°" + (lineNumber + 1)};
+};
 
 angular
   .module('mardisDolivier')
@@ -137,13 +133,11 @@ angular
                   toReturn.push(cols);
                 }
               });
-              $scope.validationImport(toReturn);
             }
             catch (err) {
-              console.log(err);
-              $scope.currentError = {hasImportError: true};
-              return null;
+              throw {type:"functional", message:"La saisie comporte une ou plusieurs erreurs"};
             }
+            $scope.validationImport(toReturn);
 
             return toReturn;
           }

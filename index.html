@@ -41,15 +41,19 @@
       </section>
     </nav>
   </div>
-</div>
-
-<div class="row">
-  <div class="medium-12 columns">
-    <div class="row">
-      <div class="medium-12 columns">
-        <div class="medium-12 columns">&nbsp;</div>
+  <div class="errorMessageBar">
+    <div class="errorMessage clickable" ng-repeat="currentError in currentErrors track by $index"
+         ng-click="menu.removeErrorMessage($index)">
+      <div class="row">
+        <div class="medium-12 columns">
+          {{currentError.errorMessage}}
+        </div>
       </div>
     </div>
+  </div>
+</div>
+<div class="row">
+  <div class="medium-12 columns">
     <div ng-view></div>
   </div>
 </div>
@@ -59,12 +63,14 @@
 <script src="lib/jquery-ui-1.11.0.custom/jquery-ui.min.js"></script>
 <script src="lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js"></script>
 <script src="lib/angular-1.3.13/angular.min.js"></script>
+<script src="lib/angular-1.3.13/angular-animate.min.js"></script>
 <script src="lib/angular-1.3.13/angular-route.min.js"></script>
 <script src="lib/angular-ui-date-0.0.7/date.min.js"></script>
 <script src="lib/foundation-5.4.5/js/foundation.min.js"></script>
 <script src="lib/filesaver/FileSaver.min.js"></script>
 <script src="app/mardisDOlivier.module.js"></script>
 <script src="app/datePicker.filter.js"></script>
+<script src="app/error.config.js"></script>
 <script src="app/route.config.js"></script>
 <script src="app/menu.controller.js"></script>
 <script src="app/popupDirective.js"></script>

@@ -37,7 +37,6 @@
 
     $scope.resetAddBeneficiareForm = function() {
       $scope.currentBeneficiaire = {code: $scope.initNextCode(), hasCard: false};
-      $scope.currentError = {};
     };
 
     $scope.initNextCode = function() {

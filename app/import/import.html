@@ -11,9 +11,9 @@
   <div class="row">
     <p>Si la colonne "Code" n'est pas copiée, un code sera généré.</p>
   </div>
-  <div ng-show="parsedPaste.length!=0 && currentError.hasImportError == false">
+  <div ng-show="beneficiairesToImport.length > beneficiaires.length">
     <div class="row">
-      Voulez-vous importer les données ? ( <input type="checkbox" id="hasCard" ng-model="hasCard"
+      Voulez-vous importer les données suivantes ? ( <input type="checkbox" id="hasCard" ng-model="hasCard"
                                                   ng-change="validationImport(parsedPaste)"><label for="hasCard"><i
       class="ui-icon ui-icon-contact"></i>assigner cartes )</label></input>
     </div>
@@ -21,13 +21,6 @@
       <button id="exportButton" ng-click="importData()" class="button secondary">Importer</button>
     </div>
   </div>
-  <p class="errorMessage" ng-show="currentError.hasImportError">La saisie comporte des erreurs</p>
-
-  <p class="errorMessage" ng-show="currentError.importErrorDuplicateCode">Le code
-    {{currentError.importErrorFirstDuplicateCode}} est dupliqué, ligne {{currentError.importErrorLine}}</p>
-
-  <p class="errorMessage" ng-show="currentError.importErrorMissingInformation">Une information est manquante dans la
-    ligne copiée n°{{currentError.importErrorLine}}</p>
 </div>
 
 <div class="medium-4 column">
