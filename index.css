@@ -71,6 +71,10 @@ table input {
   color: white;
 }
 
+.button.secondary.redButton:hover{
+  background-color: darkred;
+}
+
 .editor {
   max-height: 500px;
   height: 500px;
