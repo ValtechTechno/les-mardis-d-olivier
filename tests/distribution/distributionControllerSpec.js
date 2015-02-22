@@ -89,30 +89,6 @@ describe("DistributionController", function () {
       }]);
   });
 
-  it('should not allow to add a distribution with empty number of meals', function () {
-    scope.currentDistribution.distributionNbPlannedMeals = "";
-    scope.currentDistribution.distributionDate = "2014-08-04";
-
-    try {
-      scope.saveNewDistribution();
-    } catch (err) {
-    }
-
-    expect(retrieveAllDistribution(dataService)).toEqual([]);
-  });
-
-  it('should not allow to add a distribution with empty date', function () {
-    scope.currentDistribution.distributionNbPlannedMeals = "50";
-    scope.currentDistribution.distributionDate = "";
-
-    try {
-      scope.saveNewDistribution();
-    } catch (err) {
-    }
-
-    expect(retrieveAllDistribution(dataService)).toEqual([]);
-  });
-
   it("should be able to init give the next date (working day) of a distribution based on the previous one.", function () {
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-08";
