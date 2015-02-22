@@ -32,12 +32,14 @@
     <tr>
       <th><i class="ui-icon ui-icon-key"></i> Id</th>
       <th><i class="ui-icon ui-icon-calendar"></i> Date</th>
+      <th><i class="ui-icon ui-icon-calendar"></i> Repas Prévus</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="distribution in distributions">
       <td>{{distribution.id}}</td>
       <td>{{distribution.distributionDate}}</td>
+      <td>{{distribution.nbPlannedMeals}}</td>
     </tr>
     </tbody>
   </table>
