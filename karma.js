@@ -15,15 +15,15 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'lib/foundation-5.4.5/js/vendor/modernizr.js',
-      'lib/foundation-5.4.5/js/vendor/jquery.js',
+      'lib/foundation-5.5.1/js/vendor/modernizr.js',
+      'lib/foundation-5.5.1/js/vendor/jquery.js',
       'lib/jquery-ui-1.11.0.custom/jquery-ui.min.js',
       'lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js',
       'lib/angular-1.3.13/angular.min.js',
       'lib/angular-1.3.13/angular-animate.min.js',
       'lib/angular-1.3.13/angular-route.min.js',
       'lib/angular-ui-date-0.0.7/date.min.js',
-      'lib/foundation-5.4.5/js/foundation.min.js',
+      'lib/foundation-5.5.1/js/foundation.min.js',
       'app/mardisDOlivier.module.js',
       'app/datePicker.filter.js',
       'app/beneficiaire/beneficiaire.controller.js',
