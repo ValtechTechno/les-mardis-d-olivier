@@ -16,7 +16,7 @@
     // Specific filter to avoid search in comments
     function searchBeneficiaire(searchText, beneficiaire) {
       var reg = new RegExp(searchText, 'i');
-      return !searchText || reg.test(beneficiaire.code != undefined && beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
+      return !searchText || reg.test(beneficiaire.code !== undefined && beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
     }
 
     function notUniqueBeneficiaire(lastName, firstName) {
@@ -27,13 +27,13 @@
       if (beneficiaires.filter(function (beneficiaire) {
           return (beneficiaire.firstName === firstName &&
           beneficiaire.lastName === lastName);
-        }).length > 0 && isUpdate == false) {
+        }).length > 0 && isUpdate === false) {
         notUniqueBeneficiaire(lastName, firstName);
       }
       if (beneficiaires.filter(function (beneficiaire) {
         return (beneficiaire.firstName === firstName &&
           beneficiaire.lastName === lastName && beneficiaire.id !== id);
-      }).length > 0 && isUpdate == true) {
+      }).length > 0 && isUpdate === true) {
         notUniqueBeneficiaire(lastName, firstName);
       }
       return true;
@@ -42,7 +42,7 @@
 })();
 
 formatDate = function (date) {
-  if(date == undefined){
+  if(date === undefined){
     date = new Date();
   }
   var month = (date.getMonth() + 1) + "";
@@ -65,14 +65,14 @@ getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
     hasCard: hasCard
   };
   return newBeneficiaire;
-}
+};
 
 getNextId = function(list){
   var nextId;
-  if (list.length == 0) {
+  if (list.length === 0) {
     nextId = '1';
   } else {
     nextId = parseInt(list[list.length - 1].id) + 1 + '';
   }
   return nextId;
-}
+};

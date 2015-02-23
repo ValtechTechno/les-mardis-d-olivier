@@ -21,7 +21,7 @@
             $('#' + scope.popupDirectiveId).foundation('reveal', 'open');
           };
           scope.action = function () {
-            if (this.button.close == true) {
+            if (this.button.close === true) {
               $('#' + scope.popupDirectiveId).foundation('reveal', 'close');
             }
             if (this.button.event) {
@@ -30,6 +30,6 @@
           };
         },
         templateUrl: 'app/popupDirective.html'
-      }
-    })
+      };
+    });
 })();

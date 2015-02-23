@@ -30,22 +30,23 @@
     };
 
     $scope.getComments = function () {
-      if ($scope.distributions != null) {
-        var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
-        for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
-          for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-            if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex].id &&
-              beneficiairesPresentByDistribution[i].comment != undefined) {
-              if ($scope.distributions[distributionIndex].comments == null) {
-                $scope.distributions[distributionIndex].comments = [];
-              }
-              var beneficiaire = null;
-              for (var beneficiaireIndex = 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
-                if ($scope.beneficiaires[beneficiaireIndex].id == beneficiairesPresentByDistribution[i].beneficiaireId) {
-                  beneficiaire = $scope.beneficiaires[beneficiaireIndex];
-                  $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
-                  break;
-                }
+      if ($scope.distributions === null) {
+        return false;
+      }
+      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
+      for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
+        for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
+          if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex].id &&
+            beneficiairesPresentByDistribution[i].comment !== undefined) {
+            if ($scope.distributions[distributionIndex].comments === undefined) {
+              $scope.distributions[distributionIndex].comments = [];
+            }
+            var beneficiaire = null;
+            for (var beneficiaireIndex = 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
+              if ($scope.beneficiaires[beneficiaireIndex].id == beneficiairesPresentByDistribution[i].beneficiaireId) {
+                beneficiaire = $scope.beneficiaires[beneficiaireIndex];
+                $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
+                break;
               }
             }
           }
@@ -80,21 +81,21 @@
 
 retrieveAllDistribution = function (dataService) {
   var allDistributions = dataService.allDistributions();
-  if (allDistributions == null) {
+  if (allDistributions === null) {
     allDistributions = [];
   } else {
     allDistributions.reverse();
   }
   var nbBeneficiaireByDistribution = [];
   var beneficiaire;
-  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     beneficiaire = nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId];
     nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId] = beneficiaire ? beneficiaire + 1 : 1;
   }
 
-  for (var i = 0; i < allDistributions.length; i++) {
-    allDistributions[i].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[i].id];
+  for (var pos = 0; pos < allDistributions.length; pos++) {
+    allDistributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[pos].id];
   }
   return allDistributions;
 };
@@ -102,7 +103,7 @@ retrieveAllDistribution = function (dataService) {
 storeDistribution = function (distribution, dataService) {
   var distributions = dataService.allDistributions();
   var nextId;
-  if (distributions == null || distributions.length == 0) {
+  if (distributions === null || distributions.length === 0) {
     distributions = [];
     nextId = 1;
   } else if (distributions.filter(function (storedDistribution) {
@@ -121,7 +122,7 @@ storeDistribution = function (distribution, dataService) {
 
 storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, dataService) {
   var isRelationExisting = false;
-  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId &&
       beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
@@ -130,7 +131,7 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
       break;
     }
   }
-  if (isRelationExisting == false) {
+  if (isRelationExisting === false) {
     beneficiairesPresentByDistribution.push({
       "distributionId": distributionId.toString(),
       "beneficiaireId": beneficiaireId
@@ -142,7 +143,7 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
 createNextWorkingDate = function (dateString) {
   var lastDate = new Date(dateString);
   var nextDate = new Date(lastDate.setDate(lastDate.getDate() + 1));
-  if (nextDate.getDay() == 0) {
+  if (nextDate.getDay() === 0) {
     nextDate.setDate(nextDate.getDate() + 1);
   }
   if (nextDate.getDay() == 6) {

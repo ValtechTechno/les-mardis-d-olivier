@@ -20,7 +20,7 @@
     activate();
 
     function activate () {
-      if ($routeParams.distributionId == null) {
+      if ($routeParams.distributionId === null) {
         return false;
       }
       vm.currentDistribution = dataService.findDistributionById($routeParams.distributionId);
@@ -46,7 +46,7 @@
     }
 
     function writeComment (beneficiaireId, message) {
-      var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
         if (beneficiairesPresentByDistribution[i].distributionId == vm.currentDistribution.id &&
           beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
@@ -54,7 +54,7 @@
           break;
         }
       }
-      if (message != null && message.length > 0) {
+      if (message !== null && message.length > 0) {
         beneficiairesPresentByDistribution.push({
           "distributionId": vm.currentDistribution.id.toString(),
           "beneficiaireId": beneficiaireId,
@@ -70,7 +70,7 @@
     }
 
     function isPresent (beneficiaire) {
-      if (vm.currentDistribution != null) {
+      if (vm.currentDistribution !== null) {
         storeRelationDistributionBeneficiaire(vm.currentDistribution.id, beneficiaire.id, dataService);
       }
       if (beneficiaire.isPresent) {
@@ -86,7 +86,7 @@
 retrieveBeneficiairesByDistribution = function (distributionId, dataService) {
   var beneficiairesPresentIds = [];
   var beneficiairesPresentComments = [];
-  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId) {
       beneficiairesPresentIds.push(beneficiairesPresentByDistribution[i].beneficiaireId);
@@ -95,24 +95,24 @@ retrieveBeneficiairesByDistribution = function (distributionId, dataService) {
   }
   var beneficiairesPresent = [];
   var beneficiaires = dataService.loadBeneficiaires();
-  for (var i = 0; i < beneficiaires.length; i++) {
-    beneficiaires[i].comments = getLastComments(beneficiaires[i].id, distributionId, dataService, true);
-    var index = beneficiairesPresentIds.indexOf(beneficiaires[i].id);
+  for (var pos = 0; pos < beneficiaires.length; pos++) {
+    beneficiaires[pos].comments = getLastComments(beneficiaires[pos].id, distributionId, dataService, true);
+    var index = beneficiairesPresentIds.indexOf(beneficiaires[pos].id);
     if (index != -1) {
-      beneficiaires[i].isPresent = true;
-      beneficiaires[i].comment = beneficiairesPresentComments[index];
+      beneficiaires[pos].isPresent = true;
+      beneficiaires[pos].comment = beneficiairesPresentComments[index];
     } else {
-      beneficiaires[i].isPresent = false;
-      beneficiaires[i].comment = null;
+      beneficiaires[pos].isPresent = false;
+      beneficiaires[pos].comment = null;
     }
-    beneficiairesPresent.push(beneficiaires[i]);
+    beneficiairesPresent.push(beneficiaires[pos]);
   }
   return beneficiairesPresent;
 };
 
 storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, dataService) {
   var isRelationExisting = false;
-  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (beneficiairesPresentByDistribution[i].distributionId == distributionId &&
       beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
@@ -121,7 +121,7 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
       break;
     }
   }
-  if (isRelationExisting == false) {
+  if (isRelationExisting === false) {
     beneficiairesPresentByDistribution.push({
       "distributionId": distributionId.toString(),
       "beneficiaireId": beneficiaireId
@@ -134,14 +134,14 @@ storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId
 getLastComments = function (beneficiaireId, distributionId, dataService, onlyBookmark) {
   var beneficiaireOldComments = [];
   var allDistributions = dataService.allDistributions();
-  var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
   beneficiairesPresentByDistribution.reverse();
   for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
     if (distributionId != -1 && beneficiaireOldComments.length == 5) {
       break;
     }
     if (beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId &&
-      beneficiairesPresentByDistribution[i].comment != null && ( onlyBookmark == false || onlyBookmark == true && beneficiairesPresentByDistribution[i].isBookmark == true)) {
+      beneficiairesPresentByDistribution[i].comment !== null && ( onlyBookmark === false || onlyBookmark === true && beneficiairesPresentByDistribution[i].isBookmark === true)) {
       beneficiaireOldComments.push({distributionId:beneficiairesPresentByDistribution[i].distributionId,text:getDateDistribution(allDistributions, beneficiairesPresentByDistribution[i]) + " : " + beneficiairesPresentByDistribution[i].comment, isBookmark: beneficiairesPresentByDistribution[i].isBookmark});
     }
   }
@@ -159,7 +159,7 @@ getDateDistribution = function (allDistributions, beneficiairePresent) {
       }
     }
   }else{
-    if(beneficiairePresent.date != null) {
+    if(beneficiairePresent.date !== null) {
       dateDistrib = beneficiairePresent.date;
     }
   }
@@ -169,7 +169,7 @@ getDateDistribution = function (allDistributions, beneficiairePresent) {
 createNextWorkingDate = function (dateString) {
   var lastDate = new Date(dateString);
   var nextDate = new Date(lastDate.setDate(lastDate.getDate() + 1));
-  if (nextDate.getDay() == 0) {
+  if (nextDate.getDay() === 0) {
     nextDate.setDate(nextDate.getDate() + 1);
   }
   if (nextDate.getDay() == 6) {

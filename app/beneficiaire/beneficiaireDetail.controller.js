@@ -13,7 +13,7 @@
       $scope.getComments();
       $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire.id);
       // By default, an old user has a card.
-      if ($scope.currentBeneficiaire.hasCard == undefined) {
+      if ($scope.currentBeneficiaire.hasCard === undefined) {
         $scope.currentBeneficiaire.hasCard = true;
       }
       $scope.deletePopupButtons = [
@@ -23,7 +23,7 @@
     };
 
     $scope.isBookmark = function (comment) {
-      var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
         if(beneficiairesPresentByDistribution[i].distributionId == comment.distributionId && beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire.id){
           beneficiairesPresentByDistribution[i].isBookmark = comment.isBookmark;
@@ -35,7 +35,7 @@
 
     $scope.getVisiteNumber = function(beneficiaireId) {
       var visiteNumber = 0;
-      var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
         if(beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId){
           visiteNumber++;
@@ -65,16 +65,16 @@
     $scope.$on('confirmBeneficiaireDetailDeletePopup', function () {
       var beneficiaires = dataService.loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;
-      for (var i = 0; i < beneficiaires.length; i++) {
-        if (beneficiaires[i].id == $scope.currentBeneficiaire.id) {
-          beneficiaireToDeletePosition = i;
+      for (var pos = 0; pos < beneficiaires.length; pos++) {
+        if (beneficiaires[pos].id == $scope.currentBeneficiaire.id) {
+          beneficiaireToDeletePosition = pos;
           break;
         }
       }
       beneficiaires.splice(beneficiaireToDeletePosition, 1);
       dataService.saveBeneficiaires(beneficiaires);
 
-      var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       var newBeneficiairesPresentByDistribution = [];
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
         if (beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire.id) {

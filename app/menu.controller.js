@@ -10,7 +10,6 @@
     vm.isActive = isActive;
     vm.removeErrorMessage = removeErrorMessage;
     vm.maxErrorToShow = 1;
-    vm.currentErrorTimeout;
     function isActive(path) {
       if ($location.path().substr(0, path.length) == path) {
         return "active";
@@ -32,7 +31,7 @@
         $rootScope.currentErrors = [];
       }
 
-      if (!vm.currentErrorTimeout && $rootScope.currentErrors.length == 0) {
+      if (!vm.currentErrorTimeout && $rootScope.currentErrors.length === 0) {
         vm.currentErrorTimeout = $timeout(function () {
           $rootScope.currentErrors.push({errorMessage: exception.message});
           vm.currentErrorTimeout = undefined;

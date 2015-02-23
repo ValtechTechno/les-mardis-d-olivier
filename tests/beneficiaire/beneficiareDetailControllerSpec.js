@@ -43,7 +43,7 @@ describe("BeneficiaireDetailController", function () {
     scope.$emit('confirmBeneficiaireDetailDeletePopup');
     var beneficiaires = dataService.loadBeneficiaires();
     expect(beneficiaires.length).toEqual(1);
-    var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+    var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
     expect(beneficiairesPresentByDistribution.length).toEqual(2);
   });
 
@@ -90,7 +90,7 @@ describe("BeneficiaireDetailController", function () {
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
     scope.isBookmark({"distributionId": "1","isBookmark":true});
-    var beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+    var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
     expect(beneficiairesPresentByDistribution[0].isBookmark).toEqual(true);
     expect(beneficiairesPresentByDistribution[1].isBookmark).toEqual(false);
   });

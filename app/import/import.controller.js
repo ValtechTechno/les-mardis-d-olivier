@@ -50,30 +50,28 @@
         }
 
         lastCode++;
-        var code = undefined;
-        var lastName = undefined;
-        var firstName = undefined;
         var hasCard = $scope.hasCard;
         var isFirstColCode = (/^\d+$/.test(parsedList[i][0]));
-        var lastNameIndex = isFirstColCode == false ? 0 : 1;
+        var lastNameIndex = isFirstColCode === false ? 0 : 1;
 
-        if (parsedList[i].length == 2 && (isFirstColCode == true || $scope.getHasCardFromString(parsedList[i][1]) != undefined)) {
+        if (parsedList[i].length == 2 && (isFirstColCode === true || $scope.getHasCardFromString(parsedList[i][1]) !== undefined)) {
           createMissingInformationError(i);
         }
 
-        lastName = parsedList[i][lastNameIndex];
-        firstName = parsedList[i][lastNameIndex + 1];
-        if(lastName.length == 0 || firstName.length == 0) {
+        var lastName = parsedList[i][lastNameIndex];
+        var firstName = parsedList[i][lastNameIndex + 1];
+        if(lastName.length === 0 || firstName.length === 0) {
           createMissingInformationError(i);
         }
 
-        if (parsedList[i].length == 2 || (parsedList[i].length == 3 && isFirstColCode == false)) {
+        var code;
+        if (parsedList[i].length == 2 || (parsedList[i].length == 3 && isFirstColCode === false)) {
           code = lastCode;
         }
 
         var hasCardFromString = $scope.getHasCardFromString(parsedList[i][2]);
-        if (parsedList[i].length == 3 && isFirstColCode == false){
-            if(hasCardFromString == undefined) {
+        if (parsedList[i].length == 3 && isFirstColCode === false){
+            if(hasCardFromString === undefined) {
               createMissingInformationError(i);
             }
             hasCard = hasCardFromString;
@@ -94,13 +92,13 @@
     };
 
     $scope.getHasCardFromString = function (stringValue) {
-      if (stringValue != undefined && stringValue != "true" && stringValue != "false") {
+      if (stringValue !== undefined && stringValue != "true" && stringValue != "false") {
         return undefined;
       }
-      if ($scope.hasCard == true) {
+      if ($scope.hasCard === true) {
         return true;
       }
-      return stringValue === "true";
+      return stringValue == "true";
     };
 
     $scope.openImportPage();
@@ -128,7 +126,7 @@ angular
               var rows = text.split(/[\n\f\r]/);
               rows.forEach(function (thisRow) {
                 var row = thisRow.trim();
-                if (row != '') {
+                if (row !== '') {
                   var cols = row.split("\t");
                   toReturn.push(cols);
                 }
@@ -144,15 +142,15 @@ angular
 
           function textChanged() {
             var text = $('#myPasteBox').val();
-            if (text != '') {
+            if (text !== '') {
               //We need to change the $scope values
               $scope.$apply(function () {
-                if (attrs.ngModel != undefined && attrs.ngModel != '') {
+                if (attrs.ngModel !== undefined && attrs.ngModel !== '') {
                   $parse(attrs.ngModel).assign($scope, text);
                 }
-                if (attrs.ngArray != undefined && attrs.ngArray != '') {
+                if (attrs.ngArray !== undefined && attrs.ngArray !== '') {
                   var asArray = parseTabular(text);
-                  if (asArray != null) {
+                  if (asArray !== null) {
                     $parse(attrs.ngArray).assign($scope, asArray);
                   }
                 }
@@ -173,7 +171,7 @@ angular
             }
 
             //We add a text area to the body only if it is not already created by another myPaste directive
-            if ($('#myPasteBox').length == 0) {
+            if ($('#myPasteBox').length === 0) {
               $('body').append($('<textarea id=\"myPasteBox\" style=\"position:absolute; left:-1000px; top:-1000px;\"></textarea>'));
 
               var keyCodes = {
@@ -193,5 +191,5 @@ angular
             }
           });
         }
-      }
+      };
     }]);

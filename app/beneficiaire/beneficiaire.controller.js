@@ -18,11 +18,11 @@
     };
 
     $scope.searchExcluded = function (beneficiaire) {
-      return ($scope.excludedFilter == true && beneficiaire.excluded == true) || ($scope.excludedFilter == false);
+      return ($scope.excludedFilter === true && beneficiaire.excluded === true) || ($scope.excludedFilter === false);
     };
 
     $scope.searchHasCard = function (beneficiaire) {
-      return ($scope.hasCardFilter == true && beneficiaire.hasCard == false) || ($scope.hasCardFilter == false);
+      return ($scope.hasCardFilter === true && beneficiaire.hasCard === false) || ($scope.hasCardFilter === false);
     };
 
     $scope.addBeneficiaireFromList = function () {
@@ -41,7 +41,7 @@
 
     $scope.initNextCode = function() {
       var nextCode = 1;
-      if ($scope.beneficiaires != null) {
+      if ($scope.beneficiaires !== null) {
         for (var i = 0; i < $scope.beneficiaires.length; i++) {
           if (nextCode <= $scope.beneficiaires[i].code) {
             nextCode = $scope.beneficiaires[i].code;
@@ -59,7 +59,7 @@
         dataService.saveBeneficiaires($scope.beneficiaires);
         return newBeneficiaire;
       }
-      return false
+      return false;
     };
 
     $scope.openBeneficiaireList();

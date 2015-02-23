@@ -9,7 +9,7 @@
     $scope.openExportPage = function () {
       $scope.beneficiaires = dataService.loadBeneficiaires();
       $scope.distributions = dataService.allDistributions();
-      $scope.beneficiairesPresentByDistribution = dataService.beneficiairesPresentByDistribution();
+      $scope.beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       $scope.about = dataService.about();
     };
 
@@ -21,7 +21,7 @@
     };
 
     $scope.isBooleanUndefined = function (value) {
-      if(value == undefined){
+      if(value === undefined){
         return false;
       }
       return value;

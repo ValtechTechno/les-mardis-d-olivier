@@ -17,7 +17,7 @@
       saveBeneficiaires: saveBeneficiaires,
       allDistributions: allDistributions,
       saveDistributions: saveDistributions,
-      beneficiairesPresentByDistribution: beneficiairesPresentByDistribution,
+      allBeneficiairesPresentByDistribution: allBeneficiairesPresentByDistribution,
       saveBeneficiairesPresentByDistribution: saveBeneficiairesPresentByDistribution,
       findDistributionById: findDistributionById,
       updateDistribution: updateDistribution,
@@ -51,7 +51,7 @@
     }
 
     function findDistributionById(distributionId, _distributions) {
-      var distributions = _distributions != null ? _distributions : allDistributions();
+      var distributions = _distributions !== undefined ? _distributions : allDistributions();
       for (var i = 0; i < distributions.length; i++) {
         if(distributions[i].id == distributionId){
           return distributions[i];
@@ -61,7 +61,7 @@
     }
 
     function findBeneficiaireById(beneficiaireId, _beneficiaires) {
-      var beneficiaires = _beneficiaires != null ? _beneficiaires : loadBeneficiaires();
+      var beneficiaires = _beneficiaires !== undefined ? _beneficiaires : loadBeneficiaires();
       for (var i = 0; i < beneficiaires.length; i++) {
         if(beneficiaires[i].id == beneficiaireId){
           return beneficiaires[i];
@@ -72,7 +72,7 @@
 
     function saveBeneficiaires(beneficiaires) {
       var cleanBeneficiairesList = [];
-      var  beneficiairesLength = beneficiaires == null ? 0 : beneficiaires.length;
+      var  beneficiairesLength = beneficiaires === null ? 0 : beneficiaires.length;
       for (var i = 0; i < beneficiairesLength ; i++) {
         var beneficiaire = beneficiaires[i];
         cleanBeneficiairesList.push({
@@ -100,9 +100,9 @@
       localStorage.setItem('distributions', angular.toJson(distributions));
     }
 
-    function beneficiairesPresentByDistribution() {
-      var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'))
-      if (beneficiairesPresentByDistribution == null) {
+    function allBeneficiairesPresentByDistribution() {
+      var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
+      if (beneficiairesPresentByDistribution === null) {
         beneficiairesPresentByDistribution = [];
       }
       return beneficiairesPresentByDistribution;
