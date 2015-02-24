@@ -141,7 +141,7 @@ getLastComments = function (beneficiaireId, distributionId, dataService, onlyBoo
       break;
     }
     if (beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId &&
-      beneficiairesPresentByDistribution[i].comment !== null && ( onlyBookmark === false || onlyBookmark === true && beneficiairesPresentByDistribution[i].isBookmark === true)) {
+      beneficiairesPresentByDistribution[i].comment !== undefined && ( onlyBookmark === false || onlyBookmark === true && beneficiairesPresentByDistribution[i].isBookmark === true)) {
       beneficiaireOldComments.push({distributionId:beneficiairesPresentByDistribution[i].distributionId,text:getDateDistribution(allDistributions, beneficiairesPresentByDistribution[i]) + " : " + beneficiairesPresentByDistribution[i].comment, isBookmark: beneficiairesPresentByDistribution[i].isBookmark});
     }
   }
