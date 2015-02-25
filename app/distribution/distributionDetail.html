@@ -18,12 +18,13 @@
           <td><i class="ui-icon ui-icon-tag"></i> Code</td>
           <td>Nom</td>
           <td>Prénom</td>
-          <td><i class="ui-icon ui-icon-circle-minus"></i> Exclue</td>
+          <td class="iconAlone"><i class="ui-icon ui-icon-person" title="Description"></i></td>
+          <td class="iconAlone"><i class="ui-icon ui-icon-circle-minus" title="Exclue"></i></td>
           <td><i class="ui-icon ui-icon-flag"></i> Présent</td>
           <td colspan="2"><i class="ui-icon ui-icon-comment"></i> Commentaire</td>
         </tr>
         <tr>
-          <td colspan="7"><input type="text" ng-model="distributionDetail.searchText" placeholder="42, Georges, Henriette, etc."/></td>
+          <td colspan="8"><input type="text" ng-model="distributionDetail.searchText" placeholder="42, Georges, Henriette, etc."/></td>
         </tr>
         </thead>
         <tbody>
@@ -31,17 +32,29 @@
           <td>{{user.code}}</td>
           <td>{{user.lastName}}</td>
           <td>{{user.firstName}}</td>
+          <td>
+          <section class="iconAlone" ng-show="user.description.length > 0">
+            <div class="hoverPopup">
+              <span class="ui-icon ui-icon-person"></span>
+              <ul>
+                <li>{{user.description}}</li>
+              </ul>
+            </div>
+          </section>
+          </td>
           <td><i ng-class=" user.excluded ? 'ui-icon ui-icon-circle-minus' : '' "></i></td>
           <td>
             <input type="checkbox" ng-model="user.isPresent" ng-change="distributionDetail.isPresent(user)"/>
           </td>
-          <td>
-            <a id="commentsToggle" ng-show="user.comments.length > 0"><span class="ui-icon ui-icon-alert"></span>
-              <table id="commentsDetail">
-                <tr ng-repeat="comments in user.comments track by $index"><td>{{comments.text}}</td>
-                </tr>
-              </table>
-            </a>
+          <td class="iconAlone">
+            <section ng-show="user.comments.length > 0">
+              <div class="hoverPopup">
+                <span class="ui-icon ui-icon-alert"></span>
+                <ul>
+                  <li ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="comments in user.comments track by $index">{{comments.text}}</li>
+                </ul>
+              </div>
+            </section>
           </td>
           <td>
             <input type="text" ng-model="user.comment" ng-change="distributionDetail.writeComment(user.id, user.comment)"
