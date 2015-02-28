@@ -15,13 +15,13 @@
       <table class="table">
         <thead>
         <tr>
-          <td><i class="ui-icon ui-icon-tag"></i> Code</td>
+          <td><i class="notRequired ui-icon ui-icon-tag"></i> Code</td>
           <td>Nom</td>
           <td>Prénom</td>
-          <td class="iconAlone"><i class="ui-icon ui-icon-person" title="Description"></i></td>
+          <td class="notRequired iconAlone"><i class="ui-icon ui-icon-person" title="Description"></i></td>
           <td class="iconAlone"><i class="ui-icon ui-icon-circle-minus" title="Exclue"></i></td>
-          <td><i class="ui-icon ui-icon-flag"></i> Présent</td>
-          <td colspan="2"><i class="ui-icon ui-icon-comment"></i> Commentaire</td>
+          <td><i class="notRequired ui-icon ui-icon-flag"></i> Présent</td>
+          <td colspan="2"><i class="notRequired ui-icon ui-icon-comment"></i> Commentaire</td>
         </tr>
         <tr>
           <td colspan="8"><input type="text" ng-model="distributionDetail.searchText" placeholder="42, Georges, Henriette, etc."/></td>
@@ -32,7 +32,7 @@
           <td>{{user.code}}</td>
           <td>{{user.lastName}}</td>
           <td>{{user.firstName}}</td>
-          <td>
+          <td class="notRequired">
           <section class="iconAlone" ng-show="user.description.length > 0">
             <div class="hoverPopup">
               <span class="ui-icon ui-icon-person"></span>
@@ -46,7 +46,7 @@
           <td>
             <input type="checkbox" ng-model="user.isPresent" ng-change="distributionDetail.isPresent(user)"/>
           </td>
-          <td class="iconAlone">
+          <td class="notRequired iconAlone">
             <section ng-show="user.comments.length > 0">
               <div class="hoverPopup">
                 <span class="ui-icon ui-icon-alert"></span>

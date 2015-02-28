@@ -7,6 +7,10 @@ select {
   vertical-align: top;
 }
 
+.notRequired {
+  display: none;
+}
+
 @media only screen and (min-width: 40em) {
   .top-bar {
     height: 95px;
@@ -21,6 +25,12 @@ select {
     max-height: 75px;
     max-width: 200px;
   }
+
+  .notRequired {
+    display: block;
+  }
+}
+
 .top-bar.expanded {
   z-index: 99999;
 }
@@ -125,7 +135,7 @@ input[type="checkbox"] + label {
   height: 130px;
 }
 
-.iconAlone{
+.iconAlone {
   width: 20px;
 }
 
