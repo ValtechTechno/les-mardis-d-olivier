@@ -21,6 +21,8 @@ select {
     max-height: 75px;
     max-width: 200px;
   }
+.top-bar.expanded {
+  z-index: 99999;
 }
 
 .table {
