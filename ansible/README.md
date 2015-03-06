@@ -1,6 +1,6 @@
 ## Deployment
 
-### What's required
+### Requirements
 
 You need [ansible](http://ansible.org) 1.7+ installed to be able to deploy automatically.
 
@@ -25,3 +25,11 @@ restau.no-ip.org | success >> {
 }
 
 ```
+
+### Execute deployment
+
+```sh
+$ ansible-playbook -i hosts deploy.yml
+```
+
+Create the directory if it does not exists and checkout git repository.

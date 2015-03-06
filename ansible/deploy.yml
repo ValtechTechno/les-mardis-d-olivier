@@ -1,0 +1,18 @@
+---
+- hosts: restau.no-ip.org
+  sudo: yes
+  vars:
+    - deploy_path: /var/les-mardis-d-olivier
+
+  tasks:
+    - name: Ensure {{ deploy_path }} exists
+      file: path={{ deploy_path }} owner=www-data group=www-data state=directory
+      sudo: yes
+      register: deployPathCreated
+
+    - name: Checkout application.
+      git: repo=https://github.com/ValtechTechno/les-mardis-d-olivier.git
+           dest={{ deploy_path }}
+           version=gh-pages
+      when: deployPathCreated|success
+      register: checkouted
