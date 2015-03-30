@@ -34,7 +34,7 @@
     function updateDistribution(distribution) {
       var distributions = allDistributions();
       for (var i = 0; i < distributions.length; i++) {
-        if(distributions[i].id == distribution.id){
+        if(distributions[i]._id == distribution._id){
           distributions[i] = distribution;
           break;
         }
@@ -53,7 +53,7 @@
     function findDistributionById(distributionId, _distributions) {
       var distributions = _distributions !== undefined ? _distributions : allDistributions();
       for (var i = 0; i < distributions.length; i++) {
-        if(distributions[i].id == distributionId){
+        if(distributions[i]._id == distributionId){
           return distributions[i];
         }
       }
@@ -63,7 +63,7 @@
     function findBeneficiaireById(beneficiaireId, _beneficiaires) {
       var beneficiaires = _beneficiaires !== undefined ? _beneficiaires : loadBeneficiaires();
       for (var i = 0; i < beneficiaires.length; i++) {
-        if(beneficiaires[i].id == beneficiaireId){
+        if(beneficiaires[i]._id == beneficiaireId){
           return beneficiaires[i];
         }
       }
@@ -76,7 +76,7 @@
       for (var i = 0; i < beneficiairesLength ; i++) {
         var beneficiaire = beneficiaires[i];
         cleanBeneficiairesList.push({
-          id: beneficiaire.id,
+          _id: beneficiaire._id,
           code: beneficiaire.code,
           firstName: beneficiaire.firstName,
           lastName: beneficiaire.lastName,

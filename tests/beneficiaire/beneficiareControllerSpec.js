@@ -38,19 +38,19 @@ describe("BeneficiaireController", function () {
   it('should add a beneficiaire', function () {
     addBeneficiaire('John', 'Rambo');
 
-    expect(scope.beneficiaires).toContain({id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true});
+    expect(scope.beneficiaires).toContain({_id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true});
   });
 
   it('should add a beneficiaire without code', function () {
     addBeneficiaireWithCode('John', 'Rambo', null);
 
-    expect(scope.beneficiaires).toContain({id: '1', code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true});
+    expect(scope.beneficiaires).toContain({_id: '1', code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true});
   });
 
   it('should add a beneficiaire without card', function () {
     addBeneficiaireWithCode('John', 'Rambo', '1', false);
 
-    expect(scope.beneficiaires).toContain({id: '1', code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false});
+    expect(scope.beneficiaires).toContain({_id: '1', code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false});
   });
 
   it('calculates the beneficiaire id by incrementing the last id in the list', function () {
@@ -60,9 +60,9 @@ describe("BeneficiaireController", function () {
 
     expect(scope.beneficiaires).toEqual(
       [
-        {id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true},
-        {id: '2', code: 2, firstName: 'Alix', lastName: 'Rambo', isPresent: false, hasCard: true},
-        {id: '3', code: 3, firstName: 'Lana', lastName: 'Rambo', isPresent: false, hasCard: true}
+        {_id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true},
+        {_id: '2', code: 2, firstName: 'Alix', lastName: 'Rambo', isPresent: false, hasCard: true},
+        {_id: '3', code: 3, firstName: 'Lana', lastName: 'Rambo', isPresent: false, hasCard: true}
       ]
     );
   });
@@ -80,7 +80,7 @@ describe("BeneficiaireController", function () {
   it('should save beneficiaires to dataService', function () {
     addBeneficiaire('foo', 'bar');
 
-    expect(dataService.loadBeneficiaires()).toEqual([{id:'1',code:1,firstName:'foo',lastName:'bar',hasCard:true}]);
+    expect(dataService.loadBeneficiaires()).toEqual([{_id:'1',code:1,firstName:'foo',lastName:'bar',hasCard:true}]);
   });
 
 });

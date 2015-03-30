@@ -22,8 +22,8 @@ describe("BeneficiaireDetailController", function () {
     });
 
     dataService.saveBeneficiaires([
-        { id: '1', code: 1, firstName: 'A1', lastName: 'A1' },
-        { id: '2', code: 2, firstName: 'A2', lastName: 'A2' }
+        { _id: '1', code: 1, firstName: 'A1', lastName: 'A1' },
+        { _id: '2', code: 2, firstName: 'A2', lastName: 'A2' }
     ]);
     dataService.saveBeneficiairesPresentByDistribution([
         { distributionId: '1', beneficiaireId: '1', comment: 'message', isBookmark: false},
@@ -32,8 +32,8 @@ describe("BeneficiaireDetailController", function () {
         { distributionId: '2', beneficiaireId: '2'}
     ]);
     dataService.saveDistributions([
-        { distributionDate: "2014-09-16", id: 1 },
-        { distributionDate: "2014-09-18", id: 2 }
+        { distributionDate: "2014-09-16", _id: 1 },
+        { distributionDate: "2014-09-18", _id: 2 }
     ]);
   }));
 

@@ -32,12 +32,12 @@ describe("DistributionController", function () {
         {
           "distributionDate": "2014-08-05",
           "nbPlannedMeals": "50",
-          id: 2
+          _id: 2
         },
         {
           "distributionDate": "2014-08-04",
           "nbPlannedMeals": "50",
-          id: 1
+          _id: 1
         }
       ]);
   });
@@ -57,17 +57,17 @@ describe("DistributionController", function () {
         {
           "distributionDate": "2014-08-06",
           "nbPlannedMeals": "50",
-          id: 3
+          _id: 3
         },
         {
           "distributionDate": "2014-08-05",
           "nbPlannedMeals": "50",
-          id: 2
+          _id: 2
         },
         {
           "distributionDate": "2014-08-04",
           "nbPlannedMeals": "50",
-          id: 1
+          _id: 1
         }
       ]);
   });
@@ -85,7 +85,7 @@ describe("DistributionController", function () {
       .toEqual([{
         "distributionDate": "2014-08-04",
         "nbPlannedMeals": "50",
-        id: 1
+        _id: 1
       }]);
   });
 

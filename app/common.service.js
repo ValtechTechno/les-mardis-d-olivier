@@ -32,7 +32,7 @@
       }
       if (beneficiaires.filter(function (beneficiaire) {
         return (beneficiaire.firstName === firstName &&
-          beneficiaire.lastName === lastName && beneficiaire.id !== id);
+          beneficiaire.lastName === lastName && beneficiaire._id !== id);
       }).length > 0 && isUpdate === true) {
         notUniqueBeneficiaire(lastName, firstName);
       }
@@ -57,7 +57,7 @@ formatDate = function (date) {
 
 getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
   var newBeneficiaire = {
-    id: nextId,
+    _id: nextId,
     code: code,
     firstName: firstName,
     lastName: lastName,
@@ -72,7 +72,7 @@ getNextId = function(list){
   if (list.length === 0) {
     nextId = '1';
   } else {
-    nextId = parseInt(list[list.length - 1].id) + 1 + '';
+    nextId = parseInt(list[list.length - 1]._id) + 1 + '';
   }
   return nextId;
 };

@@ -11,7 +11,7 @@
       $scope.currentBeneficiaire = dataService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires);
       $scope.currentBeneficiaire.codeNumber = Number($scope.currentBeneficiaire.code);
       $scope.getComments();
-      $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire.id);
+      $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
       // By default, an old user has a card.
       if ($scope.currentBeneficiaire.hasCard === undefined) {
         $scope.currentBeneficiaire.hasCard = true;
@@ -25,7 +25,7 @@
     $scope.isBookmark = function (comment) {
       var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-        if(beneficiairesPresentByDistribution[i].distributionId == comment.distributionId && beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire.id){
+        if(beneficiairesPresentByDistribution[i].distributionId == comment.distributionId && beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire._id){
           beneficiairesPresentByDistribution[i].isBookmark = comment.isBookmark;
           break;
         }
@@ -45,14 +45,14 @@
     };
 
     $scope.getComments = function(){
-      $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire.id, -1, dataService, false);
+      $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire._id, -1, dataService, false);
     };
 
     $scope.saveBeneficiaireDetail = function () {
-      if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.id, true)) {
+      if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, true)) {
         var beneficiaires = dataService.loadBeneficiaires();
         for (var i = 0; i < beneficiaires.length; i++) {
-          if (beneficiaires[i].id == $scope.currentBeneficiaire.id) {
+          if (beneficiaires[i]._id == $scope.currentBeneficiaire._id) {
             beneficiaires[i] = $scope.currentBeneficiaire;
             break;
           }
@@ -66,7 +66,7 @@
       var beneficiaires = dataService.loadBeneficiaires();
       var beneficiaireToDeletePosition = -1;
       for (var pos = 0; pos < beneficiaires.length; pos++) {
-        if (beneficiaires[pos].id == $scope.currentBeneficiaire.id) {
+        if (beneficiaires[pos]._id == $scope.currentBeneficiaire._id) {
           beneficiaireToDeletePosition = pos;
           break;
         }
@@ -77,7 +77,7 @@
       var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       var newBeneficiairesPresentByDistribution = [];
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-        if (beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire.id) {
+        if (beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire._id) {
           newBeneficiairesPresentByDistribution.push(beneficiairesPresentByDistribution[i]);
         }
       }

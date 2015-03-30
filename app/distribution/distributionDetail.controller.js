@@ -26,13 +26,13 @@
       vm.currentDistribution = dataService.findDistributionById($routeParams.distributionId);
       vm.numberBeneficiairesPresent = 0;
       vm.beneficiaires = dataService.loadBeneficiaires();
-      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution.id, dataService).slice(0);
+      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution._id, dataService).slice(0);
       var onlyPresent = function (beneficiaire) {
         return beneficiaire.isPresent;
       };
       vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
       for (var i = 0; i < vm.beneficiaires.length; i++) {
-        vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i].id, vm.currentDistribution.id, dataService, true);
+        vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i]._id, vm.currentDistribution._id, dataService, true);
       }
     }
 
@@ -48,7 +48,7 @@
     function writeComment (beneficiaireId, message) {
       var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-        if (beneficiairesPresentByDistribution[i].distributionId == vm.currentDistribution.id &&
+        if (beneficiairesPresentByDistribution[i].distributionId == vm.currentDistribution._id &&
           beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
           beneficiairesPresentByDistribution.splice(i, 1);
           break;
@@ -56,13 +56,13 @@
       }
       if (message !== null && message.length > 0) {
         beneficiairesPresentByDistribution.push({
-          "distributionId": vm.currentDistribution.id.toString(),
+          "distributionId": vm.currentDistribution._id.toString(),
           "beneficiaireId": beneficiaireId,
           "comment": message
         });
       } else {
         beneficiairesPresentByDistribution.push({
-          "distributionId": vm.currentDistribution.id.toString(),
+          "distributionId": vm.currentDistribution._id.toString(),
           "beneficiaireId": beneficiaireId
         });
       }
@@ -71,7 +71,7 @@
 
     function isPresent (beneficiaire) {
       if (vm.currentDistribution !== null) {
-        storeRelationDistributionBeneficiaire(vm.currentDistribution.id, beneficiaire.id, dataService);
+        storeRelationDistributionBeneficiaire(vm.currentDistribution._id, beneficiaire._id, dataService);
       }
       if (beneficiaire.isPresent) {
         vm.numberBeneficiairesPresent++;
@@ -96,8 +96,8 @@ retrieveBeneficiairesByDistribution = function (distributionId, dataService) {
   var beneficiairesPresent = [];
   var beneficiaires = dataService.loadBeneficiaires();
   for (var pos = 0; pos < beneficiaires.length; pos++) {
-    beneficiaires[pos].comments = getLastComments(beneficiaires[pos].id, distributionId, dataService, true);
-    var index = beneficiairesPresentIds.indexOf(beneficiaires[pos].id);
+    beneficiaires[pos].comments = getLastComments(beneficiaires[pos]._id, distributionId, dataService, true);
+    var index = beneficiairesPresentIds.indexOf(beneficiaires[pos]._id);
     if (index != -1) {
       beneficiaires[pos].isPresent = true;
       beneficiaires[pos].comment = beneficiairesPresentComments[index];
@@ -153,7 +153,7 @@ getDateDistribution = function (allDistributions, beneficiairePresent) {
   var dateDistrib = formatDate(new Date());
   if (beneficiairePresent.distributionId != -1) {
     for (var distributionNumber = 0; distributionNumber <= allDistributions.length; distributionNumber++) {
-      if (allDistributions[distributionNumber].id == beneficiairePresent.distributionId) {
+      if (allDistributions[distributionNumber]._id == beneficiairePresent.distributionId) {
         dateDistrib = allDistributions[distributionNumber].distributionDate;
         break;
       }

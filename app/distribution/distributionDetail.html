@@ -57,7 +57,7 @@
             </section>
           </td>
           <td>
-            <input type="text" ng-model="user.comment" ng-change="distributionDetail.writeComment(user.id, user.comment)"
+            <input type="text" ng-model="user.comment" ng-change="distributionDetail.writeComment(user._id, user.comment)"
                    ng-model-options="{debounce:1000}" ng-disabled="!user.isPresent"/>
           </td>
         </tr>

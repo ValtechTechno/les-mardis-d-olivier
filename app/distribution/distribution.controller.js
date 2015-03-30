@@ -36,14 +36,14 @@
       var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
         for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-          if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex].id &&
+          if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex]._id &&
             beneficiairesPresentByDistribution[i].comment !== undefined) {
             if ($scope.distributions[distributionIndex].comments === undefined) {
               $scope.distributions[distributionIndex].comments = [];
             }
             var beneficiaire = null;
             for (var beneficiaireIndex = 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
-              if ($scope.beneficiaires[beneficiaireIndex].id == beneficiairesPresentByDistribution[i].beneficiaireId) {
+              if ($scope.beneficiaires[beneficiaireIndex]._id == beneficiairesPresentByDistribution[i].beneficiaireId) {
                 beneficiaire = $scope.beneficiaires[beneficiaireIndex];
                 $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
                 break;
@@ -64,8 +64,8 @@
     $scope.showAllDistribution();
 
     $scope.startNewDistribution = function () {
-      $scope.currentDistribution.id = $scope.saveNewDistribution();
-      $location.path('distributions/' + $scope.currentDistribution.id);
+      $scope.currentDistribution._id = $scope.saveNewDistribution();
+      $location.path('distributions/' + $scope.currentDistribution._id);
     };
 
     $scope.saveNewDistribution = function () {
@@ -95,7 +95,7 @@ retrieveAllDistribution = function (dataService) {
   }
 
   for (var pos = 0; pos < allDistributions.length; pos++) {
-    allDistributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[pos].id];
+    allDistributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[pos]._id];
   }
   return allDistributions;
 };
@@ -111,10 +111,10 @@ storeDistribution = function (distribution, dataService) {
     }).length > 0) {
     throw {type:"functional", message:'Une distribution à cette date existe déjà'};
   } else {
-    nextId = distributions[distributions.length - 1].id + 1;
+    nextId = distributions[distributions.length - 1]._id + 1;
   }
 
-  distribution.id = nextId;
+  distribution._id = nextId;
   distributions.push(distribution);
   dataService.saveDistributions(distributions);
   return nextId;
