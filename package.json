@@ -1,6 +1,7 @@
 {
   "name": "les-mardis-d-olivier",
   "version": "0.0.1",
+  "repository": "https://github.com/ValtechTechno/les-mardis-d-olivier",
   "devDependencies": {
     "karma": "^0.12.19",
     "karma-jasmine": "^0.1.5",
