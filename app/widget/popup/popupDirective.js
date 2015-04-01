@@ -29,7 +29,7 @@
             }
           };
         },
-        templateUrl: 'app/popupDirective.html'
+        templateUrl: 'app/widget/popup/popupDirective.html'
       };
     });
 })();
