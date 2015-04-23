@@ -5,10 +5,15 @@
     - deploy_path: /var/les-mardis-d-olivier
 
   tasks:
-    - name: Ensure {{ deploy_path }} exists
+    - name: Ensure {{ deploy_path }} exists.
       file: path={{ deploy_path }} owner=www-data group=www-data state=directory
       sudo: yes
       register: deployPathCreated
+
+    - name: Install couchdb
+      apt: name=couchdb
+           state=present
+      register: couchDBInstalled
 
     - name: Checkout application.
       git: repo=https://github.com/ValtechTechno/les-mardis-d-olivier.git
@@ -16,3 +21,18 @@
            version=gh-pages
       when: deployPathCreated|success
       register: checkouted
+
+    - name: Install Forever (to run Node.js app).
+      npm: name=forever
+           global=yes
+           state=latest
+           executable=/opt/bin/npm
+
+    - name: "Check list of Node.js apps running."
+      command: forever list
+      register: forever_list
+      changed_when: false
+
+    - name: "Start example Node.js app."
+      command: forever start {{ deploy_path }}/server/server.js
+      when: "forever_list.stdout.find('{{ deploy_path }}/server/server.js') == -1"
