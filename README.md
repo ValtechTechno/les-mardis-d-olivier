@@ -29,3 +29,11 @@ It uses a container to run karma with the `karma.js` configuration file.
 ```sh
 docker run -v $(pwd):/karma tiokksar/karma
 ```
+
+### Run the site locally
+
+With python.
+
+```sh
+python -m SimpleHTTPServer
+```
