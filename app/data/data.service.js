@@ -1,12 +1,15 @@
 (function(){
   'use strict';
 
+  if (typeof localStorage == 'undefined') {
+    alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
+  }
+
   angular
       .module('mardisDolivier')
       .service('dataService', dataService);
 
-  function dataService($q) {
-    var db = new PouchDB('lesmardis');
+  function dataService() {
     var service = {
       clear: clear, // @VisibleForTesting
       loadBeneficiaires: loadBeneficiaires,
@@ -40,14 +43,11 @@
     }
 
     function loadBeneficiaires() {
-      return db.query('type', {
-        key: 'beneficiaire',
-        include_docs: true
-      }).catch(function (error) {
-        var defered = $q.defer();
-        defered.resolve([]);
-        return defered.promise;
-      });
+      var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
+      if (beneficiaires === null) {
+        beneficiaires = [];
+      }
+      return beneficiaires;
     }
 
     function findDistributionById(distributionId, _distributions) {
@@ -70,24 +70,22 @@
       return beneficiaires;
     }
 
-    function saveBeneficiaires(beneficiairesPromise) {
+    function saveBeneficiaires(beneficiaires) {
       var cleanBeneficiairesList = [];
-      beneficiairesPromise.then(function(beneficiaires){
-        var  beneficiairesLength = results === null ? 0 : results.length;
-        for (var i = 0; i < beneficiairesLength ; i++) {
-          var beneficiaire = beneficiaires[i];
-          db.put({
-            _id: beneficiaire._id,
-            type: 'beneficiaire',
-            code: beneficiaire.code,
-            firstName: beneficiaire.firstName,
-            lastName: beneficiaire.lastName,
-            description: beneficiaire.description,
-            excluded: beneficiaire.excluded,
-            hasCard: beneficiaire.hasCard
-          });
-        }
-      });
+      var  beneficiairesLength = beneficiaires === null ? 0 : beneficiaires.length;
+      for (var i = 0; i < beneficiairesLength ; i++) {
+        var beneficiaire = beneficiaires[i];
+        cleanBeneficiairesList.push({
+          _id: beneficiaire._id,
+          code: beneficiaire.code,
+          firstName: beneficiaire.firstName,
+          lastName: beneficiaire.lastName,
+          description: beneficiaire.description,
+          excluded: beneficiaire.excluded,
+          hasCard: beneficiaire.hasCard
+        });
+      }
+      localStorage.setItem('beneficiaires', angular.toJson(cleanBeneficiairesList));
     }
 
     function allDistributions() {
