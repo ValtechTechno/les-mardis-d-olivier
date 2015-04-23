@@ -10,6 +10,7 @@
       .service('dataService', dataService);
 
   function dataService() {
+    var db = new PouchDB('lesmardis');
     var service = {
       clear: clear, // @VisibleForTesting
       loadBeneficiaires: loadBeneficiaires,
@@ -75,6 +76,17 @@
       var  beneficiairesLength = beneficiaires === null ? 0 : beneficiaires.length;
       for (var i = 0; i < beneficiairesLength ; i++) {
         var beneficiaire = beneficiaires[i];
+        db.put({
+          _id: beneficiaire._id,
+          code: beneficiaire.code,
+          firstName: beneficiaire.firstName,
+          lastName: beneficiaire.lastName,
+          hasCard: beneficiaire.hasCard
+        }).then(function (response) {
+          console.log(response);
+        }).catch(function (err) {
+          console.log(err);
+        });
         cleanBeneficiairesList.push({
           _id: beneficiaire._id,
           code: beneficiaire.code,
