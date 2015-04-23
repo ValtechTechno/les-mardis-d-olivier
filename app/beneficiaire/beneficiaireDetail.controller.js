@@ -8,14 +8,17 @@
   function BeneficiaireDetailController ($scope, $routeParams, dataService, commonService, $location) {
     $scope.openBeneficiaireDetail = function () {
       $scope.beneficiaires = dataService.loadBeneficiaires();
-      $scope.currentBeneficiaire = dataService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires);
-      $scope.currentBeneficiaire.codeNumber = Number($scope.currentBeneficiaire.code);
-      $scope.getComments();
-      $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
-      // By default, an old user has a card.
-      if ($scope.currentBeneficiaire.hasCard === undefined) {
-        $scope.currentBeneficiaire.hasCard = true;
-      }
+      dataService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires)
+      .then(function (doc) {
+        $scope.currentBeneficiaire = doc;
+        $scope.currentBeneficiaire.codeNumber = Number($scope.currentBeneficiaire.code);
+        $scope.getComments();
+        $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
+        // By default, an old user has a card.
+        if ($scope.currentBeneficiaire.hasCard === undefined) {
+          $scope.currentBeneficiaire.hasCard = true;
+        }
+      });
       $scope.deletePopupButtons = [
         {text: "Supprimer", event: "confirmBeneficiaireDetailDeletePopup", close: true, style: "redButton"},
         {text: "Annuler", event: "", close: true, style: ""}

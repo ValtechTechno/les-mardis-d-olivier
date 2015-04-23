@@ -9,7 +9,7 @@
       .module('mardisDolivier')
       .service('dataService', dataService);
 
-  function dataService() {
+  function dataService($q, $rootScope) {
     var db = new PouchDB('lesmardis');
     var service = {
       clear: clear, // @VisibleForTesting
@@ -64,8 +64,18 @@
     function findBeneficiaireById(beneficiaireId, _beneficiaires) {
       var beneficiaires = _beneficiaires !== undefined ? _beneficiaires : loadBeneficiaires();
       for (var i = 0; i < beneficiaires.length; i++) {
-        if(beneficiaires[i]._id == beneficiaireId){
-          return beneficiaires[i];
+        if (beneficiaires[i]._id == beneficiaireId) {
+          var deferred = $q.defer();
+          db.get(beneficiaireId)
+          .then(function (doc) {
+            $rootScope.$apply(function() {
+              return deferred.resolve(doc);
+            });
+          }).catch(function (err) {
+            console.log(err);
+          });
+          return deferred.promise;
+          // return beneficiaires[i];
         }
       }
       return beneficiaires;
