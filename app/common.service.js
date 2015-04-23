@@ -24,19 +24,22 @@
     }
 
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
-      if (beneficiaires.filter(function (beneficiaire) {
+      return beneficiaires.then(function (result) {
+        if (result.filter(function (beneficiaire) {
+            return (beneficiaire.firstName === firstName &&
+            beneficiaire.lastName === lastName);
+          }).length > 0 && isUpdate === false) {
+          notUniqueBeneficiaire(lastName, firstName);
+        }
+        if (result.filter(function (beneficiaire) {
           return (beneficiaire.firstName === firstName &&
-          beneficiaire.lastName === lastName);
-        }).length > 0 && isUpdate === false) {
-        notUniqueBeneficiaire(lastName, firstName);
-      }
-      if (beneficiaires.filter(function (beneficiaire) {
-        return (beneficiaire.firstName === firstName &&
-          beneficiaire.lastName === lastName && beneficiaire._id !== id);
-      }).length > 0 && isUpdate === true) {
-        notUniqueBeneficiaire(lastName, firstName);
-      }
-      return true;
+            beneficiaire.lastName === lastName && beneficiaire._id !== id);
+        }).length > 0 && isUpdate === true) {
+          notUniqueBeneficiaire(lastName, firstName);
+        }
+      }).then(function () {
+        return true;
+      });
     }
   }
 })();
@@ -55,24 +58,28 @@ formatDate = function (date) {
   return date.getFullYear() + "-" + paddedMonth + "-" + day;
 };
 
-getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
-  var newBeneficiaire = {
-    _id: nextId,
-    code: code,
-    firstName: firstName,
-    lastName: lastName,
-    isPresent: false,
-    hasCard: hasCard
-  };
-  return newBeneficiaire;
+getNewBeneficiaire = function(nextIdPromise, code, lastName, firstName, hasCard){
+  nextIdPromise.then(function(nextId){
+    var newBeneficiaire = {
+      _id: nextId,
+      code: code,
+      firstName: firstName,
+      lastName: lastName,
+      isPresent: false,
+      hasCard: hasCard
+    };
+    return newBeneficiaire;
+  });
 };
 
-getNextId = function(list){
-  var nextId;
-  if (list.length === 0) {
-    nextId = '1';
-  } else {
-    nextId = parseInt(list[list.length - 1]._id) + 1 + '';
-  }
-  return nextId;
+getNextId = function(listPromise) {
+  return listPromise.then(function (list) {
+    var nextId;
+    if (list.length === 0) {
+      nextId = '1';
+    } else {
+      nextId = parseInt(list[list.length - 1]._id) + 1 + '';
+    }
+    return nextId;
+  });
 };
