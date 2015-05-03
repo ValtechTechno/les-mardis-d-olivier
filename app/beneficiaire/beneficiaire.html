@@ -71,7 +71,8 @@
       <tr ng-show="beneficiaires.length==0">
         <td colspan="3">Aucun beneficiaire.</td>
       </tr>
-      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire | filter:searchExcluded | filter:searchHasCard" ng-click="openBeneficiaireDetail(user._id)">
+      <!-- TODO validate the db.changes instead of db.query, fix for sorting purpose -->
+      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire | filter:searchExcluded | filter:searchHasCard | orderBy:'code'" ng-click="openBeneficiaireDetail(user._id)">
         <td>{{user.code}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.firstName}}</td>

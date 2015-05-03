@@ -7,10 +7,16 @@
 
   function BeneficiaireController ($scope, dataService, commonService, $location) {
     $scope.openBeneficiaireList = function () {
-      $scope.beneficiaires = dataService.loadBeneficiaires();
-      $scope.resetAddBeneficiareForm();
-      $scope.excludedFilter = false;
-      $scope.hasCardFilter = false;
+      if ($scope.beneficiaires === null || $scope.beneficiaires === undefined) {
+        $scope.beneficiaires = [];
+      }
+      dataService.loadBeneficiaires()
+      .then(function (beneficiaires) {
+        $scope.beneficiaires = beneficiaires;
+        $scope.resetAddBeneficiareForm();
+      });
+        $scope.excludedFilter = false;
+        $scope.hasCardFilter = false;
     };
 
     $scope.searchBeneficiaire = function (beneficiaire) {
@@ -26,9 +32,7 @@
     };
 
     $scope.addBeneficiaireFromList = function () {
-      if ($scope.addBeneficiaire()) {
-        $scope.resetAddBeneficiareForm();
-      }
+      $scope.addBeneficiaire();
     };
 
     $scope.openBeneficiaireDetail = function(beneficiaireId) {
@@ -55,11 +59,11 @@
     $scope.addBeneficiaire = function() {
       if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, false)) {
         var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
-        $scope.beneficiaires.push(newBeneficiaire);
-        dataService.saveBeneficiaires($scope.beneficiaires);
-        return newBeneficiaire;
+        dataService.addOrUpdateBeneficiaire(newBeneficiaire).then(function(added){
+          $scope.beneficiaires.push(added);
+          $scope.resetAddBeneficiareForm();
+        });
       }
-      return false;
     };
 
     $scope.openBeneficiaireList();

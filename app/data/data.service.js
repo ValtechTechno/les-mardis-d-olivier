@@ -11,6 +11,7 @@
 
   function dataService($q, $rootScope) {
     var db = new PouchDB('lesmardis');
+    var BENEFICIAIRE_TYPE = 'benef';
     var service = {
       clear: clear, // @VisibleForTesting
       loadBeneficiaires: loadBeneficiaires,
@@ -23,7 +24,9 @@
       findDistributionById: findDistributionById,
       updateDistribution: updateDistribution,
       about: about,
-      saveAbout: saveAbout
+      saveAbout: saveAbout,
+      addOrUpdateBeneficiaire: addOrUpdateBeneficiaire,
+      deleteBeneficiaire:deleteBeneficiaire
     };
 
     return service;
@@ -43,14 +46,6 @@
       saveDistributions(distributions);
     }
 
-    function loadBeneficiaires() {
-      var beneficiaires = angular.fromJson(localStorage.getItem('beneficiaires'));
-      if (beneficiaires === null) {
-        beneficiaires = [];
-      }
-      return beneficiaires;
-    }
-
     function findDistributionById(distributionId, _distributions) {
       var distributions = _distributions !== undefined ? _distributions : allDistributions();
       for (var i = 0; i < distributions.length; i++) {
@@ -61,33 +56,81 @@
       return distributions;
     }
 
-    function findBeneficiaireById(beneficiaireId, _beneficiaires) {
-      var beneficiaires = _beneficiaires !== undefined ? _beneficiaires : loadBeneficiaires();
-      for (var i = 0; i < beneficiaires.length; i++) {
-        if (beneficiaires[i]._id == beneficiaireId) {
-          var deferred = $q.defer();
-          db.get(beneficiaireId)
-          .then(function (doc) {
-            $rootScope.$apply(function() {
-              return deferred.resolve(doc);
-            });
-          }).catch(function (err) {
-            console.log(err);
-          });
-          return deferred.promise;
-          // return beneficiaires[i];
-        }
-      }
-      return beneficiaires;
+    // TODO validate the db.changes instead of db.query, fix for sorting purpose
+    function loadBeneficiaires() {
+      var deferred = $q.defer();
+      db.changes({
+        filter: function (doc) {
+          return doc.type === BENEFICIAIRE_TYPE;
+        }, include_docs: true
+      }, function (err, res) {
+        $rootScope.$apply(function () {
+          if (err) {
+            deferred.reject(err);
+          } else {
+            var beneficiaires = [];
+            for (var i = 0; i < res.results.length; i++) {
+              beneficiaires.push(res.results[i].doc);
+            }
+            deferred.resolve(beneficiaires);
+          }
+        });
+      });
+      return deferred.promise;
     }
 
+    function findBeneficiaireById(beneficiaireId) {
+      var deferred = $q.defer();
+      db.get(beneficiaireId)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            return deferred.resolve(doc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function addOrUpdateBeneficiaire(beneficiaire) {
+      var deferred = $q.defer();
+      var benef = getBeneficiaire(beneficiaire);
+      db.put(benef)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            benef._rev = doc._rev;
+            return deferred.resolve(benef);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function getBeneficiaire(beneficiaire) {
+      if (beneficiaire._rev !== undefined) {
+        return beneficiaire;
+      }
+      return {
+        _id: beneficiaire._id,
+        type: BENEFICIAIRE_TYPE,
+        code: beneficiaire.code,
+        firstName: beneficiaire.firstName,
+        lastName: beneficiaire.lastName,
+        hasCard: beneficiaire.hasCard
+      };
+    }
+
+    // TODO use db.bulkDocs([...,...]
     function saveBeneficiaires(beneficiaires) {
-      var cleanBeneficiairesList = [];
-      var  beneficiairesLength = beneficiaires === null ? 0 : beneficiaires.length;
-      for (var i = 0; i < beneficiairesLength ; i++) {
+      var beneficiairesLength = beneficiaires === null ? 0 : beneficiaires.length;
+      for (var i = 0; i < beneficiairesLength; i++) {
         var beneficiaire = beneficiaires[i];
         db.put({
           _id: beneficiaire._id,
+          type: BENEFICIAIRE_TYPE,
           code: beneficiaire.code,
           firstName: beneficiaire.firstName,
           lastName: beneficiaire.lastName,
@@ -96,18 +139,13 @@
           console.log(response);
         }).catch(function (err) {
           console.log(err);
-        });
-        cleanBeneficiairesList.push({
-          _id: beneficiaire._id,
-          code: beneficiaire.code,
-          firstName: beneficiaire.firstName,
-          lastName: beneficiaire.lastName,
-          description: beneficiaire.description,
-          excluded: beneficiaire.excluded,
-          hasCard: beneficiaire.hasCard
+          deferred.reject(err);
         });
       }
-      localStorage.setItem('beneficiaires', angular.toJson(cleanBeneficiairesList));
+    }
+
+    function deleteBeneficiaire(beneficiaire) {
+      db.remove(beneficiaire);
     }
 
     function allDistributions() {

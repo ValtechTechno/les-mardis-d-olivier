@@ -7,7 +7,6 @@
 
   function BeneficiaireDetailController ($scope, $routeParams, dataService, commonService, $location) {
     $scope.openBeneficiaireDetail = function () {
-      $scope.beneficiaires = dataService.loadBeneficiaires();
       dataService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires)
       .then(function (doc) {
         $scope.currentBeneficiaire = doc;
@@ -18,6 +17,11 @@
         if ($scope.currentBeneficiaire.hasCard === undefined) {
           $scope.currentBeneficiaire.hasCard = true;
         }
+      }).catch(function (err) {
+          if(err.status === 404) {
+            $scope.openBeneficiaireList();
+            throw {type: "functional", message: 'Le bénéficiaire n\'existe pas.'};
+          }
       });
       $scope.deletePopupButtons = [
         {text: "Supprimer", event: "confirmBeneficiaireDetailDeletePopup", close: true, style: "redButton"},
@@ -52,30 +56,22 @@
     };
 
     $scope.saveBeneficiaireDetail = function () {
-      if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, true)) {
-        var beneficiaires = dataService.loadBeneficiaires();
-        for (var i = 0; i < beneficiaires.length; i++) {
-          if (beneficiaires[i]._id == $scope.currentBeneficiaire._id) {
-            beneficiaires[i] = $scope.currentBeneficiaire;
-            break;
-          }
+      dataService.loadBeneficiaires().then(function (beneficiaires) {
+        $scope.beneficiaires = beneficiaires;
+        if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, true)) {
+          dataService.addOrUpdateBeneficiaire($scope.currentBeneficiaire).then(function() {
+            $scope.openBeneficiaireList();
+          }).catch(function (err) {
+            if(err.status === 409) {
+              throw {type: "functional", message: 'Un utilisateur vient de modifier ce bénéficiaire. Veuillez recharger la page et recommencer.'};
+            }
+          });
         }
-        dataService.saveBeneficiaires(beneficiaires);
-        $scope.openBeneficiaireList();
-      }
+      });
     };
 
     $scope.$on('confirmBeneficiaireDetailDeletePopup', function () {
-      var beneficiaires = dataService.loadBeneficiaires();
-      var beneficiaireToDeletePosition = -1;
-      for (var pos = 0; pos < beneficiaires.length; pos++) {
-        if (beneficiaires[pos]._id == $scope.currentBeneficiaire._id) {
-          beneficiaireToDeletePosition = pos;
-          break;
-        }
-      }
-      beneficiaires.splice(beneficiaireToDeletePosition, 1);
-      dataService.saveBeneficiaires(beneficiaires);
+      dataService.deleteBeneficiaire($scope.currentBeneficiaire);
 
       var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       var newBeneficiairesPresentByDistribution = [];

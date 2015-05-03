@@ -67,12 +67,15 @@ getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
   return newBeneficiaire;
 };
 
+// TODO validate the db.changes instead of db.query, fix for sorting purpose
 getNextId = function(list){
-  var nextId;
-  if (list.length === 0) {
-    nextId = '1';
-  } else {
-    nextId = parseInt(list[list.length - 1]._id) + 1 + '';
+  var nextId = 1;
+  if (list.length > 0) {
+    for (var i = 0; i < list.length; i++) {
+      if(list[i]._id >= nextId){
+        nextId = list[i]._id + 1;
+      }
+    }
   }
-  return nextId;
+  return nextId+'';
 };
