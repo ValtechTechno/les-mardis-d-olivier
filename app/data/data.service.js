@@ -56,25 +56,25 @@
       return distributions;
     }
 
-    // TODO validate the db.changes instead of db.query, fix for sorting purpose
     function loadBeneficiaires() {
       var deferred = $q.defer();
-      db.changes({
-        filter: function (doc) {
-          return doc.type === BENEFICIAIRE_TYPE;
-        }, include_docs: true
-      }, function (err, res) {
-        $rootScope.$apply(function () {
-          if (err) {
-            deferred.reject(err);
-          } else {
-            var beneficiaires = [];
-            for (var i = 0; i < res.results.length; i++) {
-              beneficiaires.push(res.results[i].doc);
-            }
-            deferred.resolve(beneficiaires);
-          }
-        });
+
+      function myMapFunction(doc) {
+        emit(doc.type);
+      }
+
+      db.query(myMapFunction, {
+        key: BENEFICIAIRE_TYPE,
+        include_docs: true
+      }).then(function (res) {
+        var beneficiaires = [];
+        for (var i = 0; i < res.rows.length; i++) {
+          beneficiaires.push(res.rows[i].doc);
+        }
+        deferred.resolve(beneficiaires);
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
       });
       return deferred.promise;
     }
