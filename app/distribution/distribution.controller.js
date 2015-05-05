@@ -17,11 +17,14 @@
     };
 
     $scope.currentDistribution = {};
-    $scope.beneficiaires = dataService.loadBeneficiaires();
 
     $scope.showAllDistribution = function () {
       $scope.distributions = retrieveAllDistribution(dataService);
-      $scope.getComments();
+      dataService.loadBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+          $scope.getComments();
+        });
       $scope.initNextDate();
     };
 

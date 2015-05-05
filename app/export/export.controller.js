@@ -7,7 +7,10 @@
 
   function ExportController ($scope, $filter, dataService) {
     $scope.openExportPage = function () {
-      $scope.beneficiaires = dataService.loadBeneficiaires();
+      dataService.loadBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+        });
       $scope.distributions = dataService.allDistributions();
       $scope.beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
       $scope.about = dataService.about();

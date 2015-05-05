@@ -25,8 +25,10 @@
       }
       vm.currentDistribution = dataService.findDistributionById($routeParams.distributionId);
       vm.numberBeneficiairesPresent = 0;
-      vm.beneficiaires = dataService.loadBeneficiaires();
-      vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution._id, dataService).slice(0);
+      dataService.loadBeneficiaires()
+        .then(function (beneficiaires) {
+          vm.beneficiaires = retrieveBeneficiairesByDistribution(vm.currentDistribution._id, dataService, beneficiaires).slice(0);
+        });
       var onlyPresent = function (beneficiaire) {
         return beneficiaire.isPresent;
       };
@@ -83,7 +85,7 @@
 
 })();
 
-retrieveBeneficiairesByDistribution = function (distributionId, dataService) {
+retrieveBeneficiairesByDistribution = function (distributionId, dataService, beneficiaires) {
   var beneficiairesPresentIds = [];
   var beneficiairesPresentComments = [];
   var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
@@ -94,7 +96,6 @@ retrieveBeneficiairesByDistribution = function (distributionId, dataService) {
     }
   }
   var beneficiairesPresent = [];
-  var beneficiaires = dataService.loadBeneficiaires();
   for (var pos = 0; pos < beneficiaires.length; pos++) {
     beneficiaires[pos].comments = getLastComments(beneficiaires[pos]._id, distributionId, dataService, true);
     var index = beneficiairesPresentIds.indexOf(beneficiaires[pos]._id);
