@@ -131,19 +131,19 @@
       };
     }
 
-    // TODO use db.bulkDocs([...,...]
     function saveBeneficiaires(beneficiaires) {
+      var beneficiairesToCreate = [];
       var beneficiairesLength = beneficiaires === null ? 0 : beneficiaires.length;
       for (var i = 0; i < beneficiairesLength; i++) {
         var beneficiaire = beneficiaires[i];
-        db.put({
-          _id: beneficiaire._id,
-          type: BENEFICIAIRE_TYPE,
+        beneficiairesToCreate.push({
+          _id: getBeneficiaireIdForDatabase(beneficiaire._id),
           code: beneficiaire.code,
           firstName: beneficiaire.firstName,
           lastName: beneficiaire.lastName,
           hasCard: beneficiaire.hasCard
-        }).then(function (response) {
+        });
+        db.bulkDocs(beneficiairesToCreate).then(function (response) {
           console.log(response);
         }).catch(function (err) {
           console.log(err);

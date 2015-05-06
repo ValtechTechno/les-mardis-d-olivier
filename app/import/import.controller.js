@@ -7,8 +7,13 @@
 
   function ImportController($scope, dataService, $location) {
     $scope.openImportPage = function () {
+      $scope.beneficiaires = [];
       $scope.initDynamicVariable("");
-      $scope.hasCard = false;
+      dataService.loadBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+      });
+          $scope.hasCard = false;
       $scope.showFinalList = false;
       $scope.deletePopupButtons = [
         {text: "Supprimer", event: "deleteExistingData", close: true, style: "redButton"},
@@ -31,7 +36,6 @@
 
     $scope.initDynamicVariable = function (parsedList) {
       $scope.parsedPaste = parsedList;
-      $scope.beneficiaires = dataService.loadBeneficiaires();
       $scope.beneficiairesToImport = angular.copy($scope.beneficiaires);
       var lastCode = 0;
       if ($scope.beneficiairesToImport.length > 0) {
