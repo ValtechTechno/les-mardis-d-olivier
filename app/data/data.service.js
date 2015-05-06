@@ -153,6 +153,7 @@
     }
 
     function deleteBeneficiaire(beneficiaire) {
+      beneficiaire._id = getBeneficiaireIdForDatabase(beneficiaire._id);
       db.remove(beneficiaire);
     }
 
