@@ -11,7 +11,7 @@
 
   function dataService($q, $rootScope) {
     var db = new PouchDB('lesmardis');
-    var BENEFICIAIRE_TYPE = 'benef';
+    var BENEFICIAIRE_PREFIX = 'benef_';
     var service = {
       clear: clear, // @VisibleForTesting
       loadBeneficiaires: loadBeneficiaires,
@@ -63,12 +63,10 @@
         emit(doc.type);
       }
 
-      db.query(myMapFunction, {
-        key: BENEFICIAIRE_TYPE,
-        include_docs: true
-      }).then(function (res) {
+      db.allDocs({startkey: BENEFICIAIRE_PREFIX, endkey: BENEFICIAIRE_PREFIX+'\uffff', include_docs: true}).then(function (res) {
         var beneficiaires = [];
         for (var i = 0; i < res.rows.length; i++) {
+          res.rows[i].doc._id = getBeneficiaireIdForView(res.rows[i].doc._id);
           beneficiaires.push(res.rows[i].doc);
         }
         deferred.resolve(beneficiaires);
@@ -81,8 +79,9 @@
 
     function findBeneficiaireById(beneficiaireId) {
       var deferred = $q.defer();
-      db.get(beneficiaireId)
+      db.get(getBeneficiaireIdForDatabase(beneficiaireId))
         .then(function (doc) {
+          doc._id = getBeneficiaireIdForView(doc._id);
           $rootScope.$apply(function () {
             return deferred.resolve(doc);
           });
@@ -93,12 +92,21 @@
       return deferred.promise;
     }
 
+    function getBeneficiaireIdForView(id){
+      return id.replace(BENEFICIAIRE_PREFIX, '');
+    }
+
+    function getBeneficiaireIdForDatabase(id){
+      return BENEFICIAIRE_PREFIX+id;
+    }
+
     function addOrUpdateBeneficiaire(beneficiaire) {
       var deferred = $q.defer();
       var benef = getBeneficiaire(beneficiaire);
       db.put(benef)
         .then(function (doc) {
           $rootScope.$apply(function () {
+            benef._id = getBeneficiaireIdForView(benef._id);
             benef._rev = doc._rev;
             return deferred.resolve(benef);
           });
@@ -111,11 +119,11 @@
 
     function getBeneficiaire(beneficiaire) {
       if (beneficiaire._rev !== undefined) {
+        beneficiaire._id = getBeneficiaireIdForDatabase(beneficiaire._id);
         return beneficiaire;
       }
       return {
-        _id: beneficiaire._id,
-        type: BENEFICIAIRE_TYPE,
+        _id: getBeneficiaireIdForDatabase(beneficiaire._id),
         code: beneficiaire.code,
         firstName: beneficiaire.firstName,
         lastName: beneficiaire.lastName,
