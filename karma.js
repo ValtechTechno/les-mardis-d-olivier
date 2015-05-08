@@ -36,6 +36,7 @@ module.exports = function (config) {
       'app/about/about.controller.js',
       'app/about/about.edit.controller.js',
       'app/common.service.js',
+      'bower_components/pouchdb/dist/pouchdb.min.js',
       'tests/angular-mocks.js',
       'tests/**/*Spec.js'
     ],

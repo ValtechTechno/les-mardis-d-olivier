@@ -8,10 +8,13 @@ describe("AboutController", function () {
   beforeEach(inject(function (dataService) {
     dataService.clear();
   }));
-  beforeEach(angular.mock.inject(function ($rootScope, $controller, $injector) {
+  beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $injector) {
     scope = $rootScope.$new();
     controller = $controller;
     dataService = $injector.get('dataService');
+    var deferred = _$q_.defer();
+    deferred.resolve({content:"foobar"});
+    spyOn(dataService, 'about').andReturn(deferred.promise);
   }));
 
   function createController(){
@@ -20,15 +23,12 @@ describe("AboutController", function () {
 
   it('with no about information', function () {
     createController();
-
     expect(scope.about.aboutInformation).toEqual(null);
   });
 
   it('with any about information', function () {
-    dataService.saveAbout("foobar");
-
     createController();
-
-    expect(scope.about.aboutInformation).toEqual("foobar");
+    scope.$apply();
+    expect(scope.about.aboutInformation.content).toEqual("foobar");
   });
 });

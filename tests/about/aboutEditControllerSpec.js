@@ -8,30 +8,27 @@ describe("AboutEditController", function () {
   beforeEach(inject(function (dataService) {
     dataService.clear();
   }));
-  beforeEach(angular.mock.inject(function ($rootScope, $controller, $injector) {
+  beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $injector) {
     scope = $rootScope.$new();
     controller = $controller;
     dataService = $injector.get('dataService');
+    var deferred = _$q_.defer();
+    deferred.resolve({content:"foobar", _rev:"1"});
+    spyOn(dataService, 'saveAbout').andReturn(deferred.promise);
   }));
 
   function createController() {
     controller('AboutEditController as aboutEdit', { $scope: scope });
   }
 
-  it('should load about', function () {
-    dataService.saveAbout('foobar');
-
-    createController();
-
-    expect(scope.aboutEdit.aboutInformation).toEqual('foobar');
-  });
-
   it('should edit and save', function () {
     createController();
 
-    scope.aboutEdit.aboutInformation = "foo";
+    scope.aboutEdit.aboutInformation = {content : "foo"};
     scope.aboutEdit.saveAboutPage();
+    scope.$apply();
 
-    expect(scope.aboutEdit.aboutInformation).toEqual("foo");
+    expect(scope.aboutEdit.aboutInformation._rev).toEqual("1");
+    expect(scope.aboutEdit.aboutInformation.content).toEqual("foobar");
   });
 });

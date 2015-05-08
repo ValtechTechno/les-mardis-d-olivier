@@ -13,12 +13,17 @@
     activate();
 
     function activate() {
-      vm.aboutInformation = dataService.about();
+      dataService.about().then(function(about){
+        vm.aboutInformation = about;
+      });
     }
 
     function saveAboutPage() {
-      dataService.saveAbout(vm.aboutInformation);
-      $location.path('/about');
+      dataService.saveAbout(vm.aboutInformation).then(function(about) {
+        vm.aboutInformation = about;
+        $location.path('/about');
+      }).catch(function (err) {
+      });
     }
   }
 

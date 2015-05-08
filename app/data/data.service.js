@@ -12,6 +12,7 @@
   function dataService($q, $rootScope) {
     var db = new PouchDB('lesmardis');
     var BENEFICIAIRE_PREFIX = 'benef_';
+    var ABOUT_ID = 'about_information';
     var service = {
       clear: clear, // @VisibleForTesting
       loadBeneficiaires: loadBeneficiaires,
@@ -182,11 +183,35 @@
     }
 
     function about() {
-      return angular.fromJson(localStorage.getItem('aboutInformation'));
+      var deferred = $q.defer();
+      db.get(ABOUT_ID)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            return deferred.resolve(doc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(null);
+        });
+      return deferred.promise;
     }
 
     function saveAbout(about) {
-      localStorage.setItem('aboutInformation', angular.toJson(about));
+      var deferred = $q.defer();
+      if(about._rev === undefined) {
+        about._id = ABOUT_ID;
+      }
+      db.put(about)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            about._rev = doc._rev;
+            return deferred.resolve(about);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
     }
 
   }
