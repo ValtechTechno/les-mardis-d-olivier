@@ -60,17 +60,15 @@
     function loadBeneficiaires() {
       var deferred = $q.defer();
 
-      function myMapFunction(doc) {
-        emit(doc.type);
-      }
-
       db.allDocs({startkey: BENEFICIAIRE_PREFIX, endkey: BENEFICIAIRE_PREFIX+'\uffff', include_docs: true}).then(function (res) {
+
         var beneficiaires = [];
         for (var i = 0; i < res.rows.length; i++) {
           res.rows[i].doc._id = getBeneficiaireIdForView(res.rows[i].doc._id);
           beneficiaires.push(res.rows[i].doc);
         }
         deferred.resolve(beneficiaires);
+
       }).catch(function (err) {
         console.log(err);
         deferred.reject(err);
