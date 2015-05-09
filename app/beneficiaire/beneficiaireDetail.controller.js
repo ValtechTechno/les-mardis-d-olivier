@@ -71,18 +71,24 @@
     };
 
     $scope.$on('confirmBeneficiaireDetailDeletePopup', function () {
-      dataService.deleteBeneficiaire($scope.currentBeneficiaire);
-
-      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-      var newBeneficiairesPresentByDistribution = [];
-      for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-        if (beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire._id) {
-          newBeneficiairesPresentByDistribution.push(beneficiairesPresentByDistribution[i]);
+      dataService.deleteBeneficiaire($scope.currentBeneficiaire).then(function () {
+        var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
+        var newBeneficiairesPresentByDistribution = [];
+        for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
+          if (beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire._id) {
+            newBeneficiairesPresentByDistribution.push(beneficiairesPresentByDistribution[i]);
+          }
         }
-      }
-      dataService.saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution);
-
-      $scope.openBeneficiaireList();
+        dataService.saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution);
+        $scope.openBeneficiaireList();
+      }).catch(function (err) {
+        if (err.status === 409) {
+          throw {
+            type: "functional",
+            message: 'Un utilisateur vient de modifier ce bénéficiaire. Veuillez recharger la page et recommencer.'
+          };
+        }
+      });
     });
 
     $scope.openBeneficiaireList = function () {

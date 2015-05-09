@@ -152,8 +152,16 @@
     }
 
     function deleteBeneficiaire(beneficiaire) {
+      var deferred = $q.defer();
       beneficiaire._id = getBeneficiaireIdForDatabase(beneficiaire._id);
-      db.remove(beneficiaire);
+      db.remove(beneficiaire).then(function (response) {
+        console.log(response);
+        deferred.resolve(true);
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(false);
+      });
+      return deferred.promise;
     }
 
     function allDistributions() {

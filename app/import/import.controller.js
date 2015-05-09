@@ -22,8 +22,14 @@
     };
 
     $scope.importData = function () {
-      dataService.saveBeneficiaires($scope.beneficiairesToImport);
-      $location.path("/beneficiaires");
+      dataService.saveBeneficiaires($scope.beneficiairesToImport).then(function () {
+        $location.path("/beneficiaires");
+      }).catch(function (err) {
+          throw {
+            type: "functional",
+            message: 'Impossible d\'impoter les données suite à un problème technique.'
+          };
+      });
     };
 
     $scope.$on('deleteExistingData', function () {

@@ -2,14 +2,18 @@ describe("BeneficiaireDetailController", function () {
 
   var scope;
   var routeParams;
+  var deferredLoad, deferredFind, deferredDelete;
 
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(inject(function (dataService) {
     dataService.clear()
   }));
-  beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector, $routeParams) {
+  beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $filter, $injector, $routeParams) {
     scope = $rootScope.$new();
     routeParams = {};
+    deferredLoad = _$q_.defer();
+    deferredFind = _$q_.defer();
+    deferredDelete = _$q_.defer();
     dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
 
@@ -20,51 +24,60 @@ describe("BeneficiaireDetailController", function () {
       dataService: dataService,
       beneficiairesCommonService: beneficiairesCommonService
     });
-
-    dataService.saveBeneficiaires([
-        { _id: '1', code: 1, firstName: 'A1', lastName: 'A1' },
-        { _id: '2', code: 2, firstName: 'A2', lastName: 'A2' }
-    ]);
-    dataService.saveBeneficiairesPresentByDistribution([
-        { distributionId: '1', beneficiaireId: '1', comment: 'message', isBookmark: false},
-        { distributionId: '2', beneficiaireId: '1', comment: 'message2', isBookmark: false},
-        { distributionId: '1', beneficiaireId: '2'},
-        { distributionId: '2', beneficiaireId: '2'}
-    ]);
-    dataService.saveDistributions([
-        { distributionDate: "2014-09-16", _id: 1 },
-        { distributionDate: "2014-09-18", _id: 2 }
-    ]);
+    //
+    //dataService.saveBeneficiaires([
+    //    { _id: '1', code: 1, firstName: 'A1', lastName: 'A1' },
+    //    { _id: '2', code: 2, firstName: 'A2', lastName: 'A2' }
+    //]);
+    //dataService.saveBeneficiairesPresentByDistribution([
+    //    { distributionId: '1', beneficiaireId: '1', comment: 'message', isBookmark: false},
+    //    { distributionId: '2', beneficiaireId: '1', comment: 'message2', isBookmark: false},
+    //    { distributionId: '1', beneficiaireId: '2'},
+    //    { distributionId: '2', beneficiaireId: '2'}
+    //]);
+    //dataService.saveDistributions([
+    //    { distributionDate: "2014-09-16", _id: 1 },
+    //    { distributionDate: "2014-09-18", _id: 2 }
+    //]);
   }));
 
   it('should delete a beneficiaire', function () {
+    var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"1",lastName:"1", hasCard:true};
+    deferredLoad.resolve(source);
+    spyOn(dataService, 'findBeneficiaireById').andReturn(deferredLoad.promise);
+    deferredDelete.resolve(true);
+    spyOn(dataService, 'deleteBeneficiaire').andReturn(deferredDelete.promise);
+
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
+    scope.$apply();
     scope.$emit('confirmBeneficiaireDetailDeletePopup');
-    var beneficiaires = dataService.loadBeneficiaires();
-    expect(beneficiaires.length).toEqual(1);
-    var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-    expect(beneficiairesPresentByDistribution.length).toEqual(2);
+    scope.$apply();
+    expect(dataService.deleteBeneficiaire).toHaveBeenCalledWith(source);
   });
 
   it('should update an beneficiaire informations', function () {
-    scope.openBeneficiaireList();
+    deferredLoad.resolve([]);
+    spyOn(dataService, 'loadBeneficiaires').andReturn(deferredLoad.promise);
+
+    var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"1",lastName:"1", hasCard:true};
+    deferredFind.resolve(source);
+    spyOn(dataService, 'findBeneficiaireById').andReturn(deferredFind.promise);
+    spyOn(dataService, 'addOrUpdateBeneficiaire').andReturn(deferredFind.promise);
+
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
+    scope.$apply();
     scope.currentBeneficiaire.firstName = "A11";
     scope.currentBeneficiaire.lastName = "A11";
     scope.currentBeneficiaire.description = "test1";
     scope.currentBeneficiaire.excluded = true;
     scope.currentBeneficiaire.hasCard = true;
     scope.saveBeneficiaireDetail();
+    scope.$apply();
 
-    var beneficiaires = dataService.loadBeneficiaires();
-    expect(beneficiaires[0].code).toEqual(1);
-    expect(beneficiaires[0].firstName).toEqual("A11");
-    expect(beneficiaires[0].lastName).toEqual("A11");
-    expect(beneficiaires[0].description).toEqual("test1");
-    expect(beneficiaires[0].excluded).toEqual(true);
-    expect(beneficiaires[0].hasCard).toEqual(true);
+    var target = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"A11",lastName:"A11",hasCard:true, codeNumber : 1, comments:[], visiteNumber : 0, description:"test1", excluded: true};
+    expect(dataService.addOrUpdateBeneficiaire).toHaveBeenCalledWith(target);
   });
 
   it('should show a beneficiaire informations', function () {
