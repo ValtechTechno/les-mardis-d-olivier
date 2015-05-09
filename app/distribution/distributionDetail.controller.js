@@ -19,11 +19,17 @@
 
     activate();
 
-    function activate () {
+    function activate() {
       if ($routeParams.distributionId === null) {
         return false;
       }
-      vm.currentDistribution = dataService.findDistributionById($routeParams.distributionId);
+      dataService.findDistributionById($routeParams.distributionId).then(function (distribution) {
+        vm.currentDistribution = distribution;
+        fillDistributionBeneficiaires();
+      });
+    }
+
+    function fillDistributionBeneficiaires() {
       vm.numberBeneficiairesPresent = 0;
       dataService.loadBeneficiaires()
         .then(function (beneficiaires) {
@@ -44,7 +50,14 @@
 
     function writeDistributionComment (comment) {
       vm.currentDistribution.comment = comment;
-      dataService.updateDistribution(vm.currentDistribution);
+      dataService.addOrUpdateDistribution(vm.currentDistribution).then(function (distribution) {
+        vm.currentDistribution = distribution;
+      }).catch(function (err) {
+        throw {
+          type: "functional",
+          message: 'Impossible de sauvegarder les modificiations de cette distribution.'
+        };
+      });
     }
 
     function writeComment (beneficiaireId, message) {

@@ -19,13 +19,20 @@
     $scope.currentDistribution = {};
 
     $scope.showAllDistribution = function () {
-      $scope.distributions = retrieveAllDistribution(dataService);
+      dataService.allDistributions()
+        .then(function (distributions) {
+          $scope.distributions = retrieveAllDistribution(distributions, dataService);
+          $scope.initNextDate();
+          $scope.loadBeneficiaires();
+        });
+    };
+
+    $scope.loadBeneficiaires = function () {
       dataService.loadBeneficiaires()
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
           $scope.getComments();
         });
-      $scope.initNextDate();
     };
 
     $scope.loadDistribution = function (distributionId) {
@@ -67,23 +74,49 @@
     $scope.showAllDistribution();
 
     $scope.startNewDistribution = function () {
-      $scope.currentDistribution._id = $scope.saveNewDistribution();
-      $location.path('distributions/' + $scope.currentDistribution._id);
-    };
-
-    $scope.saveNewDistribution = function () {
-      return storeDistribution({
+      $scope.storeDistribution({
         'distributionDate': $scope.currentDistribution.distributionDate,
         'nbPlannedMeals': $scope.currentDistribution.distributionNbPlannedMeals
-      }, dataService);
+      });
+    };
+
+    $scope.storeDistribution = function (distribution) {
+      dataService.allDistributions()
+        .then(function (distributions) {
+          var nextId;
+          if (distributions.filter(function (storedDistribution) {
+              return (distribution.distributionDate === storedDistribution.distributionDate);
+            }).length > 0) {
+            throw {type: "functional", message: 'Une distribution à cette date existe déjà'};
+          }
+          nextId = distributions.length + 1;
+          distribution._id = nextId;
+          $scope.addDistribution(distribution);
+        })
+        .catch(function (err) {
+          throw {
+            type: "functional",
+            message: 'Impossible de récupérer les distributions.'
+          };
+        });
+    };
+
+    $scope.addDistribution = function (distribution) {
+      dataService.addOrUpdateDistribution(distribution).then(function () {
+        $scope.currentDistribution._id = distribution._id;
+        $location.path('distributions/' + $scope.currentDistribution._id);
+      }).catch(function (err) {
+        throw {
+          type: "functional",
+          message: 'Impossible de créer la distribution.'
+        };
+      });
     };
 
   }
-
 })();
 
-retrieveAllDistribution = function (dataService) {
-  var allDistributions = dataService.allDistributions();
+retrieveAllDistribution = function (allDistributions, dataService) {
   if (allDistributions === null) {
     allDistributions = [];
   } else {
@@ -101,26 +134,6 @@ retrieveAllDistribution = function (dataService) {
     allDistributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[pos]._id];
   }
   return allDistributions;
-};
-
-storeDistribution = function (distribution, dataService) {
-  var distributions = dataService.allDistributions();
-  var nextId;
-  if (distributions === null || distributions.length === 0) {
-    distributions = [];
-    nextId = 1;
-  } else if (distributions.filter(function (storedDistribution) {
-      return (distribution.distributionDate === storedDistribution.distributionDate);
-    }).length > 0) {
-    throw {type:"functional", message:'Une distribution à cette date existe déjà'};
-  } else {
-    nextId = distributions[distributions.length - 1]._id + 1;
-  }
-
-  distribution._id = nextId;
-  distributions.push(distribution);
-  dataService.saveDistributions(distributions);
-  return nextId;
 };
 
 storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, dataService) {

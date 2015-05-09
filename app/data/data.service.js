@@ -12,6 +12,7 @@
   function dataService($q, $rootScope) {
     var db = new PouchDB('lesmardis');
     var BENEFICIAIRE_PREFIX = 'benef_';
+    var DISTRIBUTION_PREFIX = 'distri_';
     var ABOUT_ID = 'about_information';
     var service = {
       clear: clear, // @VisibleForTesting
@@ -27,7 +28,8 @@
       about: about,
       saveAbout: saveAbout,
       addOrUpdateBeneficiaire: addOrUpdateBeneficiaire,
-      deleteBeneficiaire:deleteBeneficiaire
+      deleteBeneficiaire:deleteBeneficiaire,
+      addOrUpdateDistribution:addOrUpdateDistribution
     };
 
     return service;
@@ -47,14 +49,19 @@
       saveDistributions(distributions);
     }
 
-    function findDistributionById(distributionId, _distributions) {
-      var distributions = _distributions !== undefined ? _distributions : allDistributions();
-      for (var i = 0; i < distributions.length; i++) {
-        if(distributions[i]._id == distributionId){
-          return distributions[i];
-        }
-      }
-      return distributions;
+    function findDistributionById(distributionId) {
+      var deferred = $q.defer();
+      db.get(getDistributionIdForDatabase(distributionId))
+        .then(function (doc) {
+          doc._id = getDistributionIdForView(doc._id);
+          $rootScope.$apply(function () {
+            return deferred.resolve(doc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
     }
 
     function loadBeneficiaires() {
@@ -164,16 +171,58 @@
       return deferred.promise;
     }
 
-    function allDistributions() {
-      var distributions = angular.fromJson(localStorage.getItem('distributions'));
-      if (distributions === null) {
-        distributions = [];
-      }
-      return distributions;
-    }
-
     function saveDistributions(distributions) {
       localStorage.setItem('distributions', angular.toJson(distributions));
+    }
+
+    function allDistributions() {
+      var deferred = $q.defer();
+
+      db.allDocs({startkey: DISTRIBUTION_PREFIX, endkey: DISTRIBUTION_PREFIX+'\uffff', include_docs: true}).then(function (res) {
+
+        var distributions = [];
+        for (var i = 0; i < res.rows.length; i++) {
+          res.rows[i].doc._id = getDistributionIdForView(res.rows[i].doc._id);
+          distributions.push(res.rows[i].doc);
+        }
+        deferred.resolve(distributions);
+
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+
+
+    function addOrUpdateDistribution(distribution) {
+      var deferred = $q.defer();
+      var distri = getDistribution(distribution);
+      db.put(distri)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            distri._id = getDistributionIdForView(distri._id);
+            distri._rev = doc._rev;
+            return deferred.resolve(distri);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function getDistributionIdForView(id){
+      return id.replace(DISTRIBUTION_PREFIX, '');
+    }
+
+    function getDistributionIdForDatabase(id){
+      return DISTRIBUTION_PREFIX+id;
+    }
+
+    function getDistribution(distribution) {
+        distribution._id = getDistributionIdForDatabase(distribution._id);
+        return distribution;
     }
 
     function allBeneficiairesPresentByDistribution() {
