@@ -3,7 +3,7 @@
   <div class="row">
     <div class="medium-2 columns">
       <label><i class="ui-icon ui-icon-tag"></i> Code
-        <input type="text" name="code" ng-model="currentBeneficiaire.codeNumber" ng-required="true" readonly/>
+        <input type="text" name="code" ng-model="currentBeneficiaire.code" ng-required="true" readonly/>
       </label>
     </div>
     <div class="medium-6 columns">
@@ -26,7 +26,7 @@
     </div>
     <div class="medium-4 columns">
       <label><i class="ui-icon ui-icon-flag"></i> Nombre de présences
-        <input type="text" disabled="disabled" ng-model="currentBeneficiaire.visiteNumber"/>
+        <input type="text" disabled="disabled" ng-model="currentBeneficiaireVisiteNumber"/>
       </label>
     </div>
     <div class="medium-2 columns">
@@ -61,7 +61,7 @@
 </form>
 
 <h3><b>Commentaires</b></h3>
-<div ng-show="currentBeneficiaire.comments.length != 0">
+<div ng-show="currentBeneficiaireComments.length != 0">
   <div>
     <table class="table">
       <thead>
@@ -70,13 +70,13 @@
         <td><i class="ui-icon ui-icon-star"></i> Favoris</td>
       </tr>
       </thead>
-      <tr ng-repeat="comment in currentBeneficiaire.comments track by $index">
-        <td>{{comment.text}}</td>
-        <td><input type="checkbox" ng-model="comment.isBookmark" ng-change="isBookmark(comment)"/></td>
+      <tr ng-repeat="bbd in currentBeneficiaireComments track by $index">
+        <td>{{bbd.comment}}</td>
+        <td><input type="checkbox" ng-model="bbd.isBookmark" ng-change="isBookmark(bbd)"/></td>
       </tr>
     </table>
   </div>
 </div>
-<div ng-show="currentBeneficiaire.comments.length == 0">
+<div ng-show="currentBeneficiaireComments.length == 0">
   Aucun commentaire pour ce bénéficiaire.
 </div>

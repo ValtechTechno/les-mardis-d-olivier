@@ -24,6 +24,7 @@
           $scope.distributions = retrieveAllDistribution(distributions, dataService);
           $scope.initNextDate();
           $scope.loadBeneficiaires();
+          $scope.loadBeneficiaireByDistribution();
         });
     };
 
@@ -31,7 +32,7 @@
       dataService.loadBeneficiaires()
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
-          $scope.getComments();
+          //$scope.getComments();
         });
     };
 
@@ -39,30 +40,30 @@
       $location.path("/distributions/" + distributionId);
     };
 
-    $scope.getComments = function () {
-      if ($scope.distributions === null) {
-        return false;
-      }
-      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-      for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
-        for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-          if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex]._id &&
-            beneficiairesPresentByDistribution[i].comment !== undefined) {
-            if ($scope.distributions[distributionIndex].comments === undefined) {
-              $scope.distributions[distributionIndex].comments = [];
-            }
-            var beneficiaire = null;
-            for (var beneficiaireIndex = 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
-              if ($scope.beneficiaires[beneficiaireIndex]._id == beneficiairesPresentByDistribution[i].beneficiaireId) {
-                beneficiaire = $scope.beneficiaires[beneficiaireIndex];
-                $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
-                break;
-              }
-            }
-          }
-        }
-      }
-    };
+    //$scope.getComments = function () {
+    //  if ($scope.distributions === null) {
+    //    return false;
+    //  }
+    //  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
+    //  for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
+    //    for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
+    //      if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex]._id &&
+    //        beneficiairesPresentByDistribution[i].comment !== undefined) {
+    //        if ($scope.distributions[distributionIndex].comments === undefined) {
+    //          $scope.distributions[distributionIndex].comments = [];
+    //        }
+    //        var beneficiaire = null;
+    //        for (var beneficiaireIndex = 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
+    //          if ($scope.beneficiaires[beneficiaireIndex]._id == beneficiairesPresentByDistribution[i].beneficiaireId) {
+    //            beneficiaire = $scope.beneficiaires[beneficiaireIndex];
+    //            $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
+    //            break;
+    //          }
+    //        }
+    //      }
+    //    }
+    //  }
+    //};
 
     $scope.initNextDate = function () {
       if ($scope.distributions.length > 0) {
@@ -113,6 +114,46 @@
       });
     };
 
+    $scope.loadBeneficiaireByDistribution = function(){
+      dataService.allBeneficiaireByDistribution()
+        .then(function (beneficiaireByDistribution) {
+          $scope.beneficiaireByDistribution = beneficiaireByDistribution;
+          $scope.getNbBeneficiairesAndComments();
+        })
+        .catch(function (err) {
+          throw {
+            type: "functional",
+            message: 'Impossible de récupérer les informations des distributions.'
+          };
+        });
+    };
+
+    $scope.getNbBeneficiairesAndComments = function() {
+      var nbBeneficiaireByDistribution = [];
+      var beneficiaire, comments;
+      for (var i = 0; i < $scope.beneficiaireByDistribution.length; i++) {
+          if(nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId] === undefined){
+            nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId] = {};
+          }
+          beneficiaire = nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbBeneficiaires;
+          comments = nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments;
+          console.log("comments  => "+comments);
+          nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbBeneficiaires = beneficiaire ? beneficiaire + 1 : 1;
+
+        console.log("comment  => "+$scope.beneficiaireByDistribution[i].comment);
+          if($scope.beneficiaireByDistribution[i].comment !== undefined) {
+            nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments = comments ? comments + 1 : 1;
+            console.log("comments  => "+nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments);
+          }
+      }
+
+      for (var pos = 0; pos < $scope.distributions.length; pos++) {
+        if(nbBeneficiaireByDistribution[$scope.distributions[pos]._id] !== undefined) {
+          $scope.distributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[$scope.distributions[pos]._id].nbBeneficiaires;
+          $scope.distributions[pos].nbComments = nbBeneficiaireByDistribution[$scope.distributions[pos]._id].nbComments;
+        }
+      }
+    }
   }
 })();
 
@@ -121,17 +162,6 @@ retrieveAllDistribution = function (allDistributions, dataService) {
     allDistributions = [];
   } else {
     allDistributions.reverse();
-  }
-  var nbBeneficiaireByDistribution = [];
-  var beneficiaire;
-  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-  for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-    beneficiaire = nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId];
-    nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId] = beneficiaire ? beneficiaire + 1 : 1;
-  }
-
-  for (var pos = 0; pos < allDistributions.length; pos++) {
-    allDistributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[pos]._id];
   }
   return allDistributions;
 };

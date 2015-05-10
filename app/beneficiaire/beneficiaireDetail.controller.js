@@ -7,16 +7,19 @@
 
   function BeneficiaireDetailController ($scope, $routeParams, dataService, commonService, $location) {
     $scope.openBeneficiaireDetail = function () {
+      $scope.currentBeneficiaireVisiteNumber = 0;
       dataService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires)
       .then(function (doc) {
         $scope.currentBeneficiaire = doc;
-        $scope.currentBeneficiaire.codeNumber = Number($scope.currentBeneficiaire.code);
-        $scope.getComments();
-        $scope.currentBeneficiaire.visiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
-        // By default, an old user has a card.
-        if ($scope.currentBeneficiaire.hasCard === undefined) {
-          $scope.currentBeneficiaire.hasCard = true;
-        }
+        dataService.getCommentsByBeneficiaireId($scope.currentBeneficiaire._id).then(function(bbd){
+          $scope.beneficiairesPresentByDistribution = bbd;
+          $scope.getComments();
+          $scope.currentBeneficiaireVisiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
+          // By default, an old user has a card.
+          if ($scope.currentBeneficiaire.hasCard === undefined) {
+            $scope.currentBeneficiaire.hasCard = true;
+          }
+        });
       }).catch(function (err) {
           if(err.status === 404) {
             $scope.openBeneficiaireList();
@@ -29,22 +32,28 @@
       ];
     };
 
-    $scope.isBookmark = function (comment) {
-      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-      for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-        if(beneficiairesPresentByDistribution[i].distributionId == comment.distributionId && beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire._id){
-          beneficiairesPresentByDistribution[i].isBookmark = comment.isBookmark;
+    $scope.isBookmark = function (bdd) {
+      var bbdToUpdate = false;
+      for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
+        if ($scope.beneficiairesPresentByDistribution[i].distributionId == bdd.distributionId && $scope.beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire._id) {
+          bbdToUpdate = i;
           break;
         }
       }
-      dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
+      if (bbdToUpdate !== false) {
+        if (bdd.isBookmark !== true) {
+          delete $scope.beneficiairesPresentByDistribution[i].isBookmark;
+        }
+        dataService.addOrUpdateBeneficiaireByDistribution($scope.beneficiairesPresentByDistribution[i]).then(function (bbd) {
+          $scope.beneficiairesPresentByDistribution[i] = bbd;
+        })
+      }
     };
 
     $scope.getVisiteNumber = function(beneficiaireId) {
       var visiteNumber = 0;
-      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-      for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-        if(beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId){
+      for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
+        if($scope.beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId){
           visiteNumber++;
         }
       }
@@ -52,7 +61,15 @@
     };
 
     $scope.getComments = function(){
-      $scope.currentBeneficiaire.comments = getLastComments($scope.currentBeneficiaire._id, -1, dataService, false);
+      var comments = [];
+      for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
+        if($scope.beneficiairesPresentByDistribution[i].comment === undefined){
+          continue;
+        }
+        comments.push($scope.beneficiairesPresentByDistribution[i]);
+
+      }
+      $scope.currentBeneficiaireComments = comments;
     };
 
     $scope.saveBeneficiaireDetail = function () {

@@ -13,6 +13,7 @@
     var db = new PouchDB('lesmardis');
     var BENEFICIAIRE_PREFIX = 'benef_';
     var DISTRIBUTION_PREFIX = 'distri_';
+    var BENEFICIAIRE_BY_DISTRIBUTION_PREFIX = 'bbd_';
     var ABOUT_ID = 'about_information';
     var service = {
       clear: clear, // @VisibleForTesting
@@ -20,16 +21,17 @@
       findBeneficiaireById: findBeneficiaireById,
       saveBeneficiaires: saveBeneficiaires,
       allDistributions: allDistributions,
-      saveDistributions: saveDistributions,
-      allBeneficiairesPresentByDistribution: allBeneficiairesPresentByDistribution,
-      saveBeneficiairesPresentByDistribution: saveBeneficiairesPresentByDistribution,
+      allBeneficiaireByDistribution: allBeneficiaireByDistribution,
+      addOrUpdateBeneficiaireByDistribution: addOrUpdateBeneficiaireByDistribution,
       findDistributionById: findDistributionById,
       updateDistribution: updateDistribution,
       about: about,
       saveAbout: saveAbout,
       addOrUpdateBeneficiaire: addOrUpdateBeneficiaire,
       deleteBeneficiaire:deleteBeneficiaire,
-      addOrUpdateDistribution:addOrUpdateDistribution
+      addOrUpdateDistribution:addOrUpdateDistribution,
+      removeBeneficiaireByDistribution:removeBeneficiaireByDistribution,
+      getCommentsByBeneficiaireId:getCommentsByBeneficiaireId
     };
 
     return service;
@@ -88,6 +90,7 @@
       db.get(getBeneficiaireIdForDatabase(beneficiaireId))
         .then(function (doc) {
           doc._id = getBeneficiaireIdForView(doc._id);
+          console.log(doc);
           $rootScope.$apply(function () {
             return deferred.resolve(doc);
           });
@@ -109,11 +112,12 @@
     function addOrUpdateBeneficiaire(beneficiaire) {
       var deferred = $q.defer();
       var benef = getBeneficiaire(beneficiaire);
+      console.log(benef);
       db.put(benef)
         .then(function (doc) {
           $rootScope.$apply(function () {
             benef._id = getBeneficiaireIdForView(benef._id);
-            benef._rev = doc._rev;
+            benef._rev = doc.rev;
             return deferred.resolve(benef);
           });
         }).catch(function (err) {
@@ -149,13 +153,25 @@
           lastName: beneficiaire.lastName,
           hasCard: beneficiaire.hasCard
         });
-        db.bulkDocs(beneficiairesToCreate).then(function (response) {
-          console.log(response);
-        }).catch(function (err) {
-          console.log(err);
-          deferred.reject(err);
-        });
       }
+      db.bulkDocs(beneficiairesToCreate).then(function (response) {
+        console.log(response);
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
+      });
+    }
+
+    function removeBeneficiaireByDistribution(bbd){
+      var deferred = $q.defer();
+      db.remove(bbd).then(function (response) {
+        console.log(response);
+        deferred.resolve(true);
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(false);
+      });
+      return deferred.promise;
     }
 
     function deleteBeneficiaire(beneficiaire) {
@@ -169,10 +185,6 @@
         deferred.reject(false);
       });
       return deferred.promise;
-    }
-
-    function saveDistributions(distributions) {
-      localStorage.setItem('distributions', angular.toJson(distributions));
     }
 
     function allDistributions() {
@@ -202,7 +214,7 @@
         .then(function (doc) {
           $rootScope.$apply(function () {
             distri._id = getDistributionIdForView(distri._id);
-            distri._rev = doc._rev;
+            distri._rev = doc.rev;
             return deferred.resolve(distri);
           });
         }).catch(function (err) {
@@ -225,17 +237,45 @@
         return distribution;
     }
 
-    function allBeneficiairesPresentByDistribution() {
-      var beneficiairesPresentByDistribution = angular.fromJson(localStorage.getItem('beneficiairesPresentByDistribution'));
-      if (beneficiairesPresentByDistribution === null) {
-        beneficiairesPresentByDistribution = [];
-      }
-      return beneficiairesPresentByDistribution;
+    function allBeneficiaireByDistribution() {
+      var deferred = $q.defer();
+
+      db.allDocs({startkey: BENEFICIAIRE_BY_DISTRIBUTION_PREFIX, endkey: BENEFICIAIRE_BY_DISTRIBUTION_PREFIX+'\uffff', include_docs: true}).then(function (res) {
+
+        var beneficiaireByDistribution = [];
+        for (var i = 0; i < res.rows.length; i++) {
+          beneficiaireByDistribution.push(res.rows[i].doc);
+        }
+        deferred.resolve(beneficiaireByDistribution);
+
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
+      });
+      return deferred.promise;
     }
 
-    function saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution) {
-      localStorage.setItem('beneficiairesPresentByDistribution', angular.toJson(newBeneficiairesPresentByDistribution));
+
+    function addOrUpdateBeneficiaireByDistribution(bbd) {
+      var deferred = $q.defer();
+      if(bbd._id === undefined){
+        bbd._id = BENEFICIAIRE_BY_DISTRIBUTION_PREFIX+bbd.distributionId+"_"+bbd.beneficiaireId;
+      }
+      console.log(bbd);
+      db.put(bbd)
+        .then(function (doc) {
+          console.log(doc);
+          $rootScope.$apply(function () {
+            bbd._rev = doc.rev;
+            return deferred.resolve(bbd);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
     }
+
 
     function about() {
       var deferred = $q.defer();
@@ -259,7 +299,7 @@
       db.put(about)
         .then(function (doc) {
           $rootScope.$apply(function () {
-            about._rev = doc._rev;
+            about._rev = doc.rev;
             return deferred.resolve(about);
           });
         }).catch(function (err) {
@@ -269,5 +309,27 @@
       return deferred.promise;
     }
 
+    function getCommentsByBeneficiaireId(beneficiaireId){
+      var deferred = $q.defer();
+      function myMapFunction(doc) {
+        emit(doc.beneficiaireId);
+      }
+
+      db.query(myMapFunction, {
+        key: beneficiaireId, include_docs: true})
+        .then(function (res) {
+
+        var bdd = [];
+        for (var i = 0; i < res.rows.length; i++) {
+          bdd.push(res.rows[i].doc);
+        }
+        deferred.resolve(bdd);
+
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
   }
 })();

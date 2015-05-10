@@ -5,15 +5,21 @@
       .module('mardisDolivier')
       .controller('ExportController', ExportController);
 
-  function ExportController ($scope, $filter, dataService) {
+  function ExportController($scope, $filter, dataService) {
     $scope.openExportPage = function () {
       dataService.loadBeneficiaires()
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
         });
-      $scope.distributions = dataService.allDistributions();
-      $scope.beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-      $scope.about = dataService.about();
+      dataService.allDistributions().then(function (distributions) {
+        $scope.distributions = distributions;
+      });
+      dataService.allBeneficiaireByDistribution().then(function (bbds) {
+        $scope.beneficiairesPresentByDistribution = bbds;
+      });
+      dataService.about().then(function (about) {
+        $scope.about = about;
+      });
     };
 
     $scope.exportData = function () {

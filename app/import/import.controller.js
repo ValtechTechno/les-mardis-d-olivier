@@ -33,10 +33,10 @@
     };
 
     $scope.$on('deleteExistingData', function () {
-      dataService.saveBeneficiaires(null);
-      dataService.saveDistributions(null);
-      dataService.saveBeneficiairesPresentByDistribution(null);
-      dataService.saveBeneficiairesPresentByDistribution(null);
+      //dataService.saveBeneficiaires(null);
+      //dataService.saveDistributions(null);
+      //dataService.saveBeneficiairesPresentByDistribution(null);
+      //dataService.saveBeneficiairesPresentByDistribution(null);
       $scope.validationImport($scope.parsedPaste);
     });
 
