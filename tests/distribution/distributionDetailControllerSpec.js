@@ -36,7 +36,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1 },{_id: '2_1', beneficiaireId:1, distributionId:2}]);
-    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+    spyOn(dataService, 'findBeneficiaireByDistributionByDistributionId').andReturn(deferredFindAllBbd.promise);
 
     spyOn(dataService, 'addOrUpdateBeneficiaireByDistribution').andReturn(deferredAddOrUpdateBbd.promise);
 
@@ -65,7 +65,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([]);
-    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+    spyOn(dataService, 'findBeneficiaireByDistributionByDistributionId').andReturn(deferredFindAllBbd.promise);
 
     routeParams.distributionId = 1;
     scope.distributionDetail.activate();
@@ -90,7 +90,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:'1', distributionId:'1' },{_id: '1_3', beneficiaireId:'3', distributionId:'1'}]);
-    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+    spyOn(dataService, 'findBeneficiaireByDistributionByDistributionId').andReturn(deferredFindAllBbd.promise);
 
     routeParams.distributionId = 1;
     scope.distributionDetail.activate();
@@ -120,7 +120,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1 }]);
-    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+    spyOn(dataService, 'findBeneficiaireByDistributionByDistributionId').andReturn(deferredFindAllBbd.promise);
 
     spyOn(dataService, 'addOrUpdateBeneficiaireByDistribution').andReturn(deferredAddOrUpdateBbd.promise);
 
@@ -152,7 +152,7 @@ describe("DistributionDetailController", function () {
 
     var oldComment = 'older comment to show';
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1, comment:oldComment, isBookmark:true }]);
-    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+    spyOn(dataService, 'findBeneficiaireByDistributionByDistributionId').andReturn(deferredFindAllBbd.promise);
 
     routeParams.distributionId = 2;
     scope.distributionDetail.activate();
@@ -172,7 +172,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([]);
-    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+    spyOn(dataService, 'findBeneficiaireByDistributionByDistributionId').andReturn(deferredFindAllBbd.promise);
 
     deferredAddOrUpdateBbd.resolve([]);
     spyOn(dataService, 'addOrUpdateDistribution').andReturn(deferredAddOrUpdateBbd.promise);

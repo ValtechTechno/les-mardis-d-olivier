@@ -27,6 +27,7 @@
       addOrUpdateBeneficiaireByDistribution: addOrUpdateBeneficiaireByDistribution,
       findAllBeneficiaireByDistribution: findAllBeneficiaireByDistribution,
       findBeneficiaireByDistributionByBeneficiaireId: findBeneficiaireByDistributionByBeneficiaireId,
+      findBeneficiaireByDistributionByDistributionId: findBeneficiaireByDistributionByDistributionId,
       removeBeneficiaireByDistribution: removeBeneficiaireByDistribution,
       removeBeneficiaireByDistributionByBeneficiaire:removeBeneficiaireByDistributionByBeneficiaire,
       getAbout: getAbout,
@@ -287,6 +288,31 @@
       return deferred.promise;
     }
 
+    function findBeneficiaireByDistributionByDistributionId(distributionId){
+      var deferred = $q.defer();
+
+      function myMapFunction(doc) {
+        emit(doc.distributionId);
+      }
+
+      db.query(myMapFunction, {
+        key: distributionId, include_docs: true
+      })
+        .then(function (res) {
+
+          var bdd = [];
+          for (var i = 0; i < res.rows.length; i++) {
+            bdd.push(res.rows[i].doc);
+          }
+          deferred.resolve(bdd);
+
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
     function removeBeneficiaireByDistribution(bbd) {
       var deferred = $q.defer();
       db.remove(bbd).then(function (response) {
@@ -304,7 +330,6 @@
       for(var i=0; i<bbdsToDelete.length;i++) {
         bbdsToDelete[i]._deleted = true;
       }
-      debugger;
       db.bulkDocs(bbdsToDelete).then(function (response) {
         console.log(response);
         return deferred.resolve();
