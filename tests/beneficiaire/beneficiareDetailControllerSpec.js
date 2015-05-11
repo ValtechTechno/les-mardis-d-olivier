@@ -2,18 +2,17 @@ describe("BeneficiaireDetailController", function () {
 
   var scope;
   var routeParams;
-  var deferredLoad, deferredFind, deferredDelete;
+  var deferredLoad, deferredFind, deferredDelete, deferredLoadBbd, deferredDeleteBbd;
 
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(inject(function (dataService) {
-    dataService.clear()
-  }));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $filter, $injector, $routeParams) {
     scope = $rootScope.$new();
     routeParams = {};
     deferredLoad = _$q_.defer();
     deferredFind = _$q_.defer();
     deferredDelete = _$q_.defer();
+    deferredLoadBbd = _$q_.defer();
+    deferredDeleteBbd = _$q_.defer();
     dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
 
@@ -45,20 +44,31 @@ describe("BeneficiaireDetailController", function () {
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"1",lastName:"1", hasCard:true};
     deferredLoad.resolve(source);
     spyOn(dataService, 'findBeneficiaireById').andReturn(deferredLoad.promise);
+
     deferredDelete.resolve(true);
-    spyOn(dataService, 'deleteBeneficiaire').andReturn(deferredDelete.promise);
+    spyOn(dataService, 'removeBeneficiaire').andReturn(deferredDelete.promise);
+
+    var sourceBbd = {_id:"1_1", _rev:"1-019ebd7431186fe904dd2dc037e1806f", beneficiaireId:'1', distributionId:1, comment:"test", isBookmark:true};
+    deferredLoadBbd.resolve([sourceBbd]);
+    spyOn(dataService, 'findBeneficiaireByDistributionByBeneficiaireId').andReturn(deferredLoadBbd.promise);
+
+    deferredDeleteBbd.resolve(true);
+    spyOn(dataService, 'removeBeneficiaireByDistributionByBeneficiaire').andReturn(deferredDeleteBbd.promise);
 
     routeParams.beneficiaireId = 1;
     scope.openBeneficiaireDetail();
     scope.$apply();
     scope.$emit('confirmBeneficiaireDetailDeletePopup');
     scope.$apply();
-    expect(dataService.deleteBeneficiaire).toHaveBeenCalledWith(source);
+
+    expect(dataService.findBeneficiaireByDistributionByBeneficiaireId).toHaveBeenCalledWith('1');
+    expect(dataService.removeBeneficiaire).toHaveBeenCalledWith(source);
+    expect(dataService.removeBeneficiaireByDistributionByBeneficiaire).toHaveBeenCalledWith([sourceBbd]);
   });
 
   it('should update an beneficiaire informations', function () {
     deferredLoad.resolve([]);
-    spyOn(dataService, 'loadBeneficiaires').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredLoad.promise);
 
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"1",lastName:"1", hasCard:true};
     deferredFind.resolve(source);
@@ -76,7 +86,7 @@ describe("BeneficiaireDetailController", function () {
     scope.saveBeneficiaireDetail();
     scope.$apply();
 
-    var target = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"A11",lastName:"A11",hasCard:true, codeNumber : 1, comments:[], visiteNumber : 0, description:"test1", excluded: true};
+    var target = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"A11",lastName:"A11",hasCard:true, description:"test1", excluded: true};
     expect(dataService.addOrUpdateBeneficiaire).toHaveBeenCalledWith(target);
   });
 

@@ -17,9 +17,6 @@ describe("BeneficiaireController", function () {
   };
 
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(inject(function (dataService) {
-    dataService.clear()
-  }));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
     routeParams = {};
@@ -56,7 +53,7 @@ describe("BeneficiaireController", function () {
   it('should add a second beneficiaire', function () {
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"FN1",lastName:"LN1", hasCard:true};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'loadBeneficiaires').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredLoad.promise);
 
     var toBeAdded = {_id: '2', code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
     var added = {_id: '2', _rev:"1", code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
@@ -115,7 +112,7 @@ describe("BeneficiaireController", function () {
   it('should prevent the user to add an existing beneficiaire', function () {
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"John",lastName:"Rambo", hasCard:true};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'loadBeneficiaires').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredLoad.promise);
 
     var added = {_id: '2', _rev:"1", code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
     deferredAdd.resolve(added);

@@ -12,7 +12,7 @@
     activate();
 
     function activate() {
-      dataService.about().then(function(about){
+      dataService.getAbout().then(function(about){
         vm.aboutInformation = about;
       });
     }

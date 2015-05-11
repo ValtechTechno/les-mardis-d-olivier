@@ -5,16 +5,13 @@ describe("AboutController", function () {
   var dataService;
 
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(inject(function (dataService) {
-    dataService.clear();
-  }));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $injector) {
     scope = $rootScope.$new();
     controller = $controller;
     dataService = $injector.get('dataService');
     var deferred = _$q_.defer();
     deferred.resolve({content:"foobar"});
-    spyOn(dataService, 'about').andReturn(deferred.promise);
+    spyOn(dataService, 'getAbout').andReturn(deferred.promise);
   }));
 
   function createController(){

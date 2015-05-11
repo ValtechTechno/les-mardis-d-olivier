@@ -10,11 +10,14 @@
       if ($scope.beneficiaires === null || $scope.beneficiaires === undefined) {
         $scope.beneficiaires = [];
       }
-      dataService.loadBeneficiaires()
-      .then(function (beneficiaires) {
-        $scope.beneficiaires = beneficiaires;
-        $scope.resetAddBeneficiareForm();
-      });
+      dataService.findAllBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+          $scope.resetAddBeneficiareForm();
+        })
+        .catch(function (err) {;
+            throw {type: "functional", message: 'Impossible de charger la liste des bénéficiaires.'};
+        });
         $scope.excludedFilter = false;
         $scope.hasCardFilter = false;
     };
@@ -56,13 +59,17 @@
       return nextCode;
     };
 
-    $scope.addBeneficiaire = function() {
+    $scope.addBeneficiaire = function () {
       if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, false)) {
-        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
-        dataService.addOrUpdateBeneficiaire(newBeneficiaire).then(function(added){
-          $scope.beneficiaires.push(added);
-          $scope.resetAddBeneficiareForm();
-        });
+        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires), $scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
+        dataService.addOrUpdateBeneficiaire(newBeneficiaire)
+          .then(function (added) {
+            $scope.beneficiaires.push(added);
+            $scope.resetAddBeneficiareForm();
+          })
+          .catch(function (err) {
+              throw {type: "functional", message: 'Le bénéficiaire n\'a pas été ajouté suite à une erreur technique.'};
+          });
       }
     };
 

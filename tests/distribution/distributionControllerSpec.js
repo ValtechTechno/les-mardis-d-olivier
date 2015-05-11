@@ -5,9 +5,6 @@ describe("DistributionController", function () {
   var deferredAdd,deferredLoad;
 
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(inject(function (dataService) {
-    dataService.clear()
-  }));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
     dataService = $injector.get('dataService');
@@ -26,7 +23,7 @@ describe("DistributionController", function () {
   it("should save a new distribution", function () {
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-04"};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'allDistributions').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredLoad.promise);
 
     var added = {_id:"2", _rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-05"};
     deferredAdd.resolve(added);
@@ -48,7 +45,7 @@ describe("DistributionController", function () {
   it("shouldn't be possible to save two distribution at the same date", function () {
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-04"};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'allDistributions').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredLoad.promise);
 
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-04";

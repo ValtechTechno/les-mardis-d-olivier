@@ -9,7 +9,7 @@
     $scope.openImportPage = function () {
       $scope.beneficiaires = [];
       $scope.initDynamicVariable("");
-      dataService.loadBeneficiaires()
+      dataService.findAllBeneficiaires()
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
       });

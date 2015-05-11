@@ -7,17 +7,17 @@
 
   function ExportController($scope, $filter, dataService) {
     $scope.openExportPage = function () {
-      dataService.loadBeneficiaires()
+      dataService.findAllBeneficiaires()
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
         });
-      dataService.allDistributions().then(function (distributions) {
+      dataService.findAllDistributions().then(function (distributions) {
         $scope.distributions = distributions;
       });
-      dataService.allBeneficiaireByDistribution().then(function (bbds) {
+      dataService.findAllBeneficiaireByDistribution().then(function (bbds) {
         $scope.beneficiairesPresentByDistribution = bbds;
       });
-      dataService.about().then(function (about) {
+      dataService.getAbout().then(function (about) {
         $scope.about = about;
       });
     };

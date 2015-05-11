@@ -31,7 +31,7 @@
 
     function fillDistributionBeneficiaires() {
       vm.numberBeneficiairesPresent = 0;
-      dataService.loadBeneficiaires()
+      dataService.findAllBeneficiaires()
         .then(function (beneficiaires) {
           retrieveBeneficiairesByDistribution(vm.currentDistribution._id, beneficiaires);
         });
@@ -39,10 +39,10 @@
 
     function retrieveBeneficiairesByDistribution(distributionId, beneficiaires) {
 
-      dataService.allBeneficiaireByDistribution().then(function (bbd) {
+      dataService.findAllBeneficiaireByDistribution().then(function (bbd) {
         vm.beneficiairesPresentByDistribution = bbd;
 
-        dataService.allDistributions().then(function (distributions) {
+        dataService.findAllDistributions().then(function (distributions) {
           vm.allDistributions = distributions;
 
         var beneficiairesPresentIds = [];
@@ -73,14 +73,6 @@
           return beneficiaire.isPresent;
         };
         vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
-        //for (var i = 0; i < vm.beneficiaires.length; i++) {
-        //  vm.beneficiaires[i].comments = getLastComments(vm.beneficiaires[i]._id, vm.currentDistribution._id, dataService, true);
-        //}
-        }).catch(function (err) {
-          throw {
-            type: "functional",
-            message: 'Impossible de récupérer cette distribution.'
-          };
         });
       }).catch(function (err) {
         throw {
@@ -126,7 +118,6 @@
         delete vm.beneficiairesPresentByDistribution[i].comment;
       }
       dataService.addOrUpdateBeneficiaireByDistribution(vm.beneficiairesPresentByDistribution[i]).then(function(bbd){
-        console.log(vm.beneficiairesPresentByDistribution[i]);
         vm.beneficiairesPresentByDistribution[i] = bbd;
       });
     }
@@ -170,7 +161,7 @@
     }
     if (isRelationExisting !== false) {
       dataService.removeBeneficiaireByDistribution(vm.beneficiairesPresentByDistribution[isRelationExisting]).then(function() {
-          beneficiairesPresentByDistribution.splice(isRelationExisting, 1);
+          vm.beneficiairesPresentByDistribution.splice(isRelationExisting, 1);
         }
     );
     }
@@ -179,7 +170,6 @@
         "distributionId": distributionId.toString(),
         "beneficiaireId": beneficiaireId
       }).then(function(bbd){
-        console.log(bbd);
         vm.beneficiairesPresentByDistribution.push(bbd);
       });
     }

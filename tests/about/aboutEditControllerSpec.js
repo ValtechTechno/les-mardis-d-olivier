@@ -3,18 +3,14 @@ describe("AboutEditController", function () {
   var scope;
   var controller;
   var dataService;
-
+  var deferredGet,deferredPut;
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(inject(function (dataService) {
-    dataService.clear();
-  }));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $injector) {
     scope = $rootScope.$new();
     controller = $controller;
     dataService = $injector.get('dataService');
-    var deferred = _$q_.defer();
-    deferred.resolve({content:"foobar", _rev:"1"});
-    spyOn(dataService, 'saveAbout').andReturn(deferred.promise);
+    deferredGet = _$q_.defer();
+    deferredPut = _$q_.defer();
   }));
 
   function createController() {
@@ -22,13 +18,18 @@ describe("AboutEditController", function () {
   }
 
   it('should edit and save', function () {
+    deferredGet.resolve({content:"foobar"});
+    spyOn(dataService, 'getAbout').andReturn(deferredGet.promise);
+    spyOn(dataService, 'updateAbout').andReturn(deferredPut.promise);
+
     createController();
+    scope.$apply();
 
     scope.aboutEdit.aboutInformation = {content : "foo"};
+
     scope.aboutEdit.saveAboutPage();
     scope.$apply();
 
-    expect(scope.aboutEdit.aboutInformation._rev).toEqual("1");
-    expect(scope.aboutEdit.aboutInformation.content).toEqual("foobar");
+    expect(dataService.updateAbout).toHaveBeenCalledWith(scope.aboutEdit.aboutInformation);
   });
 });

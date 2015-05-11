@@ -8,28 +8,36 @@
   function BeneficiaireDetailController ($scope, $routeParams, dataService, commonService, $location) {
     $scope.openBeneficiaireDetail = function () {
       $scope.currentBeneficiaireVisiteNumber = 0;
+      $scope.beneficiairesPresentByDistribution = [];
+
       dataService.findBeneficiaireById($routeParams.beneficiaireId, $scope.beneficiaires)
-      .then(function (doc) {
-        $scope.currentBeneficiaire = doc;
-        dataService.getCommentsByBeneficiaireId($scope.currentBeneficiaire._id).then(function(bbd){
-          $scope.beneficiairesPresentByDistribution = bbd;
-          $scope.getComments();
-          $scope.currentBeneficiaireVisiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
-          // By default, an old user has a card.
-          if ($scope.currentBeneficiaire.hasCard === undefined) {
-            $scope.currentBeneficiaire.hasCard = true;
-          }
-        });
-      }).catch(function (err) {
-          if(err.status === 404) {
+        .then(function (doc) {
+          $scope.currentBeneficiaire = doc;
+          $scope.findBeneficiaireByDistribution();
+        })
+        .catch(function (err) {
+          if (err.status === 404) {
             $scope.openBeneficiaireList();
             throw {type: "functional", message: 'Le bénéficiaire n\'existe pas.'};
           }
-      });
+        });
+
       $scope.deletePopupButtons = [
         {text: "Supprimer", event: "confirmBeneficiaireDetailDeletePopup", close: true, style: "redButton"},
         {text: "Annuler", event: "", close: true, style: ""}
       ];
+    };
+
+    $scope.findBeneficiaireByDistribution = function(){
+      dataService.findBeneficiaireByDistributionByBeneficiaireId($scope.currentBeneficiaire._id).then(function(bbd){
+        $scope.beneficiairesPresentByDistribution = bbd;
+        $scope.getComments();
+        $scope.currentBeneficiaireVisiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
+        // By default, an old user has a card.
+        if ($scope.currentBeneficiaire.hasCard === undefined) {
+          $scope.currentBeneficiaire.hasCard = true;
+        }
+      });
     };
 
     $scope.isBookmark = function (bdd) {
@@ -73,7 +81,8 @@
     };
 
     $scope.saveBeneficiaireDetail = function () {
-      dataService.loadBeneficiaires().then(function (beneficiaires) {
+      // charge all the beneficiaires to check if there isn't already a couple of first name + last name
+      dataService.findAllBeneficiaires().then(function (beneficiaires) {
         $scope.beneficiaires = beneficiaires;
         if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, true)) {
           dataService.addOrUpdateBeneficiaire($scope.currentBeneficiaire).then(function() {
@@ -88,16 +97,8 @@
     };
 
     $scope.$on('confirmBeneficiaireDetailDeletePopup', function () {
-      dataService.deleteBeneficiaire($scope.currentBeneficiaire).then(function () {
-        var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-        var newBeneficiairesPresentByDistribution = [];
-        for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-          if (beneficiairesPresentByDistribution[i].beneficiaireId != $scope.currentBeneficiaire._id) {
-            newBeneficiairesPresentByDistribution.push(beneficiairesPresentByDistribution[i]);
-          }
-        }
-        dataService.saveBeneficiairesPresentByDistribution(newBeneficiairesPresentByDistribution);
-        $scope.openBeneficiaireList();
+      dataService.removeBeneficiaire($scope.currentBeneficiaire).then(function () {
+        $scope.thenRemoveBeneficiaireByDistribution();
       }).catch(function (err) {
         if (err.status === 409) {
           throw {
@@ -107,6 +108,18 @@
         }
       });
     });
+
+    $scope.thenRemoveBeneficiaireByDistribution = function(){
+      var beneficiairesByDistributionToDelete = [];
+      for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
+        if ($scope.beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire._id) {
+          beneficiairesByDistributionToDelete.push($scope.beneficiairesPresentByDistribution[i]);
+        }
+      }
+      dataService.removeBeneficiaireByDistributionByBeneficiaire(beneficiairesByDistributionToDelete).then(function(){
+        $scope.openBeneficiaireList();
+      });
+    };
 
     $scope.openBeneficiaireList = function () {
       $location.path("/beneficiaires");

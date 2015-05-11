@@ -19,7 +19,7 @@
     $scope.currentDistribution = {};
 
     $scope.showAllDistribution = function () {
-      dataService.allDistributions()
+      dataService.findAllDistributions()
         .then(function (distributions) {
           $scope.distributions = retrieveAllDistribution(distributions, dataService);
           $scope.initNextDate();
@@ -29,41 +29,15 @@
     };
 
     $scope.loadBeneficiaires = function () {
-      dataService.loadBeneficiaires()
+      dataService.findAllBeneficiaires()
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
-          //$scope.getComments();
         });
     };
 
     $scope.loadDistribution = function (distributionId) {
       $location.path("/distributions/" + distributionId);
     };
-
-    //$scope.getComments = function () {
-    //  if ($scope.distributions === null) {
-    //    return false;
-    //  }
-    //  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-    //  for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
-    //    for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-    //      if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex]._id &&
-    //        beneficiairesPresentByDistribution[i].comment !== undefined) {
-    //        if ($scope.distributions[distributionIndex].comments === undefined) {
-    //          $scope.distributions[distributionIndex].comments = [];
-    //        }
-    //        var beneficiaire = null;
-    //        for (var beneficiaireIndex = 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
-    //          if ($scope.beneficiaires[beneficiaireIndex]._id == beneficiairesPresentByDistribution[i].beneficiaireId) {
-    //            beneficiaire = $scope.beneficiaires[beneficiaireIndex];
-    //            $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
-    //            break;
-    //          }
-    //        }
-    //      }
-    //    }
-    //  }
-    //};
 
     $scope.initNextDate = function () {
       if ($scope.distributions.length > 0) {
@@ -82,7 +56,8 @@
     };
 
     $scope.storeDistribution = function (distribution) {
-      dataService.allDistributions()
+      // charge all distributions to determine the next id
+      dataService.findAllDistributions()
         .then(function (distributions) {
           var nextId;
           if (distributions.filter(function (storedDistribution) {
@@ -115,7 +90,7 @@
     };
 
     $scope.loadBeneficiaireByDistribution = function(){
-      dataService.allBeneficiaireByDistribution()
+      dataService.findAllBeneficiaireByDistribution()
         .then(function (beneficiaireByDistribution) {
           $scope.beneficiaireByDistribution = beneficiaireByDistribution;
           $scope.getNbBeneficiairesAndComments();
@@ -137,13 +112,10 @@
           }
           beneficiaire = nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbBeneficiaires;
           comments = nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments;
-          console.log("comments  => "+comments);
           nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbBeneficiaires = beneficiaire ? beneficiaire + 1 : 1;
 
-        console.log("comment  => "+$scope.beneficiaireByDistribution[i].comment);
           if($scope.beneficiaireByDistribution[i].comment !== undefined) {
             nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments = comments ? comments + 1 : 1;
-            console.log("comments  => "+nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments);
           }
       }
 
@@ -164,26 +136,6 @@ retrieveAllDistribution = function (allDistributions, dataService) {
     allDistributions.reverse();
   }
   return allDistributions;
-};
-
-storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, dataService) {
-  var isRelationExisting = false;
-  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-  for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-    if (beneficiairesPresentByDistribution[i].distributionId == distributionId &&
-      beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
-      isRelationExisting = true;
-      beneficiairesPresentByDistribution.splice(i, 1);
-      break;
-    }
-  }
-  if (isRelationExisting === false) {
-    beneficiairesPresentByDistribution.push({
-      "distributionId": distributionId.toString(),
-      "beneficiaireId": beneficiaireId
-    });
-  }
-  dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
 };
 
 createNextWorkingDate = function (dateString) {
