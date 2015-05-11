@@ -52,9 +52,13 @@
         if (bdd.isBookmark !== true) {
           delete $scope.beneficiairesPresentByDistribution[i].isBookmark;
         }
+
+        var tmpCommentWithDate = $scope.beneficiairesPresentByDistribution[i].commentWithDate;
         delete $scope.beneficiairesPresentByDistribution[i].commentWithDate;
+
         dataService.addOrUpdateBeneficiaireByDistribution($scope.beneficiairesPresentByDistribution[i]).then(function (bbd) {
           $scope.beneficiairesPresentByDistribution[i] = bbd;
+          $scope.beneficiairesPresentByDistribution[i].commentWithDate = tmpCommentWithDate;
         })
       }
     };
