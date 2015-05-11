@@ -67,12 +67,16 @@ getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
   return newBeneficiaire;
 };
 
-getNextId = function(list){
-  var nextId;
-  if (list.length === 0) {
-    nextId = '1';
-  } else {
-    nextId = parseInt(list[list.length - 1]._id) + 1 + '';
+getNextIdInUnsortedList = function (list) {
+  var nextId = 1;
+  if (list.length > 0) {
+    for (var i = 0; i < list.length; i++) {
+      var id = Number(list[i]._id);
+      if (id >= nextId) {
+        nextId = ++id;
       }
-  return nextId;
+    }
+  }
+  return nextId + '';
 };
+

@@ -78,6 +78,14 @@
         if (parsedList[i].length == 2 || (parsedList[i].length == 3 && isFirstColCode === false)) {
           code = lastCode;
         }
+        if(isFirstColCode === true) {
+          code = parsedList[i][0];
+        }
+        for (var benefNum = 0; benefNum < $scope.beneficiairesToImport.length; benefNum++) {
+          if ($scope.beneficiairesToImport[benefNum].code == parsedList[i][0]) {
+            throw {type:"functional", message:"Le code " + parsedList[i][0] + " est dupliqué, ligne n°" + (i + 1)};
+          }
+        }
 
         var hasCardFromString = $scope.getHasCardFromString(parsedList[i][2]);
         if (parsedList[i].length == 3 && isFirstColCode === false){
@@ -88,16 +96,10 @@
         }
 
         if (code === undefined) {
-          for (var benefNum = 0; benefNum < $scope.beneficiairesToImport.length; benefNum++) {
-            if ($scope.beneficiairesToImport[benefNum].code == parsedList[i][0]) {
-              throw {type:"functional", message:"Le code " + parsedList[i][0] + " est dupliqué, ligne n°" + (i + 1)};
-            }
-          }
-          code = parsedList[i][0];
           hasCard = $scope.getHasCardFromString(parsedList[i][3]);
         }
 
-        $scope.beneficiairesToImport.push(getNewBeneficiaire(getNextId($scope.beneficiairesToImport), code, lastName, firstName, hasCard));
+        $scope.beneficiairesToImport.push(getNewBeneficiaire(getNextIdInUnsortedList($scope.beneficiairesToImport), code, lastName, firstName, hasCard));
       }
     };
 
