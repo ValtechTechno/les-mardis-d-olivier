@@ -52,6 +52,7 @@
         if (bdd.isBookmark !== true) {
           delete $scope.beneficiairesPresentByDistribution[i].isBookmark;
         }
+        delete $scope.beneficiairesPresentByDistribution[i].commentWithDate;
         dataService.addOrUpdateBeneficiaireByDistribution($scope.beneficiairesPresentByDistribution[i]).then(function (bbd) {
           $scope.beneficiairesPresentByDistribution[i] = bbd;
         })
@@ -68,16 +69,29 @@
       return visiteNumber;
     };
 
-    $scope.getComments = function(){
-      var comments = [];
-      for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
-        if($scope.beneficiairesPresentByDistribution[i].comment === undefined){
-          continue;
-        }
-        comments.push($scope.beneficiairesPresentByDistribution[i]);
+    $scope.getComments = function () {
+      dataService.findAllDistributions()
+        .then(function (distributions) {
+          $scope.allDistributions = distributions;
 
-      }
-      $scope.currentBeneficiaireComments = comments;
+          var comments = [];
+          for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
+            if ($scope.beneficiairesPresentByDistribution[i].comment === undefined) {
+              continue;
+            }
+            $scope.beneficiairesPresentByDistribution[i].commentWithDate = getDateDistribution($scope.allDistributions, $scope.beneficiairesPresentByDistribution[i])+' : '+$scope.beneficiairesPresentByDistribution[i].comment;
+            comments.push($scope.beneficiairesPresentByDistribution[i]);
+          }
+          $scope.currentBeneficiaireComments = comments;
+        })
+        .catch(function (err) {
+          if (err.status === 409) {
+            throw {
+              type: "functional",
+              message: 'Un utilisateur vient de modifier ce bénéficiaire. Veuillez recharger la page et recommencer.'
+            };
+          }
+        });
     };
 
     $scope.saveBeneficiaireDetail = function () {

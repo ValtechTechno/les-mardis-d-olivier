@@ -71,7 +71,7 @@
       </tr>
       </thead>
       <tr ng-repeat="bbd in currentBeneficiaireComments track by $index">
-        <td>{{bbd.comment}}</td>
+        <td>{{bbd.commentWithDate}}</td>
         <td><input type="checkbox" ng-model="bbd.isBookmark" ng-change="isBookmark(bbd)"/></td>
       </tr>
     </table>

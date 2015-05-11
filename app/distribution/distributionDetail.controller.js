@@ -30,7 +30,6 @@
     }
 
     function fillDistributionBeneficiaires() {
-      vm.numberBeneficiairesPresent = 0;
       dataService.findAllBeneficiaires()
         .then(function (beneficiaires) {
           retrieveBeneficiairesByDistribution(vm.currentDistribution._id, beneficiaires);
@@ -57,6 +56,7 @@
         var beneficiairesPresent = [];
         for (var pos = 0; pos < beneficiaires.length; pos++) {
           beneficiaires[pos].comments = getLastComments(beneficiaires[pos]._id, distributionId, true);
+
           var index = beneficiairesPresentIds.indexOf(beneficiaires[pos]._id);
           if (index != -1) {
             beneficiaires[pos].isPresent = true;
@@ -72,6 +72,7 @@
         var onlyPresent = function (beneficiaire) {
           return beneficiaire.isPresent;
         };
+
         vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
         });
       }).catch(function (err) {

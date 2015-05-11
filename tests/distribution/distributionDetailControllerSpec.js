@@ -2,9 +2,9 @@ describe("DistributionDetailController", function () {
 
   var scope;
   var DateWithJQueryUiDatePicker;
-
+  var deferredFindAllBenef, deferredFindAllDistributionsById, deferredFindAllDistributions, deferredFindAllBbd, deferredAddOrUpdateBbd;
   beforeEach(angular.mock.module('mardisDolivier'));
-  beforeEach(angular.mock.inject(function ($rootScope, $controller, $filter, $injector, $routeParams) {
+  beforeEach(angular.mock.inject(function (_$q_,$rootScope, $controller, $filter, $injector, $routeParams) {
     scope = $rootScope.$new();
     routeParams = {};
     dataService = $injector.get('dataService');
@@ -17,126 +17,176 @@ describe("DistributionDetailController", function () {
       dataService: dataService,
       beneficiairesCommonService: beneficiairesCommonService
     });
+    deferredFindAllBenef = _$q_.defer();
+    deferredAddOrUpdateBbd = _$q_.defer();
+    deferredFindAllDistributionsById = _$q_.defer();
+    deferredFindAllDistributions = _$q_.defer();
+    deferredFindAllBbd = _$q_.defer();
   }));
 
   it('should be possible to save beneficiaire presence at a distribution', function () {
-    dataService.saveBeneficiaires([
-      { _id: '1', code: 1, firstName: "John",
-      "lastName": "Rambo"
-    }]);
-    dataService.saveDistributions([{ distributionDate: "2014-08-04", _id: 1 }]);
-    routeParams.distributionId = 1;
+
+    deferredFindAllBenef.resolve([{_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"John",lastName:"Rambo", hasCard:true}]);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredFindAllBenef.promise);
+
+    deferredFindAllDistributionsById.resolve({ distributionDate: "2014-09-19", _id: 3 });
+    spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
+
+    deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 },{ distributionDate: "2014-09-18", _id: 2 }, { distributionDate: "2014-09-19", _id: 3 }]);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+
+    deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1 },{_id: '2_1', beneficiaireId:1, distributionId:2}]);
+    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+
+    spyOn(dataService, 'addOrUpdateBeneficiaireByDistribution').andReturn(deferredAddOrUpdateBbd.promise);
+
+    routeParams.distributionId = 3;
     scope.distributionDetail.activate();
-    beneficiaireId = scope.distributionDetail.beneficiaires[0]._id;
+    scope.$apply();
+    expect(scope.distributionDetail.numberBeneficiairesPresent).toEqual(0);
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution._id, dataService, false);
+    scope.distributionDetail.beneficiaires[0].isPresent = true;
+    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[0]);
+    scope.$apply();
+    expect(scope.distributionDetail.numberBeneficiairesPresent).toEqual(1);
 
-    expect(beneficiairesList[0]._id).toEqual(beneficiaireId);
-    expect(beneficiairesList[0].firstName).toEqual("John");
-    expect(beneficiairesList[0].lastName).toEqual("Rambo");
+    expect(dataService.addOrUpdateBeneficiaireByDistribution).toHaveBeenCalledWith({distributionId:'3', beneficiaireId:'1'});
   });
 
   it('should return an empty list when the distribution has nobody present', function () {
-    dataService.saveDistributions([{ distributionDate: "2014-08-04", _id: 1 }]);
+
+    deferredFindAllBenef.resolve([]);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredFindAllBenef.promise);
+
+    deferredFindAllDistributionsById.resolve({ distributionDate: "2014-09-19", _id: 3 });
+    spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
+
+    deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-19", _id: 3 }]);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+
+    deferredFindAllBbd.resolve([]);
+    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+
     routeParams.distributionId = 1;
     scope.distributionDetail.activate();
-    expect(retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution.distributionId, dataService)).toEqual([]);
+    scope.$apply();
+    expect(scope.distributionDetail.numberBeneficiairesPresent).toEqual(0);
+    expect(scope.distributionDetail.beneficiaires.length).toEqual(0);
+
   });
 
   it('should be only returns the present beneficiaire from a open distribution', function () {
-    dataService.saveBeneficiaires([
-        { _id: '1', code: 1, firstName: 'John', lastName: 'Rambo' },
-        { _id: '2', code: 2, firstName: 'Alix', lastName: 'Rambo' },
-        { _id: '3', code: 3, firstName: 'Lana', lastName: 'Rambo' }
-    ]);
-    dataService.saveDistributions([{ distributionDate: '2014-08-04', _id: 1 }]);
+
+    var sourceBenef = [{_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"John",lastName:"Rambo", hasCard:true},
+      {_id:"2", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:2,firstName:"Alix",lastName:"Rambo", hasCard:true},
+      {_id:"3", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:3,firstName:"Lana",lastName:"Rambo", hasCard:true}];
+    deferredFindAllBenef.resolve(sourceBenef);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredFindAllBenef.promise);
+
+    deferredFindAllDistributionsById.resolve({ distributionDate: "2014-09-19", _id: 1 });
+    spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
+
+    deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 }]);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+
+    deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:'1', distributionId:'1' },{_id: '1_3', beneficiaireId:'3', distributionId:'1'}]);
+    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+
     routeParams.distributionId = 1;
     scope.distributionDetail.activate();
+    scope.$apply();
 
-    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[1]);
+    expect(scope.distributionDetail.numberBeneficiairesPresent).toEqual(2);
+    expect(scope.distributionDetail.beneficiaires.length).toEqual(3);
 
-    scope.distributionDetail.activate();
+    expect(scope.distributionDetail.beneficiaires[0].isPresent).toEqual(true);
+    expect(scope.distributionDetail.beneficiaires[0].firstName).toEqual('John');
+    expect(scope.distributionDetail.beneficiaires[1].isPresent).toEqual(false);
+    expect(scope.distributionDetail.beneficiaires[1].firstName).toEqual('Alix');
+    expect(scope.distributionDetail.beneficiaires[2].isPresent).toEqual(true);
+    expect(scope.distributionDetail.beneficiaires[2].firstName).toEqual('Lana');
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(1, dataService, false);
-    expect(beneficiairesList.length).toEqual(3);
-    expect(beneficiairesList[0].isPresent).toEqual(false);
-    expect(beneficiairesList[0].firstName).toEqual('John');
-    expect(beneficiairesList[1].isPresent).toEqual(true);
-    expect(beneficiairesList[1].firstName).toEqual('Alix');
-    expect(beneficiairesList[2].isPresent).toEqual(false);
-    expect(beneficiairesList[2].firstName).toEqual('Lana');
   });
 
   it('should be possible to save a comment on a beneficiaire during one distribution', function () {
-    dataService.saveBeneficiaires([{ _id: '1', code: 1, firstName: 'John', lastName: 'Rambo' }]);
-    dataService.saveDistributions([{ _id: 1, distributionDate: '2014-08-04' }]);
+
+    deferredFindAllBenef.resolve([{_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"John",lastName:"Rambo", hasCard:true}]);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredFindAllBenef.promise);
+
+    deferredFindAllDistributionsById.resolve({ distributionDate: "2014-09-19", _id: 1 });
+    spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
+
+    deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 }]);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+
+    deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1 }]);
+    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+
+    spyOn(dataService, 'addOrUpdateBeneficiaireByDistribution').andReturn(deferredAddOrUpdateBbd.promise);
+
     routeParams.distributionId = 1;
     scope.distributionDetail.activate();
+    scope.$apply();
 
-    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[0]);
-    var beneficiaireId = scope.distributionDetail.beneficiaires[0]._id;
-    var comment = "Pas gentil";
+    var comment = "Incorrect";
+    scope.distributionDetail.writeComment(1, comment);
+    scope.$apply();
 
-    scope.distributionDetail.writeComment(beneficiaireId, comment);
+    expect(dataService.addOrUpdateBeneficiaireByDistribution).toHaveBeenCalledWith({_id: '1_1', beneficiaireId:1, distributionId:1, comment:comment });
 
-    var beneficiairesList = retrieveBeneficiairesByDistribution(scope.distributionDetail.currentDistribution._id, dataService, true);
-    expect(beneficiairesList[0]._id).toEqual(beneficiaireId);
-    expect(beneficiairesList[0].firstName).toEqual("John");
-    expect(beneficiairesList[0].lastName).toEqual("Rambo");
-    expect(beneficiairesList[0].comment).toEqual(comment);
   });
 
   it('should format a date for french people', function () {
     expect(DateWithJQueryUiDatePicker('2014-08-04')).toBe('lundi 4 août 2014');
   });
 
-  it('should retrieve the number of beneficiaires present at a distribution', function () {
-    dataService.saveBeneficiaires([
-        { _id: '1', code: 1, firstName: 'John', lastName: 'Rambo' },
-        { _id: '2', code: 2, firstName: 'Michel', lastName: 'Rambo' },
-        { _id: '3', code: 3, firstName: 'Paul', lastName: 'Rambo' }
-    ]);
-    dataService.saveDistributions([{ distributionDate: '2014-08-04', _id: 1 }]);
-    routeParams.distributionId = 1;
-    scope.distributionDetail.activate();
-    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[0]);
-    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[1]);
-    scope.distributionDetail.isPresent(scope.distributionDetail.beneficiaires[2]);
-
-    var beneficiairesList = retrieveAllDistribution(dataService);
-
-    expect(beneficiairesList[0].nbBeneficiaires).toEqual(3);
-  });
-
   it('should see older bookmarked comments of a beneficiaire in distribution', function () {
-    dataService.saveBeneficiairesPresentByDistribution([
-      { distributionId: '1', beneficiaireId: '1', comment: 'message', isBookmark: true },
-      { distributionId: '2', beneficiaireId: '1', comment: 'message2', isBookmark: true },
-      { distributionId: '2', beneficiaireId: '1', comment: 'message2', isBookmark: false }
-    ]);
-    dataService.saveBeneficiaires([{ _id: '1', code: 1, firstName: 'A1', lastName: 'A1' }]);
-    dataService.saveDistributions([
-      { distributionDate: '2014-09-16', _id: 1 },
-      { distributionDate: '2014-09-18', _id: 2 }
-    ]);
+    deferredFindAllBenef.resolve([{_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"John",lastName:"Rambo", hasCard:true}]);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredFindAllBenef.promise);
 
-    var beneficiaires = retrieveBeneficiairesByDistribution(2, dataService, true);
+    deferredFindAllDistributionsById.resolve({ distributionDate: "2014-09-16", _id: 1 });
+    spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
 
-    expect(beneficiaires[0].comment).toEqual("message2");
-    expect(beneficiaires[0].comments[1].text).toEqual("2014-09-16 : message");
-    expect(beneficiaires[0].comments[0].text).toEqual("2014-09-18 : message2");
+    deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 },{ distributionDate: "2014-09-18", _id: 2 }]);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+
+    var oldComment = 'older comment to show';
+    deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1, comment:oldComment, isBookmark:true }]);
+    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+
+    routeParams.distributionId = 2;
+    scope.distributionDetail.activate();
+    scope.$apply();
+
+    expect(scope.distributionDetail.beneficiaires[0].comments[0].text).toEqual("2014-09-16 : "+oldComment);
   });
 
   it('should be possible to save a comment on a distribution', function () {
-    dataService.saveBeneficiaires([{ _id: '1', code: 1, firstName: 'John', lastName: 'Rambo' }]);
-    dataService.saveDistributions([{ distributionDate: '2014-08-04', _id: 1 }]);
+    deferredFindAllBenef.resolve([]);
+    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredFindAllBenef.promise);
+
+    deferredFindAllDistributionsById.resolve({ distributionDate: "2014-09-19", _id: 3 });
+    spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
+
+    deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-19", _id: 3 }]);
+    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+
+    deferredFindAllBbd.resolve([]);
+    spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
+
+    deferredAddOrUpdateBbd.resolve([]);
+    spyOn(dataService, 'addOrUpdateDistribution').andReturn(deferredAddOrUpdateBbd.promise);
+
     routeParams.distributionId = 1;
     scope.distributionDetail.activate();
+    scope.$apply();
+
     var commentaireDistribution = "commentaire general";
     scope.distributionDetail.writeDistributionComment(commentaireDistribution);
+    scope.$apply();
 
-    var distributions = dataService.allDistributions();
-    expect(distributions[0].comment).toEqual(commentaireDistribution);
+    expect(dataService.addOrUpdateDistribution).toHaveBeenCalledWith({ distributionDate: "2014-09-19", _id: 3, comment:commentaireDistribution });
+
   });
 
 });
