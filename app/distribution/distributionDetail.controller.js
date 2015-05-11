@@ -38,7 +38,7 @@
 
     function retrieveBeneficiairesByDistribution(distributionId, beneficiaires) {
 
-      dataService.findBeneficiaireByDistributionByDistributionId(distributionId).then(function (bbd) {
+      dataService.findAllBeneficiaireByDistribution().then(function (bbd) {
         vm.beneficiairesPresentByDistribution = bbd;
 
         dataService.findAllDistributions().then(function (distributions) {
