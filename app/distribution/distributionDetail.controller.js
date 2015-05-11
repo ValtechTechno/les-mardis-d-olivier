@@ -41,7 +41,15 @@
       dataService.findAllBeneficiaireByDistribution().then(function (bbd) {
         vm.beneficiairesPresentByDistribution = bbd;
 
-        dataService.findAllDistributions().then(function (distributions) {
+
+        var distributionIds = [];
+        for (var i = 0; i < vm.beneficiairesPresentByDistribution.length; i++) {
+          if(vm.beneficiairesPresentByDistribution[i].isBookmark === true) {
+            distributionIds.push(vm.beneficiairesPresentByDistribution[i].distributionId);
+          }
+        }
+        dataService.findDistributionByIds(distributionIds)
+        .then(function (distributions) {
           vm.allDistributions = distributions;
 
         var beneficiairesPresentIds = [];

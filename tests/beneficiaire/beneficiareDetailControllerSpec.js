@@ -91,7 +91,7 @@ describe("BeneficiaireDetailController", function () {
           { distributionDate: "2014-09-18", _id: 2 }
       ];
     deferredLoadDistri.resolve(sourceDistri);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredLoadDistri.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredLoadDistri.promise);
 
     scope.openBeneficiaireList();
     scope.$apply();
@@ -117,7 +117,7 @@ describe("BeneficiaireDetailController", function () {
       { distributionDate: "2014-09-18", _id: 2 }
     ];
     deferredLoadDistri.resolve(sourceDistri);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredLoadDistri.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredLoadDistri.promise);
 
     spyOn(dataService, 'addOrUpdateBeneficiaireByDistribution').andReturn(deferreUpdateBbd.promise);
 

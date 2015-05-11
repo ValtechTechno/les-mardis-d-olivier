@@ -33,7 +33,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
 
     deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 },{ distributionDate: "2014-09-18", _id: 2 }, { distributionDate: "2014-09-19", _id: 3 }]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1 },{_id: '2_1', beneficiaireId:1, distributionId:2}]);
     spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
@@ -62,7 +62,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
 
     deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-19", _id: 3 }]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([]);
     spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
@@ -87,7 +87,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
 
     deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 }]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:'1', distributionId:'1' },{_id: '1_3', beneficiaireId:'3', distributionId:'1'}]);
     spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
@@ -117,7 +117,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
 
     deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 }]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1 }]);
     spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);
@@ -148,7 +148,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
 
     deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-16", _id: 1 },{ distributionDate: "2014-09-18", _id: 2 }]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredFindAllDistributions.promise);
 
     var oldComment = 'older comment to show';
     deferredFindAllBbd.resolve([{_id: '1_1', beneficiaireId:1, distributionId:1, comment:oldComment, isBookmark:true }]);
@@ -169,7 +169,7 @@ describe("DistributionDetailController", function () {
     spyOn(dataService, 'findDistributionById').andReturn(deferredFindAllDistributionsById.promise);
 
     deferredFindAllDistributions.resolve([{ distributionDate: "2014-09-19", _id: 3 }]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredFindAllDistributions.promise);
+    spyOn(dataService, 'findDistributionByIds').andReturn(deferredFindAllDistributions.promise);
 
     deferredFindAllBbd.resolve([]);
     spyOn(dataService, 'findAllBeneficiaireByDistribution').andReturn(deferredFindAllBbd.promise);

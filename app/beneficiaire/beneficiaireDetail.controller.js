@@ -70,7 +70,11 @@
     };
 
     $scope.getComments = function () {
-      dataService.findAllDistributions()
+      var distributionIds = [];
+      for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
+        distributionIds.push($scope.beneficiairesPresentByDistribution[i].distributionId);
+      }
+      dataService.findDistributionByIds(distributionIds)
         .then(function (distributions) {
           $scope.allDistributions = distributions;
 

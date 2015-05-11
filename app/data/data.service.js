@@ -24,6 +24,7 @@
       addOrUpdateDistribution: addOrUpdateDistribution,
       findAllDistributions: findAllDistributions,
       findDistributionById: findDistributionById,
+      findDistributionByIds: findDistributionByIds,
       addOrUpdateBeneficiaireByDistribution: addOrUpdateBeneficiaireByDistribution,
       findAllBeneficiaireByDistribution: findAllBeneficiaireByDistribution,
       findBeneficiaireByDistributionByBeneficiaireId: findBeneficiaireByDistributionByBeneficiaireId,
@@ -199,6 +200,30 @@
           doc._id = getDistributionIdForView(doc._id);
           $rootScope.$apply(function () {
             return deferred.resolve(doc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function findDistributionByIds(distributionIds) {
+      for(var i=0;i<distributionIds.length;i++){
+        distributionIds[i] = getDistributionIdForDatabase(distributionIds[i]);
+      }
+      var deferred = $q.defer();
+      db.allDocs({
+        include_docs: true,
+        keys:distributionIds})
+        .then(function (docs) {
+          var distributions = [];
+          for(var i=0;i<docs.rows.length;i++){
+            docs.rows[i].doc._id = getDistributionIdForView(docs.rows[i].doc._id);
+            distributions.push(docs.rows[i].doc);
+          };
+          $rootScope.$apply(function () {
+            return deferred.resolve(distributions);
           });
         }).catch(function (err) {
           console.log(err);
