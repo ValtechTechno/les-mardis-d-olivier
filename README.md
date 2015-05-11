@@ -5,14 +5,6 @@ les-mardis-d-olivier
 
 [trello](https://trello.com/b/hlFnNTi4/resto-du-coeur)
 
-## Screenshots
-
-![home](doc/home.png)
----
-![page_1](doc/page_1.png)
----
-![page_2](doc/page_2.png)
-
 ## Tests
 
 Tests are using the karma test framework with jasmine. You can either install karma on you dev environment or use docker.
