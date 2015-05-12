@@ -15,7 +15,7 @@
           $scope.beneficiaires = beneficiaires;
           $scope.resetAddBeneficiareForm();
         })
-        .catch(function (err) {;
+        .catch(function (err) {
             throw {type: "functional", message: 'Impossible de charger la liste des bénéficiaires.'};
         });
         $scope.excludedFilter = false;

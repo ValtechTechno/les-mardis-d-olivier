@@ -125,7 +125,7 @@
           $scope.distributions[pos].nbComments = nbBeneficiaireByDistribution[$scope.distributions[pos]._id].nbComments;
         }
       }
-    }
+    };
   }
 })();
 

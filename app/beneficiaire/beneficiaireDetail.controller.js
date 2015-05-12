@@ -6,6 +6,8 @@
       .controller('BeneficiaireDetailController', BeneficiaireDetailController);
 
   function BeneficiaireDetailController ($scope, $routeParams, dataService, commonService, $location) {
+    var GET_BENEFICIAIRE_GENERIC_ERROR = 'Impossible de récupérer ce bénéficiaire, une erreur technique est survenue.';
+
     $scope.openBeneficiaireDetail = function () {
       $scope.currentBeneficiaireVisiteNumber = 0;
       $scope.beneficiairesPresentByDistribution = [];
@@ -17,8 +19,9 @@
         })
         .catch(function (err) {
           if (err.status === 404) {
-            $scope.openBeneficiaireList();
-            throw {type: "functional", message: 'Le bénéficiaire n\'existe pas.'};
+            $scope.createBeneficiaireErrorWithReturnToList('Le bénéficiaire n\'existe pas.');
+          }else{
+            $scope.createBeneficiaireErrorWithReturnToList(GET_BENEFICIAIRE_GENERIC_ERROR);
           }
         });
 
@@ -28,16 +31,29 @@
       ];
     };
 
-    $scope.findBeneficiaireByDistribution = function(){
-      dataService.findBeneficiaireByDistributionByBeneficiaireId($scope.currentBeneficiaire._id).then(function(bbd){
-        $scope.beneficiairesPresentByDistribution = bbd;
-        $scope.getComments();
-        $scope.currentBeneficiaireVisiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
-        // By default, an old user has a card.
-        if ($scope.currentBeneficiaire.hasCard === undefined) {
-          $scope.currentBeneficiaire.hasCard = true;
-        }
-      });
+
+    $scope.createBeneficiaireErrorWithReturnToList = function(message, technical) {
+      $location.path("/beneficiaires");
+      throw {
+        type: technical === true ? "technical" : "functional",
+        message: message
+      };
+    };
+
+    $scope.findBeneficiaireByDistribution = function () {
+      dataService.findBeneficiaireByDistributionByBeneficiaireId($scope.currentBeneficiaire._id)
+        .then(function (bbd) {
+          $scope.beneficiairesPresentByDistribution = bbd;
+          $scope.getComments();
+          $scope.currentBeneficiaireVisiteNumber = $scope.getVisiteNumber($scope.currentBeneficiaire._id);
+          // By default, an old user has a card.
+          if ($scope.currentBeneficiaire.hasCard === undefined) {
+            $scope.currentBeneficiaire.hasCard = true;
+          }
+        })
+        .catch(function (err) {
+          $scope.createBeneficiaireErrorWithReturnToList(GET_BENEFICIAIRE_GENERIC_ERROR);
+        });
     };
 
     $scope.isBookmark = function (bdd) {
@@ -59,7 +75,7 @@
         dataService.addOrUpdateBeneficiaireByDistribution($scope.beneficiairesPresentByDistribution[i]).then(function (bbd) {
           $scope.beneficiairesPresentByDistribution[i] = bbd;
           $scope.beneficiairesPresentByDistribution[i].commentWithDate = tmpCommentWithDate;
-        })
+        });
       }
     };
 
@@ -93,29 +109,39 @@
           $scope.currentBeneficiaireComments = comments;
         })
         .catch(function (err) {
-          if (err.status === 409) {
-            throw {
-              type: "functional",
-              message: 'Un utilisateur vient de modifier ce bénéficiaire. Veuillez recharger la page et recommencer.'
-            };
-          }
+          $scope.createBeneficiaireErrorWithReturnToList(GET_BENEFICIAIRE_GENERIC_ERROR);
         });
     };
 
     $scope.saveBeneficiaireDetail = function () {
       // charge all the beneficiaires to check if there isn't already a couple of first name + last name
-      dataService.findAllBeneficiaires().then(function (beneficiaires) {
-        $scope.beneficiaires = beneficiaires;
-        if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, true)) {
-          dataService.addOrUpdateBeneficiaire($scope.currentBeneficiaire).then(function() {
+      dataService.findAllBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+          $scope.updateBeneficiaire();
+        })
+        .catch(function (err) {
+          throw {
+            type: "functional",
+            message: 'Une erreur est survenue lors de l\'enregistrement. Veuillez recommencer."};'
+          };
+        });
+    };
+
+    $scope.updateBeneficiaire = function () {
+      if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, true)) {
+        dataService.addOrUpdateBeneficiaire($scope.currentBeneficiaire)
+          .then(function () {
             $scope.openBeneficiaireList();
           }).catch(function (err) {
-            if(err.status === 409) {
-              throw {type: "functional", message: 'Un utilisateur vient de modifier ce bénéficiaire. Veuillez recharger la page et recommencer.'};
+            if (err.status === 409) {
+              throw {
+                type: "functional",
+                message: 'Un utilisateur vient de modifier ce bénéficiaire. Veuillez recharger la page et recommencer.'
+              };
             }
           });
-        }
-      });
+      }
     };
 
     $scope.$on('confirmBeneficiaireDetailDeletePopup', function () {

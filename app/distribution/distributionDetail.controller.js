@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .controller('DistributionDetailController', DistributionDetailController);
 
-  function DistributionDetailController ($routeParams, dataService, commonService) {
+  function DistributionDetailController ($routeParams, dataService, commonService, $location) {
     var vm = this;
     vm.numberBeneficiairesPresent = 0;
     vm.currentDistribution = {};
@@ -16,24 +16,41 @@
     vm.isPresent = isPresent;
     vm.writeComment = writeComment;
     vm.activate = activate;
-
+    var GET_DISTRIBUTION_GENERIC_ERROR = 'Impossible de récupérer cette distribution, une erreur technique est survenue.';
     activate();
 
     function activate() {
       if ($routeParams.distributionId === null) {
         return false;
       }
-      dataService.findDistributionById($routeParams.distributionId).then(function (distribution) {
-        vm.currentDistribution = distribution;
-        fillDistributionBeneficiaires();
-      });
+      dataService.findDistributionById($routeParams.distributionId)
+        .then(function (distribution) {
+          vm.currentDistribution = distribution;
+          fillDistributionBeneficiaires();
+        }).catch(function (err) {
+          if (err.status === 404) {
+            createDistributionErrorWithReturnToList('Cette distribution n\'existe pas.');
+          } else {
+            createDistributionErrorWithReturnToList(GET_DISTRIBUTION_GENERIC_ERROR);
+          }
+        });
     }
 
     function fillDistributionBeneficiaires() {
       dataService.findAllBeneficiaires()
         .then(function (beneficiaires) {
           retrieveBeneficiairesByDistribution(vm.currentDistribution._id, beneficiaires);
+        }).catch(function (err) {
+          createDistributionErrorWithReturnToList(GET_DISTRIBUTION_GENERIC_ERROR);
         });
+    }
+
+    function createDistributionErrorWithReturnToList(message, technical) {
+      $location.path("/distributions");
+      throw {
+        type: technical === true ? "technical" : "functional",
+        message: message
+      };
     }
 
     function retrieveBeneficiairesByDistribution(distributionId, beneficiaires) {
@@ -41,55 +58,58 @@
       dataService.findAllBeneficiaireByDistribution().then(function (bbd) {
         vm.beneficiairesPresentByDistribution = bbd;
 
-
         var distributionIds = [];
         for (var i = 0; i < vm.beneficiairesPresentByDistribution.length; i++) {
-          if(vm.beneficiairesPresentByDistribution[i].isBookmark === true) {
+          if (vm.beneficiairesPresentByDistribution[i].isBookmark === true) {
             distributionIds.push(vm.beneficiairesPresentByDistribution[i].distributionId);
           }
         }
-        dataService.findDistributionByIds(distributionIds)
+
+        findAllBeneficiaireByDistributionByDistributionIdsIds(distributionIds, distributionId, beneficiaires);
+      }).catch(function (err) {
+        createDistributionErrorWithReturnToList(GET_DISTRIBUTION_GENERIC_ERROR);
+      });
+    }
+
+    function findAllBeneficiaireByDistributionByDistributionIdsIds(distributionIds, distributionId, beneficiaires) {
+      dataService.findDistributionByIds(distributionIds)
         .then(function (distributions) {
           vm.allDistributions = distributions;
 
-        var beneficiairesPresentIds = [];
-        var beneficiairesPresentComments = [];
+          var beneficiairesPresentIds = [];
+          var beneficiairesPresentComments = [];
 
-        for (var i = 0; i < vm.beneficiairesPresentByDistribution.length; i++) {
-          if (vm.beneficiairesPresentByDistribution[i].distributionId == distributionId) {
-            beneficiairesPresentIds.push(vm.beneficiairesPresentByDistribution[i].beneficiaireId);
-            beneficiairesPresentComments.push(vm.beneficiairesPresentByDistribution[i].comment);
+          for (var i = 0; i < vm.beneficiairesPresentByDistribution.length; i++) {
+            if (vm.beneficiairesPresentByDistribution[i].distributionId == distributionId) {
+              beneficiairesPresentIds.push(vm.beneficiairesPresentByDistribution[i].beneficiaireId);
+              beneficiairesPresentComments.push(vm.beneficiairesPresentByDistribution[i].comment);
+            }
           }
-        }
-        var beneficiairesPresent = [];
-        for (var pos = 0; pos < beneficiaires.length; pos++) {
-          beneficiaires[pos].comments = getLastComments(beneficiaires[pos]._id, distributionId, true);
+          var beneficiairesPresent = [];
+          for (var pos = 0; pos < beneficiaires.length; pos++) {
+            beneficiaires[pos].comments = getLastComments(beneficiaires[pos]._id, distributionId, true);
 
-          var index = beneficiairesPresentIds.indexOf(beneficiaires[pos]._id);
-          if (index != -1) {
-            beneficiaires[pos].isPresent = true;
-            beneficiaires[pos].comment = beneficiairesPresentComments[index];
-          } else {
-            beneficiaires[pos].isPresent = false;
-            beneficiaires[pos].comment = null;
+            var index = beneficiairesPresentIds.indexOf(beneficiaires[pos]._id);
+            if (index != -1) {
+              beneficiaires[pos].isPresent = true;
+              beneficiaires[pos].comment = beneficiairesPresentComments[index];
+            } else {
+              beneficiaires[pos].isPresent = false;
+              beneficiaires[pos].comment = null;
+            }
+            beneficiairesPresent.push(beneficiaires[pos]);
           }
-          beneficiairesPresent.push(beneficiaires[pos]);
-        }
-        vm.beneficiaires = beneficiairesPresent.slice(0);
+          vm.beneficiaires = beneficiairesPresent.slice(0);
 
-        var onlyPresent = function (beneficiaire) {
-          return beneficiaire.isPresent;
-        };
+          var onlyPresent = function (beneficiaire) {
+            return beneficiaire.isPresent;
+          };
 
-        vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
+          vm.numberBeneficiairesPresent = vm.beneficiaires.filter(onlyPresent).length;
+        }).catch(function (err) {
+          createDistributionErrorWithReturnToList(GET_DISTRIBUTION_GENERIC_ERROR);
         });
-      }).catch(function (err) {
-        throw {
-          type: "functional",
-          message: 'Impossible de récupérer cette distribution.'
-        };
-      });
-    };
+    }
 
 
     function searchBeneficiaire (beneficiaire) {
@@ -157,7 +177,7 @@
         }
       }
       return beneficiaireOldComments;
-    };
+    }
 
   function storeRelationDistributionBeneficiaire(distributionId, beneficiaireId) {
     var isRelationExisting = false;
@@ -182,7 +202,7 @@
         vm.beneficiairesPresentByDistribution.push(bbd);
       });
     }
-  };
+  }
   }
 })();
 

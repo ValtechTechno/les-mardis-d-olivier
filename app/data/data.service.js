@@ -221,7 +221,7 @@
           for(var i=0;i<docs.rows.length;i++){
             docs.rows[i].doc._id = getDistributionIdForView(docs.rows[i].doc._id);
             distributions.push(docs.rows[i].doc);
-          };
+          }
           $rootScope.$apply(function () {
             return deferred.resolve(distributions);
           });
@@ -329,7 +329,6 @@
       for(var i=0; i<bbdsToDelete.length;i++) {
         bbdsToDelete[i]._deleted = true;
       }
-      debugger;
       db.bulkDocs(bbdsToDelete).then(function (response) {
         console.log(response);
         return deferred.resolve();
