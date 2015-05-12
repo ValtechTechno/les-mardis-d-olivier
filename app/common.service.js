@@ -24,17 +24,21 @@
     }
 
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
-      if (beneficiaires.filter(function (beneficiaire) {
-          return (beneficiaire.firstName === firstName &&
-          beneficiaire.lastName === lastName);
-        }).length > 0 && isUpdate === false) {
-        notUniqueBeneficiaire(lastName, firstName);
+      if (isUpdate === false) {
+        if (beneficiaires.filter(function (beneficiaire) {
+            return (beneficiaire.firstName.toLowerCase() === firstName.toLowerCase() &&
+            beneficiaire.lastName.toLowerCase() === lastName.toLowerCase());
+          }).length > 0) {
+          notUniqueBeneficiaire(lastName, firstName);
+        }
       }
-      if (beneficiaires.filter(function (beneficiaire) {
-        return (beneficiaire.firstName === firstName &&
-          beneficiaire.lastName === lastName && beneficiaire._id !== id);
-      }).length > 0 && isUpdate === true) {
-        notUniqueBeneficiaire(lastName, firstName);
+      else if (isUpdate === true) {
+        if (beneficiaires.filter(function (beneficiaire) {
+            return (beneficiaire.firstName.toLowerCase() === firstName.toLowerCase() &&
+            beneficiaire.lastName.toLowerCase() === lastName.toLowerCase() && beneficiaire._id !== id);
+          }).length > 0) {
+          notUniqueBeneficiaire(lastName, firstName);
+        }
       }
       return true;
     }
