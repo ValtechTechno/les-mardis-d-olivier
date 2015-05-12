@@ -8,8 +8,8 @@
         if (exception.type != "functional" || !exception.message) {
           throw exception;
         }
-        var $rootScope = $injector.get("$rootScope");
-        $rootScope.$emit("handleCurrentErrors", exception);
+        var toaster = $injector.get("toaster");
+        toaster.pop('error', null, exception.message);
       };
     });
 })();

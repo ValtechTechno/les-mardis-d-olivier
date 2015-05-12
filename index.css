@@ -92,49 +92,6 @@ input[type="checkbox"] + label {
   margin-right: 0.1em;
 }
 
-.errorMessageBar {
-  list-style: none;
-  margin: 0;
-  background-color: red;
-  color: white;
-}
-
-.errorMessage {
-  text-align: center;
-  line-height: 2em;
-  list-style: none;
-  border-bottom: 1px solid #333;
-  height: 2.0em;
-}
-
-.errorMessage:hover {
-  background-color: darkred;
-}
-
-.errorMessage.ng-move,
-.errorMessage.ng-enter,
-.errorMessage.ng-leave {
-  transition: all linear 0.5s;
-}
-
-.errorMessage.ng-leave.ng-leave-active,
-.errorMessage.ng-move,
-.errorMessage.ng-enter {
-  background-color: darkred;
-  max-height: 0;
-}
-
-.errorMessage.ng-leave,
-.errorMessage.ng-move.ng-move-active,
-.errorMessage.ng-enter.ng-enter-active {
-  opacity: 1;
-  max-height: 3em;
-}
-
-.menu {
-  height: 130px;
-}
-
 .iconAlone {
   width: 20px;
 }
@@ -236,4 +193,8 @@ input[type="checkbox"] + label {
   margin-top: -4px;
   width: 0;
   height: 0;
+}
+
+#view-content{
+  padding-top: 1em;
 }
