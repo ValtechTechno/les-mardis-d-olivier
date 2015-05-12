@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .service('commonService', commonService);
 
-  function commonService() {
+  function commonService($translate) {
     var service = {
       userFormValidation: userFormValidation,
       searchBeneficiaire: searchBeneficiaire
@@ -20,7 +20,7 @@
     }
 
     function notUniqueBeneficiaire(lastName, firstName) {
-      throw {type: "functional", message: "Le bénéficiaire " + lastName + " " + firstName + " existe déjà"};
+      throw {type: "functional", message: $translate.instant("beneficiaire.error.alreadyExist", { lastName:lastName, firstName:firstName})};
     }
 
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {

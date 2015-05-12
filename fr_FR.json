@@ -1,0 +1,3 @@
+{
+  "beneficiaire.error.alreadyExist": "Le bénéficiaire {{lastName}} {{firstName}} existe déjà"
+}
