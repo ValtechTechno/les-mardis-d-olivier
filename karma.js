@@ -24,6 +24,7 @@ module.exports = function (config) {
       'lib/angular-1.3.13/angular-route.min.js',
       'lib/angular-ui-date-0.0.7/date.min.js',
       'lib/foundation-5.5.1/js/foundation.min.js',
+      'lib/angularjs-toaster-0.4.10/toaster.js',
       'lib/translate/angular-translate.min.js',
       'lib/translate/angular-translate-loader-static-files.min.js',
       'lib/translate/angular-messages.min.js',
