@@ -8,12 +8,12 @@
     </div>
     <div class="medium-6 columns">
       <label>Nom
-        <input type="text" name="lastName" ng-model="currentBeneficiaire.lastName" ng-required="true"/>
+        <input type="text" name="lastName" class="detail" ng-model="currentBeneficiaire.lastName" ng-required="true"/>
       </label>
     </div>
     <div class="medium-4 columns">
       <label>Prénom
-        <input type="text" name="firstName" ng-model="currentBeneficiaire.firstName" ng-required="true"/>
+        <input type="text" name="firstName" class="detail" ng-model="currentBeneficiaire.firstName" ng-required="true"/>
       </label>
     </div>
   </div>
@@ -42,7 +42,7 @@
   </div>
   <div class="row">
     <div class="medium-4 columns right">
-      <button id="saveBeneficiaireDetail" ng-click="saveBeneficiaireDetail()" class="button secondary expand">
+      <button id="saveBeneficiaireDetail" ng-click="saveBeneficiaireDetail()" ng-disabled="updateBeneficiaireForm.$invalid" class="button secondary expand">
         Enregistrer
       </button>
     </div>
