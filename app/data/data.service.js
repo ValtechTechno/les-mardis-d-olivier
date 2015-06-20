@@ -12,6 +12,7 @@
   function dataService($q, $rootScope) {
     var db = new PouchDB('lesmardis');
     var BENEFICIAIRE_PREFIX = 'benef_';
+    var BENEVOLE_PREFIX = 'benev_';
     var DISTRIBUTION_PREFIX = 'distri_';
     var BENEFICIAIRE_BY_DISTRIBUTION_PREFIX = 'bbd_';
     var ABOUT_ID = 'about_information';
@@ -21,6 +22,10 @@
       findBeneficiaireById: findBeneficiaireById,
       removeBeneficiaire: removeBeneficiaire,
       saveBeneficiaires: saveBeneficiaires,
+      addOrUpdateBenevole: addOrUpdateBenevole,
+      findAllBenevoles: findAllBenevoles,
+      findBenevoleById: findBenevoleById,
+      removeBenevole: removeBenevole,
       addOrUpdateDistribution: addOrUpdateDistribution,
       findAllDistributions: findAllDistributions,
       findDistributionById: findDistributionById,
@@ -150,6 +155,99 @@
         firstName: beneficiaire.firstName,
         lastName: beneficiaire.lastName,
         hasCard: beneficiaire.hasCard
+      };
+    }
+
+    function addOrUpdateBenevole(benevole) {
+      var deferred = $q.defer();
+      var benev = getBenevole(benevole);
+      console.log(benev);
+      db.put(benev)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            benev._id = getBenevoleIdForView(benev._id);
+            benev._rev = doc.rev;
+            return deferred.resolve(benev);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function findAllBenevoles() {
+      var deferred = $q.defer();
+
+      db.allDocs({
+        startkey: BENEVOLE_PREFIX,
+        endkey: BENEVOLE_PREFIX + '\uffff',
+        include_docs: true
+      }).then(function (res) {
+
+        var benevoles = [];
+        for (var i = 0; i < res.rows.length; i++) {
+          res.rows[i].doc._id = getBenevoleIdForView(res.rows[i].doc._id);
+          benevoles.push(res.rows[i].doc);
+        }
+        deferred.resolve(benevoles);
+
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+
+    function findBenevoleById(benevoleId) {
+      var deferred = $q.defer();
+      db.get(getBenevoleIdForDatabase(benevoleId))
+        .then(function (doc) {
+          doc._id = getBenevoleIdForView(doc._id);
+          console.log(doc);
+          $rootScope.$apply(function () {
+            return deferred.resolve(doc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function removeBenevole(benevole) {
+      var deferred = $q.defer();
+      benevole._id = getBenevoleIdForDatabase(benevole._id);
+      db.remove(benevole).then(function (response) {
+        benevole._id = getBenevoleIdForView(benevole._id);
+        console.log(response);
+        deferred.resolve(true);
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(false);
+      });
+      return deferred.promise;
+    }
+
+    function getBenevoleIdForView(id) {
+      return id.replace(BENEVOLE_PREFIX, '');
+    }
+
+    function getBenevoleIdForDatabase(id) {
+      return BENEVOLE_PREFIX + id;
+    }
+
+    function getBenevole(benevole) {
+      if (benevole._rev !== undefined) {
+        benevole._id = getBenevoleIdForDatabase(benevole._id);
+        return benevole;
+      }
+      return {
+        _id: getBenevoleIdForDatabase(benevole._id),
+        firstName: benevole.firstName,
+        lastName: benevole.lastName,
+        email: benevole.email,
+        phoneNumber: benevole.phoneNumber
       };
     }
 

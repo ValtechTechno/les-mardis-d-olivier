@@ -8,7 +8,9 @@
   function commonService($translate) {
     var service = {
       userFormValidation: userFormValidation,
-      searchBeneficiaire: searchBeneficiaire
+      benevoleFormValidation: benevoleFormValidation,
+      searchBeneficiaire: searchBeneficiaire,
+      searchBenevole: searchBenevole
     };
 
     return service;
@@ -19,8 +21,17 @@
       return !searchText || reg.test(beneficiaire.code !== undefined && beneficiaire.code.toString()) || reg.test(beneficiaire.lastName) || reg.test(beneficiaire.firstName);
     }
 
+    function searchBenevole(searchText, benevole) {
+      var reg = new RegExp(searchText, 'i');
+      return !searchText || reg.test(benevole.code !== undefined && benevole.code.toString()) || reg.test(benevole.lastName) || reg.test(benevole.firstName);
+    }
+
     function notUniqueBeneficiaire(lastName, firstName) {
       throw {type: "functional", message: $translate.instant("beneficiaire.error.alreadyExist", { lastName:lastName, firstName:firstName})};
+    }
+
+    function notUniqueEmail(email) {
+      throw {type: "functional", message: "L'addresse " + email + " est déjà utilisée"};
     }
 
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
@@ -39,6 +50,20 @@
           }).length > 0) {
           notUniqueBeneficiaire(lastName, firstName);
         }
+      }
+      return true;
+    }
+
+    function benevoleFormValidation(benevoles, email, id, isUpdate) {
+      if (benevoles.filter(function (benevole) {
+        return (benevole.email === email);
+      }).length > 0 && isUpdate === false) {
+        notUniqueEmail(email);
+      }
+      if (benevoles.filter(function (benevole) {
+        return (benevole.email === email && benevole._id !== id);
+      }).length > 0 && isUpdate === true) {
+        notUniqueEmail(email);
       }
       return true;
     }
@@ -69,6 +94,17 @@ getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
     hasCard: hasCard
   };
   return newBeneficiaire;
+};
+
+getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber){
+  var newBenevole = {
+    _id: nextId,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phoneNumber: phoneNumber
+  };
+  return newBenevole;
 };
 
 getNextIdInUnsortedList = function (list) {

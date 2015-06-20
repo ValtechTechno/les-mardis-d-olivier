@@ -1,0 +1,69 @@
+<div class="row">
+  <h4 class="medium-12 columns">Nouveau bénévole</h4>
+</div>
+<form name="addBenevoleForm" ng-submit="addBenevoleFromList()">
+  <div class="row">
+    <div class="medium-12 columns">
+      <div class="row">
+        <div class="medium-6 columns">
+          <label>
+            Nom
+            <input type="text" name="lastName" ng-model="currentBenevole.lastName" placeholder="-- nom --"
+                   ng-required="true"/>
+          </label>
+        </div>
+        <div class="medium-6 columns">
+          <label>
+            Prénom
+            <input type="text" name="firstName" ng-model="currentBenevole.firstName" placeholder="-- prénom --"
+                   ng-required="true"/>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="medium-6 columns">
+          <label>Téléphone
+            <input type="text" name="phoneNumber" ng-model="currentBenevole.phoneNumber" placeholder="-- téléphone --" ng-required="true"/>
+          </label>
+        </div>
+        <div class="medium-6 columns">
+          <label>Email
+            <input type="email" name="email" ng-model="currentBenevole.email" placeholder="-- email --" ng-required="true"/>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="medium-4 columns right">
+          <button class="button secondary expand">Ajouter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénévole existe déjà avec ce code</p>
+
+  <p class="errorMessage" ng-show="currentError.isBenevoleNotUnique">Le bénévole existe déjà</p>
+</form>
+<div class="row">
+  <div class="medium-12 columns">
+    <table class="table">
+      <thead>
+      <tr>
+        <td>Nom</td>
+        <td>Prénom</td>
+      </tr>
+      <tr>
+        <td colspan="5"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-show="benevoles.length==0">
+        <td colspan="3">Aucun bénévole.</td>
+      </tr>
+      <tr class="clickable" ng-repeat="user in benevoles | filter:searchBenevole" ng-click="openBenevoleDetail(user._id)">
+        <td>{{user.lastName}}</td>
+        <td>{{user.firstName}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

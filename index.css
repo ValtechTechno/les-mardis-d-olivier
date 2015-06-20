@@ -43,6 +43,10 @@ table input {
   margin-bottom: 0px !important;
 }
 
+input.detail.ng-invalid {
+  border-color: red;
+}
+
 .button.secondary.redButton {
   background-color: red;
   color: white;

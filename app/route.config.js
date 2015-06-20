@@ -24,6 +24,14 @@
         controller: 'BeneficiaireDetailController',
         templateUrl: 'app/beneficiaire/beneficiaireDetail.html'
       })
+      .when('/benevoles', {
+        controller: 'BenevoleController',
+        templateUrl: 'app/benevole/benevole.html'
+      })
+      .when('/benevoles/:benevoleId', {
+        controller: 'BenevoleDetailController',
+        templateUrl: 'app/benevole/benevoleDetail.html'
+      })
       .when('/about', {
         controller: 'AboutController',
         templateUrl: 'app/about/about.html',

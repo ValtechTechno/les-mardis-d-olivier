@@ -1,0 +1,83 @@
+<h3><b>Profil</b></h3>
+<form name="updateBenevoleForm">
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Nom
+        <input type="text" name="lastName" class="detail" ng-model="currentBenevole.lastName" ng-required="true"/>
+      </label>
+    </div>
+    <div class="medium-6 columns">
+      <label>Prénom
+        <input type="text" name="firstName" class="detail" ng-model="currentBenevole.firstName" ng-required="true"/>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Téléphone
+        <input type="text" name="phoneNumber" class="detail" ng-model="currentBenevole.phoneNumber" ng-required="true"/>
+      </label>
+    </div>
+    <div class="medium-6 columns">
+      <label>Email
+        <input type="email" name="email" class="detail" ng-model="currentBenevole.email" ng-required="true"/>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Adresse
+        <input type="text" name="adresse" ng-model="currentBenevole.adresse" ng-required="false"/>
+      </label>
+    </div>
+    <div class="medium-3 columns left">
+      <label>Année de naissance
+        <input type="number" min="1900" max="2100" class="detail" ng-minlength=4 ng-maxlength=4 name="birthYear" ng-model="currentBenevole.birthYear" ng-required="false" />
+      </label>
+    </div>
+    <div class="medium-2 columns left">
+      <input type="checkbox" id="isAdmin" ng-model="currentBenevole.isAdmin">
+      <label for="isAdmin">Administrateur</label>
+      </input>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Anglais
+        <select ng-model="currentBenevole.englishLevel" ng-options="level.id as level.label for level in languageLevels"></select>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Espagnol
+        <select ng-model="currentBenevole.spanishLevel" ng-options="level.id as level.label for level in languageLevels"></select>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Allemand
+        <select ng-model="currentBenevole.germanLevel" ng-options="level.id as level.label for level in languageLevels"></select>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-3 columns right">
+      <button id="saveBenevoleDetail" ng-click="saveBenevoleDetail()" ng-disabled="updateBenevoleForm.$invalid" class="button secondary expand">
+        Enregistrer
+      </button>
+    </div>
+    <div class="medium-3 columns right">
+      <button id="cancelBenevoleDetail" ng-click="openBenevoleList()" class="button secondary expand">
+        Annuler
+      </button>
+    </div>
+    <div class="medium-3 columns right">
+      <popup-directive popup-button="deletePopupButtons" popup-label="Êtes-vous sûr de vouloir supprimer ce bénévole ?" button-label="Supprimer" ></popup-directive>
+    </div>
+  </div>
+  <p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénéficiaire existe déjà avec ce code</p>
+
+  <p class="errorMessage" ng-show="currentError.isBenevoleNotUnique">Le bénéficiaire existe déjà</p>
+</form>
