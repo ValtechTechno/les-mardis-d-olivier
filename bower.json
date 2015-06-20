@@ -1,0 +1,12 @@
+{
+  "name": "les-mardis-d-olivier",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ValtechTechno/les-mardis-d-olivier",
+  "private": true,
+  "dependencies": {
+    "angular": "1.3.13",
+    "angular-ui-date": "0.0.7",
+    "foundation": "5.5.1",
+    "pouchdb": "~3.3.1"
+  }
+}

@@ -17,41 +17,26 @@
     };
 
     $scope.currentDistribution = {};
-    $scope.beneficiaires = dataService.loadBeneficiaires();
 
     $scope.showAllDistribution = function () {
-      $scope.distributions = retrieveAllDistribution(dataService);
-      $scope.getComments();
-      $scope.initNextDate();
+      dataService.findAllDistributions()
+        .then(function (distributions) {
+          $scope.distributions = retrieveAllDistribution(distributions, dataService);
+          $scope.initNextDate();
+          $scope.loadBeneficiaires();
+          $scope.loadBeneficiaireByDistribution();
+        });
+    };
+
+    $scope.loadBeneficiaires = function () {
+      dataService.findAllBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+        });
     };
 
     $scope.loadDistribution = function (distributionId) {
       $location.path("/distributions/" + distributionId);
-    };
-
-    $scope.getComments = function () {
-      if ($scope.distributions === null) {
-        return false;
-      }
-      var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-      for (var distributionIndex = 0; distributionIndex < $scope.distributions.length; distributionIndex++) {
-        for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-          if (beneficiairesPresentByDistribution[i].distributionId == $scope.distributions[distributionIndex]._id &&
-            beneficiairesPresentByDistribution[i].comment !== undefined) {
-            if ($scope.distributions[distributionIndex].comments === undefined) {
-              $scope.distributions[distributionIndex].comments = [];
-            }
-            var beneficiaire = null;
-            for (var beneficiaireIndex = 0; beneficiaireIndex < $scope.beneficiaires.length; beneficiaireIndex++) {
-              if ($scope.beneficiaires[beneficiaireIndex]._id == beneficiairesPresentByDistribution[i].beneficiaireId) {
-                beneficiaire = $scope.beneficiaires[beneficiaireIndex];
-                $scope.distributions[distributionIndex].comments.push("(" + beneficiaire.code + ") " + beneficiaire.lastName + " " + beneficiaire.firstName + " : " + beneficiairesPresentByDistribution[i].comment);
-                break;
-              }
-            }
-          }
-        }
-      }
     };
 
     $scope.initNextDate = function () {
@@ -64,80 +49,93 @@
     $scope.showAllDistribution();
 
     $scope.startNewDistribution = function () {
-      $scope.currentDistribution._id = $scope.saveNewDistribution();
-      $location.path('distributions/' + $scope.currentDistribution._id);
-    };
-
-    $scope.saveNewDistribution = function () {
-      return storeDistribution({
+      $scope.storeDistribution({
         'distributionDate': $scope.currentDistribution.distributionDate,
         'nbPlannedMeals': $scope.currentDistribution.distributionNbPlannedMeals
-      }, dataService);
+      });
     };
 
-  }
+    $scope.storeDistribution = function (distribution) {
+      // charge all distributions to determine the next id
+      dataService.findAllDistributions()
+        .then(function (distributions) {
+          var nextId;
+          if (distributions.filter(function (storedDistribution) {
+              return (distribution.distributionDate === storedDistribution.distributionDate);
+            }).length > 0) {
+            throw {type: "functional", message: 'Une distribution à cette date existe déjà'};
+          }
+          nextId = distributions.length + 1;
+          distribution._id = nextId;
+          $scope.addDistribution(distribution);
+        })
+        .catch(function (err) {
+          throw {
+            type: "functional",
+            message: 'Impossible de récupérer les distributions.'
+          };
+        });
+    };
 
+    $scope.addDistribution = function (distribution) {
+      dataService.addOrUpdateDistribution(distribution).then(function () {
+        $scope.currentDistribution._id = distribution._id;
+        $location.path('distributions/' + $scope.currentDistribution._id);
+      }).catch(function (err) {
+        throw {
+          type: "functional",
+          message: 'Impossible de créer la distribution.'
+        };
+      });
+    };
+
+    $scope.loadBeneficiaireByDistribution = function(){
+      dataService.findAllBeneficiaireByDistribution()
+        .then(function (beneficiaireByDistribution) {
+          $scope.beneficiaireByDistribution = beneficiaireByDistribution;
+          $scope.getNbBeneficiairesAndComments();
+        })
+        .catch(function (err) {
+          throw {
+            type: "functional",
+            message: 'Impossible de récupérer les informations des distributions.'
+          };
+        });
+    };
+
+    $scope.getNbBeneficiairesAndComments = function() {
+      var nbBeneficiaireByDistribution = [];
+      var beneficiaire, comments;
+      for (var i = 0; i < $scope.beneficiaireByDistribution.length; i++) {
+          if(nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId] === undefined){
+            nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId] = {};
+          }
+          beneficiaire = nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbBeneficiaires;
+          comments = nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments;
+          nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbBeneficiaires = beneficiaire ? beneficiaire + 1 : 1;
+
+          if($scope.beneficiaireByDistribution[i].comment !== undefined) {
+            nbBeneficiaireByDistribution[$scope.beneficiaireByDistribution[i].distributionId].nbComments = comments ? comments + 1 : 1;
+          }
+      }
+
+      for (var pos = 0; pos < $scope.distributions.length; pos++) {
+        if(nbBeneficiaireByDistribution[$scope.distributions[pos]._id] !== undefined) {
+          $scope.distributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[$scope.distributions[pos]._id].nbBeneficiaires;
+          $scope.distributions[pos].nbComments = nbBeneficiaireByDistribution[$scope.distributions[pos]._id].nbComments;
+        }
+      }
+    };
+  }
 })();
 
-retrieveAllDistribution = function (dataService) {
-  var allDistributions = dataService.allDistributions();
+retrieveAllDistribution = function (allDistributions, dataService) {
   if (allDistributions === null) {
     allDistributions = [];
   } else {
     allDistributions.reverse();
   }
-  var nbBeneficiaireByDistribution = [];
-  var beneficiaire;
-  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-  for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-    beneficiaire = nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId];
-    nbBeneficiaireByDistribution[beneficiairesPresentByDistribution[i].distributionId] = beneficiaire ? beneficiaire + 1 : 1;
-  }
-
-  for (var pos = 0; pos < allDistributions.length; pos++) {
-    allDistributions[pos].nbBeneficiaires = nbBeneficiaireByDistribution[allDistributions[pos]._id];
-  }
   return allDistributions;
-};
-
-storeDistribution = function (distribution, dataService) {
-  var distributions = dataService.allDistributions();
-  var nextId;
-  if (distributions === null || distributions.length === 0) {
-    distributions = [];
-    nextId = 1;
-  } else if (distributions.filter(function (storedDistribution) {
-      return (distribution.distributionDate === storedDistribution.distributionDate);
-    }).length > 0) {
-    throw {type:"functional", message:'Une distribution à cette date existe déjà'};
-  } else {
-    nextId = distributions[distributions.length - 1]._id + 1;
-  }
-
-  distribution._id = nextId;
-  distributions.push(distribution);
-  dataService.saveDistributions(distributions);
-  return nextId;
-};
-
-storeRelationDistributionBeneficiaire = function (distributionId, beneficiaireId, dataService) {
-  var isRelationExisting = false;
-  var beneficiairesPresentByDistribution = dataService.allBeneficiairesPresentByDistribution();
-  for (var i = 0; i < beneficiairesPresentByDistribution.length; i++) {
-    if (beneficiairesPresentByDistribution[i].distributionId == distributionId &&
-      beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId) {
-      isRelationExisting = true;
-      beneficiairesPresentByDistribution.splice(i, 1);
-      break;
-    }
-  }
-  if (isRelationExisting === false) {
-    beneficiairesPresentByDistribution.push({
-      "distributionId": distributionId.toString(),
-      "beneficiaireId": beneficiaireId
-    });
-  }
-  dataService.saveBeneficiairesPresentByDistribution(beneficiairesPresentByDistribution);
 };
 
 createNextWorkingDate = function (dateString) {

@@ -7,10 +7,19 @@
 
   function BeneficiaireController ($scope, dataService, commonService, $location) {
     $scope.openBeneficiaireList = function () {
-      $scope.beneficiaires = dataService.loadBeneficiaires();
-      $scope.resetAddBeneficiareForm();
-      $scope.excludedFilter = false;
-      $scope.hasCardFilter = false;
+      if ($scope.beneficiaires === null || $scope.beneficiaires === undefined) {
+        $scope.beneficiaires = [];
+      }
+      dataService.findAllBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+          $scope.resetAddBeneficiareForm();
+        })
+        .catch(function (err) {
+            throw {type: "functional", message: 'Impossible de charger la liste des bénéficiaires.'};
+        });
+        $scope.excludedFilter = false;
+        $scope.hasCardFilter = false;
     };
 
     $scope.searchBeneficiaire = function (beneficiaire) {
@@ -26,9 +35,7 @@
     };
 
     $scope.addBeneficiaireFromList = function () {
-      if ($scope.addBeneficiaire()) {
-        $scope.resetAddBeneficiareForm();
-      }
+      $scope.addBeneficiaire();
     };
 
     $scope.openBeneficiaireDetail = function(beneficiaireId) {
@@ -52,14 +59,18 @@
       return nextCode;
     };
 
-    $scope.addBeneficiaire = function() {
+    $scope.addBeneficiaire = function () {
       if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, false)) {
-        var newBeneficiaire = getNewBeneficiaire(getNextId($scope.beneficiaires),$scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
-        $scope.beneficiaires.push(newBeneficiaire);
-        dataService.saveBeneficiaires($scope.beneficiaires);
-        return newBeneficiaire;
+        var newBeneficiaire = getNewBeneficiaire(getNextIdInUnsortedList($scope.beneficiaires), $scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
+        dataService.addOrUpdateBeneficiaire(newBeneficiaire)
+          .then(function (added) {
+            $scope.beneficiaires.push(added);
+            $scope.resetAddBeneficiareForm();
+          })
+          .catch(function (err) {
+              throw {type: "functional", message: 'Le bénéficiaire n\'a pas été ajouté suite à une erreur technique.'};
+          });
       }
-      return false;
     };
 
     $scope.openBeneficiaireList();

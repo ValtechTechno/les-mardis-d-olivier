@@ -7,8 +7,13 @@
 
   function ImportController($scope, dataService, $location) {
     $scope.openImportPage = function () {
+      $scope.beneficiaires = [];
       $scope.initDynamicVariable("");
-      $scope.hasCard = false;
+      dataService.findAllBeneficiaires()
+        .then(function (beneficiaires) {
+          $scope.beneficiaires = beneficiaires;
+      });
+          $scope.hasCard = false;
       $scope.showFinalList = false;
       $scope.deletePopupButtons = [
         {text: "Supprimer", event: "deleteExistingData", close: true, style: "redButton"},
@@ -17,21 +22,26 @@
     };
 
     $scope.importData = function () {
-      dataService.saveBeneficiaires($scope.beneficiairesToImport);
-      $location.path("/beneficiaires");
+      dataService.saveBeneficiaires($scope.beneficiairesToImport).then(function () {
+        $location.path("/beneficiaires");
+      }).catch(function (err) {
+          throw {
+            type: "functional",
+            message: 'Impossible d\'impoter les données suite à un problème technique.'
+          };
+      });
     };
 
     $scope.$on('deleteExistingData', function () {
-      dataService.saveBeneficiaires(null);
-      dataService.saveDistributions(null);
-      dataService.saveBeneficiairesPresentByDistribution(null);
-      dataService.saveBeneficiairesPresentByDistribution(null);
+      //dataService.saveBeneficiaires(null);
+      //dataService.saveDistributions(null);
+      //dataService.saveBeneficiairesPresentByDistribution(null);
+      //dataService.saveBeneficiairesPresentByDistribution(null);
       $scope.validationImport($scope.parsedPaste);
     });
 
     $scope.initDynamicVariable = function (parsedList) {
       $scope.parsedPaste = parsedList;
-      $scope.beneficiaires = dataService.loadBeneficiaires();
       $scope.beneficiairesToImport = angular.copy($scope.beneficiaires);
       var lastCode = 0;
       if ($scope.beneficiairesToImport.length > 0) {
@@ -68,6 +78,14 @@
         if (parsedList[i].length == 2 || (parsedList[i].length == 3 && isFirstColCode === false)) {
           code = lastCode;
         }
+        if(isFirstColCode === true) {
+          code = parsedList[i][0];
+        }
+        for (var benefNum = 0; benefNum < $scope.beneficiairesToImport.length; benefNum++) {
+          if ($scope.beneficiairesToImport[benefNum].code == parsedList[i][0]) {
+            throw {type:"functional", message:"Le code " + parsedList[i][0] + " est dupliqué, ligne n°" + (i + 1)};
+          }
+        }
 
         var hasCardFromString = $scope.getHasCardFromString(parsedList[i][2]);
         if (parsedList[i].length == 3 && isFirstColCode === false){
@@ -78,16 +96,10 @@
         }
 
         if (code === undefined) {
-          for (var benefNum = 0; benefNum < $scope.beneficiairesToImport.length; benefNum++) {
-            if ($scope.beneficiairesToImport[benefNum].code == parsedList[i][0]) {
-              throw {type:"functional", message:"Le code " + parsedList[i][0] + " est dupliqué, ligne n°" + (i + 1)};
-            }
-          }
-          code = parsedList[i][0];
           hasCard = $scope.getHasCardFromString(parsedList[i][3]);
         }
 
-        $scope.beneficiairesToImport.push(getNewBeneficiaire(getNextId($scope.beneficiairesToImport), code, lastName, firstName, hasCard));
+        $scope.beneficiairesToImport.push(getNewBeneficiaire(getNextIdInUnsortedList($scope.beneficiairesToImport), code, lastName, firstName, hasCard));
       }
     };
 
