@@ -21,7 +21,11 @@
     function saveAboutPage() {
       dataService.updateAbout(vm.aboutInformation).then(function() {
         $location.path('/about');
-      }).catch(function (err) {
+      }).catch(function () {
+        throw {
+          type: "functional",
+          message: 'Une erreur est survenue lors de l\'enregistrement. Veuillez recommencer.'
+        };
       });
     }
   }

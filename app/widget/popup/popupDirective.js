@@ -14,7 +14,7 @@
           event: '@',
           style: '@'
         },
-        link: function (scope, element, attrs) {
+        link: function (scope, element) {
           scope.popupDirectiveId = 'popupDirective' + id++;
           element.find('div').attr('id', scope.popupDirectiveId);
           scope.openPopup = function () {

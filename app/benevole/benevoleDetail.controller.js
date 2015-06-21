@@ -53,7 +53,7 @@
           $scope.benevoles = benevoles;
           $scope.updateBenevole();
         })
-        .catch(function (err) {
+        .catch(function () {
           throw {
             type: "functional",
             message: 'Une erreur est survenue lors de l\'enregistrement. Veuillez recommencer."};'
