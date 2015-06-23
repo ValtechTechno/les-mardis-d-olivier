@@ -35,7 +35,7 @@
           <li ng-class="{'active' : menu.isActive('/about'), 'ng-hide' : !menu.isAuth()}"><a href="#/about/">A propos</a></li>
         </ul>
         <ul class="left">
-          <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown' : menu.isAuth() }">
+          <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown not-click' : menu.isAuth() }">
             <a>Gestion</a>
             <ul class="dropdown">
               <li ng-class="{'active' : menu.isActive('/benevoles'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/">Bénévoles</a></li>
@@ -47,8 +47,8 @@
           </li>
         </ul>
         <ul class="left">
-          <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown' : menu.isAuth() }">
-          <a>{{account.fullName}}</a>
+          <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown not-click' : menu.isAuth() }">
+            <a>{{account.fullName}}</a>
             <ul class="dropdown">
               <li ng-class="{'active' : menu.isActive('/profile'), 'ng-hide' : !menu.isAuth()}"><a href="#/profile/">Profil</a></li>
               <li><a ng-class="{'ng-hide' : !menu.isAuth()}" ng-click="menu.logout()">Se déconnecter</a></li>
