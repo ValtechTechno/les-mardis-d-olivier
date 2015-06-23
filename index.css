@@ -13,16 +13,16 @@ select {
 
 @media only screen and (min-width: 40em) {
   .top-bar {
-    height: 95px;
+    height: 50px;
   }
 
   .top-bar-section li a {
-    line-height: 95px !important;
+    line-height: 50px !important;
   }
 
   .name img {
-    margin-top: 10px !important;
-    max-height: 75px;
+    margin-top: 2px !important;
+    max-height: 45px;
     max-width: 200px;
   }
 

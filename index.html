@@ -26,22 +26,43 @@
       </ul>
       <section class="top-bar-section">
         <ul class="left">
-          <li ng-class="menu.isActive('/distribution')"><a href="#/distributions/">Distributions</a></li>
+          <li ng-class="{'active' : menu.isActive('/distributions'), 'ng-hide' : !menu.isAuth()}"><a href="#/distributions/">Distributions</a></li>
         </ul>
         <ul class="left">
-          <li ng-class="menu.isActive('/beneficiaire')"><a href="#/beneficiaires/">Bénéficiaires</a></li>
+          <li ng-class="{'active' : menu.isActive('/beneficiaires'), 'ng-hide' : !menu.isAuth()}"><a href="#/beneficiaires/">Bénéficiaires</a></li>
         </ul>
         <ul class="left">
-          <li ng-class="menu.isActive('/benevole')"><a href="#/benevoles/">Bénévoles</a></li>
+          <li ng-class="{'active' : menu.isActive('/about'), 'ng-hide' : !menu.isAuth()}"><a href="#/about/">A propos</a></li>
         </ul>
         <ul class="left">
-          <li ng-class="menu.isActive('/export')"><a href="#/export/">Export</a></li>
+          <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown' : menu.isAuth() }">
+            <a>Gestion</a>
+            <ul class="dropdown">
+              <li ng-class="{'active' : menu.isActive('/benevoles'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/">Bénévoles</a></li>
+              <li ng-class="{'active' : menu.isActive('/createAssociation'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAssociation/">Associations</a></li>
+              <li ng-class="{'active' : menu.isActive('/createInstance'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createInstance/">Instances</a></li>
+              <li ng-class="{'active' : menu.isActive('/export'), 'ng-hide' : !menu.isAuth()}"><a href="#/export/">Export</a></li>
+              <li ng-class="{'active' : menu.isActive('/import'), 'ng-hide' : !menu.isAuth()}"><a href="#/import/">Import</a></li>
             </ul>
-        <ul class="left">
-          <li ng-class="menu.isActive('/import')"><a href="#/import/">Import</a></li>
+          </li>
         </ul>
         <ul class="left">
-          <li ng-class="menu.isActive('/about')"><a href="#/about/">A propos</a></li>
+          <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown' : menu.isAuth() }">
+          <a>{{account.fullName}}</a>
+            <ul class="dropdown">
+              <li ng-class="{'active' : menu.isActive('/profile'), 'ng-hide' : !menu.isAuth()}"><a href="#/profile/">Profil</a></li>
+              <li><a ng-class="{'ng-hide' : !menu.isAuth()}" ng-click="menu.logout()">Se déconnecter</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul>
+          <li ng-class="{'active' : menu.isActive('/login'), 'ng-hide' : menu.isAuth()}"><a href="#/login/">Se connecter</a></li>
+        </ul>
+        <ul>
+          <li ng-class="{'active' : menu.isActive('/noauth/createBenevole'), 'ng-hide' : menu.isAuth()}"><a href="#/noauth/createBenevole/">Créer un compte</a></li>
+        </ul>
+        <ul>
+          <li ng-class="{'active' : menu.isActive('/noauth/createAssociation'), 'ng-hide' : menu.isAuth()}" ><a href="#/noauth/createAssociation/">Créer une association</a></li>
         </ul>
       </section>
     </nav>
