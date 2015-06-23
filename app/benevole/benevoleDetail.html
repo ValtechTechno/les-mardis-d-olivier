@@ -1,29 +1,6 @@
 <h3><b>Profil</b></h3>
 <form name="updateBenevoleForm">
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>Nom
-        <input type="text" name="lastName" class="detail" ng-model="currentBenevole.lastName" ng-required="true"/>
-      </label>
-    </div>
-    <div class="medium-6 columns">
-      <label>Prénom
-        <input type="text" name="firstName" class="detail" ng-model="currentBenevole.firstName" ng-required="true"/>
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="medium-6 columns">
-      <label>Téléphone
-        <input type="text" name="phoneNumber" class="detail" ng-model="currentBenevole.phoneNumber" ng-required="true"/>
-      </label>
-    </div>
-    <div class="medium-6 columns">
-      <label>Email
-        <input type="email" name="email" class="detail" ng-model="currentBenevole.email" ng-required="true"/>
-      </label>
-    </div>
-  </div>
+  <div ng-include="'app/benevole/benevoleMandatoryField.html'"></div>
   <div class="row">
     <div class="medium-6 columns">
       <label>Adresse

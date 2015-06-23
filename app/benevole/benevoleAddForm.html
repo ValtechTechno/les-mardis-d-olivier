@@ -1,0 +1,8 @@
+<div ng-include="'app/benevole/benevoleMandatoryField.html'"></div>
+<div class="row">
+  <div class="medium-4 columns right">
+    <button class="button secondary expand">Ajouter</button>
+  </div>
+</div>
+<p class="errorMessage" ng-show="currentError.isCodeNotUnique">Un bénévole existe déjà avec ce code</p>
+<p class="errorMessage" ng-show="currentError.isBenevoleNotUnique">Le bénévole existe déjà</p>

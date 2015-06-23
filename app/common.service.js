@@ -9,8 +9,10 @@
     var service = {
       userFormValidation: userFormValidation,
       benevoleFormValidation: benevoleFormValidation,
+      associationFormValidation: associationFormValidation,
       searchBeneficiaire: searchBeneficiaire,
-      searchBenevole: searchBenevole
+      searchBenevole: searchBenevole,
+      searchAssociation: searchAssociation
     };
 
     return service;
@@ -26,12 +28,21 @@
       return !searchText || reg.test(benevole.code !== undefined && benevole.code.toString()) || reg.test(benevole.lastName) || reg.test(benevole.firstName);
     }
 
+    function searchAssociation(searchText, association) {
+      var reg = new RegExp(searchText, 'i');
+      return !searchText || reg.test(association.name !== undefined && association.name.toString());
+    }
+
     function notUniqueBeneficiaire(lastName, firstName) {
       throw {type: "functional", message: $translate.instant("beneficiaire.error.alreadyExist", { lastName:lastName, firstName:firstName})};
     }
 
     function notUniqueEmail(email) {
       throw {type: "functional", message: "L'addresse " + email + " est déjà utilisée"};
+    }
+
+    function notUniqueAssociation(name) {
+      throw {type: "functional", message: "L'association " + name + " existe déjà"};
     }
 
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
@@ -51,6 +62,15 @@
           notUniqueBeneficiaire(lastName, firstName);
         }
       }
+      return true;
+    }
+
+    function associationFormValidation(associations, name) {
+        if (associations.filter(function (association) {
+          return (association.name.toLowerCase() === name.toLowerCase());
+        }).length > 0) {
+          notUniqueAssociation(name);
+        }
       return true;
     }
 
@@ -106,6 +126,22 @@ getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber){
   };
   return newBenevole;
 };
+
+getNewAdminBenevole = function(nextId, lastName, firstName, email, phoneNumber){
+  var newBenevole = getNewBenevole(nextId, lastName, firstName, email, phoneNumber);
+  newBenevole.isAdmin = true;
+  newBenevole.password = 'test';
+  return newBenevole;
+};
+
+getNewAssociation = function(nextId, name){
+  var newAssociation = {
+    _id: nextId,
+    name: name
+  };
+  return newAssociation;
+};
+
 
 getNextIdInUnsortedList = function (list) {
   var nextId = 1;

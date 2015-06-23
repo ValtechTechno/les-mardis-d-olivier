@@ -1,0 +1,41 @@
+<form name="addAssociationForm" ng-submit="addAssociationFromList()">
+  <div class="row">
+    <div class="medium-12 columns">
+      <div class="row">
+        <div class="medium-4 columns">
+            <input type="text" name="name" ng-model="currentAssociation.name" placeholder="Nom de l'association"
+               ng-required="true"/>
+        </div>
+        </div>
+      <div class="row">
+        <div class="medium-4 columns left">
+          <button class="button secondary expand">Ajouter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="errorMessage" ng-show="currentError.isNameNotUnique">Une association existe déjà avec ce nom</p>
+
+</form>
+<div class="row">
+  <div class="medium-12 columns">
+    <table class="table">
+      <thead>
+      <tr>
+        <td>Nom</td>
+      </tr>
+      <tr>
+        <td colspan="5"><input type="text" ng-model="searchText" placeholder="Restos du coeur, Croix-Rouge, etc."></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-show="associations.length==0">
+        <td colspan="3">Aucune association.</td>
+      </tr>
+      <tr ng-repeat="asso in associations | filter:searchAssociation">
+        <td>{{asso.name}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

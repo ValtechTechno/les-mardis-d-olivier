@@ -16,6 +16,7 @@
     var DISTRIBUTION_PREFIX = 'distri_';
     var BENEFICIAIRE_BY_DISTRIBUTION_PREFIX = 'bbd_';
     var ABOUT_ID = 'about_information';
+    var ASSOCIATION_PREFIX = 'asso_';
     var service = {
       addOrUpdateBeneficiaire: addOrUpdateBeneficiaire,
       findAllBeneficiaires: findAllBeneficiaires,
@@ -36,8 +37,10 @@
       removeBeneficiaireByDistribution: removeBeneficiaireByDistribution,
       removeBeneficiaireByDistributionByBeneficiaire:removeBeneficiaireByDistributionByBeneficiaire,
       getAbout: getAbout,
-      updateAbout: updateAbout
+      updateAbout: updateAbout,
       login: login,
+      findAllAssociations: findAllAssociations,
+      addOrUpdateAssociation: addOrUpdateAssociation
     };
 
     return service;
@@ -248,7 +251,9 @@
         firstName: benevole.firstName,
         lastName: benevole.lastName,
         email: benevole.email,
-        phoneNumber: benevole.phoneNumber
+        phoneNumber: benevole.phoneNumber,
+        isAdmin : benevole.isAdmin,
+        password: benevole.password
       };
     }
 
@@ -490,5 +495,60 @@
         });
       return deferred.promise;
     }
+
+    function addOrUpdateAssociation(association) {
+      var deferred = $q.defer();
+      var assoc = getAssociation(association);
+      console.log(assoc);
+      db.put(assoc)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            assoc._id = getAssociationIdForView(assoc._id);
+            assoc._rev = doc.rev;
+            return deferred.resolve(assoc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function findAllAssociations() {
+      var deferred = $q.defer();
+
+      db.allDocs({
+        startkey: ASSOCIATION_PREFIX,
+        endkey: ASSOCIATION_PREFIX + '\uffff',
+        include_docs: true
+      }).then(function (res) {
+
+        var associations = [];
+        for (var i = 0; i < res.rows.length; i++) {
+          res.rows[i].doc._id = getAssociationIdForView(res.rows[i].doc._id);
+          associations.push(res.rows[i].doc);
+        }
+        deferred.resolve(associations);
+
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+
+    function getAssociationIdForView(id) {
+      return id.replace(ASSOCIATION_PREFIX, '');
+    }
+
+    function getAssociationIdForDatabase(id) {
+      return ASSOCIATION_PREFIX + id;
+    }
+
+    function getAssociation(association) {
+      association._id = getAssociationIdForDatabase(association._id);
+      return association;
+    }
+
   }
 })();

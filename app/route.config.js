@@ -54,6 +54,14 @@
         controller: 'ImportController',
         templateUrl: 'app/import/import.html'
       })
+      .when('/noauth/createAssociation', {
+        controller: 'AssociationController',
+        templateUrl: 'app/association/association.html'
+      })
+      .when('/noauth/createBenevole', {
+        controller: 'BenevoleCreateController',
+        templateUrl: 'app/benevole/benevoleCreate.html'
+      })
       .otherwise({
         redirectTo: '/distributions'
       });

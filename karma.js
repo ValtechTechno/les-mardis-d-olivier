@@ -45,6 +45,10 @@ module.exports = function (config) {
       'app/common.service.js',
       'app/login/login.controller.js',
       'app/login/login.service.js',
+      'app/benevole/benevole.controller.js',
+      'app/benevole/benevoleDetail.controller.js',
+      'app/benevole/benevoleCreate.controller.js',
+      'app/association/association.controller.js',
       'tests/angular-mocks.js',
       'tests/**/*Spec.js'
     ],
