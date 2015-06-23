@@ -1,0 +1,17 @@
+<form name="loginForm">
+  <div class="row">
+    <div class="medium-6 columns">
+        <input type="email" id="login" name="login" placeholder="Email"  ng-model="credentials.login" tabindex="1" autofocus />
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <input type="password" id="password" name="password" placeholder="Mot de passe" ng-model="credentials.password" tabindex="2" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-3 columns">
+        <button id="loginSubmit" type="submit" tabindex="3" ng-click="login()" class="button secondary expand">Se connecter</button>
+    </div>
+  </div>
+</form>

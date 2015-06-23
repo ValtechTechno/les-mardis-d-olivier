@@ -43,6 +43,8 @@ module.exports = function (config) {
       'app/about/about.controller.js',
       'app/about/about.edit.controller.js',
       'app/common.service.js',
+      'app/login/login.controller.js',
+      'app/login/login.service.js',
       'tests/angular-mocks.js',
       'tests/**/*Spec.js'
     ],

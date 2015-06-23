@@ -7,6 +7,10 @@
 
   function routeConfiguration ($routeProvider) {
     $routeProvider
+      .when('/login', {
+        controller: 'LoginController',
+        templateUrl: 'app/login/login.html'
+      })
       .when('/distributions', {
         controller: 'DistributionController',
         templateUrl: 'app/distribution/distribution.html'

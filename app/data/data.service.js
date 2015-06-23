@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  if (typeof localStorage == 'undefined') {
+  if (typeof localStorage === 'undefined') {
     alert("localStorage n'est pas supporté, l'application ne fonctionnera pas avec ce navigateur.");
   }
 
@@ -37,6 +37,7 @@
       removeBeneficiaireByDistributionByBeneficiaire:removeBeneficiaireByDistributionByBeneficiaire,
       getAbout: getAbout,
       updateAbout: updateAbout
+      login: login,
     };
 
     return service;
@@ -458,9 +459,32 @@
         about._id = ABOUT_ID;
       }
       db.put(about)
-        .then(function (doc) {
+        .then(function () {
             return deferred.resolve();
         }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function login(email) {
+      var deferred = $q.defer();
+
+      function myMapFunction(doc) {
+        emit(doc.email);
+      }
+
+      db.query(myMapFunction, {
+        key: email, include_docs: true
+      })
+      .then(function (res) {
+          console.log(res);
+          $rootScope.$apply(function () {
+            return deferred.resolve(res);
+          });
+        })
+        .catch(function (err) {
           console.log(err);
           deferred.reject(err);
         });
