@@ -14,6 +14,14 @@
       dataService.findAllDistributions().then(function (distributions) {
         $scope.distributions = distributions;
       });
+      dataService.findAllAssociations()
+        .then(function (associations) {
+          $scope.associations = associations;
+        });
+      dataService.findAllBenevoles()
+        .then(function (benevoles) {
+          $scope.benevoles = benevoles;
+        });
       dataService.findAllBeneficiaireByDistribution().then(function (bbds) {
         $scope.beneficiairesPresentByDistribution = bbds;
       });

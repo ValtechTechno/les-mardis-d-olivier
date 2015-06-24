@@ -253,7 +253,10 @@
         email: benevole.email,
         phoneNumber: benevole.phoneNumber,
         isAdmin : benevole.isAdmin,
-        password: benevole.password
+        password: benevole.password,
+        englishLevel:benevole.englishLevel,
+        spanishLevel:benevole.spanishLevel,
+        germanLevel:benevole.germanLevel
       };
     }
 

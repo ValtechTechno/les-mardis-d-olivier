@@ -122,7 +122,10 @@ getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber){
     firstName: firstName,
     lastName: lastName,
     email: email,
-    phoneNumber: phoneNumber
+    phoneNumber: phoneNumber,
+    englishLevel:0,
+    spanishLevel:0,
+    germanLevel:0
   };
   return newBenevole;
 };

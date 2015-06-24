@@ -1,6 +1,54 @@
 <button id="exportButton" ng-click="exportData()" class="button secondary">Exporter
 </button>
 <div id="toExport">
+  <h3><b>Associations</b></h3>
+  <table>
+    <thead>
+    <tr>
+      <th><i class="ui-icon ui-icon-key"></i> Id</th>
+      <th>Nom</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="asso in associations">
+      <td>{{asso._id}}</td>
+      <td>{{asso.name}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <h3><b>Benevoles</b></h3>
+  <table>
+    <thead>
+    <tr>
+      <th><i class="ui-icon ui-icon-key"></i> Id</th>
+      <th>Nom</th>
+      <th>Prenom</th>
+      <th><i class="ui-icon ui-icon-contact"></i>Telephone</th>
+      <th><i class="ui-icon ui-icon-contact"></i>Email</th>
+      <th>Adresse</th>
+      <th>Annee de naissance</th>
+      <th>Administrateur</th>
+      <th>Niveau d'anglais</th>
+      <th>Niveau d'espagnol</th>
+      <th>Niveau d'allemand</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="benev in benevoles">
+      <td>{{benev._id}}</td>
+      <td>{{benev.lastName}}</td>
+      <td>{{benev.firstName}}</td>
+      <td>{{benev.phoneNumber}}</td>
+      <td>{{benev.email}}</td>
+      <td>{{benev.adresse}}</td>
+      <td>{{benev.birthYear}}</td>
+      <td>{{isBooleanUndefined(benev.isAdmin)}}</td>
+      <td>{{benev.englishLevel}}</td>
+      <td>{{benev.spanishLevel}}</td>
+      <td>{{benev.germanLevel}}</td>
+    </tr>
+    </tbody>
+  </table>
   <h3><b>Beneficiaires</b></h3>
   <table>
     <thead>
@@ -8,7 +56,7 @@
       <th><i class="ui-icon ui-icon-key"></i> Id</th>
       <th><i class="ui-icon ui-icon-tag"></i>Code</th>
       <th>Nom</th>
-      <th>Prénom</th>
+      <th>Prenom</th>
       <th><i class="ui-icon ui-icon-contact"></i>Carte</th>
       <th><i class="ui-icon ui-icon-circle-minus"></i>Exclue</th>
       <th>Description</th>
@@ -32,7 +80,7 @@
     <tr>
       <th><i class="ui-icon ui-icon-key"></i> Id</th>
       <th><i class="ui-icon ui-icon-calendar"></i> Date</th>
-      <th><i class="ui-icon ui-icon-cart"></i> Repas Prévus</th>
+      <th><i class="ui-icon ui-icon-cart"></i> Repas Prevus</th>
     </tr>
     </thead>
     <tbody>
