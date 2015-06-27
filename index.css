@@ -202,3 +202,7 @@ input[type="checkbox"] + label {
 #view-content{
   padding-top: 1em;
 }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
