@@ -40,7 +40,7 @@
             <ul class="dropdown">
               <li ng-class="{'active' : menu.isActive('/benevoles'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/">Bénévoles</a></li>
               <li ng-class="{'active' : menu.isActive('/createAssociation'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAssociation/">Associations</a></li>
-              <li ng-class="{'active' : menu.isActive('/createInstance'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createInstance/">Instances</a></li>
+              <li ng-class="{'active' : menu.isActive('/createAntenne'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAntenne/">Antenne</a></li>
               <li ng-class="{'active' : menu.isActive('/export'), 'ng-hide' : !menu.isAuth()}"><a href="#/export/">Export</a></li>
               <li ng-class="{'active' : menu.isActive('/import'), 'ng-hide' : !menu.isAuth()}"><a href="#/import/">Import</a></li>
             </ul>
@@ -63,6 +63,9 @@
         </ul>
         <ul>
           <li ng-class="{'active' : menu.isActive('/noauth/createAssociation'), 'ng-hide' : menu.isAuth()}" ><a href="#/noauth/createAssociation/">Créer une association</a></li>
+        </ul>
+        <ul>
+          <li ng-class="{'active' : menu.isActive('/noauth/createAntenne'), 'ng-hide' : menu.isAuth()}" ><a href="#/noauth/createAntenne/">Créer une antenne</a></li>
         </ul>
       </section>
     </nav>
@@ -99,6 +102,7 @@
 <script src="app/menu.controller.js"></script>
 <script src="app/widget/popup/popupDirective.js"></script>
 <script src="app/association/association.controller.js"></script>
+<script src="app/antenne/antenne.controller.js"></script>
 <script src="app/about/about.controller.js"></script>
 <script src="app/about/about.edit.controller.js"></script>
 <script src="app/beneficiaire/beneficiaire.controller.js"></script>

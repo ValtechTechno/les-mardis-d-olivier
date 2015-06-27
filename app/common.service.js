@@ -10,9 +10,11 @@
       userFormValidation: userFormValidation,
       benevoleFormValidation: benevoleFormValidation,
       associationFormValidation: associationFormValidation,
+      antenneFormValidation: antenneFormValidation,
       searchBeneficiaire: searchBeneficiaire,
       searchBenevole: searchBenevole,
-      searchAssociation: searchAssociation
+      searchAssociation: searchAssociation,
+      searchAntenne: searchAntenne
     };
 
     return service;
@@ -33,6 +35,11 @@
       return !searchText || reg.test(association.name !== undefined && association.name.toString());
     }
 
+    function searchAntenne(searchText, antenne) {
+      var reg = new RegExp(searchText, 'i');
+      return !searchText || reg.test(antenne.name !== undefined && antenne.name.toString()) || reg.test(antenne.associationName !== undefined && antenne.associationName.toString());
+    }
+
     function notUniqueBeneficiaire(lastName, firstName) {
       throw {type: "functional", message: $translate.instant("beneficiaire.error.alreadyExist", { lastName:lastName, firstName:firstName})};
     }
@@ -43,6 +50,10 @@
 
     function notUniqueAssociation(name) {
       throw {type: "functional", message: "L'association " + name + " existe déjà"};
+    }
+
+    function notUniqueAntenne(antenneName, associationName) {
+      throw {type: "functional", message: "L'antenne " + antenneName + " existe déjà pour l'association "+associationName};
     }
 
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
@@ -71,6 +82,16 @@
         }).length > 0) {
           notUniqueAssociation(name);
         }
+      return true;
+    }
+
+    function antenneFormValidation(antennes, association, antenneName) {
+      debugger;
+      if (antennes.filter(function (antenne) {
+        return (antenne.name.toLowerCase() === antenneName.toLowerCase() && association._id === antenne.associationId);
+      }).length > 0) {
+        notUniqueAntenne(antenneName, association.name);
+      }
       return true;
     }
 
@@ -130,10 +151,10 @@ getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber){
   return newBenevole;
 };
 
-getNewAdminBenevole = function(nextId, lastName, firstName, email, phoneNumber){
+getNewAdminBenevole = function(nextId, lastName, firstName, email, phoneNumber, password){
   var newBenevole = getNewBenevole(nextId, lastName, firstName, email, phoneNumber);
   newBenevole.isAdmin = true;
-  newBenevole.password = 'test';
+  newBenevole.password = password;
   return newBenevole;
 };
 
@@ -141,6 +162,15 @@ getNewAssociation = function(nextId, name){
   var newAssociation = {
     _id: nextId,
     name: name
+  };
+  return newAssociation;
+};
+
+getNewAntenne = function(nextId, association, antenneName){
+  var newAssociation = {
+    _id: nextId,
+    name: antenneName,
+    associationId: association._id
   };
   return newAssociation;
 };

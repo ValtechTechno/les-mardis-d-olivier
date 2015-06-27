@@ -1,3 +1,27 @@
 <form name="addBenevoleForm" ng-submit="addBenevoleFromNoAuth()">
-  <div ng-include="'app/benevole/benevoleAddForm.html'"></div>
+  <select ng-options="association.name for association in associations track by association._id" ng-model="currentBenevole.association" ng-required="true" ng-change="updateAntenneList()">
+    <option value="">Selectionnez une association</option>
+  </select>
+  <select ng-options="antenne.name disable when antenne.hasAdmin === true for antenne in antennesFiltered track by antenne._id" ng-model="currentBenevole.antenne" ng-disabled="antennesFiltered.length===0" ng-required="true">
+    <option value="">Selectionnez une antenne</option>
+  </select>
+  <div ng-include="'app/benevole/benevoleMandatoryField.html'"></div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Mot de passe
+        <input name="password" class="detail" type="password" ng-model="currentBenevole.password" ng-change="confirmPassword(currentBenevole.password, currentBenevole.passwordConfirmation)" />
+      </label>
+    </div>
+    <div class="medium-6 columns">
+      <label>Confirmation Mot de passe
+        <input name="passwordConfirmation" class="detail" type="password" ng-model="currentBenevole.passwordConfirmation" ng-change="confirmPassword(currentBenevole.password, currentBenevole.passwordConfirmation)" />
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-4 columns right">
+      <button class="button secondary expand" ng-disabled="addBenevoleForm.$valid === false">Ajouter</button>
+    </div>
+  </div>
+
 </form>

@@ -43,7 +43,7 @@ table input {
   margin-bottom: 0px !important;
 }
 
-input.detail.ng-invalid {
+input.detail.ng-dirty.ng-invalid {
   border-color: red;
 }
 

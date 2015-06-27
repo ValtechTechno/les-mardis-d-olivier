@@ -58,6 +58,18 @@
         controller: 'AssociationController',
         templateUrl: 'app/association/association.html'
       })
+      .when('/noauth/createAntenne', {
+        controller: 'AntenneController',
+        templateUrl: 'app/antenne/antenne.html'
+      })
+      .when('/createAssociation', {
+        controller: 'AssociationController',
+        templateUrl: 'app/association/association.html'
+      })
+      .when('/createAntenne', {
+        controller: 'AntenneController',
+        templateUrl: 'app/antenne/antenne.html'
+      })
       .when('/noauth/createBenevole', {
         controller: 'BenevoleCreateController',
         templateUrl: 'app/benevole/benevoleCreate.html'

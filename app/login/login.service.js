@@ -6,20 +6,20 @@
 
     function Session() {
 
-        this.create = function (pUserId, pUsername, pfullName, pRoles, pUserType) {
+        this.create = function (pUserId, pUsername, pFullName, pAntenneId, pIsAdmin) {
             this.userId = pUserId;
             this.username = pUsername;
-            this.fullName = pfullName;
-//            this.roles = pRoles;
-//            this.userType = pUserType;
+            this.fullName = pFullName;
+            this.antenneId = pAntenneId;
+            this.isAdmin = pIsAdmin;
         };
 
         this.clear = function () {
             this.userId = null;
             this.username = null;
             this.fullName = null;
-//            this.roles = null;
-//            this.userType = null;
+            this.antenneId = null;
+            this.isAdmin = null;
         };
 
         return this;
@@ -36,21 +36,31 @@
 
             login: function (credentials, successCallback, errorCallback) {
               dataService.login(credentials.login)
-              .then(function (data) {
-                  if(data === null || data.rows.length === 0){
+              .then(function (benevole) {
+                  if(benevole === null || benevole.rows.length === 0){
                     throw 'WRONG_LOGIN';
-                  }else if(data.rows.length > 1){
+                  }else if(benevole.rows.length > 1){
                     throw 'MULTIPLE_LOGIN';
                   }
-                  if(data.rows[0].doc.password !== credentials.password){
+                  // TODO security
+                  if(benevole.rows[0].doc.password !== credentials.password){
                     throw 'WRONG_PASSWORD';
                   }
-                  Session.create(data.rows[0].doc._id, data.rows[0].doc.email, data.rows[0].doc.firstName+" "+data.rows[0].doc.lastName, null, null);//data.roles, data.userType);
-                  $rootScope.account = Session;
-                  localStorageService.set("session", angular.toJson($rootScope.account));
-                  authService.loginConfirmed();
+                  dataService.getAntenneByBenevoleId(benevole.rows[0].doc._id)
+                    .then(function (antennes) {
+
+                      if(antennes === null && benevole.rows[0].doc.isAdmin === false){
+                        throw 'WRONG_LOGIN';
+                      }
+
+                      Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, antennes, benevole.rows[0].doc.isAdmin);//data.roles, data.userType);
+                      $rootScope.account = Session;
+                      localStorageService.set("session", angular.toJson($rootScope.account));
+                      authService.loginConfirmed();
+                    });
+
                   if (successCallback !== undefined) {
-                    successCallback(data);
+                    successCallback(benevole);
                   }
               })
               .catch(function (err) {
