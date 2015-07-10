@@ -50,7 +50,7 @@
                     .then(function (antennes) {
 
                       if(antennes === null && benevole.rows[0].doc.isAdmin === false){
-                        throw 'WRONG_LOGIN';
+                        throw 'NO_ADMIN_OR_ANTENNE';
                       }
 
                       Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, antennes, benevole.rows[0].doc.isAdmin);//data.roles, data.userType);

@@ -33,6 +33,9 @@
         else if (errorType === 'WRONG_PASSWORD') {
           throw {type: "functional", message: 'Mauvais mot de passe.'};
         }
+        else if (errorType === 'NO_ANTENNE') {
+          throw {type: "functional", message: 'Ce comtpe n\'est pas rattaché à une antenne.'};
+        }
         else {
           throw {type: "functional", message: 'Impossible de se connecter.'};
         }
