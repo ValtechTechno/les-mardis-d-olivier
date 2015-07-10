@@ -29,18 +29,16 @@
           <li ng-class="{'active' : menu.isActive('/distributions'), 'ng-hide' : !menu.isAuth()}"><a href="#/distributions/">Distributions</a></li>
         </ul>
         <ul class="left">
-          <li ng-class="{'active' : menu.isActive('/beneficiaires'), 'ng-hide' : !menu.isAuth()}"><a href="#/beneficiaires/">Bénéficiaires</a></li>
-        </ul>
-        <ul class="left">
           <li ng-class="{'active' : menu.isActive('/about'), 'ng-hide' : !menu.isAuth()}"><a href="#/about/">A propos</a></li>
         </ul>
         <ul class="left">
           <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown not-click' : menu.isAuth() }">
             <a>Gestion</a>
             <ul class="dropdown">
+              <li ng-class="{'active' : menu.isActive('/beneficiaires'), 'ng-hide' : !menu.isAuth()}"><a href="#/beneficiaires/">Bénéficiaires</a></li>
               <li ng-class="{'active' : menu.isActive('/benevoles'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/">Bénévoles</a></li>
               <li ng-class="{'active' : menu.isActive('/createAssociation'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAssociation/">Associations</a></li>
-              <li ng-class="{'active' : menu.isActive('/createAntenne'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAntenne/">Antenne</a></li>
+              <li ng-class="{'active' : menu.isActive('/createAntenne'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAntenne/">Antennes</a></li>
               <li ng-class="{'active' : menu.isActive('/export'), 'ng-hide' : !menu.isAuth()}"><a href="#/export/">Export</a></li>
               <li ng-class="{'active' : menu.isActive('/import'), 'ng-hide' : !menu.isAuth()}"><a href="#/import/">Import</a></li>
             </ul>
