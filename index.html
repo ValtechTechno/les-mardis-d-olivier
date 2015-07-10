@@ -50,7 +50,7 @@
           <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown not-click' : menu.isAuth() }">
             <a>{{account.fullName}}</a>
             <ul class="dropdown">
-              <li ng-class="{'active' : menu.isActive('/profile'), 'ng-hide' : !menu.isAuth()}"><a href="#/profile/">Profil</a></li>
+              <li ng-class="{'active' : menu.isActive('/profile'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/{{account.userId}}">Profil</a></li>
               <li><a ng-class="{'ng-hide' : !menu.isAuth()}" ng-click="menu.logout()">Se déconnecter</a></li>
             </ul>
           </li>

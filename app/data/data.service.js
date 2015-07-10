@@ -497,6 +497,7 @@
       .then(function (res) {
           console.log(res);
           $rootScope.$apply(function () {
+            res.rows[0].doc._id = getBenevoleIdForView(res.rows[0].doc._id);
             return deferred.resolve(res);
           });
         })
