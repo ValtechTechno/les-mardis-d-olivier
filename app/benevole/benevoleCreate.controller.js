@@ -73,7 +73,6 @@
         }
       }
       if ($scope.antennesFiltered.length === 0) {
-        $location.path("/noauth/createAntenne");
         throw {type: "functional", message: 'Veuillez créer une antenne pour l\'association ' + $scope.currentBenevole.association.name + ' avant de créer un compte bénévole.'};
       }
     };
