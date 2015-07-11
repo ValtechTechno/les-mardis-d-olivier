@@ -37,7 +37,6 @@
         .then(function (associations) {
           $scope.associations = associations;
           if ($scope.associations.length === 0) {
-            $location.path("/noauth/createAssociation");
             throw {type: "functional", message: 'Veuillez créer une association avant de créer un compte bénévole.'};
           }
           $scope.findInstances();
