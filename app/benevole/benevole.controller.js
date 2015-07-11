@@ -5,12 +5,12 @@
     .module('mardisDolivier')
     .controller('BenevoleController', BenevoleController);
 
-  function BenevoleController ($scope, dataService, commonService, $location) {
+  function BenevoleController ($scope, dataService, commonService, $location, $rootScope) {
     $scope.openBenevoleList = function () {
       if ($scope.benevoles === null || $scope.benevoles === undefined) {
         $scope.benevoles = [];
       }
-      dataService.findAllBenevoles()
+      dataService.findAllBenevolesByAntenneId($rootScope.account.antenneId)
         .then(function (benevoles) {
           $scope.benevoles = benevoles;
           $scope.resetAddBenevoleForm();

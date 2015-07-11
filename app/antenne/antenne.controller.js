@@ -48,7 +48,7 @@
     };
 
     $scope.getAssociationName = function (associationId) {
-      for (var associationIndex = 0; associationIndex < $scope.antennes.length; associationIndex++) {
+      for (var associationIndex = 0; associationIndex < $scope.associations.length; associationIndex++) {
         if (associationId === $scope.associations[associationIndex]._id) {
           return $scope.associations[associationIndex].name;
         }
@@ -73,7 +73,7 @@
         var newAntenne = getNewAntenne(getNextIdInUnsortedList($scope.antennes),  $scope.currentAntenne.association, $scope.currentAntenne.name);
         dataService.addOrUpdateAntenne(newAntenne)
           .then(function (added) {
-            added.associationName = $scope.getAssociationName(added.associationId);
+              added.associationName = $scope.getAssociationName(added.associationId);
               $scope.antennes.push(added);
             $scope.resetAddAntenneForm();
           })

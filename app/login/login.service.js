@@ -6,12 +6,13 @@
 
     function Session() {
 
-        this.create = function (pUserId, pUsername, pFullName, pAntenneId, pIsAdmin) {
+        this.create = function (pUserId, pUsername, pFullName, pAntenneId, pIsAdmin, pAssociationId) {
             this.userId = pUserId;
             this.username = pUsername;
             this.fullName = pFullName;
             this.antenneId = pAntenneId;
             this.isAdmin = pIsAdmin;
+            this.associationId = pAssociationId;
         };
 
         this.clear = function () {
@@ -20,6 +21,7 @@
             this.fullName = null;
             this.antenneId = null;
             this.isAdmin = null;
+            this.associationId = null;
         };
 
         return this;
@@ -46,18 +48,14 @@
                   if(benevole.rows[0].doc.password !== credentials.password){
                     throw 'WRONG_PASSWORD';
                   }
-                  dataService.getAntenneByBenevoleId(benevole.rows[0].doc._id)
-                    .then(function (antennes) {
 
-                      if(antennes === null && benevole.rows[0].doc.isAdmin === false){
-                        throw 'NO_ADMIN_OR_ANTENNE';
-                      }
-
-                      Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, antennes, benevole.rows[0].doc.isAdmin);//data.roles, data.userType);
-                      $rootScope.account = Session;
-                      localStorageService.set("session", angular.toJson($rootScope.account));
-                      authService.loginConfirmed();
-                    });
+                  if(benevole.rows[0].doc.antenneId === null && benevole.rows[0].doc.isAdmin === false){
+                    throw 'NO_ADMIN_OR_ANTENNE';
+                  }
+                  Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.antenneId, benevole.rows[0].doc.isAdmin, benevole.rows[0].doc.associationId);
+                  $rootScope.account = Session;
+                  localStorageService.set("session", angular.toJson($rootScope.account));
+                  authService.loginConfirmed();
 
                   if (successCallback !== undefined) {
                     successCallback(benevole);

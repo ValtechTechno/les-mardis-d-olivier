@@ -9,12 +9,12 @@
   <div class="row">
     <div class="medium-6 columns">
       <label>Mot de passe
-        <input name="password" class="detail" type="password" ng-model="currentBenevole.password" ng-change="confirmPassword(currentBenevole.password, currentBenevole.passwordConfirmation)" />
+        <input name="password" class="detail" type="password" ng-model="currentBenevole.password" ng-change="confirmPassword(currentBenevole.password, currentBenevole.passwordConfirmation)" ng-required="true"/>
       </label>
     </div>
     <div class="medium-6 columns">
       <label>Confirmation Mot de passe
-        <input name="passwordConfirmation" class="detail" type="password" ng-model="currentBenevole.passwordConfirmation" ng-change="confirmPassword(currentBenevole.password, currentBenevole.passwordConfirmation)" />
+        <input name="passwordConfirmation" class="detail" type="password" ng-model="currentBenevole.passwordConfirmation" ng-change="confirmPassword(currentBenevole.password, currentBenevole.passwordConfirmation)" ng-required="true" />
       </label>
     </div>
   </div>

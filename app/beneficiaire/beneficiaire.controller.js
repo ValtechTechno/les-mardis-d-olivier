@@ -5,12 +5,12 @@
       .module('mardisDolivier')
       .controller('BeneficiaireController', BeneficiaireController);
 
-  function BeneficiaireController ($scope, dataService, commonService, $location) {
+  function BeneficiaireController ($scope, dataService, commonService, $location, $rootScope) {
     $scope.openBeneficiaireList = function () {
       if ($scope.beneficiaires === null || $scope.beneficiaires === undefined) {
         $scope.beneficiaires = [];
       }
-      dataService.findAllBeneficiaires()
+      dataService.findAllBeneficiairesByAntenneId($rootScope.account.antenneId)
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
           $scope.resetAddBeneficiareForm();
@@ -61,7 +61,7 @@
 
     $scope.addBeneficiaire = function () {
       if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, false)) {
-        var newBeneficiaire = getNewBeneficiaire(getNextIdInUnsortedList($scope.beneficiaires), $scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard);
+        var newBeneficiaire = getNewBeneficiaire(getNextIdInUnsortedList($scope.beneficiaires), $scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard, $rootScope.account.antenneId);
         dataService.addOrUpdateBeneficiaire(newBeneficiaire)
           .then(function (added) {
             $scope.beneficiaires.push(added);

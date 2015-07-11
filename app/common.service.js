@@ -86,7 +86,6 @@
     }
 
     function antenneFormValidation(antennes, association, antenneName) {
-      debugger;
       if (antennes.filter(function (antenne) {
         return (antenne.name.toLowerCase() === antenneName.toLowerCase() && association._id === antenne.associationId);
       }).length > 0) {
@@ -125,19 +124,20 @@ formatDate = function (date) {
   return date.getFullYear() + "-" + paddedMonth + "-" + day;
 };
 
-getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard){
+getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard, antenneId){
   var newBeneficiaire = {
     _id: nextId,
     code: code,
     firstName: firstName,
     lastName: lastName,
     isPresent: false,
-    hasCard: hasCard
+    hasCard: hasCard,
+    antenneId: antenneId
   };
   return newBeneficiaire;
 };
 
-getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber){
+getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber, associationId, antenneId){
   var newBenevole = {
     _id: nextId,
     firstName: firstName,
@@ -146,13 +146,15 @@ getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber){
     phoneNumber: phoneNumber,
     englishLevel:0,
     spanishLevel:0,
-    germanLevel:0
+    germanLevel:0,
+    antenneId: antenneId,
+    associationId: associationId
   };
   return newBenevole;
 };
 
-getNewAdminBenevole = function(nextId, lastName, firstName, email, phoneNumber, password){
-  var newBenevole = getNewBenevole(nextId, lastName, firstName, email, phoneNumber);
+getNewAdminBenevole = function(nextId, lastName, firstName, email, phoneNumber, password, associationId, antenneId){
+  var newBenevole = getNewBenevole(nextId, lastName, firstName, email, phoneNumber, associationId, antenneId);
   newBenevole.isAdmin = true;
   newBenevole.password = password;
   return newBenevole;

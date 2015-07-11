@@ -18,15 +18,16 @@
     var ABOUT_ID = 'about_information';
     var ASSOCIATION_PREFIX = 'asso_';
     var ANTENNE_PREFIX = 'ante_';
-    var BENEVOLE_ANTENNE_PREFIX = 'ba_';
     var service = {
       addOrUpdateBeneficiaire: addOrUpdateBeneficiaire,
       findAllBeneficiaires: findAllBeneficiaires,
       findBeneficiaireById: findBeneficiaireById,
+      findAllBeneficiairesByAntenneId: findAllBeneficiairesByAntenneId,
       removeBeneficiaire: removeBeneficiaire,
       saveBeneficiaires: saveBeneficiaires,
       addOrUpdateBenevole: addOrUpdateBenevole,
       findAllBenevoles: findAllBenevoles,
+      findAllBenevolesByAntenneId: findAllBenevolesByAntenneId,
       findBenevoleById: findBenevoleById,
       removeBenevole: removeBenevole,
       addOrUpdateDistribution: addOrUpdateDistribution,
@@ -45,9 +46,7 @@
       addOrUpdateAssociation: addOrUpdateAssociation,
       findAllAntennes: findAllAntennes,
       addOrUpdateAntenne: addOrUpdateAntenne,
-      findAllBenevoleAntenne: findAllBenevoleAntenne,
-      addOrUpdateBenevoleAntenne: addOrUpdateBenevoleAntenne,
-      getAntenneByBenevoleId: getAntenneByBenevoleId
+      getAntenneByBenevoleId:getAntenneByBenevoleId
     };
 
     return service;
@@ -117,6 +116,37 @@
             return deferred.resolve(doc);
           });
         }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function findAllBeneficiairesByAntenneId(antenneId){
+      var deferred = $q.defer();
+
+      function myMapFunction(doc) {
+        emit(doc.antenneId);
+      }
+
+      db.query(myMapFunction, {
+        key: getAntenneIdForDatabase(antenneId),
+        include_docs: true
+      })
+        .then(function (res) {
+          console.log(res);
+          $rootScope.$apply(function () {
+            var objects = [];
+            for (var i = 0; i < res.rows.length; i++) {
+              if(res.rows[i].doc._id.indexOf(BENEFICIAIRE_PREFIX) != -1) {
+                res.rows[i].doc._id = getBeneficiaireIdForView(res.rows[i].doc._id);
+                objects.push(res.rows[i].doc);
+              }
+            }
+            return deferred.resolve(objects);
+          });
+        })
+        .catch(function (err) {
           console.log(err);
           deferred.reject(err);
         });
@@ -199,6 +229,8 @@
         var benevoles = [];
         for (var i = 0; i < res.rows.length; i++) {
           res.rows[i].doc._id = getBenevoleIdForView(res.rows[i].doc._id);
+          res.rows[i].doc.antenneId = getAntenneIdForView(res.rows[i].doc.antenneId);
+          res.rows[i].doc.associationId = getAssociationIdForView(res.rows[i].doc.associationId);
           benevoles.push(res.rows[i].doc);
         }
         deferred.resolve(benevoles);
@@ -207,6 +239,37 @@
         console.log(err);
         deferred.reject(err);
       });
+      return deferred.promise;
+    }
+
+    function findAllBenevolesByAntenneId(antenneId){
+      var deferred = $q.defer();
+
+      function myMapFunction(doc) {
+        emit(doc.antenneId);
+      }
+
+      db.query(myMapFunction, {
+        key: getAntenneIdForDatabase(antenneId),
+        include_docs: true
+      })
+        .then(function (res) {
+          console.log(res);
+          $rootScope.$apply(function () {
+            var objects = [];
+            for (var i = 0; i < res.rows.length; i++) {
+              if(res.rows[i].doc._id.indexOf(BENEVOLE_PREFIX != -1)) {
+                res.rows[i].doc._id = getBenevoleIdForView(res.rows[i].doc._id);
+                objects.push(res.rows[i].doc);
+              }
+            }
+            return deferred.resolve(objects);
+          });
+        })
+        .catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
       return deferred.promise;
     }
 
@@ -263,7 +326,9 @@
         password: benevole.password,
         englishLevel:benevole.englishLevel,
         spanishLevel:benevole.spanishLevel,
-        germanLevel:benevole.germanLevel
+        germanLevel:benevole.germanLevel,
+        antenneId:getAntenneIdForDatabase(benevole.antenneId),
+        associationId:getAssociationIdForDatabase(benevole.associationId)
       };
     }
 
@@ -498,6 +563,8 @@
           console.log(res);
           $rootScope.$apply(function () {
             res.rows[0].doc._id = getBenevoleIdForView(res.rows[0].doc._id);
+            res.rows[0].doc.antenneId = getAntenneIdForView(res.rows[0].doc.antenneId);
+            res.rows[0].doc.associationId = getAssociationIdForView(res.rows[0].doc.associationId);
             return deferred.resolve(res);
           });
         })
@@ -617,63 +684,6 @@
       antenne._id = getAntenneIdForDatabase(antenne._id);
       antenne.associationId = getAssociationIdForDatabase(antenne.associationId);
       return antenne;
-    }
-
-    function findAllBenevoleAntenne() {
-      var deferred = $q.defer();
-
-      db.allDocs({
-        startkey: BENEVOLE_ANTENNE_PREFIX,
-        endkey: BENEVOLE_ANTENNE_PREFIX + '\uffff',
-        include_docs: true
-      }).then(function (res) {
-
-        var antennes = [];
-        for (var i = 0; i < res.rows.length; i++) {
-          res.rows[i].doc._id = getBenevoleAntenneIdForView(res.rows[i].doc._id);
-          res.rows[i].doc.benevoleId = getBenevoleIdForView(res.rows[i].doc.benevoleId);
-          res.rows[i].doc.antenneId = getAntenneIdForView(res.rows[i].doc.antenneId);
-          antennes.push(res.rows[i].doc);
-        }
-        deferred.resolve(antennes);
-
-      }).catch(function (err) {
-        console.log(err);
-        deferred.reject(err);
-      });
-      return deferred.promise;
-    }
-
-    function addOrUpdateBenevoleAntenne(beneAnteId, benevoleId, antenneId) {
-      var deferred = $q.defer();
-      var beneAnte = getBenevoleAntenne(beneAnteId, benevoleId, antenneId);
-      console.log(beneAnte);
-      db.put(beneAnte)
-        .then(function () {
-          $rootScope.$apply(function () {
-            return deferred.resolve();
-          });
-        }).catch(function (err) {
-          console.log(err);
-          deferred.reject(err);
-        });
-      return deferred.promise;
-    }
-
-    function getBenevoleAntenneIdForView(id) {
-      return id.replace(BENEVOLE_ANTENNE_PREFIX, '');
-    }
-
-    function getBenevoleAntenneIdForDatabase(id) {
-      return BENEVOLE_ANTENNE_PREFIX + id;
-    }
-
-    function getBenevoleAntenne(beneAnteId, benevoleId, antenneId) {
-      var beneAnte = {};
-      beneAnte._id = getBenevoleAntenneIdForDatabase(beneAnteId);
-      beneAnte.benevoleId = getBenevoleIdForDatabase(benevoleId);
-      beneAnte.antenneId = getAntenneIdForDatabase(antenneId);
-      return beneAnte;
     }
 
     function getAntenneByBenevoleId(benevoleId){
