@@ -5,6 +5,9 @@
     .module('mardisDolivier')
     .factory('$exceptionHandler', function ($injector) {
       return function (exception) {
+        if(exception.stack !== undefined){
+          console.log(exception.stack);
+        }
         if (exception.type !== "functional" || !exception.message) {
           throw exception;
         }
