@@ -11,9 +11,24 @@ select {
   display: none;
 }
 
+#toast-container.toast-top-full-width>div{
+  opacity: 100;
+  min-height: 45px;
+}
+
+:not(.no-enter)#toast-container > div.ng-enter,
+:not(.no-leave)#toast-container > div.ng-leave
+{
+  transition-duration: .3s;
+}
+
 @media only screen and (min-width: 40em) {
   .top-bar {
     height: 50px;
+  }
+
+  #toast-container.toast-top-full-width>div{
+    max-height: 50px;
   }
 
   .top-bar-section li a {
