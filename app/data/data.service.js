@@ -126,7 +126,9 @@
       var deferred = $q.defer();
 
       function myMapFunction(doc) {
+        if (doc.type !== undefined && doc.type.indexOf('benef') != -1) {
         emit(doc.antenneId);
+      }
       }
 
       db.query(myMapFunction, {
@@ -138,11 +140,9 @@
           $rootScope.$apply(function () {
             var objects = [];
             for (var i = 0; i < res.rows.length; i++) {
-              if(res.rows[i].doc._id.indexOf(BENEFICIAIRE_PREFIX) != -1) {
                 res.rows[i].doc._id = getBeneficiaireIdForView(res.rows[i].doc._id);
                 objects.push(res.rows[i].doc);
               }
-            }
             return deferred.resolve(objects);
           });
         })
@@ -192,10 +192,12 @@
       }
       return {
         _id: getBeneficiaireIdForDatabase(beneficiaire._id),
+        type: 'benef',
         code: beneficiaire.code,
         firstName: beneficiaire.firstName,
         lastName: beneficiaire.lastName,
-        hasCard: beneficiaire.hasCard
+        hasCard: beneficiaire.hasCard,
+        antenneId: getAntenneIdForDatabase(beneficiaire.antenneId)
       };
     }
 
@@ -246,7 +248,9 @@
       var deferred = $q.defer();
 
       function myMapFunction(doc) {
+        if (doc.type !== undefined && doc.type.indexOf('benev') != -1) {
         emit(doc.antenneId);
+      }
       }
 
       db.query(myMapFunction, {
@@ -258,11 +262,9 @@
           $rootScope.$apply(function () {
             var objects = [];
             for (var i = 0; i < res.rows.length; i++) {
-              if(res.rows[i].doc._id.indexOf(BENEVOLE_PREFIX != -1)) {
                 res.rows[i].doc._id = getBenevoleIdForView(res.rows[i].doc._id);
                 objects.push(res.rows[i].doc);
               }
-            }
             return deferred.resolve(objects);
           });
         })
@@ -537,6 +539,7 @@
       var deferred = $q.defer();
       if (about._rev === undefined) {
         about._id = ABOUT_ID;
+        about.type = 'about';
       }
       db.put(about)
         .then(function () {
@@ -626,6 +629,7 @@
 
     function getAssociation(association) {
       association._id = getAssociationIdForDatabase(association._id);
+      association.type = 'asso';
       return association;
     }
 
@@ -682,6 +686,7 @@
 
     function getAntenne(antenne) {
       antenne._id = getAntenneIdForDatabase(antenne._id);
+      antenne.type = 'ante';
       antenne.associationId = getAssociationIdForDatabase(antenne.associationId);
       return antenne;
     }
