@@ -32,6 +32,7 @@
       removeBenevole: removeBenevole,
       addOrUpdateDistribution: addOrUpdateDistribution,
       findAllDistributions: findAllDistributions,
+      findAllDistributionsByAntenneId: findAllDistributionsByAntenneId,
       findDistributionById: findDistributionById,
       findDistributionByIds: findDistributionByIds,
       addOrUpdateBeneficiaireByDistribution: addOrUpdateBeneficiaireByDistribution,
@@ -127,8 +128,8 @@
 
       function myMapFunction(doc) {
         if (doc.type !== undefined && doc.type.indexOf('benef') != -1) {
-        emit(doc.antenneId);
-      }
+          emit(doc.antenneId);
+        }
       }
 
       db.query(myMapFunction, {
@@ -142,7 +143,7 @@
             for (var i = 0; i < res.rows.length; i++) {
                 res.rows[i].doc._id = getBeneficiaireIdForView(res.rows[i].doc._id);
                 objects.push(res.rows[i].doc);
-              }
+            }
             return deferred.resolve(objects);
           });
         })
@@ -249,8 +250,8 @@
 
       function myMapFunction(doc) {
         if (doc.type !== undefined && doc.type.indexOf('benev') != -1) {
-        emit(doc.antenneId);
-      }
+          emit(doc.antenneId);
+        }
       }
 
       db.query(myMapFunction, {
@@ -264,7 +265,7 @@
             for (var i = 0; i < res.rows.length; i++) {
                 res.rows[i].doc._id = getBenevoleIdForView(res.rows[i].doc._id);
                 objects.push(res.rows[i].doc);
-              }
+            }
             return deferred.resolve(objects);
           });
         })
@@ -330,7 +331,8 @@
         spanishLevel:benevole.spanishLevel,
         germanLevel:benevole.germanLevel,
         antenneId:getAntenneIdForDatabase(benevole.antenneId),
-        associationId:getAssociationIdForDatabase(benevole.associationId)
+        associationId:getAssociationIdForDatabase(benevole.associationId),
+        type:'benev'
       };
     }
 
@@ -350,6 +352,30 @@
         }
         deferred.resolve(distributions);
 
+      }).catch(function (err) {
+        console.log(err);
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+
+    function findAllDistributionsByAntenneId(antenneId) {
+      var deferred = $q.defer();
+
+      function map(doc) {
+        if (doc.type !== undefined && doc.type.indexOf('distri') != -1) {
+          emit(doc.antenneId);
+        }
+      }
+
+      db.query(map, {key: getAntenneIdForDatabase(antenneId), include_docs: true}).then(function (res) {
+        console.log(res);
+        var distributions = [];
+        for (var i = 0; i < res.rows.length; i++) {
+          res.rows[i].doc._id = getDistributionIdForView(res.rows[i].doc._id);
+          distributions.push(res.rows[i].doc);
+        }
+        deferred.resolve(distributions);
       }).catch(function (err) {
         console.log(err);
         deferred.reject(err);
@@ -423,6 +449,8 @@
 
     function getDistribution(distribution) {
       distribution._id = getDistributionIdForDatabase(distribution._id);
+      distribution.type = 'distri';
+      distribution.antenneId = getAntenneIdForDatabase(distribution.antenneId);
       return distribution;
     }
 

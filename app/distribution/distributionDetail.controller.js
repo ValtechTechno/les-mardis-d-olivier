@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .controller('DistributionDetailController', DistributionDetailController);
 
-  function DistributionDetailController ($routeParams, dataService, commonService, $location) {
+  function DistributionDetailController ($routeParams, dataService, commonService, $location, $rootScope) {
     var vm = this;
     vm.numberBeneficiairesPresent = 0;
     vm.currentDistribution = {};
@@ -37,7 +37,7 @@
     }
 
     function fillDistributionBeneficiaires() {
-      dataService.findAllBeneficiaires()
+      dataService.findAllBeneficiairesByAntenneId($rootScope.account.antenneId)
         .then(function (beneficiaires) {
           retrieveBeneficiairesByDistribution(vm.currentDistribution._id, beneficiaires);
         }).catch(function (err) {

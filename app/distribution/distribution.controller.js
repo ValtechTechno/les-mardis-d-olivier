@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .controller('DistributionController', DistributionController);
 
-  function DistributionController ($scope, dataService, commonService, $location) {
+  function DistributionController ($scope, dataService, commonService, $location, $rootScope) {
     $scope.searchBeneficiaire = function (beneficiaire) {
       return commonService.searchBeneficiaire($scope.searchText, beneficiaire);
     };
@@ -19,7 +19,7 @@
     $scope.currentDistribution = {};
 
     $scope.showAllDistribution = function () {
-      dataService.findAllDistributions()
+      dataService.findAllDistributionsByAntenneId($rootScope.account.antenneId)
         .then(function (distributions) {
           $scope.distributions = retrieveAllDistribution(distributions, dataService);
           $scope.initNextDate();
@@ -51,7 +51,8 @@
     $scope.startNewDistribution = function () {
       $scope.storeDistribution({
         'distributionDate': $scope.currentDistribution.distributionDate,
-        'nbPlannedMeals': $scope.currentDistribution.distributionNbPlannedMeals
+        'nbPlannedMeals': $scope.currentDistribution.distributionNbPlannedMeals,
+        'antenneId':$rootScope.account.antenneId
       });
     };
 
