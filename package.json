@@ -7,7 +7,10 @@
     "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4"
   },
-    "scripts":{
-        "test":"node_modules/karma/bin/karma start karma.js --single-run"
-    }
+  "scripts": {
+    "test": "node_modules/karma/bin/karma start karma.js --single-run"
+  },
+  "dependencies": {
+    "angular-uuid": "0.0.2"
+  }
 }

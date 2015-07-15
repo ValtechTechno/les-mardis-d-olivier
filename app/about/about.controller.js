@@ -5,15 +5,23 @@
       .module('mardisDolivier')
       .controller('AboutController', AboutController);
 
-  function AboutController(dataService) {
+  function AboutController(dataService, $rootScope) {
     var vm = this;
     vm.aboutInformation = null;
 
     activate();
 
     function activate() {
-      dataService.getAbout().then(function(about){
-        vm.aboutInformation = about;
+      dataService.getAboutByAntenneId($rootScope.account.antenneId).then(function(abouts){
+        if(abouts.length > 1){
+          throw {
+            type: "functional",
+            message: 'Impossible de récupérer les informations.'
+          };
+        }
+        if(abouts.length === 1) {
+          vm.aboutInformation = abouts[0].doc;
+        }
       });
     }
   }

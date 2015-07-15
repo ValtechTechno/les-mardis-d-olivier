@@ -9,13 +9,12 @@
     .module('mardisDolivier')
     .service('dataService', dataService);
 
-  function dataService($q, $rootScope) {
+  function dataService($q, $rootScope, uuid) {
     var db = new PouchDB('lesmardis');
     var BENEFICIAIRE_PREFIX = 'benef_';
     var BENEVOLE_PREFIX = 'benev_';
     var DISTRIBUTION_PREFIX = 'distri_';
     var BENEFICIAIRE_BY_DISTRIBUTION_PREFIX = 'bbd_';
-    var ABOUT_ID = 'about_information';
     var ASSOCIATION_PREFIX = 'asso_';
     var ANTENNE_PREFIX = 'ante_';
     var service = {
@@ -40,7 +39,7 @@
       findBeneficiaireByDistributionByBeneficiaireId: findBeneficiaireByDistributionByBeneficiaireId,
       removeBeneficiaireByDistribution: removeBeneficiaireByDistribution,
       removeBeneficiaireByDistributionByBeneficiaire:removeBeneficiaireByDistributionByBeneficiaire,
-      getAbout: getAbout,
+      getAboutByAntenneId: getAboutByAntenneId,
       updateAbout: updateAbout,
       login: login,
       findAllAssociations: findAllAssociations,
@@ -549,12 +548,22 @@
     }
 
 
-    function getAbout() {
+    function getAboutByAntenneId(antenneId) {
       var deferred = $q.defer();
-      db.get(ABOUT_ID)
+
+      function myMapFunction(doc) {
+        if (doc.type !== undefined && doc.type.indexOf('about') != -1) {
+          emit(doc.antenneId);
+        }
+      }
+
+      db.query(myMapFunction, {
+        key: getAntenneIdForDatabase(antenneId),
+        include_docs: true
+      })
         .then(function (doc) {
           $rootScope.$apply(function () {
-            return deferred.resolve(doc);
+            return deferred.resolve(doc.rows);
           });
         }).catch(function (err) {
           console.log(err);
@@ -566,7 +575,8 @@
     function updateAbout(about) {
       var deferred = $q.defer();
       if (about._rev === undefined) {
-        about._id = ABOUT_ID;
+        about._id = uuid.v4();
+        about.antenneId = getAntenneIdForDatabase(about.antenneId);
         about.type = 'about';
       }
       db.put(about)

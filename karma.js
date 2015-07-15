@@ -31,6 +31,7 @@ module.exports = function (config) {
       'lib/angular-http-auth/http-auth-interceptor.js',
       'lib/angular-local-storage/angular-local-storage.min.js',
       'lib/pouchdb/pouchdb.min.js',
+      'lib/angular-uuid/angular-uuid.js',
       'app/mardisDOlivier.module.js',
       'app/datePicker.filter.js',
       'app/beneficiaire/beneficiaire.controller.js',
