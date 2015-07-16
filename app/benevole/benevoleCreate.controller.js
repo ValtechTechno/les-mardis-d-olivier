@@ -90,7 +90,7 @@
         }
 
         if (commonService.benevoleFormValidation($scope.benevoles, $scope.currentBenevole.email, $scope.currentBenevole._id, false)) {
-          var newBenevole = getNewAdminBenevole(getNextIdInUnsortedList($scope.benevoles), $scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber, $scope.currentBenevole.password, $scope.currentBenevole.association._id, $scope.currentBenevole.antenne._id);
+          var newBenevole = getNewAdminBenevole($scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber, $scope.currentBenevole.password, $scope.currentBenevole.association._id, $scope.currentBenevole.antenne._id);
           dataService.addOrUpdateBenevole(newBenevole)
             .then(function () {
                $location.path("/login");

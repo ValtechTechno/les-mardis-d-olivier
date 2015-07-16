@@ -41,7 +41,7 @@
 
     $scope.addBenevole = function () {
       if (commonService.benevoleFormValidation($scope.benevoles, $scope.currentBenevole.email, $scope.currentBenevole._id, false)) {
-        var newBenevole = getNewBenevole(getNextIdInUnsortedList($scope.benevoles), $scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber);
+        var newBenevole = getNewBenevole($scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber, $rootScope.account.associationId, $rootScope.account.antenneId);
         dataService.addOrUpdateBenevole(newBenevole)
           .then(function (added) {
             $scope.benevoles.push(added);

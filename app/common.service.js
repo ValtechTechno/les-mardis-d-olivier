@@ -137,9 +137,8 @@ getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard, antenn
   return newBeneficiaire;
 };
 
-getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber, associationId, antenneId){
+getNewBenevole = function(lastName, firstName, email, phoneNumber, associationId, antenneId){
   var newBenevole = {
-    _id: nextId,
     firstName: firstName,
     lastName: lastName,
     email: email,
@@ -153,8 +152,8 @@ getNewBenevole = function(nextId, lastName, firstName, email, phoneNumber, assoc
   return newBenevole;
 };
 
-getNewAdminBenevole = function(nextId, lastName, firstName, email, phoneNumber, password, associationId, antenneId){
-  var newBenevole = getNewBenevole(nextId, lastName, firstName, email, phoneNumber, associationId, antenneId);
+getNewAdminBenevole = function(lastName, firstName, email, phoneNumber, password, associationId, antenneId){
+  var newBenevole = getNewBenevole(lastName, firstName, email, phoneNumber, associationId, antenneId);
   newBenevole.isAdmin = true;
   newBenevole.password = password;
   return newBenevole;

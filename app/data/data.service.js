@@ -12,7 +12,6 @@
   function dataService($q, $rootScope, uuid) {
     var db = new PouchDB('lesmardis');
     var BENEFICIAIRE_PREFIX = 'benef_';
-    var BENEVOLE_PREFIX = 'benev_';
     var DISTRIBUTION_PREFIX = 'distri_';
     var BENEFICIAIRE_BY_DISTRIBUTION_PREFIX = 'bbd_';
     var ASSOCIATION_PREFIX = 'asso_';
@@ -208,7 +207,6 @@
       db.put(benev)
         .then(function (doc) {
           $rootScope.$apply(function () {
-            benev._id = getBenevoleIdForView(benev._id);
             benev._rev = doc.rev;
             return deferred.resolve(benev);
           });
@@ -222,15 +220,18 @@
     function findAllBenevoles() {
       var deferred = $q.defer();
 
-      db.allDocs({
-        startkey: BENEVOLE_PREFIX,
-        endkey: BENEVOLE_PREFIX + '\uffff',
+      function myMapFunction(doc) {
+          emit(doc.type);
+      }
+
+      db.query(myMapFunction, {
+        key: 'benev',
         include_docs: true
-      }).then(function (res) {
+      })
+      .then(function (res) {
 
         var benevoles = [];
         for (var i = 0; i < res.rows.length; i++) {
-          res.rows[i].doc._id = getBenevoleIdForView(res.rows[i].doc._id);
           res.rows[i].doc.antenneId = getAntenneIdForView(res.rows[i].doc.antenneId);
           res.rows[i].doc.associationId = getAssociationIdForView(res.rows[i].doc.associationId);
           benevoles.push(res.rows[i].doc);
@@ -262,7 +263,6 @@
           $rootScope.$apply(function () {
             var objects = [];
             for (var i = 0; i < res.rows.length; i++) {
-                res.rows[i].doc._id = getBenevoleIdForView(res.rows[i].doc._id);
                 objects.push(res.rows[i].doc);
             }
             return deferred.resolve(objects);
@@ -277,9 +277,8 @@
 
     function findBenevoleById(benevoleId) {
       var deferred = $q.defer();
-      db.get(getBenevoleIdForDatabase(benevoleId))
+      db.get(benevoleId)
         .then(function (doc) {
-          doc._id = getBenevoleIdForView(doc._id);
           console.log(doc);
           $rootScope.$apply(function () {
             return deferred.resolve(doc);
@@ -293,9 +292,7 @@
 
     function removeBenevole(benevole) {
       var deferred = $q.defer();
-      benevole._id = getBenevoleIdForDatabase(benevole._id);
       db.remove(benevole).then(function (response) {
-        benevole._id = getBenevoleIdForView(benevole._id);
         console.log(response);
         deferred.resolve(true);
       }).catch(function (err) {
@@ -305,34 +302,25 @@
       return deferred.promise;
     }
 
-    function getBenevoleIdForView(id) {
-      return id.replace(BENEVOLE_PREFIX, '');
-    }
-
-    function getBenevoleIdForDatabase(id) {
-      return BENEVOLE_PREFIX + id;
-    }
-
     function getBenevole(benevole) {
-      if (benevole._rev !== undefined) {
-        benevole._id = getBenevoleIdForDatabase(benevole._id);
-        return benevole;
+      if (benevole._rev === undefined) {
+        return {
+          _id: uuid.v4(),
+          firstName: benevole.firstName,
+          lastName: benevole.lastName,
+          email: benevole.email,
+          phoneNumber: benevole.phoneNumber,
+          isAdmin: benevole.isAdmin,
+          password: benevole.password,
+          englishLevel: benevole.englishLevel,
+          spanishLevel: benevole.spanishLevel,
+          germanLevel: benevole.germanLevel,
+          antenneId: getAntenneIdForDatabase(benevole.antenneId),
+          associationId: getAssociationIdForDatabase(benevole.associationId),
+          type: 'benev'
+        };
       }
-      return {
-        _id: getBenevoleIdForDatabase(benevole._id),
-        firstName: benevole.firstName,
-        lastName: benevole.lastName,
-        email: benevole.email,
-        phoneNumber: benevole.phoneNumber,
-        isAdmin : benevole.isAdmin,
-        password: benevole.password,
-        englishLevel:benevole.englishLevel,
-        spanishLevel:benevole.spanishLevel,
-        germanLevel:benevole.germanLevel,
-        antenneId:getAntenneIdForDatabase(benevole.antenneId),
-        associationId:getAssociationIdForDatabase(benevole.associationId),
-        type:'benev'
-      };
+      return benevole;
     }
 
     function findAllDistributions() {
@@ -603,9 +591,10 @@
       .then(function (res) {
           console.log(res);
           $rootScope.$apply(function () {
-            res.rows[0].doc._id = getBenevoleIdForView(res.rows[0].doc._id);
-            res.rows[0].doc.antenneId = getAntenneIdForView(res.rows[0].doc.antenneId);
-            res.rows[0].doc.associationId = getAssociationIdForView(res.rows[0].doc.associationId);
+            if(res.rows.length !== 0) {
+              res.rows[0].doc.antenneId = getAntenneIdForView(res.rows[0].doc.antenneId);
+              res.rows[0].doc.associationId = getAssociationIdForView(res.rows[0].doc.associationId);
+            }
             return deferred.resolve(res);
           });
         })
