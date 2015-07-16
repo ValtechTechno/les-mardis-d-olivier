@@ -34,6 +34,9 @@
 
     $scope.resetAddBenevoleForm = function() {
       $scope.currentBenevole = {};
+      if($scope.addBenevoleForm !== undefined) {
+        $scope.addBenevoleForm.$setPristine();
+      }
     };
 
     $scope.addBenevole = function () {

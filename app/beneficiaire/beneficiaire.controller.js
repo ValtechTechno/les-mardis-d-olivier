@@ -44,6 +44,9 @@
 
     $scope.resetAddBeneficiareForm = function() {
       $scope.currentBeneficiaire = {code: $scope.initNextCode(), hasCard: true};
+      if($scope.addBeneficiaireForm !== undefined) {
+        $scope.addBeneficiaireForm.$setPristine();
+      }
     };
 
     $scope.initNextCode = function() {
