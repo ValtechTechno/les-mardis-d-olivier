@@ -16,6 +16,21 @@
     </tr>
     </tbody>
   </table>
+  <h3><b>Antennes</b></h3>
+  <table>
+    <thead>
+    <tr>
+      <th><i class="ui-icon ui-icon-key"></i> Id</th>
+      <th>Nom</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="ante in antennes">
+      <td>{{ante._id}}</td>
+      <td>{{ante.name}}</td>
+    </tr>
+    </tbody>
+  </table>
   <h3><b>Benevoles</b></h3>
   <table>
     <thead>
@@ -111,5 +126,18 @@
     </tbody>
   </table>
   <h3><b>A propos</b></h3>
-  <p>{{about.content}}</p>
+  <table>
+    <thead>
+    <tr>
+      <th><i class="ui-icon ui-icon-key"></i> Id</th>
+      <th><i class="ui-icon ui-icon-comment"></i> Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{about._id}}</td>
+      <td>{{about.content}}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
