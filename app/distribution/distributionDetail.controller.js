@@ -55,7 +55,7 @@
 
     function retrieveBeneficiairesByDistribution(distributionId, beneficiaires) {
 
-      dataService.findAllBeneficiaireByDistribution().then(function (bbd) {
+      dataService.findAllBeneficiaireByDistributionByAntenneId($rootScope.account.antenneId).then(function (bbd) {
         vm.beneficiairesPresentByDistribution = bbd;
 
         var distributionIds = [];
@@ -197,7 +197,8 @@
     if (isRelationExisting === false) {
       dataService.addOrUpdateBeneficiaireByDistribution({
         "distributionId": distributionId.toString(),
-        "beneficiaireId": beneficiaireId
+        "beneficiaireId": beneficiaireId,
+        "antenneId":$rootScope.account.antenneId
       }).then(function(bbd){
         vm.beneficiairesPresentByDistribution.push(bbd);
       });

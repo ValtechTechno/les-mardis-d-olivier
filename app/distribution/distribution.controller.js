@@ -29,7 +29,7 @@
     };
 
     $scope.loadBeneficiaires = function () {
-      dataService.findAllBeneficiaires()
+      dataService.findAllBeneficiairesByAntenneId($rootScope.account.antenneId)
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
         });
@@ -58,7 +58,7 @@
 
     $scope.storeDistribution = function (distribution) {
       // charge all distributions to determine the next id
-      dataService.findAllDistributions()
+      dataService.findAllDistributionsByAntenneId($rootScope.account.antenneId)
         .then(function (distributions) {
           var nextId;
           if (distributions.filter(function (storedDistribution) {
@@ -91,7 +91,7 @@
     };
 
     $scope.loadBeneficiaireByDistribution = function(){
-      dataService.findAllBeneficiaireByDistribution()
+      dataService.findAllBeneficiaireByDistributionByAntenneId($rootScope.account.antenneId)
         .then(function (beneficiaireByDistribution) {
           $scope.beneficiaireByDistribution = beneficiaireByDistribution;
           $scope.getNbBeneficiairesAndComments();
