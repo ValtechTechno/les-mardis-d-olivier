@@ -5,7 +5,7 @@
     .module('mardisDolivier')
     .controller('BenevoleDetailController', BenevoleDetailController);
 
-  function BenevoleDetailController ($scope, $routeParams, dataService, commonService, $location) {
+  function BenevoleDetailController ($scope, $routeParams, dataService, commonService, $location, $rootScope) {
     var GET_BENEVOLE_GENERIC_ERROR = 'Impossible de récupérer ce bénévole, une erreur technique est survenue.';
 
     $scope.openBenevoleDetail = function () {
@@ -48,7 +48,7 @@
 
     $scope.saveBenevoleDetail = function () {
       // charge all the benevoles to check if there isn't already a couple of first name + last name
-      dataService.findAllBenevoles()
+      dataService.findAllBenevolesByAntenneId($rootScope.account.antenneId)
         .then(function (benevoles) {
           $scope.benevoles = benevoles;
           $scope.updateBenevole();
