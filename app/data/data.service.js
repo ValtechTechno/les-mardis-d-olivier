@@ -575,7 +575,7 @@
     }
 
     function getAssociation(association) {
-      if (association._rev !== undefined) {
+      if (association._rev === undefined) {
         association._id = uuid.v4();
         association.type = 'asso';
       }

@@ -124,9 +124,8 @@ formatDate = function (date) {
   return date.getFullYear() + "-" + paddedMonth + "-" + day;
 };
 
-getNewBeneficiaire = function(nextId, code, lastName, firstName, hasCard, antenneId){
+getNewBeneficiaire = function(code, lastName, firstName, hasCard, antenneId){
   var newBeneficiaire = {
-    _id: nextId,
     code: code,
     firstName: firstName,
     lastName: lastName,
@@ -159,34 +158,17 @@ getNewAdminBenevole = function(lastName, firstName, email, phoneNumber, password
   return newBenevole;
 };
 
-getNewAssociation = function(nextId, name){
+getNewAssociation = function(name){
   var newAssociation = {
-    _id: nextId,
     name: name
   };
   return newAssociation;
 };
 
-getNewAntenne = function(nextId, association, antenneName){
-  var newAssociation = {
-    _id: nextId,
+getNewAntenne = function(association, antenneName){
+  var newAntenne = {
     name: antenneName,
     associationId: association._id
   };
-  return newAssociation;
+  return newAntenne;
 };
-
-
-getNextIdInUnsortedList = function (list) {
-  var nextId = 1;
-  if (list.length > 0) {
-    for (var i = 0; i < list.length; i++) {
-      var id = Number(list[i]._id);
-      if (id >= nextId) {
-        nextId = ++id;
-      }
-    }
-  }
-  return nextId + '';
-};
-

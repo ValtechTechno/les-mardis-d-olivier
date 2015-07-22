@@ -34,7 +34,7 @@
 
     $scope.addAssociation = function () {
       if (commonService.associationFormValidation($scope.associations, $scope.currentAssociation.name)) {
-        var newAssociation = getNewAssociation(getNextIdInUnsortedList($scope.associations), $scope.currentAssociation.name);
+        var newAssociation = getNewAssociation($scope.currentAssociation.name);
         dataService.addOrUpdateAssociation(newAssociation)
           .then(function (added) {
             $scope.associations.push(added);

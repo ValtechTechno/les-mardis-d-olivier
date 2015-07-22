@@ -64,7 +64,7 @@
 
     $scope.addBeneficiaire = function () {
       if (commonService.userFormValidation($scope.beneficiaires, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire._id, false)) {
-        var newBeneficiaire = getNewBeneficiaire(getNextIdInUnsortedList($scope.beneficiaires), $scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard, $rootScope.account.antenneId);
+        var newBeneficiaire = getNewBeneficiaire($scope.currentBeneficiaire.code, $scope.currentBeneficiaire.lastName, $scope.currentBeneficiaire.firstName, $scope.currentBeneficiaire.hasCard, $rootScope.account.antenneId);
         dataService.addOrUpdateBeneficiaire(newBeneficiaire)
           .then(function (added) {
             $scope.beneficiaires.push(added);

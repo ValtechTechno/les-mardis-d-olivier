@@ -70,7 +70,7 @@
 
     $scope.addAntenne = function () {
       if (commonService.antenneFormValidation($scope.antennes, $scope.currentAntenne.association, $scope.currentAntenne.name)) {
-        var newAntenne = getNewAntenne(getNextIdInUnsortedList($scope.antennes),  $scope.currentAntenne.association, $scope.currentAntenne.name);
+        var newAntenne = getNewAntenne($scope.currentAntenne.association, $scope.currentAntenne.name);
         dataService.addOrUpdateAntenne(newAntenne)
           .then(function (added) {
               added.associationName = $scope.getAssociationName(added.associationId);
