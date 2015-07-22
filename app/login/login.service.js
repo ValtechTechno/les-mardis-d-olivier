@@ -40,17 +40,17 @@
               dataService.login(credentials.login)
               .then(function (benevole) {
                   if(benevole === null || benevole.rows.length === 0){
-                    throw 'WRONG_LOGIN';
+                    throw {type: "functional", message: 'Mauvais email.'};
                   }else if(benevole.rows.length > 1){
-                    throw 'MULTIPLE_LOGIN';
+                    throw {type: "functional", message: 'Plusieurs utilisateurs utilisent cet email.'};
                   }
                   // TODO security
                   if(benevole.rows[0].doc.password !== credentials.password){
-                    throw 'WRONG_PASSWORD';
+                    throw {type: "functional", message: 'Mauvais mot de passe.'};
                   }
 
                   if(benevole.rows[0].doc.antenneId === null && benevole.rows[0].doc.isAdmin === false){
-                    throw 'NO_ADMIN_OR_ANTENNE';
+                    throw {type: "functional", message: 'Ce comtpe n\'est pas rattaché à une antenne.'};
                   }
                   Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.antenneId, benevole.rows[0].doc.isAdmin, benevole.rows[0].doc.associationId);
                   $rootScope.account = Session;
