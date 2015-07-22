@@ -43,7 +43,7 @@
         <tr ng-show="distributions.length==0">
           <td colspan="3">Aucune distribution.</td>
         </tr>
-        <tr class="clickable" ng-repeat="distribution in distributions | orderBy:'-distributionDate'"
+        <tr class="clickable" ng-repeat="distribution in distributions"
             ng-click="loadDistribution(distribution._id)" title="Modifier">
           <td>{{distribution.distributionDate | DateWithJQueryUiDatePicker}}</td>
           <td>{{distribution.nbPlannedMeals}}</td>

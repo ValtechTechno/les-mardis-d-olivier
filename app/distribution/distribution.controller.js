@@ -21,7 +21,7 @@
     $scope.showAllDistribution = function () {
       dataService.findAllDistributionsByAntenneId($rootScope.account.antenneId)
         .then(function (distributions) {
-          $scope.distributions = retrieveAllDistribution(distributions, dataService);
+          $scope.distributions = distributions;
           $scope.initNextDate();
           $scope.loadBeneficiaires();
           $scope.loadBeneficiaireByDistribution();
@@ -41,6 +41,9 @@
 
     $scope.initNextDate = function () {
       if ($scope.distributions.length > 0) {
+        $scope.distributions.sort(function(a,b){
+          return new Date(b.distributionDate) - new Date(a.distributionDate);
+        });
         var date = createNextWorkingDate($scope.distributions[0].distributionDate);
         $scope.currentDistribution.distributionDate = formatDate(date);
       }
@@ -60,17 +63,14 @@
       // charge all distributions to determine the next id
       dataService.findAllDistributionsByAntenneId($rootScope.account.antenneId)
         .then(function (distributions) {
-          var nextId;
           if (distributions.filter(function (storedDistribution) {
               return (distribution.distributionDate === storedDistribution.distributionDate);
             }).length > 0) {
             throw {type: "functional", message: 'Une distribution à cette date existe déjà'};
           }
-          nextId = distributions.length + 1;
-          distribution._id = nextId;
           $scope.addDistribution(distribution);
         })
-        .catch(function (err) {
+        .catch(function () {
           throw {
             type: "functional",
             message: 'Impossible de récupérer les distributions.'
@@ -79,10 +79,9 @@
     };
 
     $scope.addDistribution = function (distribution) {
-      dataService.addOrUpdateDistribution(distribution).then(function () {
-        $scope.currentDistribution._id = distribution._id;
-        $location.path('distributions/' + $scope.currentDistribution._id);
-      }).catch(function (err) {
+      dataService.addOrUpdateDistribution(distribution).then(function (distributionId) {
+        $location.path('distributions/' + distributionId._id);
+      }).catch(function () {
         throw {
           type: "functional",
           message: 'Impossible de créer la distribution.'
@@ -96,7 +95,7 @@
           $scope.beneficiaireByDistribution = beneficiaireByDistribution;
           $scope.getNbBeneficiairesAndComments();
         })
-        .catch(function (err) {
+        .catch(function () {
           throw {
             type: "functional",
             message: 'Impossible de récupérer les informations des distributions.'
@@ -130,22 +129,13 @@
   }
 })();
 
-retrieveAllDistribution = function (allDistributions, dataService) {
-  if (allDistributions === null) {
-    allDistributions = [];
-  } else {
-    allDistributions.reverse();
-  }
-  return allDistributions;
-};
-
 createNextWorkingDate = function (dateString) {
   var lastDate = new Date(dateString);
   var nextDate = new Date(lastDate.setDate(lastDate.getDate() + 1));
   if (nextDate.getDay() === 0) {
     nextDate.setDate(nextDate.getDate() + 1);
   }
-  if (nextDate.getDay() == 6) {
+  if (nextDate.getDay() === 6) {
     nextDate.setDate(nextDate.getDate() + 2);
   }
   return nextDate;

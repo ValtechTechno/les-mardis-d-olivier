@@ -90,7 +90,7 @@
             beneficiaires[pos].comments = getLastComments(beneficiaires[pos]._id, distributionId, true);
 
             var index = beneficiairesPresentIds.indexOf(beneficiaires[pos]._id);
-            if (index != -1) {
+            if (index !== -1) {
               beneficiaires[pos].isPresent = true;
               beneficiaires[pos].comment = beneficiairesPresentComments[index];
             } else {
@@ -168,7 +168,7 @@
 
       vm.beneficiairesPresentByDistribution.reverse();
       for (var i = 0; i < vm.beneficiairesPresentByDistribution.length; i++) {
-        if (distributionId != -1 && beneficiaireOldComments.length == 5) {
+        if (distributionId !== -1 && beneficiaireOldComments.length === 5) {
           break;
         }
         if (vm.beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId &&
@@ -210,7 +210,7 @@
 /* get the date of the comment : depending of the source, from the related distribution or from the date of the object */
 getDateDistribution = function (allDistributions, beneficiairePresent) {
   var dateDistrib = formatDate(new Date());
-  if (beneficiairePresent.distributionId != -1) {
+  if (beneficiairePresent.distributionId !== -1) {
     for (var distributionNumber = 0; distributionNumber <= allDistributions.length; distributionNumber++) {
       if (allDistributions[distributionNumber]._id == beneficiairePresent.distributionId) {
         dateDistrib = allDistributions[distributionNumber].distributionDate;
