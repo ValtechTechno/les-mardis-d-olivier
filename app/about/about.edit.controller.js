@@ -13,16 +13,14 @@
     activate();
 
     function activate() {
-      dataService.getAboutByAntenneId($rootScope.account.antenneId).then(function(abouts){
-        if(abouts.length > 1){
+      dataService.getAboutByAntenneId($rootScope.account.antenneId).then(function(about){
+        if(about === undefined){
           throw {
             type: "functional",
             message: 'Impossible de récupérer les informations.'
           };
         }
-        if(abouts.length === 1) {
-          vm.aboutInformation = abouts[0].doc;
-        }
+        vm.aboutInformation = about;
       });
     }
 
