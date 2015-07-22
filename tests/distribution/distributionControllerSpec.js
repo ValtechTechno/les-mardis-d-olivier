@@ -7,6 +7,7 @@ describe("DistributionController", function () {
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
+    $rootScope.account = {antenneId : 1};
     dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
     DateWithJQueryUiDatePicker = $filter('DateWithJQueryUiDatePicker');
@@ -21,11 +22,11 @@ describe("DistributionController", function () {
   }));
 
   it("should save a new distribution", function () {
-    var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-04"};
+    var source = {_rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-04"};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllDistributionsByAntenneId').andReturn(deferredLoad.promise);
 
-    var added = {_id:"2", _rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-05"};
+    var added = {_rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-05"};
     deferredAdd.resolve(added);
     spyOn(dataService, 'addOrUpdateDistribution').andReturn(deferredAdd.promise);
 
@@ -38,14 +39,13 @@ describe("DistributionController", function () {
     scope.startNewDistribution();
     scope.$apply();
 
-    expect(scope.currentDistribution._id).toBe(2);
-    expect(dataService.addOrUpdateDistribution).toHaveBeenCalledWith({distributionDate:"2014-08-05", nbPlannedMeals:'50', _id:2});
+    expect(dataService.addOrUpdateDistribution).toHaveBeenCalledWith({distributionDate:"2014-08-05", nbPlannedMeals:'50', antenneId:1});
   });
 
   it("shouldn't be possible to save two distribution at the same date", function () {
-    var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-04"};
+    var source = {_rev:"1-019ebd7431186fe904dd2dc037e1806f", nbPlannedMeals:50, distributionDate:"2014-08-04"};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'findAllDistributions').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllDistributionsByAntenneId').andReturn(deferredLoad.promise);
 
     scope.currentDistribution.distributionNbPlannedMeals = "50";
     scope.currentDistribution.distributionDate = "2014-08-04";

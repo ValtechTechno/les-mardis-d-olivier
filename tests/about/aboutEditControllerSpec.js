@@ -7,6 +7,7 @@ describe("AboutEditController", function () {
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $injector) {
     scope = $rootScope.$new();
+    $rootScope.account = {antenneId : 1};
     controller = $controller;
     dataService = $injector.get('dataService');
     deferredGet = _$q_.defer();
@@ -19,7 +20,7 @@ describe("AboutEditController", function () {
 
   it('should edit and save', function () {
     deferredGet.resolve({content:"foobar"});
-    spyOn(dataService, 'getAbout').andReturn(deferredGet.promise);
+    spyOn(dataService, 'getAboutByAntenneId').andReturn(deferredGet.promise);
     spyOn(dataService, 'updateAbout').andReturn(deferredPut.promise);
 
     createController();

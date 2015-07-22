@@ -7,11 +7,12 @@ describe("AboutController", function () {
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $injector) {
     scope = $rootScope.$new();
+    $rootScope.account = {antenneId : 1};
     controller = $controller;
     dataService = $injector.get('dataService');
     var deferred = _$q_.defer();
     deferred.resolve({content:"foobar"});
-    spyOn(dataService, 'getAbout').andReturn(deferred.promise);
+    spyOn(dataService, 'getAboutByAntenneId').andReturn(deferred.promise);
   }));
 
   function createController(){

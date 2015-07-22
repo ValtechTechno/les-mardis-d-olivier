@@ -19,6 +19,8 @@ describe("BeneficiaireController", function () {
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $filter, $injector) {
     scope = $rootScope.$new();
+    $rootScope.account = {antenneId : 1};
+
     routeParams = {};
     dataService = $injector.get('dataService');
     beneficiairesCommonService = $injector.get('commonService');
@@ -37,8 +39,8 @@ describe("BeneficiaireController", function () {
   }));
 
   it('should add a beneficiaire', function () {
-    var toBeAdded = {_id: '1', code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
-    var added = {_id: '1', _rev:"1", code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
+    var toBeAdded = {code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true, antenneId:1};
+    var added = {_rev:"1", code: 1, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true, antenneId:1};
     deferredAdd.resolve(added);
     spyOn(dataService, 'addOrUpdateBeneficiaire').andReturn(deferredAdd.promise);
 
@@ -53,10 +55,10 @@ describe("BeneficiaireController", function () {
   it('should add a second beneficiaire', function () {
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"FN1",lastName:"LN1", hasCard:true};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllBeneficiairesByAntenneId').andReturn(deferredLoad.promise);
 
-    var toBeAdded = {_id: '2', code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
-    var added = {_id: '2', _rev:"1", code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
+    var toBeAdded = {code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true, antenneId:1};
+    var added = {_id: '2', _rev:"1", code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true, antenneId:1};
     deferredAdd.resolve(added);
     spyOn(dataService, 'addOrUpdateBeneficiaire').andReturn(deferredAdd.promise);
 
@@ -76,8 +78,8 @@ describe("BeneficiaireController", function () {
   });
 
   it('should add a beneficiaire without code', function () {
-    var toBeAdded = {_id: '1', code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
-    var added = {_id: '1', _rev:"1", code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
+    var toBeAdded = {code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true, antenneId:1};
+    var added = {_rev:"1", code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true, antenneId:1};
     deferredAdd.resolve(added);
     spyOn(dataService, 'addOrUpdateBeneficiaire').andReturn(deferredAdd.promise);
     scope.openBeneficiaireList();
@@ -89,12 +91,12 @@ describe("BeneficiaireController", function () {
 
     expect(scope.beneficiaires.length).toBe(1);
     expect(dataService.addOrUpdateBeneficiaire).toHaveBeenCalledWith(toBeAdded);
-    expect(scope.beneficiaires).toContain({_id: '1', _rev:'1', code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true});
+    expect(scope.beneficiaires).toContain({_rev:'1', code: null, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true, antenneId:1});
   });
 
   it('should add a beneficiaire without card', function () {
-    var toBeAdded = {_id: '1', code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false};
-    var added = {_id: '1', _rev:"1", code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false};
+    var toBeAdded = {code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false, antenneId:1};
+    var added = {_rev:"1", code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false, antenneId:1};
     deferredAdd.resolve(added);
     spyOn(dataService, 'addOrUpdateBeneficiaire').andReturn(deferredAdd.promise);
     scope.openBeneficiaireList();
@@ -106,13 +108,13 @@ describe("BeneficiaireController", function () {
 
     expect(scope.beneficiaires.length).toBe(1);
     expect(dataService.addOrUpdateBeneficiaire).toHaveBeenCalledWith(toBeAdded);
-    expect(scope.beneficiaires).toContain({_id: '1', _rev:'1', code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false});
+    expect(scope.beneficiaires).toContain({_rev:'1', code: '1', firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: false, antenneId:1});
   });
 
   it('should prevent the user to add an existing beneficiaire', function () {
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"John",lastName:"Rambo", hasCard:true};
     deferredLoad.resolve([source]);
-    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllBeneficiairesByAntenneId').andReturn(deferredLoad.promise);
 
     var added = {_id: '2', _rev:"1", code: 2, firstName: 'John', lastName: 'Rambo', isPresent: false, hasCard: true};
     deferredAdd.resolve(added);

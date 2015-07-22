@@ -7,6 +7,7 @@ describe("BeneficiaireDetailController", function () {
   beforeEach(angular.mock.module('mardisDolivier'));
   beforeEach(angular.mock.inject(function (_$q_, $rootScope, $controller, $filter, $injector, $routeParams) {
     scope = $rootScope.$new();
+    $rootScope.account = {antenneId : 1};
     routeParams = {};
     deferredLoad = _$q_.defer();
     deferredFind = _$q_.defer();
@@ -55,7 +56,7 @@ describe("BeneficiaireDetailController", function () {
 
   it('should update an beneficiaire informations', function () {
     deferredLoad.resolve([]);
-    spyOn(dataService, 'findAllBeneficiaires').andReturn(deferredLoad.promise);
+    spyOn(dataService, 'findAllBeneficiairesByAntenneId').andReturn(deferredLoad.promise);
 
     var source = {_id:"1", _rev:"1-019ebd7431186fe904dd2dc037e1806f",code:1,firstName:"1",lastName:"1", hasCard:true};
     deferredFind.resolve(source);
