@@ -5,7 +5,7 @@
       .module('mardisDolivier')
       .controller('BeneficiaireDetailController', BeneficiaireDetailController);
 
-  function BeneficiaireDetailController ($scope, $routeParams, dataService, commonService, $location) {
+  function BeneficiaireDetailController ($scope, $routeParams, dataService, commonService, $location, $rootScope) {
     var GET_BENEFICIAIRE_GENERIC_ERROR = 'Impossible de récupérer ce bénéficiaire, une erreur technique est survenue.';
 
     $scope.openBeneficiaireDetail = function () {
@@ -32,10 +32,10 @@
     };
 
 
-    $scope.createBeneficiaireErrorWithReturnToList = function(message, technical) {
+    $scope.createBeneficiaireErrorWithReturnToList = function(message) {
       $location.path("/beneficiaires");
       throw {
-        type: technical === true ? "technical" : "functional",
+        type: "functional",
         message: message
       };
     };
@@ -59,7 +59,7 @@
     $scope.isBookmark = function (bdd) {
       var bbdToUpdate = false;
       for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
-        if ($scope.beneficiairesPresentByDistribution[i].distributionId == bdd.distributionId && $scope.beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire._id) {
+        if ($scope.beneficiairesPresentByDistribution[i].distributionId === bdd.distributionId && $scope.beneficiairesPresentByDistribution[i].beneficiaireId === $scope.currentBeneficiaire._id) {
           bbdToUpdate = i;
           break;
         }
@@ -82,7 +82,7 @@
     $scope.getVisiteNumber = function(beneficiaireId) {
       var visiteNumber = 0;
       for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
-        if($scope.beneficiairesPresentByDistribution[i].beneficiaireId == beneficiaireId){
+        if($scope.beneficiairesPresentByDistribution[i].beneficiaireId === beneficiaireId){
           visiteNumber++;
         }
       }
@@ -115,7 +115,7 @@
 
     $scope.saveBeneficiaireDetail = function () {
       // charge all the beneficiaires to check if there isn't already a couple of first name + last name
-      dataService.findAllBeneficiaires()
+      dataService.findAllBeneficiairesByAntenneId($rootScope.account.antenneId)
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
           $scope.updateBeneficiaire();
@@ -160,7 +160,7 @@
     $scope.thenRemoveBeneficiaireByDistribution = function(){
       var beneficiairesByDistributionToDelete = [];
       for (var i = 0; i < $scope.beneficiairesPresentByDistribution.length; i++) {
-        if ($scope.beneficiairesPresentByDistribution[i].beneficiaireId == $scope.currentBeneficiaire._id) {
+        if ($scope.beneficiairesPresentByDistribution[i].beneficiaireId === $scope.currentBeneficiaire._id) {
           beneficiairesByDistributionToDelete.push($scope.beneficiairesPresentByDistribution[i]);
         }
       }
