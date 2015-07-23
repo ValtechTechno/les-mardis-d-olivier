@@ -19,7 +19,7 @@ module.exports = function (config) {
       'lib/foundation-5.5.1/js/vendor/jquery.js',
       'lib/jquery-ui-1.11.0.custom/jquery-ui.min.js',
       'lib/jquery-ui-1.11.0.custom/ui/i18n/datepicker-fr.js',
-      'lib/angular-1.4.1/angular.min.js',
+      'lib/angular-1.4.3/angular.min.js',
       'lib/angular-1.4.1/angular-animate.min.js',
       'lib/angular-1.4.1/angular-route.min.js',
       'lib/angular-ui-date-0.0.8/date.js',
