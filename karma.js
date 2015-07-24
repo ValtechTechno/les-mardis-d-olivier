@@ -32,6 +32,7 @@ module.exports = function (config) {
       'lib/angular-local-storage/angular-local-storage.min.js',
       'lib/pouchdb/pouchdb.min.js',
       'lib/angular-uuid/angular-uuid.js',
+      'lib/angularjs-crypto/sha256.min.js',
       'app/mardisDOlivier.module.js',
       'app/datePicker.filter.js',
       'app/beneficiaire/beneficiaire.controller.js',

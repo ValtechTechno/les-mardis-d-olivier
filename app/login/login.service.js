@@ -45,7 +45,7 @@
                     throw {type: "functional", message: 'Plusieurs utilisateurs utilisent cet email.'};
                   }
                   // TODO security
-                  if(benevole.rows[0].doc.password !== credentials.password){
+                  if(benevole.rows[0].doc.password !== CryptoJS.SHA256(credentials.password).toString()){
                     throw {type: "functional", message: 'Mauvais mot de passe.'};
                   }
 
