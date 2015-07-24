@@ -478,7 +478,7 @@
       })
         .then(function (doc) {
           $rootScope.$apply(function () {
-            return deferred.resolve(doc.rows[0].doc);
+            return deferred.resolve(doc.rows);
           });
         }).catch(function (err) {
           console.log(err);
@@ -489,8 +489,12 @@
 
     function getAbout(about) {
       if (about._rev === undefined) {
-        about._id = uuid.v4();
-        about.type = 'about';
+        var about = {
+          _id : uuid.v4(),
+          type : 'about',
+          antenneId: about.antenneId,
+          content: about.content
+        };
       }
       return about;
     }

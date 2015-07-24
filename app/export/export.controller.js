@@ -30,7 +30,9 @@
         $scope.beneficiairesPresentByDistribution = bbds;
       });
       dataService.getAboutByAntenneId($rootScope.account.antenneId).then(function (about) {
-        $scope.about = about;
+        if(about.length === 1) {
+          $scope.about = about[0].doc;
+        }
       });
     };
 

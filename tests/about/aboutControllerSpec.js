@@ -11,7 +11,7 @@ describe("AboutController", function () {
     controller = $controller;
     dataService = $injector.get('dataService');
     var deferred = _$q_.defer();
-    deferred.resolve({content:"foobar"});
+    deferred.resolve([{doc:{content:"foobar"}}]);
     spyOn(dataService, 'getAboutByAntenneId').andReturn(deferred.promise);
   }));
 
