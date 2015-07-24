@@ -18,12 +18,7 @@
       .when('/distributions/:distributionId?', {
         controller: 'DistributionDetailController',
         controllerAs: 'distributionDetail',
-        templateUrl: 'app/distribution/distributionDetail.html',
-        resolve: {
-          load: ['cssInjector', function (cssInjector) {
-            return cssInjector.set("distributionDetail", "css/distributionDetail.css");
-          }]
-        }
+        templateUrl: 'app/distribution/distributionDetail.html'
       })
       .when('/beneficiaires', {
         controller: 'BeneficiaireController',
@@ -44,12 +39,7 @@
       .when('/about', {
         controller: 'AboutController',
         templateUrl: 'app/about/about.html',
-        controllerAs: 'about',
-        resolve: {
-          load: ['cssInjector', function (cssInjector) {
-            return cssInjector.set("about", "css/about.css");
-          }]
-        }
+        controllerAs: 'about'
       })
       .when('/about/edit', {
         controller: 'AboutEditController',
