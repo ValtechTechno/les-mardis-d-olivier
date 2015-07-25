@@ -1,10 +1,4 @@
 <form name="addBenevoleForm" ng-submit="addBenevoleFromNoAuth()">
-  <select ng-options="association.name for association in associations track by association._id" ng-model="currentBenevole.association" ng-required="true" ng-change="updateAntenneList()">
-    <option value="">Selectionnez une association</option>
-  </select>
-  <select ng-options="antenne.name disable when antenne.hasAdmin === true for antenne in antennesFiltered track by antenne._id" ng-model="currentBenevole.antenne" ng-disabled="antennesFiltered.length===0" ng-required="true">
-    <option value="">Selectionnez une antenne</option>
-  </select>
   <div ng-include="'app/benevole/benevoleMandatoryField.html'"></div>
   <div class="row">
     <div class="medium-6 columns">

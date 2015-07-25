@@ -74,6 +74,10 @@
         controller: 'BenevoleCreateController',
         templateUrl: 'app/benevole/benevoleCreate.html'
       })
+      .when('/join', {
+        controller: 'JoinController',
+        templateUrl: 'app/benevole/join.html'
+      })
       .otherwise({
         redirectTo: '/distributions'
       });

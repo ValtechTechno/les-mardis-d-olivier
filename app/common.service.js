@@ -158,6 +158,21 @@ getNewAdminBenevole = function(lastName, firstName, email, phoneNumber, password
   return newBenevole;
 };
 
+getNewAccount = function(lastName, firstName, email, phoneNumber, password){
+  var newAccount = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phoneNumber: phoneNumber,
+    englishLevel:0,
+    spanishLevel:0,
+    germanLevel:0
+  };
+  newAccount.isAdmin = false;
+  newAccount.password = password;
+  return newAccount;
+};
+
 getNewAssociation = function(name){
   var newAssociation = {
     name: name

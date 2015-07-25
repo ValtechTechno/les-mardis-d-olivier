@@ -45,25 +45,28 @@
           </li>
         </ul>
         <ul class="left">
-          <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown not-click' : menu.isAuth() }">
+          <li ng-class="{'ng-hide' : !menu.isAuth() && menu.isLink(), 'has-dropdown not-click' : menu.isAuth() || !menu.isLink()}">
             <a>{{account.fullName}}</a>
             <ul class="dropdown">
               <li ng-class="{'active' : menu.isActive('/profile'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/{{account.userId}}">Profil</a></li>
-              <li><a ng-class="{'ng-hide' : !menu.isAuth()}" ng-click="menu.logout()">Se déconnecter</a></li>
+              <li><a ng-class="{'ng-hide' : !menu.isAuth() && menu.isLink()}" ng-click="menu.logout()">Se déconnecter</a></li>
             </ul>
           </li>
         </ul>
         <ul>
-          <li ng-class="{'active' : menu.isActive('/login'), 'ng-hide' : menu.isAuth()}"><a href="#/login/">Se connecter</a></li>
+          <li ng-class="{'active' : menu.isActive('/login'), 'ng-hide' : menu.isAuth() || !menu.isLink()}"><a href="#/login/">Se connecter</a></li>
         </ul>
         <ul>
-          <li ng-class="{'active' : menu.isActive('/noauth/createBenevole'), 'ng-hide' : menu.isAuth()}"><a href="#/noauth/createBenevole/">Créer un compte</a></li>
+          <li ng-class="{'active' : menu.isActive('/noauth/createBenevole'), 'ng-hide' : menu.isAuth() || !menu.isLink()}"><a href="#/noauth/createBenevole/">Créer un compte</a></li>
         </ul>
         <ul>
-          <li ng-class="{'active' : menu.isActive('/noauth/createAssociation'), 'ng-hide' : menu.isAuth()}" ><a href="#/noauth/createAssociation/">Créer une association</a></li>
+          <li ng-class="{'active' : menu.isActive('/join'), 'ng-hide' : menu.isAuth() || menu.isLink()}" ><a href="#/join/">Rejoindre</a></li>
         </ul>
         <ul>
-          <li ng-class="{'active' : menu.isActive('/noauth/createAntenne'), 'ng-hide' : menu.isAuth()}" ><a href="#/noauth/createAntenne/">Créer une antenne</a></li>
+          <li ng-class="{'active' : menu.isActive('/noauth/createAssociation'), 'ng-hide' : menu.isAuth() || menu.isLink()}" ><a href="#/noauth/createAssociation/">Créer une association</a></li>
+        </ul>
+        <ul>
+          <li ng-class="{'active' : menu.isActive('/noauth/createAntenne'), 'ng-hide' : menu.isAuth() || menu.isLink()}" ><a href="#/noauth/createAntenne/">Créer une antenne</a></li>
         </ul>
       </section>
     </nav>
@@ -120,6 +123,7 @@
 <script src="app/common.service.js"></script>
 <script src="app/login/login.service.js"></script>
 <script src="app/login/login.controller.js"></script>
+<script src="app/benevole/join.controller.js"></script>
 <script>
   $(document).foundation();
 </script>

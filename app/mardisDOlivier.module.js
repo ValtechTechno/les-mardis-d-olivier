@@ -10,8 +10,10 @@
       var loginPath = '/login';
 
       $rootScope.$on('$routeChangeStart', function () {
-        $rootScope.isAuthorized = LoginService.isAuthorized;
-        LoginService.valid(undefined);
+        if($location.path().indexOf('noauth') === -1) {
+          $rootScope.isAuthorized = LoginService.isAuthorized;
+          LoginService.valid(undefined);
+        }
       });
 
       // Call when the the client is confirmed
