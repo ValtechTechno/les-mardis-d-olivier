@@ -68,7 +68,7 @@
       <tr ng-show="beneficiaires.length==0">
         <td colspan="3">Aucun beneficiaire.</td>
       </tr>
-      <tr class="clickable" ng-repeat="user in beneficiaires | filter:searchBeneficiaire | filter:searchExcluded | filter:searchHasCard" ng-click="openBeneficiaireDetail(user._id)">
+      <tr class="clickable" ng-repeat="user in beneficiaires | orderBy:'code' | filter:searchBeneficiaire | filter:searchExcluded | filter:searchHasCard" ng-click="openBeneficiaireDetail(user._id)">
         <td>{{user.code}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.firstName}}</td>

@@ -28,7 +28,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in distributionDetail.beneficiaires | filter:distributionDetail.searchBeneficiaire">
+        <tr ng-repeat="user in distributionDetail.beneficiaires | orderBy:'code' | filter:distributionDetail.searchBeneficiaire">
           <td>{{user.code}}</td>
           <td>{{user.lastName}}</td>
           <td>{{user.firstName}}</td>
