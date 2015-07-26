@@ -1,0 +1,23 @@
+<button ng-click="addFamily()">Ajouter une famille</button>
+<div class="row">
+  <div class="medium-12 columns">
+    <table class="table">
+      <thead>
+      <tr>
+        <td>Description</td>
+      </tr>
+      <tr>
+        <td colspan="5"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-show="families.length==0">
+        <td colspan="3">Aucune famille.</td>
+      </tr>
+      <tr class="clickable" ng-repeat="family in families | filter:searchFamily" ng-click="openFamilyDetail(family._id)">
+        <td>{{family.description}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

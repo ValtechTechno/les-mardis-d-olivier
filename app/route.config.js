@@ -78,6 +78,14 @@
         controller: 'JoinController',
         templateUrl: 'app/benevole/join.html'
       })
+      .when('/families', {
+        controller: 'FamilyController',
+        templateUrl: 'app/family/family.html'
+      })
+      .when('/familyDetail/:familyId', {
+        controller: 'FamilyDetailController',
+        templateUrl: 'app/family/familyDetail.html'
+      })
       .otherwise({
         redirectTo: '/distributions'
       });

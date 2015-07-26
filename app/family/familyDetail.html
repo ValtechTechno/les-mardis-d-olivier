@@ -1,0 +1,73 @@
+<h3><b>Famille</b></h3>
+<form name="updateFamilyForm">
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Adresse
+        <input type="text" name="adresse" ng-model="currentFamily.adresse" ng-required="false"  ng-change="updateFamily()" ng-model-options="{debounce:1000}"/>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Membres</label>
+    </div>
+  </div>
+  <div class="row" ng-if="addMode===false">
+    <div class="medium-6 columns">
+      <table class="table">
+        <thead>
+        <tr>
+          <td>Nom</td>
+          <td>Prénom</td>
+          <!--<td>Revenus</td>-->
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="currentFamily.members.length==0">
+          <td colspan="3">Aucun membre.</td>
+        </tr>
+        <tr class="clickable" ng-repeat="member in members">
+          <td ng-click="openBeneficiaireDetail(member._id)">{{member.lastName}}</td>
+          <td ng-click="openBeneficiaireDetail(member._id)">{{member.firstName}}</td>
+          <!--<td ng-click="openBeneficiaireDetail(member._id)">{{member.income}}</td>-->
+          <td><i class="ui-icon ui-icon-circle-minus" ng-click="removeMember(member)"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="medium-6 columns">
+      <button ng-click="goToAddMode()">Ajouter</button>
+    </div>
+  </div>
+  <div class="row" ng-if="addMode===true">
+    <div class="medium-6 columns">
+      <table class="table">
+        <thead>
+        <tr>
+          <td>Nom</td>
+          <td>Prénom</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="beneficiaires.length==0">
+          <td colspan="3">Aucun bénéficiaire.</td>
+        </tr>
+        <tr>
+          <td colspan="5"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+        </tr>
+        <tr class="clickable" ng-repeat="beneficiaire in beneficiaires | filter:searchBeneficiaire" ng-click="addMember(beneficiaire)">
+          <td>{{beneficiaire.lastName}}</td>
+          <td>{{beneficiaire.firstName}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="medium-6 columns">
+      <button ng-click="cancelAddMode()">Annuler</button>
+    </div>
+    <div class="medium-6 columns">
+      <p>Veuillez selectionner un bénéficiaire</p>
+    </div>
+  </div>
+</form>

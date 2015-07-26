@@ -14,7 +14,8 @@
       searchBeneficiaire: searchBeneficiaire,
       searchBenevole: searchBenevole,
       searchAssociation: searchAssociation,
-      searchAntenne: searchAntenne
+      searchAntenne: searchAntenne,
+      searchFamily: searchFamily
     };
 
     return service;
@@ -38,6 +39,11 @@
     function searchAntenne(searchText, antenne) {
       var reg = new RegExp(searchText, 'i');
       return !searchText || reg.test(antenne.name !== undefined && antenne.name.toString()) || reg.test(antenne.associationName !== undefined && antenne.associationName.toString());
+    }
+
+    function searchFamily(searchText, family) {
+      var reg = new RegExp(searchText, 'i');
+      return !searchText || reg.test(family.name !== undefined && family.name.toString());
     }
 
     function notUniqueBeneficiaire(lastName, firstName) {

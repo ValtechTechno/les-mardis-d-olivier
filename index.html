@@ -36,6 +36,7 @@
             <a>Gestion</a>
             <ul class="dropdown">
               <li ng-class="{'active' : menu.isActive('/beneficiaires'), 'ng-hide' : !menu.isAuth()}"><a href="#/beneficiaires/">Bénéficiaires</a></li>
+              <li ng-class="{'active' : menu.isActive('/families'), 'ng-hide' : !menu.isAuth()}"><a href="#/families/">Familles</a></li>
               <li ng-class="{'active' : menu.isActive('/benevoles'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/">Bénévoles</a></li>
               <li ng-class="{'active' : menu.isActive('/createAssociation'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAssociation/">Associations</a></li>
               <li ng-class="{'active' : menu.isActive('/createAntenne'), 'ng-hide' : !menu.isAuth()}" ><a href="#/createAntenne/">Antennes</a></li>
@@ -124,6 +125,8 @@
 <script src="app/login/login.service.js"></script>
 <script src="app/login/login.controller.js"></script>
 <script src="app/benevole/join.controller.js"></script>
+<script src="app/family/family.controller.js"></script>
+<script src="app/family/familyDetail.controller.js"></script>
 <script>
   $(document).foundation();
 </script>

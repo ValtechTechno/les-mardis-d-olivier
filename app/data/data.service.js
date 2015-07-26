@@ -38,7 +38,10 @@
       addOrUpdateAssociation: addOrUpdateAssociation,
       findAllAntennes: findAllAntennes,
       addOrUpdateAntenne: addOrUpdateAntenne,
-      getAntenneByBenevoleId: getAntenneByBenevoleId
+      getAntenneByBenevoleId: getAntenneByBenevoleId,
+      findAllFamiliesByAntenneId:findAllFamiliesByAntenneId,
+      addOrUpdateFamily:addOrUpdateFamily,
+      findFamilyById:findFamilyById
     };
 
     return service;
@@ -664,5 +667,78 @@
       return deferred.promise;
     }
 
+    function findAllFamiliesByAntenneId(antenneId) {
+      var deferred = $q.defer();
+
+      function myMapFunction(doc) {
+        if (doc.type !== undefined && doc.type.indexOf('family') != -1) {
+          emit(doc.antenneId);
+        }
+      }
+
+      db.query(myMapFunction, {
+        key: antenneId,
+        include_docs: true
+      })
+        .then(function (res) {
+          console.log(res);
+          $rootScope.$apply(function () {
+            var objects = [];
+            for (var i = 0; i < res.rows.length; i++) {
+              objects.push(res.rows[i].doc);
+            }
+            return deferred.resolve(objects);
+          });
+        })
+        .catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function addOrUpdateFamily(family) {
+      var deferred = $q.defer();
+      var fami = getFamily(family);
+      console.log(fami);
+      db.put(fami)
+        .then(function (doc) {
+          $rootScope.$apply(function () {
+            fami._rev = doc.rev;
+            return deferred.resolve(fami);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function getFamily(family) {
+      if (family._rev === undefined) {
+        family = {
+          _id: uuid.v4(),
+          type: 'family',
+          members : family.members,
+          antenneId: family.antenneId
+        };
+      }
+      return family;
+    }
+
+    function findFamilyById(familyId) {
+      var deferred = $q.defer();
+      db.get(familyId)
+        .then(function (doc) {
+          console.log(doc);
+          $rootScope.$apply(function () {
+            return deferred.resolve(doc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
   }
 })();
