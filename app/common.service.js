@@ -43,7 +43,7 @@
 
     function searchFamily(searchText, family) {
       var reg = new RegExp(searchText, 'i');
-      return !searchText || reg.test(family.name !== undefined && family.name.toString());
+      return !searchText || reg.test(family.description !== undefined && family.description.toString());
     }
 
     function notUniqueBeneficiaire(lastName, firstName) {
