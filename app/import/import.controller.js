@@ -5,11 +5,11 @@
     .module('mardisDolivier')
     .controller('ImportController', ImportController);
 
-  function ImportController($scope, dataService, $location) {
+  function ImportController($scope, dataService, $location, $rootScope, commonService) {
     $scope.openImportPage = function () {
       $scope.beneficiaires = [];
       $scope.initDynamicVariable("");
-      dataService.findAllBeneficiaires()
+      dataService.findAllBeneficiairesByAntenneId($rootScope.account.antenneId)
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
       });
@@ -99,7 +99,7 @@
           hasCard = $scope.getHasCardFromString(parsedList[i][3]);
         }
 
-        $scope.beneficiairesToImport.push(getNewBeneficiaire(getNextIdInUnsortedList($scope.beneficiairesToImport), code, lastName, firstName, hasCard));
+        $scope.beneficiairesToImport.push(getNewBeneficiaire(commonService.initNextCode($scope.beneficiairesToImport), lastName, firstName, hasCard, $rootScope.account.antenneId));
       }
     };
 

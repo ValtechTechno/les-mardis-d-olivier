@@ -15,7 +15,8 @@
       searchBenevole: searchBenevole,
       searchAssociation: searchAssociation,
       searchAntenne: searchAntenne,
-      searchFamily: searchFamily
+      searchFamily: searchFamily,
+      initNextCode:initNextCode
     };
 
     return service;
@@ -112,6 +113,19 @@
         notUniqueEmail(email);
       }
       return true;
+    }
+
+    function initNextCode(list){
+      var nextCode = 1;
+      if (list !== null) {
+        for (var i = 0; i < list.length; i++) {
+          if (nextCode <= list[i].code) {
+            nextCode = list[i].code;
+            nextCode++;
+          }
+        }
+      }
+      return nextCode;
     }
   }
 })();

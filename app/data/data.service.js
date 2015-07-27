@@ -127,13 +127,9 @@
       var beneficiairesLength = beneficiaires === null ? 0 : beneficiaires.length;
       for (var i = 0; i < beneficiairesLength; i++) {
         var beneficiaire = beneficiaires[i];
-        beneficiairesToCreate.push({
-          _id: beneficiaire._id,
-          code: beneficiaire.code,
-          firstName: beneficiaire.firstName,
-          lastName: beneficiaire.lastName,
-          hasCard: beneficiaire.hasCard
-        });
+        if(beneficiaire._id === undefined) {
+          beneficiairesToCreate.push(getBeneficiaire(beneficiaire));
+        }
       }
       db.bulkDocs(beneficiairesToCreate).then(function (response) {
         console.log(response);
