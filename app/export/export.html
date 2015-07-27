@@ -22,12 +22,16 @@
     <tr>
       <th><i class="ui-icon ui-icon-key"></i> Id</th>
       <th>Nom</th>
+      <th>Association</th>
+      <th>Activitées</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="ante in antennes">
       <td>{{ante._id}}</td>
+      <td>{{ante.associationId}}</td>
       <td>{{ante.name}}</td>
+      <td>{{ante.activities}}</td>
     </tr>
     </tbody>
   </table>
@@ -46,6 +50,7 @@
       <th>Niveau d'anglais</th>
       <th>Niveau d'espagnol</th>
       <th>Niveau d'allemand</th>
+      <th>Responsable Activité</th>
     </tr>
     </thead>
     <tbody>
@@ -61,6 +66,7 @@
       <td>{{benev.englishLevel}}</td>
       <td>{{benev.spanishLevel}}</td>
       <td>{{benev.germanLevel}}</td>
+      <td>{{benev.adminActivities}}</td>
     </tr>
     </tbody>
   </table>
@@ -86,6 +92,29 @@
       <td>{{isBooleanUndefined(benef.hasCard)}}</td>
       <td>{{isBooleanUndefined(benef.excluded)}}</td>
       <td>{{benef.description}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <h3><b>Familles</b></h3>
+  <table>
+    <thead>
+    <tr>
+      <th><i class="ui-icon ui-icon-key"></i> Id</th>
+      <th><i class="ui-icon ui-icon-tag"></i>Addresse</th>
+      <th><i class="ui-icon ui-icon-contact"></i>Membres</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="family in families">
+      <td>{{family._id}}</td>
+      <td>{{family.adresse}}</td>
+      <td>
+        <p ng-repeat="mem in family.members">
+          {{mem}}
+        </p>
+      </td>
+    <td>{{family.description}}</td>
     </tr>
     </tbody>
   </table>

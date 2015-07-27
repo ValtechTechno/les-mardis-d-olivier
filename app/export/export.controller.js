@@ -26,6 +26,10 @@
         .then(function (benevoles) {
           $scope.benevoles = benevoles;
         });
+      dataService.findAllFamiliesByAntenneId($rootScope.account.antenneId)
+        .then(function (families) {
+          $scope.families = families;
+        });
       dataService.findAllBeneficiaireByDistributionByAntenneId($rootScope.account.antenneId).then(function (bbds) {
         $scope.beneficiairesPresentByDistribution = bbds;
       });
