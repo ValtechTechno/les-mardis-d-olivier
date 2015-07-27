@@ -51,14 +51,20 @@
               throw {type: "functional", message: 'Mauvais mot de passe.'};
             }
 
-            dataService.findAntenneById(benevole.rows[0].doc.antenneId)
-            .then(function (antenne){
-              debugger;
-              Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin, benevole.rows[0].doc.antenneId, benevole.rows[0].doc.associationId, antenne);
+            if(benevole.rows[0].doc.antenneId !== undefined) {
+              dataService.findAntenneById(benevole.rows[0].doc.antenneId)
+                .then(function (antenne) {
+                  Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin, benevole.rows[0].doc.antenneId, benevole.rows[0].doc.associationId, antenne);
+                  $rootScope.account = Session;
+                  localStorageService.set("session", angular.toJson($rootScope.account));
+                  authService.loginConfirmed();
+                });
+            }else{
+              //TODO facto
+              Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin);
               $rootScope.account = Session;
-              localStorageService.set("session", angular.toJson($rootScope.account));
               authService.loginConfirmed();
-            });
+            }
             if (successCallback !== undefined) {
               successCallback(benevole);
             }

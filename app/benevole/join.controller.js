@@ -16,6 +16,7 @@
           $rootScope.account.associationId = benev.associationId;
           $rootScope.account.antenneId = benev.antenneId;
           $rootScope.account.isAdmin = true;
+          $rootScope.account.antenne = $scope.currentBenevole.antenne;
           LoginService.saveSessionCookie();
           $location.path('/distributions');
       }).catch(function (err) {
