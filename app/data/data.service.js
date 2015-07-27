@@ -41,7 +41,8 @@
       getAntenneByBenevoleId: getAntenneByBenevoleId,
       findAllFamiliesByAntenneId:findAllFamiliesByAntenneId,
       addOrUpdateFamily:addOrUpdateFamily,
-      findFamilyById:findFamilyById
+      findFamilyById:findFamilyById,
+      findAntenneById:findAntenneById
     };
 
     return service;
@@ -740,5 +741,21 @@
         });
       return deferred.promise;
     }
+
+    function findAntenneById(antenneId) {
+      var deferred = $q.defer();
+      db.get(antenneId)
+        .then(function (doc) {
+          console.log(doc);
+          $rootScope.$apply(function () {
+            return deferred.resolve(doc);
+          });
+        }).catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
   }
 })();

@@ -189,7 +189,8 @@ getNewAssociation = function(name){
 getNewAntenne = function(association, antenneName){
   var newAntenne = {
     name: antenneName,
-    associationId: association._id
+    associationId: association._id,
+    activities:['FOOD','TRAVEL'] // TODO for test
   };
   return newAntenne;
 };

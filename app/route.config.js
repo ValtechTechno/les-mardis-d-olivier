@@ -86,6 +86,10 @@
         controller: 'FamilyDetailController',
         templateUrl: 'app/family/familyDetail.html'
       })
+      .when('/admin/activities', {
+        controller: 'ActivitiesAdminController',
+        templateUrl: 'app/activities/activitiesAdmin.html'
+      })
       .otherwise({
         redirectTo: '/distributions'
       });

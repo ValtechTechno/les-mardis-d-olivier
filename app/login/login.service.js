@@ -6,13 +6,14 @@
 
   function Session() {
 
-    this.create = function (pUserId, pUsername, pFullName, pIsAdmin, pAntenneId, pAssociationId) {
+    this.create = function (pUserId, pUsername, pFullName, pIsAdmin, pAntenneId, pAssociationId, antenne) {
       this.userId = pUserId;
       this.username = pUsername;
       this.fullName = pFullName;
       this.antenneId = pAntenneId;
       this.isAdmin = pIsAdmin;
       this.associationId = pAssociationId;
+      this.antenne = antenne;
     };
 
     this.clear = function () {
@@ -22,6 +23,7 @@
       this.antenneId = null;
       this.isAdmin = null;
       this.associationId = null;
+      this.antenne = null;
     };
 
     return this;
@@ -49,11 +51,14 @@
               throw {type: "functional", message: 'Mauvais mot de passe.'};
             }
 
-            Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin, benevole.rows[0].doc.antenneId, benevole.rows[0].doc.associationId);
-            $rootScope.account = Session;
-            localStorageService.set("session", angular.toJson($rootScope.account));
-            authService.loginConfirmed();
-
+            dataService.findAntenneById(benevole.rows[0].doc.antenneId)
+            .then(function (antenne){
+              debugger;
+              Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin, benevole.rows[0].doc.antenneId, benevole.rows[0].doc.associationId, antenne);
+              $rootScope.account = Session;
+              localStorageService.set("session", angular.toJson($rootScope.account));
+              authService.loginConfirmed();
+            });
             if (successCallback !== undefined) {
               successCallback(benevole);
             }
