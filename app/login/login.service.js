@@ -6,14 +6,16 @@
 
   function Session() {
 
-    this.create = function (pUserId, pUsername, pFullName, pIsAdmin, pAntenneId, pAssociationId, antenne) {
+    this.create = function (pUserId, pUsername, pFullName, pIsAdmin, pAntenneId, pAssociationId, pAntenne, pAdminActivities, pMemberActivities) {
       this.userId = pUserId;
       this.username = pUsername;
       this.fullName = pFullName;
       this.antenneId = pAntenneId;
       this.isAdmin = pIsAdmin;
       this.associationId = pAssociationId;
-      this.antenne = antenne;
+      this.antenne = pAntenne;
+      this.adminActivities = pAdminActivities;
+      this.memberActivities = pMemberActivities;
     };
 
     this.clear = function () {
@@ -24,6 +26,8 @@
       this.isAdmin = null;
       this.associationId = null;
       this.antenne = null;
+      this.adminActivities = null;
+      this.memberActivities = null;
     };
 
     return this;
@@ -54,12 +58,14 @@
             if(benevole.rows[0].doc.antenneId !== undefined) {
               dataService.findAntenneById(benevole.rows[0].doc.antenneId)
                 .then(function (antenne) {
-                  Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin, benevole.rows[0].doc.antenneId, benevole.rows[0].doc.associationId, antenne);
+                  Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin,
+                    benevole.rows[0].doc.antenneId, benevole.rows[0].doc.associationId, antenne, benevole.rows[0].doc.adminActivities, benevole.rows[0].doc.memberActivities);
                   $rootScope.account = Session;
                   localStorageService.set("session", angular.toJson($rootScope.account));
                   authService.loginConfirmed();
                 });
             }else{
+              // Join case
               //TODO facto
               Session.create(benevole.rows[0].doc._id, benevole.rows[0].doc.email, benevole.rows[0].doc.firstName + " " + benevole.rows[0].doc.lastName, benevole.rows[0].doc.isAdmin);
               $rootScope.account = Session;

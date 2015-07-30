@@ -11,6 +11,7 @@
     vm.logout = logout;
     vm.isAuth = isAuth;
     vm.isAdmin = isAdmin;
+    vm.isResp = isResp;
     vm.isLink = isLink;
     vm.isUserNotAuth = isUserNotAuth;
     vm.isUserNotLink = isUserNotLink;
@@ -28,6 +29,10 @@
 
     function isAuth(){
       return !vm.isUserNotAuth();
+    }
+
+    function isResp(){
+      return $rootScope.account !== undefined && $rootScope.account !== null && $rootScope.account.adminActivities !== undefined &&  $rootScope.account.adminActivities !== null &&  $rootScope.account.adminActivities.length > 0;v
     }
 
     function isAdmin(){
