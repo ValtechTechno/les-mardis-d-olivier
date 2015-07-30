@@ -27,7 +27,14 @@
       $scope.currentFamily.members.push(member._id);
       $scope.addMode = false;
       $scope.membersUpdated = true;
+    };
+
+    $scope.saveFamilyDetail = function(){
       $scope.updateFamily();
+    };
+
+    $scope.openFamilyList = function(){
+      $location.path("/famillies");
     };
 
     $scope.updateFamily = function(){
@@ -55,7 +62,6 @@
       var currentMembersIndex = $scope.currentFamily.members.indexOf(member._id);
       $scope.currentFamily.members.splice(currentMembersIndex, 1);
       $scope.membersUpdated = true;
-      $scope.updateFamily();
     };
 
     $scope.searchBeneficiaire = function (beneficiaire) {

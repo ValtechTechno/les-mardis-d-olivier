@@ -1,9 +1,11 @@
-<h3><b>Famille</b></h3>
+<div class="row">
+  <h4 class="medium-12 columns">Famille - Profil</h4>
+</div>
 <form name="updateFamilyForm">
   <div class="row">
     <div class="medium-6 columns">
       <label>Adresse
-        <input type="text" name="adresse" ng-model="currentFamily.adresse" ng-required="false"  ng-change="updateFamily()" ng-model-options="{debounce:1000}"/>
+        <input type="text" name="address" ng-model="currentFamily.adresse" ng-required="false" />
       </label>
     </div>
   </div>
@@ -70,4 +72,17 @@
       <p>Veuillez selectionner un bénéficiaire</p>
     </div>
   </div>
+  <div class="row">
+    <div class="medium-6 columns">
+      <div class="medium-6 columns right">
+        <button id="saveFamilyDetail" ng-click="saveFamilyDetail()" class="button secondary expand">
+          Enregistrer
+        </button>
+      </div>
+      <div class="medium-6 columns right">
+        <button id="cancelFamilyDetail" ng-click="openFamilyList()" class="button secondary expand">
+          Annuler
+        </button>
+      </div>
+    </div>
 </form>
