@@ -41,7 +41,7 @@
 
     $scope.addBenevole = function () {
       if (commonService.benevoleFormValidation($scope.benevoles, $scope.currentBenevole.email, $scope.currentBenevole._id, false)) {
-        var newBenevole = getNewBenevole($scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber, $rootScope.account.associationId, $rootScope.account.antenneId);
+        var newBenevole = getNewAccount($scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber, $rootScope.account.associationId, $rootScope.account.antenneId, CryptoJS.SHA256("motdepasse").toString());
         dataService.addOrUpdateBenevole(newBenevole)
           .then(function (added) {
             $scope.benevoles.push(added);

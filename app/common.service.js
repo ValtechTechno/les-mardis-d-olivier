@@ -178,16 +178,8 @@ getNewAdminBenevole = function(lastName, firstName, email, phoneNumber, password
   return newBenevole;
 };
 
-getNewAccount = function(lastName, firstName, email, phoneNumber, password){
-  var newAccount = {
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    phoneNumber: phoneNumber,
-    englishLevel:0,
-    spanishLevel:0,
-    germanLevel:0
-  };
+getNewAccount = function(lastName, firstName, email, phoneNumber, associationId, antenneId, password){
+  var newAccount = getNewBenevole(lastName, firstName, email, phoneNumber, associationId, antenneId);
   newAccount.isAdmin = false;
   newAccount.password = password;
   return newAccount;
