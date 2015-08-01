@@ -26,7 +26,8 @@
       </ul>
       <section class="top-bar-section" ng-cloak>
         <ul class="left">
-          <li ng-class="{'active' : menu.isActive('/distributions'), 'ng-hide' : !menu.isAuth()}"><a href="#/distributions/">Distributions</a></li>
+          <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : !menu.isAuth() || menu.isSingleActivity()}"><a href="#/member/activities/">Activités</a></li>
+          <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : !menu.isAuth() || !menu.isSingleActivity()}"><a href="#/member/activities/">{{ menu.getSingleActivityName() }}</a></li>
         </ul>
         <ul class="left">
           <li ng-class="{'active' : menu.isActive('/about'), 'ng-hide' : !menu.isAuth()}"><a href="#/about/">A propos</a></li>
@@ -40,7 +41,6 @@
               <li ng-class="{'active' : menu.isActive('/benevoles'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/">Bénévoles</a></li>
               <li ng-class="{'active' : menu.isActive('/admin/activities'), 'ng-hide' : !menu.isAdmin()}"><a href="#/admin/activities/">R. Activités</a></li>
               <li ng-class="{'active' : menu.isActive('/resp/activities'), 'ng-hide' : !menu.isResp()}"><a href="#/resp/activities/">M. Activités</a></li>
-              <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : menu.isResp() || menu.isAdmin()}"><a href="#/member/activities/">Activités</a></li>
               <li ng-class="{'active' : menu.isActive('/export'), 'ng-hide' : !menu.isAuth()}"><a href="#/export/">Export</a></li>
               <li ng-class="{'active' : menu.isActive('/import'), 'ng-hide' : !menu.isAuth()}"><a href="#/import/">Import</a></li>
             </ul>

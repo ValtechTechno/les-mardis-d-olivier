@@ -5,7 +5,7 @@
     .module('mardisDolivier')
     .controller('MenuController', MenuController);
 
-  function MenuController($location, LoginService, $rootScope) {
+  function MenuController($location, LoginService, $rootScope, $translate) {
     var vm = this;
     vm.isActive = isActive;
     vm.logout = logout;
@@ -13,6 +13,8 @@
     vm.isAdmin = isAdmin;
     vm.isResp = isResp;
     vm.isLink = isLink;
+    vm.isSingleActivity = isSingleActivity;
+    vm.getSingleActivityName = getSingleActivityName;
     vm.isUserNotAuth = isUserNotAuth;
     vm.isUserNotLink = isUserNotLink;
     function isActive(path) {
@@ -49,6 +51,14 @@
 
     function isUserNotLink(){
       return $rootScope.account !== null && $rootScope.account !== undefined && $rootScope.account.antenneId === undefined && $rootScope.account.associationId === undefined;
+    }
+
+    function isSingleActivity(){
+      return $rootScope.account !== undefined && $rootScope.account !== null && $rootScope.account.antenne !== null && $rootScope.account.antenne !== undefined && $rootScope.account.antenne.activities.length === 1;
+    }
+
+    function getSingleActivityName(){
+      return isSingleActivity() === true ? $translate.instant('lang.'+$rootScope.account.antenne.activities[0]) : '';
     }
 
   }

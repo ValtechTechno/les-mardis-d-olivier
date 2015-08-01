@@ -282,7 +282,7 @@
       var deferred = $q.defer();
 
       function map(doc) {
-        if (doc.type !== undefined && doc.type.indexOf('distri') != -1) {
+        if (doc.type !== undefined && doc.type.indexOf('FOOD') != -1) {
           emit(doc.antenneId);
         }
       }
@@ -354,7 +354,8 @@
     function getDistribution(distribution) {
       if (distribution._rev === undefined) {
         distribution._id = uuid.v4();
-        distribution.type = 'distri';
+        distribution.type = 'FOOD';
+        distribution.dateCreation = new Date();
       }
       return distribution;
     }
@@ -758,9 +759,7 @@
       var deferred = $q.defer();
 
       function myMapFunction(doc) {
-        if (doc.type !== undefined && doc.type.indexOf('acti') != -1) {
-          emit(doc.activity);
-        }
+          emit(doc.type);
       }
 
       db.query(myMapFunction, {
@@ -784,19 +783,19 @@
       return deferred.promise;
     }
 
-    function getActivity(acti) {
-      if (acti._rev === undefined) {
-        var acti = {
-          _id : uuid.v4(),
-          type : 'acti',
-          antenneId: acti.antenneId,
-          content: acti.content,
-          createDate: new Date(),
-          description: acti.description
-        };
-      }
-      return acti;
-    }
+//    function getActivity(acti) {
+//      if (acti._rev === undefined) {
+//        var acti = {
+//          _id : uuid.v4(),
+//          type : 'acti',
+//          antenneId: acti.antenneId,
+//          content: acti.content,
+//          createDate: new Date(),
+//          description: acti.description
+//        };
+//      }
+//      return acti;
+//    }
 
   }
 })();

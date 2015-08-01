@@ -11,10 +11,6 @@
         controller: 'LoginController',
         templateUrl: 'app/login/login.html'
       })
-      .when('/distributions', {
-        controller: 'DistributionController',
-        templateUrl: 'app/distribution/distribution.html'
-      })
       .when('/distributions/:distributionId?', {
         controller: 'DistributionDetailController',
         controllerAs: 'distributionDetail',
@@ -99,7 +95,7 @@
         templateUrl: 'app/activities/activitiesMember.html'
       })
       .otherwise({
-        redirectTo: '/distributions'
+        redirectTo: '/member/activities'
       });
   }
 

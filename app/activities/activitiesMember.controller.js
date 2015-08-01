@@ -10,15 +10,15 @@
     var MINE_KEY = 'MINE';
 
     $scope.openActivitiesMember = function () {
-      var rawActivities =  [MINE_KEY].concat($rootScope.account.antenne.activities);
       $scope.myActivities = $scope.getMyActivities($rootScope);
+      var rawActivities =  $scope.myActivities.length > 1 ? [MINE_KEY].concat($rootScope.account.antenne.activities) : $rootScope.account.antenne.activities;
       $scope.activities = activitiesService.getActivities(rawActivities, $scope.myActivities, MINE_KEY);
 
-      if($scope.activities.length === 1){
-        $location.path('/');
+      if($scope.activities.length === 0){
         throw {type: "functional", message: 'Aucune activités.'};
       }
-      $scope.currentActivity = $scope.activities[0];
+
+      $scope.currentActivity = $scope.activities[activitiesService.getSelectedActivityIndex($scope.activities, $scope.myActivities)];
       $scope.updateActivityContent();
     };
 
@@ -30,7 +30,9 @@
         actToGet.push($scope.currentActivity.id);
       }
       dataService.findAllActivitiesByType(actToGet).then(function(acts){
-        $scope.currentActivities = acts;
+        $scope.currentActivities = acts.sort(function(a,b){
+          return new Date(b.dateCreation) - new Date(a.dateCreation);
+        });
       })
       .catch(function () {
         throw {type: "functional", message: 'Impossible de charger la liste des activités.'};
@@ -48,8 +50,14 @@
       return mineAct;
     };
 
-    $scope.openActivity = function (activityId) {
-      $location.path("/activity/" + activityId);
+    $scope.openActivity = function (activity) {
+      if(activity.type === 'FOOD') {
+        $location.path("/distributions/" + activity._id);
+      }
+    };
+
+    $scope.getActivityDescription = function (acti) {
+      return activitiesService.getActivityDescription(acti);
     };
 
     $scope.openActivitiesMember();

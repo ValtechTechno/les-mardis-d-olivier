@@ -1,34 +1,35 @@
-<div class="row">
-  <h4 class="medium-12 columns">{{ 'activities' | translate }}</h4>
-</div>
-<select ng-options="activity.name for activity in activities" ng-model="currentActivity" ng-change="updateActivityContent()">
-</select>
-
-<div class="row">
-  <div class="medium-12 columns">
-    <table class="table">
-      <thead>
-      <tr>
-        <th><i class="ui-icon ui-icon-key"></i>{{ 'activity' | translate }}</th>
-        <th><i class="ui-icon ui-icon-calendar"></i>{{ 'date.created' | translate }}</th>
-        <th><i class="ui-icon ui-icon-person"></i>{{ 'beneficiaires' | translate }}</th>
-        <th><i class="ui-icon ui-icon-person"></i>{{ 'benevoles' | translate }}</th>
-        <th><i class="ui-icon ui-icon-contact"></i>{{ 'description' | translate }}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-show="currentActivities.length==0">
-        <td colspan="3">{{ 'no.activities' | translate }}</td>
-      </tr>
-      <tr class="clickable" ng-repeat="activity in currentActivities"
-          ng-click="openActivity(activity._id)" title="{{ 'activity.detail' | translate }}">
-        <td>{{ 'lang.'+activity.activity | translate }}</td>
-        <td>{{activity.createDate | DateWithJQueryUiDatePicker}}</td>
-        <td>{{activity.beneficiaires}}</td>
-        <td>{{activity.benevoles}}</td>
-        <td>{{activity.description}}</td>
-      </tr>
-      </tbody>
-    </table>
+<div ng-show="activities.length > 1">
+  <div class="row">
+    <h4 class="medium-12 columns">{{ 'activities' | translate }}</h4>
   </div>
+  <select ng-options="activity.name for activity in activities" ng-model="currentActivity" ng-change="updateActivityContent()">
+  </select>
+
+  <div class="row" ng-if="currentActivity.id === 'MINE'">
+    <div class="medium-12 columns">
+      <table class="table">
+        <thead>
+        <tr>
+          <th><i class="ui-icon ui-icon-key"></i>{{ 'activity' | translate }}</th>
+          <th><i class="ui-icon ui-icon-calendar"></i>{{ 'date.created' | translate }}</th>
+          <th><i class="ui-icon ui-icon-contact"></i>{{ 'description' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="currentActivities.length==0">
+          <td colspan="3">{{ 'no.activities' | translate }}</td>
+        </tr>
+        <tr class="clickable" ng-repeat="activity in currentActivities"
+            ng-click="openActivity(activity)" title="{{ 'activity.detail' | translate }}">
+          <td>{{ 'lang.'+activity.type | translate }}</td>
+          <td>{{activity.dateCreation | DateWithJQueryUiDatePicker}}</td>
+          <td>{{getActivityDescription(activity)}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row" ng-if="currentActivity.id === 'FOOD'" ng-controller="DistributionController as vm">
+  <div ng-include="'app/distribution/distribution.html'"></div>
 </div>
