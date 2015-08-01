@@ -51,8 +51,10 @@
         Annuler
       </button>
     </div>
-    <div class="medium-3 columns right">
-      <popup-directive popup-button="deletePopupButtons" popup-label="Êtes-vous sûr de vouloir supprimer ce bénéficiaire ?" button-label="Supprimer" ></popup-directive>
+    <div ng-if="account.isAdmin">
+      <div class="medium-3 columns right">
+        <popup-directive popup-button="deletePopupButtons" popup-label="Êtes-vous sûr de vouloir supprimer ce bénéficiaire ?" button-label="Supprimer" ></popup-directive>
+      </div>
     </div>
   </div>
 </form>

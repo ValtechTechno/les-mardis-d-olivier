@@ -5,14 +5,14 @@
         <label>
           Nom
           <input type="text" name="lastName" class="detail" ng-model="currentBenevole.lastName" placeholder="-- nom --"
-                 ng-required="true"/>
+                 ng-required="true" ng-disabled="!edit"/>
         </label>
       </div>
       <div class="medium-6 columns">
         <label>
           Prénom
           <input type="text" name="firstName" class="detail" ng-model="currentBenevole.firstName" placeholder="-- prénom --"
-                 ng-required="true"/>
+                 ng-required="true" ng-disabled="!edit"/>
         </label>
       </div>
     </div>
@@ -20,13 +20,13 @@
       <div class="medium-6 columns">
         <label>Téléphone
           <input type="text" name="phoneNumber" class="detail" ng-model="currentBenevole.phoneNumber" placeholder="-- téléphone --"
-                 ng-required="true"/>
+                 ng-required="true" ng-disabled="!edit"/>
         </label>
       </div>
       <div class="medium-6 columns">
         <label>Email
           <input type="email" name="email" class="detail" ng-model="currentBenevole.email" placeholder="-- email --"
-                 ng-required="true"/>
+                 ng-required="true" ng-disabled="!edit"/>
         </label>
       </div>
     </div>

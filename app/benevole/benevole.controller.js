@@ -6,6 +6,7 @@
     .controller('BenevoleController', BenevoleController);
 
   function BenevoleController ($scope, dataService, commonService, $location, $rootScope) {
+    $scope.edit = true;
     $scope.openBenevoleList = function () {
       if ($scope.benevoles === null || $scope.benevoles === undefined) {
         $scope.benevoles = [];

@@ -12,6 +12,7 @@
     };
 
     $scope.openBenevoleCreate = function () {
+      $scope.edit = true;
       if ($scope.benevoles === null || $scope.benevoles === undefined) {
         $scope.benevoles = [];
         $scope.associations = [];

@@ -13,6 +13,7 @@
       dataService.findBenevoleById($routeParams.benevoleId, $scope.benevoles)
         .then(function (doc) {
           $scope.currentBenevole = doc;
+          $scope.edit = $rootScope.account.userId === $scope.currentBenevole._id || ($rootScope.account.isAdmin === true && !$scope.currentBenevole.isAdmin);
           if($scope.currentBenevole.englishLevel === undefined) {
             $scope.currentBenevole.englishLevel = $scope.languageLevels[0].id;
           }
