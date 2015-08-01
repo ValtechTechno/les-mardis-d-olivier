@@ -1,26 +1,20 @@
-<h4>Gestion des responsables activités</h4>
-<select ng-options="activity for activity in activities" ng-model="currentActivity" ng-change="updateActivityContent()">
-<!--<option value="">Selectionnez une activité</option>-->
+<h4>{{ 'view.activityAdmin.name' | translate }}</h4>
+<select ng-options="activity.name for activity in activities" ng-model="currentActivity" ng-change="updateActivityContent()">
 </select>
 <div ng-if="currentActivity !== undefined">
-<div class="row">
-  <div class="medium-6 columns">
-    <label>Responsable</label>
-  </div>
-</div>
 <div class="row" ng-if="addMode===false">
   <div class="medium-6 columns">
     <table class="table">
       <thead>
       <tr>
-        <td>Nom</td>
-        <td>Prénom</td>
+        <td>{{ 'lastname' | translate }}</td>
+        <td>{{ 'firstname' | translate }}</td>
         <td></td>
       </tr>
       </thead>
       <tbody>
       <tr ng-show="members.length==0">
-        <td colspan="3">Aucun responsable.</td>
+        <td colspan="3">{{ 'no.responsables' | translate }}</td>
       </tr>
       <tr class="clickable" ng-repeat="member in members">
         <td ng-click="openBeneficiaireDetail(member._id)">{{member.lastName}}</td>
@@ -31,7 +25,7 @@
     </table>
   </div>
   <div class="medium-6 columns">
-    <button ng-click="goToAddMode()">Ajouter</button>
+    <button ng-click="goToAddMode()">{{ 'add' | translate }}</button>
   </div>
 </div>
 <div class="row" ng-if="addMode===true">
@@ -39,16 +33,16 @@
     <table class="table">
       <thead>
       <tr>
-        <td>Nom</td>
-        <td>Prénom</td>
+        <td>{{ 'lastname' | translate }}</td>
+        <td>{{ 'firstname' | translate }}</td>
       </tr>
       </thead>
       <tbody>
       <tr ng-show="benevoles.length==0">
-        <td colspan="3">Aucun bénévole.</td>
+        <td colspan="3">{{ 'no.benevoles' | translate }}</td>
       </tr>
       <tr>
-        <td colspan="5"><input type="text" ng-model="searchText" placeholder="42, Georges, Henriette, etc."></td>
+        <td colspan="5"><input type="text" ng-model="searchText" placeholder="{{ 'placeholder.list' | translate }}"></td>
       </tr>
       <tr class="clickable" ng-repeat="benevole in benevolesWithoutMembers | filter:searchBeneficiaire" ng-click="addMember(benevole)">
         <td>{{benevole.lastName}}</td>
@@ -58,10 +52,10 @@
     </table>
   </div>
   <div class="medium-6 columns">
-    <button ng-click="cancelAddMode()">Annuler</button>
+    <button ng-click="cancelAddMode()">{{ 'cancel' | translate }}</button>
   </div>
   <div class="medium-6 columns">
-    <p>Veuillez selectionner un bénévole</p>
+    <p>{{ 'activity.select.benevole' | translate }}</p>
   </div>
 </div>
 </div>

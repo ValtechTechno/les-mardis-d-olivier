@@ -5,10 +5,10 @@
     .module('mardisDolivier')
     .controller('ActivitiesAdminController', ActivitiesAdminController);
 
-  function ActivitiesAdminController($scope, dataService, $rootScope, $location) {
+  function ActivitiesAdminController($scope, dataService, $rootScope, $location, activitiesService) {
 
     $scope.openActivitiesAdmin = function () {
-      $scope.activities = $rootScope.account.antenne.activities;
+      $scope.activities = activitiesService.getActivities($rootScope.account.antenne.activities);
       if($scope.activities === undefined || $scope.activities === null || $scope.activities.length === 0){
         $location.path('/');
         throw {type: "functional", message: 'Aucune activités.'};
@@ -46,7 +46,7 @@
       if(member.adminActivities === undefined || member.adminActivities === null){
         member.adminActivities = [];
       }
-      member.adminActivities.push($scope.currentActivity);
+      member.adminActivities.push($scope.currentActivity.id);
       $scope.members.push(member);
       $scope.addMode = false;
       $scope.updateBenevole(member);
@@ -55,7 +55,7 @@
     $scope.removeMember = function(member) {
       var membersIndex = $scope.members.indexOf(member);
       $scope.members.splice(membersIndex, 1);
-      member.adminActivities.splice(member.adminActivities.indexOf($scope.currentActivity), 1);
+      member.adminActivities.splice(member.adminActivities.indexOf($scope.currentActivity.id), 1);
       $scope.updateBenevole(member);
     };
 
@@ -72,7 +72,7 @@
       $scope.benevolesWithoutMembers = angular.copy($scope.benevoles);
 
       $scope.benevoles.forEach(function(benev) {
-        if(benev.adminActivities !== undefined && benev.adminActivities.indexOf($scope.currentActivity) !== -1){
+        if(benev.adminActivities !== undefined && benev.adminActivities.indexOf($scope.currentActivity.id) !== -1){
           $scope.members.push(benev);
         }
       });

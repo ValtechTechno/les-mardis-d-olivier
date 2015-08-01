@@ -5,10 +5,10 @@
     .module('mardisDolivier')
     .controller('ActivitiesRespController', ActivitiesRespController);
 
-  function ActivitiesRespController($scope, dataService, $rootScope, $location) {
+  function ActivitiesRespController($scope, dataService, $rootScope, $location, activitiesService) {
 
     $scope.openActivitiesResp = function () {
-      $scope.activities =  $scope.getActivities($rootScope);
+      $scope.activities =  activitiesService.getActivities($scope.getActivities($rootScope));
       if($scope.activities === undefined || $scope.activities === null || $scope.activities.length === 0){
         $location.path('/');
         throw {type: "functional", message: 'Aucune activités.'};
@@ -54,7 +54,7 @@
       if(member.memberActivities === undefined || member.memberActivities === null){
         member.memberActivities = [];
       }
-      member.memberActivities.push($scope.currentActivity);
+      member.memberActivities.push($scope.currentActivity.id);
       $scope.members.push(member);
       $scope.addMode = false;
       $scope.updateBenevole(member);
@@ -63,7 +63,7 @@
     $scope.removeMember = function(member) {
       var membersIndex = $scope.members.indexOf(member);
       $scope.members.splice(membersIndex, 1);
-      member.memberActivities.splice(member.memberActivities.indexOf($scope.currentActivity), 1);
+      member.memberActivities.splice(member.memberActivities.indexOf($scope.currentActivity.id), 1);
       $scope.updateBenevole(member);
     };
 
@@ -80,7 +80,7 @@
       $scope.benevolesWithoutMembers = angular.copy($scope.benevoles);
 
       $scope.benevoles.forEach(function(benev) {
-        if(benev.memberActivities !== undefined && benev.memberActivities.indexOf($scope.currentActivity) !== -1){
+        if(benev.memberActivities !== undefined && benev.memberActivities.indexOf($scope.currentActivity.id) !== -1){
           $scope.members.push(benev);
         }
       });
