@@ -42,7 +42,8 @@
       findAllFamiliesByAntenneId:findAllFamiliesByAntenneId,
       addOrUpdateFamily:addOrUpdateFamily,
       findFamilyById:findFamilyById,
-      findAntenneById:findAntenneById
+      findAntenneById:findAntenneById,
+      findAllActivitiesByType:findAllActivitiesByType
     };
 
     return service;
@@ -751,6 +752,50 @@
           deferred.reject(err);
         });
       return deferred.promise;
+    }
+
+    function findAllActivitiesByType(activities) {
+      var deferred = $q.defer();
+
+      function myMapFunction(doc) {
+        if (doc.type !== undefined && doc.type.indexOf('acti') != -1) {
+          emit(doc.activity);
+        }
+      }
+
+      db.query(myMapFunction, {
+        keys: activities,
+        include_docs: true
+      })
+        .then(function (res) {
+          console.log(res);
+          $rootScope.$apply(function () {
+            var objects = [];
+            for (var i = 0; i < res.rows.length; i++) {
+              objects.push(res.rows[i].doc);
+            }
+            return deferred.resolve(objects);
+          });
+        })
+        .catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
+
+    function getActivity(acti) {
+      if (acti._rev === undefined) {
+        var acti = {
+          _id : uuid.v4(),
+          type : 'acti',
+          antenneId: acti.antenneId,
+          content: acti.content,
+          createDate: new Date(),
+          description: acti.description
+        };
+      }
+      return acti;
     }
 
   }

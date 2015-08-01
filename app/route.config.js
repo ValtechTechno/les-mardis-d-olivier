@@ -94,6 +94,10 @@
         controller: 'ActivitiesRespController',
         templateUrl: 'app/activities/activitiesResp.html'
       })
+      .when('/member/activities', {
+        controller: 'ActivitiesMemberController',
+        templateUrl: 'app/activities/activitiesMember.html'
+      })
       .otherwise({
         redirectTo: '/distributions'
       });
