@@ -45,7 +45,7 @@
       }
 
       if (commonService.benevoleFormValidation($scope.benevoles, $scope.currentBenevole.email, $scope.currentBenevole._id, false)) {
-        var newBenevole = getNewAccount($scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber, CryptoJS.SHA256($scope.currentBenevole.password).toString());
+        var newBenevole = getNewAccount($scope.currentBenevole.lastName, $scope.currentBenevole.firstName, $scope.currentBenevole.email, $scope.currentBenevole.phoneNumber, undefined, undefined, CryptoJS.SHA256($scope.currentBenevole.password).toString());
         dataService.addOrUpdateBenevole(newBenevole)
           .then(function () {
              $location.path("/login");

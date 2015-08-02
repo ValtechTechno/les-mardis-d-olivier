@@ -5,7 +5,7 @@
     .module('mardisDolivier')
     .controller('BenevoleDetailController', BenevoleDetailController);
 
-  function BenevoleDetailController ($scope, $routeParams, dataService, commonService, $location, $rootScope) {
+  function BenevoleDetailController ($scope, $routeParams, dataService, commonService, $location, $rootScope, LoginService) {
     var GET_BENEVOLE_GENERIC_ERROR = 'Impossible de récupérer ce bénévole, une erreur technique est survenue.';
 
     $scope.openBenevoleDetail = function () {
@@ -80,7 +80,12 @@
 
     $scope.$on('confirmBenevoleDetailDeletePopup', function () {
       dataService.removeBenevole($scope.currentBenevole).then(function () {
-        $scope.openBenevoleList();
+        if($rootScope.account.userId === $scope.currentBenevole._id) {
+          $scope.openBenevoleList();
+        }else{
+          LoginService.logout();
+          $location.path("/login");
+        }
       }).catch(function (err) {
         if (err.status === 409) {
           throw {
