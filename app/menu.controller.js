@@ -18,10 +18,7 @@
     vm.isUserNotAuth = isUserNotAuth;
     vm.isUserNotLink = isUserNotLink;
     function isActive(path) {
-      if ($location.path().substr(0, path.length) === path) {
-        return true;
-      }
-      return false;
+      return $location.path().substr(0, path.length) === path;
     }
 
     function logout(){
