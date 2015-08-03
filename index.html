@@ -39,6 +39,7 @@
               <li ng-class="{'active' : menu.isActive('/beneficiaires'), 'ng-hide' : !menu.isAuth()}"><a href="#/beneficiaires/">Bénéficiaires</a></li>
               <li ng-class="{'active' : menu.isActive('/families'), 'ng-hide' : !menu.isAuth()}"><a href="#/families/">Familles</a></li>
               <li ng-class="{'active' : menu.isActive('/benevoles'), 'ng-hide' : !menu.isAuth()}"><a href="#/benevoles/">Bénévoles</a></li>
+              <li ng-class="{'active' : menu.isActive('/admin/antenne'), 'ng-hide' : !menu.isAuth()}"><a href="#/admin/antenne/">Antenne</a></li>
               <li ng-class="{'active' : menu.isActive('/admin/activities'), 'ng-hide' : !menu.isAdmin()}"><a href="#/admin/activities/">R. Activités</a></li>
               <li ng-class="{'active' : menu.isActive('/resp/activities'), 'ng-hide' : !menu.isResp()}"><a href="#/resp/activities/">M. Activités</a></li>
               <li ng-class="{'active' : menu.isActive('/export'), 'ng-hide' : !menu.isAuth()}"><a href="#/export/">Export</a></li>
@@ -132,6 +133,7 @@
 <script src="app/activities/activitiesAdmin.controller.js"></script>
 <script src="app/activities/activitiesResp.controller.js"></script>
 <script src="app/activities/activitiesMember.controller.js"></script>
+<script src="app/antenne/antenneAdmin.controller.js"></script>
 
 <script>
   $(document).foundation();

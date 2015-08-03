@@ -6,6 +6,7 @@
     .controller('AntenneController', AntenneController);
 
   function AntenneController($scope, dataService, commonService) {
+
     $scope.openAntenneList = function () {
       if ($scope.associations === null || $scope.associations === undefined) {
         $scope.associations = [];
@@ -69,7 +70,7 @@
     };
 
     $scope.addAntenne = function () {
-      if (commonService.antenneFormValidation($scope.antennes, $scope.currentAntenne.association, $scope.currentAntenne.name)) {
+      if (commonService.antenneFormValidation($scope.antennes, $scope.currentAntenne.association, $scope.currentAntenne)) {
         var newAntenne = getNewAntenne($scope.currentAntenne.association, $scope.currentAntenne.name);
         dataService.addOrUpdateAntenne(newAntenne)
           .then(function (added) {

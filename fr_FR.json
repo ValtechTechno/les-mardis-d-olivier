@@ -11,12 +11,14 @@
   "no.responsables":"Aucun membre.",
   "no.activities":"Aucune activité.",
   "cancel":"Annuler",
+  "save":"Sauvegarder",
   "placeholder.list":"42, Georges, Henriette, etc.",
   "add":"Ajouter",
   "member":"Membre",
   "members":"Membres",
   "responsable":"Responsable",
   "responsables":"Responsables",
+  "name":"Nom",
   "firstname":"Prénom",
   "lastname":"Nom",
   "activities":"Activités",
@@ -28,5 +30,6 @@
   "description":"Description",
   "date.created":"Date - Création",
   "activity.detail":"Détail de l'activité",
-  "activity.select.benevole":"Veuillez selectionner un bénévole"
+  "activity.select.benevole":"Veuillez selectionner un bénévole",
+  "antenne":"Antenne"
 }

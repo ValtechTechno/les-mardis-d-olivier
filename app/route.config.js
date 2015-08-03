@@ -94,6 +94,10 @@
         controller: 'ActivitiesMemberController',
         templateUrl: 'app/activities/activitiesMember.html'
       })
+      .when('/admin/antenne', {
+        controller: 'AntenneAdminController',
+        templateUrl: 'app/antenne/antenneAdmin.html'
+      })
       .otherwise({
         redirectTo: '/member/activities'
       });

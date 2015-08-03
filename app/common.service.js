@@ -60,7 +60,7 @@
     }
 
     function notUniqueAntenne(antenneName, associationName) {
-      throw {type: "functional", message: "L'antenne " + antenneName + " existe déjà pour l'association "+associationName};
+      throw {type: "functional", message: "L'antenne " + antenneName + " existe déjà"+ (associationName !== null ? "pour l'association "+associationName : '')};
     }
 
     function userFormValidation(beneficiaires, lastName, firstName, id, isUpdate) {
@@ -92,11 +92,11 @@
       return true;
     }
 
-    function antenneFormValidation(antennes, association, antenneName) {
+    function antenneFormValidation(antennes, association, ante) {
       if (antennes.filter(function (antenne) {
-        return (antenne.name.toLowerCase() === antenneName.toLowerCase() && association._id === antenne.associationId);
+        return (antenne.name.toLowerCase() === ante.name.toLowerCase() && association._id === antenne.associationId && ante._id !== antenne._id);
       }).length > 0) {
-        notUniqueAntenne(antenneName, association.name);
+        notUniqueAntenne(ante.name, association.name !== undefined ? association.name : null);
       }
       return true;
     }

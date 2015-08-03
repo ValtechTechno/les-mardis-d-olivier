@@ -1,0 +1,39 @@
+<h3><b>{{ 'antenne' | translate }}</b></h3>
+<form name="updateAntenneForm">
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>{{ 'name' | translate }}
+        <input type="text" name="name" ng-model="currentAntenne.name" ng-required="false" />
+      </label>
+    </div>
+  </div>
+  <h6><b>{{ 'activities' | translate }}</b></h6>
+  <div class="row">
+    <div class="medium-2 columns">
+      {{ 'lang.FOOD' | translate }}
+    </div>
+    <div class="medium-1 columns left">
+      <input type="checkbox" id="isFood" ng-model="isFood" ng-change="updateAntenneActivities(FOOD_KEY)" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-2 columns">
+      {{ 'lang.TRAVEL' | translate }}
+    </div>
+    <div class="medium-1 columns left">
+      <input type="checkbox" id="isTravel" ng-model="isTravel" ng-change="updateAntenneActivities(TRAVEL_KEY)" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="medium-3 columns right">
+      <button id="saveAntenneDetail" ng-click="saveAntenneAdmin()" ng-disabled="updateAntenneForm.$invalid" class="button secondary expand" >
+        {{ 'save' | translate }}
+      </button>
+    </div>
+    <div class="medium-3 columns right">
+      <button id="cancelAntenneDetail" ng-click="openAntenneList()" class="button secondary expand" >
+        {{ 'cancel' | translate }}
+      </button>
+    </div>
+  </div>
+</form>
