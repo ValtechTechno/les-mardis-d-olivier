@@ -10,16 +10,21 @@
     $scope.join = function () {
       $scope.benevole.antenneId = $scope.currentBenevole.antenne._id;
       $scope.benevole.associationId = $scope.currentBenevole.association._id;
-      $scope.benevole.isAdmin = true;
+      $scope.benevole.isAdmin = $scope.currentBenevole.antenne.hasAdmin === false;
+      $scope.benevole.toValidate = $scope.currentBenevole.antenne.hasAdmin === true;
       dataService.addOrUpdateBenevole($scope.benevole)
-      .then(function (benev) {
-          $rootScope.account.associationId = benev.associationId;
-          $rootScope.account.antenneId = benev.antenneId;
-          $rootScope.account.isAdmin = true;
-          $rootScope.account.antenne = $scope.currentBenevole.antenne;
-          LoginService.saveSessionCookie();
-          $location.path('/distributions');
-      }).catch(function (err) {
+        .then(function (benev) {
+          if($scope.benevole.toValidate === true){
+            LoginService.logout();
+          }else {
+            $rootScope.account.associationId = benev.associationId;
+            $rootScope.account.antenneId = benev.antenneId;
+            $rootScope.account.isAdmin = true;
+            $rootScope.account.antenne = $scope.currentBenevole.antenne;
+            LoginService.saveSessionCookie();
+            $location.path('/');
+          }
+        }).catch(function (err) {
           if (err.type !== "functional") {
             throw {type: "functional", message: 'Erreur technique. Veuillez recharger la page.'};
           }
@@ -39,14 +44,14 @@
           $scope.benevoles = benevoles;
           $scope.currentBenevole = {};
           dataService.findBenevoleById($rootScope.account.userId)
-          .then(function (benev) {
+            .then(function (benev) {
               $scope.benevole = benev;
             })
-          .catch(function (err) {
-            if (err.type !== "functional") {
-              throw {type: "functional", message: 'Erreur technique. Veuillez recharger la page.'};
-            }
-          });
+            .catch(function (err) {
+              if (err.type !== "functional") {
+                throw {type: "functional", message: 'Erreur technique. Veuillez recharger la page.'};
+              }
+            });
           $scope.findAssociations();
         })
         .catch(function () {
@@ -85,15 +90,15 @@
 
     $scope.handleExistingAdmin = function (antenne) {
       for (var benevoleAntenneIndex = 0; benevoleAntenneIndex < $scope.benevoles.length; benevoleAntenneIndex++) {
-        if (antenne._id === $scope.benevoles[benevoleAntenneIndex].antenneId) {
+        if (antenne._id === $scope.benevoles[benevoleAntenneIndex].antenneId && $scope.benevoles[benevoleAntenneIndex].isAdmin === true) {
           antenne.hasAdmin = true;
-          antenne.name = antenne.name +" ("+$scope.benevoles[benevoleAntenneIndex].firstName + " " + $scope.benevoles[benevoleAntenneIndex].lastName+")";
+          antenne.name = antenne.name + " (" + $scope.benevoles[benevoleAntenneIndex].firstName + " " + $scope.benevoles[benevoleAntenneIndex].lastName + ")";
         }
       }
     };
 
 
-      $scope.updateAntenneList = function () {
+    $scope.updateAntenneList = function () {
       $scope.antennesFiltered = [];
       if ($scope.currentBenevole.association === undefined) {
         return false;

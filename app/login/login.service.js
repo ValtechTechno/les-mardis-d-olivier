@@ -55,6 +55,10 @@
               throw {type: "functional", message: 'Mauvais mot de passe.'};
             }
 
+            if (benevole.rows[0].doc.toValidate === true) {
+              throw {type: "functional", message: 'Demande de rattachement en cours de validation par les administrateurs de l\'antenne.'};
+            }
+
             if(benevole.rows[0].doc.antenneId !== undefined) {
               dataService.findAntenneById(benevole.rows[0].doc.antenneId)
                 .then(function (antenne) {

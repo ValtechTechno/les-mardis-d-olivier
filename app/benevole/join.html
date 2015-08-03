@@ -2,12 +2,12 @@
   <select ng-options="association.name for association in associations track by association._id" ng-model="currentBenevole.association" ng-required="true" ng-change="updateAntenneList()">
     <option value="">Selectionnez une association</option>
     </select>
-    <select ng-options="antenne.name disable when antenne.hasAdmin === true for antenne in antennesFiltered track by antenne._id" ng-model="currentBenevole.antenne" ng-disabled="antennesFiltered.length===0" ng-required="true">
+    <select ng-options="antenne.name for antenne in antennesFiltered track by antenne._id" ng-model="currentBenevole.antenne" ng-disabled="antennesFiltered.length===0" ng-required="true">
     <option value="">Selectionnez une antenne</option>
   </select>
   <div class="row">
-    <div class="medium-4 columns right">
-      <button class="button secondary expand" ng-disabled="joinForm.$valid === false">Joindre</button>
+    <div class="medium-4 columns right" ng-show="currentBenevole.antenne !== undefined">
+      <button class="button secondary expand" ng-disabled="joinForm.$valid === false">{{currentBenevole.antenne.hasAdmin === false ? 'Joindre' : 'Envoyer une demande'}}</button>
     </div>
   </div>
 
