@@ -142,6 +142,7 @@
       logout: function () {
         localStorageService.set("session", null);
         authService.loginCancelled();
+        $location.path("/login");
       }
     };
   }

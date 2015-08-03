@@ -84,7 +84,6 @@
           $scope.openBenevoleList();
         }else{
           LoginService.logout();
-          $location.path("/login");
         }
       }).catch(function (err) {
         if (err.status === 409) {

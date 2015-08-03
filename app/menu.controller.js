@@ -26,7 +26,6 @@
 
     function logout(){
       LoginService.logout();
-      $location.path("/login");
     }
 
     function isAuth(){
