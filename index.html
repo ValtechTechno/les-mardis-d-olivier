@@ -30,7 +30,7 @@
           <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : !menu.isAuth() || !menu.isSingleActivity()}"><a href="#/member/activities/">{{ menu.getSingleActivityName() }}</a></li>
         </ul>
         <ul class="left">
-          <li ng-class="{'active' : menu.isActive('/about'), 'ng-hide' : !menu.isAuth()}"><a href="#/about/">A propos</a></li>
+          <li ng-class="{'active' : menu.isActive('/about'), 'ng-hide' : !menu.hasFeature('ABOUT') || !menu.isAuth()}"><a href="#/about/">A propos</a></li>
         </ul>
         <ul class="left">
           <li ng-class="{'ng-hide' : !menu.isAuth(), 'has-dropdown not-click' : menu.isAuth() }">

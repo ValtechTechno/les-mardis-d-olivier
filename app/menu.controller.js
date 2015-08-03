@@ -17,12 +17,17 @@
     vm.getSingleActivityName = getSingleActivityName;
     vm.isUserNotAuth = isUserNotAuth;
     vm.isUserNotLink = isUserNotLink;
+    vm.hasFeature = hasFeature;
     function isActive(path) {
       return $location.path().substr(0, path.length) === path;
     }
 
     function logout(){
       LoginService.logout();
+    }
+
+    function hasFeature(feature){
+        return $rootScope.account !== undefined && $rootScope.account !== null && $rootScope.account.antenne !== null && $rootScope.account.antenne !== undefined && $rootScope.account.antenne.features !== undefined && $rootScope.account.antenne.features.indexOf(feature) !== -1;
     }
 
     function isAuth(){

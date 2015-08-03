@@ -9,6 +9,7 @@
 
     $scope.FOOD_KEY = 'FOOD';
     $scope.TRAVEL_KEY = 'TRAVEL';
+    $scope.ABOUT_KEY = 'ABOUT';
 
     $scope.openAntenneAdmin = function () {
 
@@ -16,6 +17,7 @@
         .then(function (doc) {
           $scope.currentAntenne = doc;
           $scope.displayAntenneActivities();
+          $scope.displayAntenneFeatures();
         })
         .catch(function (err) {
         });
@@ -41,6 +43,28 @@
       $scope.displayAntenneActivities();
     };
 
+    $scope.updateAntenneFeatures = function (key) {
+      debugger;
+      var indexActi = $scope.currentAntenne.features.indexOf(key);
+      if(indexActi === -1){
+        $scope.currentAntenne.features.push(key);
+      }else{
+        $scope.currentAntenne.features.splice(indexActi, 1);
+      }
+      console.log($scope.currentAntenne.features);
+      $scope.displayAntenneFeatures();
+    };
+
+    $scope.displayAntenneFeatures = function () {
+      $scope.hasAbout = false;
+
+      $scope.currentAntenne.features.forEach(function(acti){
+        if(acti === $scope.ABOUT_KEY) {
+          $scope.hasAbout = true;
+        }
+      });
+    };
+
     $scope.displayAntenneActivities = function () {
       $scope.isFood = false;
       $scope.isTravel = false;
@@ -59,6 +83,7 @@
       if (commonService.antenneFormValidation($scope.antennes, {_id:$scope.currentAntenne.associationId}, $scope.currentAntenne)) {
         dataService.addOrUpdateAntenne($scope.currentAntenne)
           .then(function () {
+            $rootScope.account.antenne = $scope.currentAntenne;
             $scope.openAntenneList();
           }).catch(function (err) {
             if (err.status === 409) {

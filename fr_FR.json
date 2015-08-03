@@ -31,5 +31,7 @@
   "date.created":"Date - Création",
   "activity.detail":"Détail de l'activité",
   "activity.select.benevole":"Veuillez selectionner un bénévole",
-  "antenne":"Antenne"
+  "antenne":"Antenne",
+  "features":"Fonctionnalités",
+  "view.about.name":"A propos"
 }

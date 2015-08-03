@@ -196,7 +196,9 @@ getNewAntenne = function(association, antenneName){
   var newAntenne = {
     name: antenneName,
     associationId: association._id,
-    activities:['FOOD','TRAVEL'] // TODO for test
+    // TODO add full list / empty / detail view
+    activities:['FOOD','TRAVEL'],
+    features:['ABOUT','HOMEPAGE']
   };
   return newAntenne;
 };
