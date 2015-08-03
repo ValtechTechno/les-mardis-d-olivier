@@ -204,7 +204,7 @@
       var deferred = $q.defer();
 
       function myMapFunction(doc) {
-        if (doc.type !== undefined && doc.type.indexOf('benev') != -1) {
+        if (doc.type !== undefined && doc.type.indexOf('benev') != -1 && doc.toValidate === "false") {
           emit(doc.antenneId);
         }
       }
@@ -272,7 +272,8 @@
           germanLevel: benevole.germanLevel,
           antenneId: benevole.antenneId,
           associationId: benevole.associationId,
-          type: 'benev'
+          type: 'benev',
+          toValidate: false
         };
       }
       return benevole;
