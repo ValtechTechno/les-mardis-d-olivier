@@ -7,7 +7,8 @@
 
   function BenevoleController ($scope, dataService, commonService, $location, $rootScope) {
     $scope.edit = true;
-    $scope.openBenevoleList = function () {
+
+    function findAllBenevoles() {
       if ($scope.benevoles === null || $scope.benevoles === undefined) {
         $scope.benevoles = [];
       }
@@ -19,6 +20,48 @@
         .catch(function () {
           throw {type: "functional", message: 'Impossible de charger la liste des bénévoles.'};
         });
+    }
+
+    function finAllBenevoleToValidate() {
+      $scope.benevolesToValidate = [];
+      if ($rootScope.account.isAdmin === true) {
+        dataService.findAllBenevolesToValidateByAntenneId($rootScope.account.antenneId)
+          .then(function (benevolesToValidate) {
+              $scope.benevolesToValidate = benevolesToValidate;
+          })
+          .catch(function () {
+            throw {type: "functional", message: 'Impossible de charger la liste des bénévoles à valider.'};
+          });
+      }
+    }
+
+    $scope.acceptBenevole = function(benevole) {
+      benevole.toValidate = false;
+      dataService.addOrUpdateBenevole(benevole)
+        .then(function () {
+          $scope.openBenevoleList();
+        })
+        .catch(function () {
+          throw {type: "functional", message: 'Le bénévole n\'a pas été ajouté suite à une erreur technique.'};
+        });
+    };
+
+    $scope.refuseBenevole = function(benevole) {
+      benevole.antenneId = null;
+      benevole.associationId = null;
+      benevole.toValidate = false;
+      dataService.addOrUpdateBenevole(benevole)
+        .then(function () {
+          $scope.openBenevoleList();
+        })
+        .catch(function () {
+          throw {type: "functional", message: 'Le bénévole n\'a pas été ajouté suite à une erreur technique.'};
+        });
+    };
+
+    $scope.openBenevoleList = function () {
+      findAllBenevoles();
+      finAllBenevoleToValidate();
     };
 
     $scope.searchBenevole = function (benevole) {

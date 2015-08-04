@@ -43,7 +43,8 @@
       addOrUpdateFamily:addOrUpdateFamily,
       findFamilyById:findFamilyById,
       findAntenneById:findAntenneById,
-      findAllActivitiesByType:findAllActivitiesByType
+      findAllActivitiesByType:findAllActivitiesByType,
+      findAllBenevolesToValidateByAntenneId:findAllBenevolesToValidateByAntenneId
     };
 
     return service;
@@ -204,7 +205,7 @@
       var deferred = $q.defer();
 
       function myMapFunction(doc) {
-        if (doc.type !== undefined && doc.type.indexOf('benev') != -1 && doc.toValidate === "false") {
+        if (doc.type !== undefined && doc.type.indexOf('benev') != -1 && doc.toValidate === false) {
           emit(doc.antenneId);
         }
       }
@@ -797,6 +798,36 @@
 //      }
 //      return acti;
 //    }
+
+    function findAllBenevolesToValidateByAntenneId(antenneId) {
+      var deferred = $q.defer();
+
+      function myMapFunction(doc) {
+        if (doc.type !== undefined && doc.type.indexOf('benev') != -1 && doc.toValidate === true) {
+          emit(doc.antenneId);
+        }
+      }
+
+      db.query(myMapFunction, {
+        key: antenneId,
+        include_docs: true
+      })
+        .then(function (res) {
+          console.log(res);
+          $rootScope.$apply(function () {
+            var objects = [];
+            for (var i = 0; i < res.rows.length; i++) {
+              objects.push(res.rows[i].doc);
+            }
+            return deferred.resolve(objects);
+          });
+        })
+        .catch(function (err) {
+          console.log(err);
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    }
 
   }
 })();

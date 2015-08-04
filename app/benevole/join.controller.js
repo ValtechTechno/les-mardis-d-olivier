@@ -5,7 +5,7 @@
     .module('mardisDolivier')
     .controller('JoinController', JoinController);
 
-  function JoinController($scope, dataService, $rootScope, $location, LoginService) {
+  function JoinController($scope, dataService, $rootScope, $location, LoginService, $injector) {
 
     $scope.join = function () {
       $scope.benevole.antenneId = $scope.currentBenevole.antenne._id;

@@ -13,6 +13,7 @@
 
     $scope.openBenevoleCreate = function () {
       $scope.edit = true;
+      $scope.currentBenevole = {};
       if ($scope.benevoles === null || $scope.benevoles === undefined) {
         $scope.benevoles = [];
         $scope.associations = [];
@@ -23,7 +24,6 @@
       dataService.findAllBenevoles()
         .then(function (benevoles) {
           $scope.benevoles = benevoles;
-          $scope.currentBenevole = {};
         })
         .catch(function () {
           throw {type: "functional", message: 'Erreur technique. Veuillez recharger la page.'};

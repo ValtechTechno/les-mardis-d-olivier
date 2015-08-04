@@ -4,6 +4,41 @@
 <form name="addBenevoleForm" ng-submit="addBenevoleFromList()">
   <div ng-include="'app/benevole/benevoleAddForm.html'"></div>
 </form>
+<div ng-show="benevolesToValidate.length > 0">
+  <div class="row">
+    <h4 class="medium-12 columns">Bénévoles à valider</h4>
+  </div>
+  <div class="row">
+    <div class="medium-12 columns">
+      <table class="table">
+        <thead>
+        <tr>
+          <td>Nom</td>
+          <td>Prénom</td>
+          <td>Email</td>
+          <td>Téléphone</td>
+          <td></td>
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in benevolesToValidate">
+            <td>{{user.lastName}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phoneNumber}}</td>
+            <td><i class="ui-icon ui-icon-circle-check" ng-click="acceptBenevole(user)"></i></td>
+            <td><i class="ui-icon ui-icon-circle-minus" ng-click="refuseBenevole(user)"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <h4 class="medium-12 columns">Bénévoles</h4>
+  </div>
+</div>
+
 <div class="row">
   <div class="medium-12 columns">
     <table class="table">
