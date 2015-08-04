@@ -65,7 +65,7 @@
           .then(function (associations) {
             $scope.associations = associations;
             if ($scope.associations.length === 0) {
-              throw {type: "functional", message: 'Veuillez créer une association.'};
+              // throw {type: "functional", message: 'Veuillez créer une association.'};
             }
             $scope.findAntennes();
           })
@@ -111,7 +111,7 @@
         }
       }
       if ($scope.antennesFiltered.length === 0) {
-        throw {type: "functional", message: 'Veuillez créer une antenne pour l\'association ' + $scope.currentBenevole.association.name + '.'};
+        //throw {type: "functional", message: 'Veuillez créer une antenne pour l\'association ' + $scope.currentBenevole.association.name + '.'};
       }
     };
 
