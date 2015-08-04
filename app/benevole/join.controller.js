@@ -16,6 +16,8 @@
         .then(function (benev) {
           if($scope.benevole.toValidate === true){
             LoginService.logout();
+            var toaster = $injector.get("toaster");
+            toaster.pop('success', null, "Demande de rattachement envoyée aux administrateurs de l\'antenne.");
           }else {
             $rootScope.account.associationId = benev.associationId;
             $rootScope.account.antenneId = benev.antenneId;
