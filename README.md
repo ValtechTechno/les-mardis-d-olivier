@@ -29,3 +29,8 @@ With python.
 ```sh
 python -m SimpleHTTPServer
 ```
+### Deploy the site remotely
+
+With ansible.
+
+See [Ansible README](./ansible/README.md)

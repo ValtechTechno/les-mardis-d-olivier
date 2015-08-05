@@ -1,5 +1,7 @@
 ## Deployment
 
+It deploys with Ansible to [restau.no-ip.org](http://restau.no-ip.org).
+
 ### Requirements
 
 You need [ansible](http://ansible.org) 1.7+ installed to be able to deploy automatically.
@@ -29,7 +31,7 @@ restau.no-ip.org | success >> {
 ### Execute deployment
 
 ```sh
-$ ansible-playbook -i hosts deploy.yml
+$ ansible-playbook deploy.yml -i hosts
 ```
 
-Create the directory if it does not exists and checkout git repository.
+Deploys the website from gh-pages branch in apache2.

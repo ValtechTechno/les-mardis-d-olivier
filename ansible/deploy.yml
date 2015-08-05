@@ -1,38 +1,54 @@
 ---
-- hosts: restau.no-ip.org
+- hosts: web
   sudo: yes
   vars:
     - deploy_path: /var/les-mardis-d-olivier
 
   tasks:
-    - name: Ensure {{ deploy_path }} exists.
-      file: path={{ deploy_path }} owner=www-data group=www-data state=directory
+    - name: "Install apache2."
+      apt: name=apache2
+           state=present
+      register: apache2Installed
+
+    - name: "Ensure deploy_path exists."
+      file: path={{ deploy_path }}
+            owner=www-data
+            group=www-data
+            state=directory
       sudo: yes
+      when: apache2Installed|success
       register: deployPathCreated
 
-    - name: Install couchdb
-      apt: name=couchdb
-           state=present
-      register: couchDBInstalled
+    - name: "Copy apache configuration file."
+      template: src=templates/les-mardis-d-olivier.apache2.site
+                dest=/etc/apache2/sites-available/{{ inventory_hostname }}
+                owner=root
+                group=root
+                mode="u=rw,g=r,o=r"
+      when: deployPathCreated|success
+      register: apache2Configured
 
-    - name: Checkout application.
+    - name: "Checkout application."
       git: repo=https://github.com/ValtechTechno/les-mardis-d-olivier.git
            dest={{ deploy_path }}
            version=gh-pages
       when: deployPathCreated|success
       register: checkouted
 
-    - name: Install Forever (to run Node.js app).
-      npm: name=forever
-           global=yes
-           state=latest
-           executable=/opt/bin/npm
+    - name: "Enable site."
+      command: a2ensite {{ inventory_hostname }}
+      sudo: yes
+      when: checkouted|success
+      register: siteEnabled
 
-    - name: "Check list of Node.js apps running."
-      command: forever list
-      register: forever_list
-      changed_when: false
+    - name: "Install couchdb."
+      apt: name=couchdb
+           state=present
+      register: couchDBInstalled
 
-    - name: "Start example Node.js app."
-      command: forever start {{ deploy_path }}/server/server.js
-      when: "forever_list.stdout.find('{{ deploy_path }}/server/server.js') == -1"
+    - name: "Reload apache2."
+      command: service apache2 reload
+      sudo: yes
+      when: couchDBInstalled|success and
+            siteEnabled|success
+      register: apache2Reloaded
