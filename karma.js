@@ -33,6 +33,7 @@ module.exports = function (config) {
       'lib/pouchdb/pouchdb.min.js',
       'lib/angular-uuid/angular-uuid.js',
       'lib/angularjs-crypto/sha256.min.js',
+      'lib/treasure-overlay-spinner/treasure-overlay-spinner.min.js',
       'app/mardisDOlivier.module.js',
       'app/datePicker.filter.js',
       'app/beneficiaire/beneficiaire.controller.js',

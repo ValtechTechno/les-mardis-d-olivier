@@ -21,9 +21,11 @@
       } else if (isLoginPresent && !isPasswordPresent) {
         throw {type: "functional", message: 'Veuillez renseigner votre mot de passe.'};
       }
+      $scope.spinner = {active : true};
       LoginService.login($scope.credentials, function () {
-
+        $scope.spinner = {active : false};
       }, function (error) {
+        $scope.spinner = {active : false};
         if(error.type !== "functional"){
           throw error;
         }

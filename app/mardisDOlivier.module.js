@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('mardisDolivier', ['ui.date', 'ngRoute', 'ngAnimate', 'toaster', 'pascalprecht.translate', 'ngMessages', 'http-auth-interceptor', 'LocalStorageModule', 'angular-uuid']);
+  angular.module('mardisDolivier', ['ui.date', 'ngRoute', 'ngAnimate', 'toaster', 'pascalprecht.translate', 'ngMessages', 'http-auth-interceptor', 'LocalStorageModule', 'angular-uuid', 'treasure-overlay-spinner']);
 
   angular
     .module('mardisDolivier')

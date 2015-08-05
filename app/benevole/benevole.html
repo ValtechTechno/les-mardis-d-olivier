@@ -22,7 +22,7 @@
         </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="user in benevolesToValidate">
+          <tr ng-repeat="user in benevolesToValidate track by user._id">
             <td>{{user.lastName}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.email}}</td>
@@ -39,6 +39,7 @@
   </div>
 </div>
 
+<treasure-overlay-spinner active='spinner.active'>
 <div class="row">
   <div class="medium-12 columns">
     <table class="table">
@@ -52,14 +53,15 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-show="benevoles.length==0">
-        <td colspan="3">Aucun bénévole.</td>
-      </tr>
-      <tr class="clickable" ng-repeat="user in benevoles | filter:searchBenevole" ng-click="openBenevoleDetail(user._id)">
-        <td>{{user.lastName}}</td>
-        <td>{{user.firstName}}</td>
-      </tr>
+        <tr ng-show="benevoles.length==0">
+          <td colspan="3">Aucun bénévole.</td>
+        </tr>
+        <tr class="clickable" ng-repeat="user in benevoles | filter:searchBenevole" ng-click="openBenevoleDetail(user._id)">
+          <td>{{user.lastName}}</td>
+          <td>{{user.firstName}}</td>
+        </tr>
       </tbody>
     </table>
   </div>
 </div>
+</treasure-overlay-spinner>

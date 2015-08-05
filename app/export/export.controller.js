@@ -7,24 +7,37 @@
 
   function ExportController($scope, dataService, $rootScope) {
     $scope.openExportPage = function () {
+
+      $scope.spinnerBenef = {active : true};
       dataService.findAllBeneficiairesByAntenneId($rootScope.account.antenneId)
         .then(function (beneficiaires) {
           $scope.beneficiaires = beneficiaires;
+          $scope.spinnerBenef = {active : false};
         });
+
       dataService.findAllDistributionsByAntenneId($rootScope.account.antenneId).then(function (distributions) {
         $scope.distributions = distributions;
       });
+
+      $scope.spinnerAsso = {active : true};
       dataService.findAllAssociations()
         .then(function (associations) {
           $scope.associations = associations;
+          $scope.spinnerAsso = {active : false};
         });
+
+      $scope.spinnerAnte = {active : true};
       dataService.findAllAntennes()
         .then(function (antennes) {
           $scope.antennes = antennes;
+          $scope.spinnerAnte = {active : false};
         });
+
+      $scope.spinnerBenev = {active : true};
       dataService.findAllBenevolesByAntenneId($rootScope.account.antenneId)
         .then(function (benevoles) {
           $scope.benevoles = benevoles;
+          $scope.spinnerBenev = {active : false};
         });
       dataService.findAllFamiliesByAntenneId($rootScope.account.antenneId)
         .then(function (families) {

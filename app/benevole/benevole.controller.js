@@ -12,9 +12,12 @@
       if ($scope.benevoles === null || $scope.benevoles === undefined) {
         $scope.benevoles = [];
       }
+      $scope.spinner = {active : true};
+
       dataService.findAllBenevolesByAntenneId($rootScope.account.antenneId)
         .then(function (benevoles) {
           $scope.benevoles = benevoles;
+          $scope.spinner = {active : false};
           $scope.resetAddBenevoleForm();
         })
         .catch(function () {
@@ -47,12 +50,14 @@
     };
 
     $scope.refuseBenevole = function(benevole) {
-      benevole.antenneId = null;
-      benevole.associationId = null;
+      var beneIndex = $scope.benevolesToValidate.indexOf(benevole);
+      benevole.antenneId = undefined;
+      benevole.associationId = undefined;
       benevole.toValidate = false;
+      debugger;
       dataService.addOrUpdateBenevole(benevole)
         .then(function () {
-          $scope.openBenevoleList();
+          $scope.benevolesToValidate.splice(beneIndex, 1);
         })
         .catch(function () {
           throw {type: "functional", message: 'Le bénévole n\'a pas été ajouté suite à une erreur technique.'};

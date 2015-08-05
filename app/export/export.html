@@ -10,10 +10,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="asso in associations">
-      <td>{{asso._id}}</td>
-      <td>{{asso.name}}</td>
-    </tr>
+    <treasure-overlay-spinner active='spinnerAsso.active'>
+      <tr ng-repeat="asso in associations">
+        <td>{{asso._id}}</td>
+        <td>{{asso.name}}</td>
+      </tr>
+    </treasure-overlay-spinner>
     </tbody>
   </table>
   <h3><b>Antennes</b></h3>
@@ -27,12 +29,14 @@
     </tr>
     </thead>
     <tbody>
+    <treasure-overlay-spinner active='spinnerAnte.active'>
     <tr ng-repeat="ante in antennes">
       <td>{{ante._id}}</td>
       <td>{{ante.associationId}}</td>
       <td>{{ante.name}}</td>
       <td>{{ante.activities}}</td>
     </tr>
+    </treasure-overlay-spinner>
     </tbody>
   </table>
   <h3><b>Benevoles</b></h3>
@@ -54,6 +58,7 @@
     </tr>
     </thead>
     <tbody>
+    <treasure-overlay-spinner active='spinnerBenev.active'>
     <tr ng-repeat="benev in benevoles">
       <td>{{benev._id}}</td>
       <td>{{benev.lastName}}</td>
@@ -68,6 +73,7 @@
       <td>{{benev.germanLevel}}</td>
       <td>{{benev.adminActivities}}</td>
     </tr>
+    </treasure-overlay-spinner>
     </tbody>
   </table>
   <h3><b>Beneficiaires</b></h3>
@@ -84,6 +90,7 @@
     </tr>
     </thead>
     <tbody>
+    <treasure-overlay-spinner active='spinnerBenef.active'>
     <tr ng-repeat="benef in beneficiaires">
       <td>{{benef._id}}</td>
       <td>{{benef.code}}</td>
@@ -93,6 +100,7 @@
       <td>{{isBooleanUndefined(benef.excluded)}}</td>
       <td>{{benef.description}}</td>
     </tr>
+    </treasure-overlay-spinner>
     </tbody>
   </table>
   <h3><b>Familles</b></h3>
