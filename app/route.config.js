@@ -98,6 +98,10 @@
         controller: 'AntenneAdminController',
         templateUrl: 'app/antenne/antenneAdmin.html'
       })
+      .when('/homepage', {
+        controller: 'HomepageController',
+        templateUrl: 'app/homepage/homepage.html'
+      })
       .otherwise({
         redirectTo: '/member/activities'
       });

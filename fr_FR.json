@@ -33,5 +33,6 @@
   "activity.select.benevole":"Veuillez selectionner un bénévole",
   "antenne":"Antenne",
   "features":"Fonctionnalités",
-  "view.about.name":"A propos"
+  "view.about.name":"A propos",
+  "view.homepage.name":"Accueil"
 }

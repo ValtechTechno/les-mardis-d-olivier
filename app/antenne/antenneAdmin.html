@@ -34,6 +34,14 @@
     </div>
   </div>
   <div class="row">
+    <div class="medium-2 columns">
+      {{ 'view.homepage.name' | translate }}
+    </div>
+    <div class="medium-1 columns left">
+      <input type="checkbox" id="hasHomepage" ng-model="hasHomepage" ng-change="updateAntenneFeatures(HOMEPAGE_KEY)" />
+    </div>
+  </div>
+  <div class="row">
     <div class="medium-3 columns right">
       <button id="saveAntenneDetail" ng-click="saveAntenneAdmin()" ng-disabled="updateAntenneForm.$invalid" class="button secondary expand" >
         {{ 'save' | translate }}

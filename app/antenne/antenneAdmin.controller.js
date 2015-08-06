@@ -10,6 +10,7 @@
     $scope.FOOD_KEY = 'FOOD';
     $scope.TRAVEL_KEY = 'TRAVEL';
     $scope.ABOUT_KEY = 'ABOUT';
+    $scope.HOMEPAGE_KEY = 'HOMEPAGE';
 
     $scope.openAntenneAdmin = function () {
 
@@ -44,7 +45,6 @@
     };
 
     $scope.updateAntenneFeatures = function (key) {
-      debugger;
       var indexActi = $scope.currentAntenne.features.indexOf(key);
       if(indexActi === -1){
         $scope.currentAntenne.features.push(key);
@@ -61,6 +61,9 @@
       $scope.currentAntenne.features.forEach(function(acti){
         if(acti === $scope.ABOUT_KEY) {
           $scope.hasAbout = true;
+        }
+        if(acti === $scope.HOMEPAGE_KEY) {
+          $scope.hasHomepage = true;
         }
       });
     };
