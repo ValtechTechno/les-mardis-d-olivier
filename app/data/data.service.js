@@ -274,7 +274,9 @@
           antenneId: benevole.antenneId,
           associationId: benevole.associationId,
           type: 'benev',
-          toValidate: false
+          toValidate: false,
+          activities: [],
+          adminActivities: []
         };
       }
       return benevole;

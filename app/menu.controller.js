@@ -55,7 +55,7 @@
     }
 
     function isSingleActivity(){
-      return $rootScope.account !== undefined && $rootScope.account !== null && $rootScope.account.antenne !== null && $rootScope.account.antenne !== undefined && $rootScope.account.antenne.activities.length === 1;
+      return $rootScope.account !== undefined && $rootScope.account !== null && $rootScope.account.antenne !== null && $rootScope.account.antenne !== undefined && $rootScope.account.antenne.activities !== undefined && $rootScope.account.antenne.activities.length === 1;
     }
 
     function getSingleActivityName(){
