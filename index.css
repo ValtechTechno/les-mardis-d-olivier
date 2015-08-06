@@ -7,6 +7,10 @@ select {
   vertical-align: top;
 }
 
+.event {
+  display: none;
+}
+
 .notRequired {
   display: none;
 }
@@ -42,6 +46,10 @@ select {
   }
 
   .notRequired {
+    display: block;
+  }
+
+  .event {
     display: block;
   }
 }
@@ -220,4 +228,46 @@ input[type="checkbox"] + label {
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+.badge {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #777;
+  border-radius: 10px;
+}
+
+.calendar-nav-button {
+  margin-right: 5px;
+}
+
+.pull-left {
+  float: left !important;
+}
+
+.badge-important {
+  background-color: #ad2121;
+}
+.badge-info {
+  background-color: dodgerblue;
+}
+.badge-warning {
+  background-color: #e3bc08;
+}
+.badge-inverse {
+  background-color: #1b1b1b;
+}
+.badge-success {
+  background-color: darkgreen;
+}
+.badge-special {
+  background-color: #800080;
 }
