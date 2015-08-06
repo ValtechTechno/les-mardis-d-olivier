@@ -1,5 +1,5 @@
 <form name="joinForm" ng-submit="join()">
-  <select ng-options="association.name for association in associations track by association._id" ng-model="currentBenevole.association" ng-required="true" ng-change="updateAntenneList()">
+  <select ng-options="association.name for association in associations track by association._id" ng-model="currentBenevole.association" ng-disabled="associations.length===0" ng-required="true" ng-change="updateAntenneList()">
     <option value="">Selectionnez une association</option>
     </select>
     <select ng-options="antenne.name for antenne in antennesFiltered track by antenne._id" ng-model="currentBenevole.antenne" ng-disabled="antennesFiltered.length===0" ng-required="true">
