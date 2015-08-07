@@ -15,6 +15,11 @@ select {
   display: none;
 }
 
+.logo {
+  width: 47px;
+  height: 41px;
+}
+
 #toast-container.toast-top-full-width>div{
   opacity: 100;
   min-height: 45px;
@@ -29,6 +34,11 @@ select {
 @media only screen and (min-width: 40em) {
   .top-bar {
     height: 50px;
+  }
+
+  .logo {
+    width: 52px;
+    height: 45px;
   }
 
   #toast-container.toast-top-full-width>div{
