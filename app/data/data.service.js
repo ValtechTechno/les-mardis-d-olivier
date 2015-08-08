@@ -723,7 +723,8 @@
           _id: uuid.v4(),
           type: 'family',
           members : family.members,
-          antenneId: family.antenneId
+          antenneId: family.antenneId,
+          description: family.description
         };
       }
       return family;

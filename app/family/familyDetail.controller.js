@@ -29,15 +29,11 @@
       $scope.membersUpdated = true;
     };
 
-    $scope.saveFamilyDetail = function(){
-      $scope.updateFamily();
-    };
-
     $scope.openFamilyList = function(){
       $location.path("/famillies");
     };
 
-    $scope.updateFamily = function(){
+    $scope.saveFamilyDetail = function(){
       if($scope.currentFamily.members.length === 0){
         return false;
       }
@@ -124,20 +120,6 @@
         type: technical === true ? "technical" : "functional",
         message: message
       };
-    };
-
-    $scope.saveFamilyDetail = function () {
-      dataService.addOrUpdateFamily($scope.currentFamily)
-        .then(function () {
-          $scope.openFamilyList();
-        }).catch(function (err) {
-          if (err.status === 409) {
-            throw {
-              type: "functional",
-              message: 'Un utilisateur vient de modifier ce bénévole. Veuillez recharger la page et recommencer.'
-            };
-          }
-        });
     };
 
     $scope.openFamilyList = function () {
