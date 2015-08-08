@@ -75,7 +75,7 @@
   <div class="row">
     <div class="medium-6 columns">
       <div class="medium-6 columns right">
-        <button id="saveFamilyDetail" ng-click="saveFamilyDetail()" class="button secondary expand">
+        <button id="saveFamilyDetail" ng-click="saveFamilyDetail()" ng-disabled="currentFamily.members.length === 0" class="button secondary expand">
           Enregistrer
         </button>
       </div>

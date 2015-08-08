@@ -45,8 +45,8 @@
         $scope.currentFamily.description = description;
       }
       dataService.addOrUpdateFamily($scope.currentFamily)
-        .then(function (family){
-          $scope.currentFamily = family;
+        .then(function (){
+          $scope.openFamilyList();
         }).catch(function (err) {
           throw {type: "functional", message: 'Impossible de sauvegarder les modifications.'};
         });
