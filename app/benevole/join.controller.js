@@ -91,8 +91,8 @@
     };
 
     $scope.handleExistingAdmin = function (antenne) {
+      antenne.hasAdmin = false;
       for (var benevoleAntenneIndex = 0; benevoleAntenneIndex < $scope.benevoles.length; benevoleAntenneIndex++) {
-        antenne.hasAdmin = false;
         if (antenne._id === $scope.benevoles[benevoleAntenneIndex].antenneId && $scope.benevoles[benevoleAntenneIndex].isAdmin === true) {
           antenne.hasAdmin = true;
           antenne.name = antenne.name + " (" + $scope.benevoles[benevoleAntenneIndex].firstName + " " + $scope.benevoles[benevoleAntenneIndex].lastName + ")";
