@@ -1,5 +1,5 @@
 <button ng-click="openPopup()" class="button secondary expand redButton">{{buttonLabel}}</button>
-<div class="reveal-modal small" data-reveal>
+<div class="reveal-modal medium" data-reveal>
   <p>{{popupLabel}}</p>
   <button close="{{button.close}}" class="button secondary expand {{button.style}}" event="{{button.event}}"
           ng-click="action()" ng-repeat="button in popupButton">{{button.text}}
