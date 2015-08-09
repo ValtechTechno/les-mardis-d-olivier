@@ -40,6 +40,15 @@
     <div class="medium-1 columns left">
       <input type="checkbox" id="hasHomepage" ng-model="hasHomepage" ng-change="updateAntenneFeatures(HOMEPAGE_KEY)" />
     </div>
+
+    <div class="row">
+      <div class="medium-2 columns">
+        {{ 'view.homepage.calendar.name' | translate }}
+      </div>
+      <div class="medium-1 columns left">
+        <input type="checkbox" id="hasHomepageCalendar" ng-model="hasHomepageCalendar" ng-change="updateAntenneFeatures(HOMEPAGE_CALENDAR_KEY)" ng-disabled="hasHomepage !== true" />
+      </div>
+    </div>
   </div>
   <div class="row">
     <div class="medium-3 columns right">

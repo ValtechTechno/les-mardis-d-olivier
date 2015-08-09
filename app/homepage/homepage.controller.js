@@ -205,23 +205,25 @@
       activate();
 
     function activate() {
-      $scope.calendarView = 'month';
-      $scope.calendarDay = new Date();
-      $scope.updateCurrentMonthDisplay();
+      $scope.showCalendar = $rootScope.account.antenne.features.indexOf("HOMEPAGE_CALENDAR") !== -1;
+      if($scope.showCalendar === true) {
+        $scope.calendarView = 'month';
+        $scope.calendarDay = new Date();
+        $scope.updateCurrentMonthDisplay();
 
-      $scope.getActivitiesCurrentUser();
+        $scope.getActivitiesCurrentUser();
 
-      $scope.getEventsList();
+        $scope.getEventsList();
 
-      $scope.benevoles = [];
-      dataService.findAllBenevolesByAntenneId($rootScope.account.antenneId)
-        .then(function (benevoles) {
-          $scope.benevoles = benevoles;
-        })
-        .catch(function () {
-          throw {type: "functional", message: 'Impossible de charger la liste des bénévoles.'};
-        });
-
+        $scope.benevoles = [];
+        dataService.findAllBenevolesByAntenneId($rootScope.account.antenneId)
+          .then(function (benevoles) {
+            $scope.benevoles = benevoles;
+          })
+          .catch(function () {
+            throw {type: "functional", message: 'Impossible de charger la liste des bénévoles.'};
+          });
+      }
     }
   }
 

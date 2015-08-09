@@ -11,6 +11,7 @@
     $scope.TRAVEL_KEY = 'TRAVEL';
     $scope.ABOUT_KEY = 'ABOUT';
     $scope.HOMEPAGE_KEY = 'HOMEPAGE';
+    $scope.HOMEPAGE_CALENDAR_KEY = 'HOMEPAGE_CALENDAR';
 
     $scope.openAntenneAdmin = function () {
 
@@ -50,7 +51,12 @@
         $scope.currentAntenne.features.push(key);
       }else{
         $scope.currentAntenne.features.splice(indexActi, 1);
+        if(key === $scope.HOMEPAGE_KEY){
+          var indexCal = $scope.currentAntenne.features.indexOf($scope.HOMEPAGE_CALENDAR_KEY);
+          $scope.currentAntenne.features.splice(indexCal, 1);
+        }
       }
+
       console.log($scope.currentAntenne.features);
       $scope.displayAntenneFeatures();
     };
@@ -64,6 +70,9 @@
         }
         if(acti === $scope.HOMEPAGE_KEY) {
           $scope.hasHomepage = true;
+        }
+        if(acti === $scope.HOMEPAGE_CALENDAR_KEY) {
+          $scope.hasHomepageCalendar = true;
         }
       });
     };

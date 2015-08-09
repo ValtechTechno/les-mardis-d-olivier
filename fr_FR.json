@@ -47,6 +47,7 @@
   "features":"Fonctionnalités",
   "view.about.name":"A propos",
   "view.homepage.name":"Accueil",
+  "view.homepage.calendar.name":"Calendrier",
   "calendar.addEvent":"Ajouter un événement",
   "calendar.selectType":"Selectionner un type",
   "calendar.join":"Participer à l'événement",
