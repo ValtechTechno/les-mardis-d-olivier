@@ -54,7 +54,6 @@
       benevole.antenneId = undefined;
       benevole.associationId = undefined;
       benevole.toValidate = false;
-      debugger;
       dataService.addOrUpdateBenevole(benevole)
         .then(function () {
           $scope.benevolesToValidate.splice(beneIndex, 1);
