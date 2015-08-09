@@ -495,20 +495,20 @@
 
     function getAbout(about) {
       if (about._rev === undefined) {
-        var about = {
+        var aboutModel = {
           _id : uuid.v4(),
           type : 'about',
           antenneId: about.antenneId,
           content: about.content
         };
       }
-      return about;
+      return aboutModel;
     }
 
     function updateAbout(about) {
       var deferred = $q.defer();
-      var about = getAbout(about);
-      db.put(about)
+      var aboutModel = getAbout(about);
+      db.put(aboutModel)
         .then(function () {
           return deferred.resolve();
         }).catch(function (err) {
