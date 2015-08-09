@@ -59,9 +59,6 @@ select {
     display: block;
   }
 
-  .event {
-    display: block;
-  }
 }
 
 .top-bar.expanded {
@@ -193,7 +190,6 @@ input[type="checkbox"] + label {
 }
 
 .hoverPopup li.even {
-  color: red;
   background: #3498DB;
   color: white;
 }
@@ -259,10 +255,6 @@ input[type="checkbox"] + label {
   margin-right: 5px;
 }
 
-.pull-left {
-  float: left !important;
-}
-
 .badge-important {
   background-color: #ad2121;
 }
@@ -280,4 +272,42 @@ input[type="checkbox"] + label {
 }
 .badge-special {
   background-color: #800080;
+}
+
+.eventActivities {
+  font-style: italic;
+  font-size: 1.20em;
+}
+
+.eventActivities > .pull-left.event.event-important{
+  display: none;
+}
+
+.cal-slide-content ul.unstyled{
+  list-style-type: none;
+}
+
+.bigSelect{
+  height: 3.30rem;
+  font-size: 1rem;
+  margin-left: 15px;
+  width: 92%;
+}
+
+.cal-day-tick{
+  border:0px solid #e1e1e1
+}
+
+span[data-cal-date]:hover {
+  cursor: crosshair;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.newEventDescription {
+  max-height: 100%;
+  height: 5rem;
+  width: 100%;
 }

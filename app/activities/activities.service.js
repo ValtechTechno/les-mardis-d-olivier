@@ -9,7 +9,8 @@
     var service = {
       getActivities: getActivities,
       getSelectedActivityIndex:getSelectedActivityIndex,
-      getActivityDescription:getActivityDescription
+      getActivityDescription:getActivityDescription,
+      getActivityDisplay:getActivityDisplay
     };
 
     return service;
@@ -17,7 +18,7 @@
     function getActivities(list, myActivities, mineKey) {
       var activities = [];
       list.forEach(function(acti){
-        var myActivitiesDetail = acti === mineKey && myActivities !== undefined ? " ("+getMyActivitiesDisplay(myActivities)+")" : '';
+        var myActivitiesDetail = mineKey !== undefined && acti === mineKey && myActivities !== undefined ? " ("+getMyActivitiesDisplay(myActivities)+")" : '';
         activities.push({id : acti, name : $translate.instant('lang.'+acti)+myActivitiesDetail, description : getActivityDescription(acti)});
       });
       return activities;
@@ -28,6 +29,12 @@
       myActivities.forEach(function(acti){
         actDisplay.push($translate.instant('lang.'+acti));
       });
+      return actDisplay;
+    }
+
+    function getActivityDisplay(activity){
+      var actDisplay = '';
+      actDisplay = $translate.instant('lang.'+activity);
       return actDisplay;
     }
 
