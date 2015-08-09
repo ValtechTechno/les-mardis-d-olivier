@@ -103,7 +103,7 @@
         templateUrl: 'app/homepage/homepage.html'
       })
       .otherwise({
-        redirectTo: '/member/activities'
+        redirectTo: '/benevoles'
       });
   }
 
