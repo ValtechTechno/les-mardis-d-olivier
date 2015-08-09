@@ -11,7 +11,7 @@
 
     $scope.openActivitiesMember = function () {
       $scope.myActivities = $scope.getMyActivities($rootScope);
-      var rawActivities =  $scope.myActivities.length > 1 ? [MINE_KEY].concat($rootScope.account.antenne.activities) : $rootScope.account.antenne.activities;
+      var rawActivities =  $scope.myActivities.length > 1 ? [MINE_KEY].concat($scope.myActivities) : $scope.myActivities;
       $scope.activities = activitiesService.getActivities(rawActivities, $scope.myActivities, MINE_KEY);
 
       if($scope.activities.length === 0){
@@ -46,6 +46,9 @@
       }
       if($rootScope.account.memberActivities !== undefined && $rootScope.account.memberActivities.length > 0) {
         mineAct = mineAct.concat($rootScope.account.memberActivities);
+      }
+      if($rootScope.account.isAdmin === true){
+        mineAct = mineAct.concat($rootScope.account.antenne.activities);
       }
       return mineAct;
     };
