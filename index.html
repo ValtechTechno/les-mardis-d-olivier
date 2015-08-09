@@ -30,8 +30,8 @@
           <li ng-class="{'active' : menu.isActive('/homepage'), 'ng-hide' : !menu.hasFeature('HOMEPAGE') || !menu.isAuth()}"><a href="#/homepage/">{{ 'view.homepage.name' | translate}}</a></li>
         </ul>
         <ul class="left">
-          <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : !menu.isAuth() || menu.isSingleActivity()}"><a href="#/member/activities/">Activités</a></li>
-          <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : !menu.isAuth() || !menu.isSingleActivity()}"><a href="#/member/activities/">{{ menu.getSingleActivityName() }}</a></li>
+          <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : !menu.isAuth() || menu.hasNoActivity || menu.isSingleActivity()}"><a href="#/member/activities/">Activités</a></li>
+          <li ng-class="{'active' : menu.isActive('/member/activities'), 'ng-hide' : !menu.isAuth() || menu.hasNoActivity || !menu.isSingleActivity()}"><a href="#/member/activities/">{{ menu.getSingleActivityName() }}</a></li>
         </ul>
         <ul class="left">
           <li ng-class="{'active' : menu.isActive('/about'), 'ng-hide' : !menu.hasFeature('ABOUT') || !menu.isAuth()}"><a href="#/about/">A propos</a></li>

@@ -15,6 +15,7 @@
     vm.isLink = isLink;
     vm.isSingleActivity = isSingleActivity;
     vm.getSingleActivityName = getSingleActivityName;
+    vm.hasNoActivity = hasNoActivity;
     vm.isUserNotAuth = isUserNotAuth;
     vm.isUserNotLink = isUserNotLink;
     vm.hasFeature = hasFeature;
@@ -56,6 +57,10 @@
 
     function isSingleActivity(){
       return $rootScope.account !== undefined && $rootScope.account !== null && $rootScope.account.antenne !== null && $rootScope.account.antenne !== undefined && $rootScope.account.antenne.activities !== undefined && $rootScope.account.antenne.activities.length === 1;
+    }
+
+    function hasNoActivity(){
+      return $rootScope.account !== undefined && $rootScope.account !== null && $rootScope.account.antenne !== null && $rootScope.account.antenne !== undefined && ($rootScope.account.antenne.activities === undefined || ($rootScope.account.antenne.activities !== undefined && $rootScope.account.antenne.activities.length === 0));
     }
 
     function getSingleActivityName(){
