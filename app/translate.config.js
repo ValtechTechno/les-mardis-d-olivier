@@ -14,4 +14,12 @@
         $translateProvider.preferredLanguage('fr_FR');
     }
 
+    angular
+      .module('mardisDolivier')
+    .config(function(calendarConfigProvider) {
+
+      calendarConfigProvider.setDateFormatter('moment'); // use moment to format dates
+
+    });
+
 })();
