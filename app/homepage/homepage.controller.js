@@ -92,6 +92,12 @@
     };
 
     $scope.newEventAdd = function () {
+      if($scope.newEvent.hour === undefined){
+        $scope.newEvent.hour = 0;
+      }
+      if($scope.newEvent.minute === undefined){
+        $scope.newEvent.minute = 0;
+      }
       if($scope.newEvent.joinAfterCreation === true){
         $scope.newEvent.members.push($rootScope.account.userId);
       }
