@@ -900,6 +900,7 @@
       eve.minute = event.minute;
       eve.description = event.description;
       eve.activity = event.activity;
+      eve.createdBy = event.createdBy;
       return eve;
     }
 

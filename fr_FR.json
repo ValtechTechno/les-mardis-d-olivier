@@ -52,5 +52,6 @@
   "calendar.selectType":"Selectionner un type",
   "calendar.join":"Participer à l'événement",
   "calendar.deleteConfirmation":"Êtes-vous sûr de vouloir supprimer cet événement ?",
-  "calendar.noMembersInEvent":"Aucun membre ne participe à cet évenement."
+  "calendar.noMembersInEvent":"Aucun membre ne participe à cet évenement.",
+  "calendar.join.cancel":"Ne plus participer"
 }

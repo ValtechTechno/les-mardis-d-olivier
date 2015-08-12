@@ -72,7 +72,7 @@
     }
 
     $scope.showAddEventPopup = function (dateToAssign) {
-      $scope.newEvent = {members:[], antenneId:$rootScope.account.antenneId};
+      $scope.newEvent = {members:[], antenneId:$rootScope.account.antenneId, createdBy:$rootScope.account.userId};
       if (dateToAssign !== undefined) {
         $scope.newEvent.date = formatDate(dateToAssign);
       }
@@ -130,26 +130,28 @@
         });
       }
 
+      $scope.isUserCreator = event.createdBy === $rootScope.account.userId;
       event.membersDisplay = getMembersToDisplay($scope.benevoles, event);
       $scope.currentDetailEvent = angular.copy(event);
       angular.element('#detailEventPopup').foundation('reveal', 'open');
     };
 
     $scope.joinEvent = function () {
-      if($scope.currentDetailEvent.join === true){
+      if($scope.currentDetailEvent.join === false){
         $scope.currentDetailEvent.members.push($rootScope.account.userId);
       }else{
         var idIndex = $scope.currentDetailEvent.members.indexOf($rootScope.account.userId);
         $scope.currentDetailEvent.members.splice(idIndex, 1);
       }
       $scope.currentDetailEvent.membersDisplay = getMembersToDisplay($scope.benevoles, $scope.currentDetailEvent);
+      $scope.detailEventSave(true);
     };
 
     $scope.detailEventClose = function () {
       angular.element('#detailEventPopup').foundation('reveal', 'close');
     };
 
-    $scope.detailEventSave = function () {
+    $scope.detailEventSave = function (closePopup) {
       dataService.addOrUpdateEvent($scope.currentDetailEvent)
         .then(function () {
           $scope.getEventsList();
@@ -158,7 +160,9 @@
         .catch(function () {
           throw {type: "functional", message: 'Impossible de charger la liste des bénévoles.'};
         });
-      angular.element('#detailEventPopup').foundation('reveal', 'close');
+      if(closePopup === true) {
+        angular.element('#detailEventPopup').foundation('reveal', 'close');
+      }
     };
 
     function getEventObjects(events) {
@@ -189,7 +193,8 @@
           activityDisplay:activitiesService.getActivityDisplay(event.activity),
           cssClass: 'eventActivity',
           antenneId: event.antenneId,
-          join:event.members.indexOf($rootScope.account.userId) !== -1
+          join:event.members.indexOf($rootScope.account.userId) !== -1,
+          createdBy: event.createdBy
         };
         eventObjects.push(eventObject);
       });

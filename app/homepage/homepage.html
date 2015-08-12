@@ -71,12 +71,12 @@
           <div class="medium-3 columns">
             <input type="number" type="number" min="0" max="23" name="hour" class="detail"
                    ng-model="newEvent.hour" placeholder="{{ 'placeholder.hour' | translate }}"
-                   ng-required="true"/>
+                   ng-required="false"/>
           </div>
           <div class="medium-3 columns left">
             <input type="number" min="0" max="59" name="minute" class="detail"
                    ng-model="newEvent.minute" placeholder="{{ 'placeholder.minute' | translate }}"
-                   ng-required="true"/>
+                   ng-required="false"/>
           </div>
         </div>
 
@@ -106,7 +106,7 @@
         </div>
 
         <div class="row">
-          <div class="medium-6 columns">
+          <div class="medium-7 columns">
             <input type="checkbox" id="joinAfterCreation" ng-model="newEvent.joinAfterCreation">
             <label for="joinAfterCreation">{{ 'calendar.join' | translate }}</label>
             </input>
@@ -139,7 +139,7 @@
             <label>{{ 'date' | translate }}
               <input type="text" name="date" class="detail" ui-date="dateOptions" ui-date-format="yy-mm-dd"
                      ng-model="currentDetailEvent.date" placeholder="{{ 'placeholder.date' | translate }}"
-                     ng-required="true"/>
+                     ng-required="true" ng-disabled="isUserCreator === false"/>
            </label>
         </div>
       </div>
@@ -149,14 +149,14 @@
             <label>{{ 'hours' | translate }}
             <input type="number" type="number" min="0" max="23" name="hour" class="detail"
                    ng-model="currentDetailEvent.hour" placeholder="{{ 'placeholder.hour' | translate }}"
-                   ng-required="true"/>
+                   ng-required="false" ng-disabled="isUserCreator === false"/>
             </label>
           </div>
           <div class="medium-3 columns left">
             <label>{{ 'minutes' | translate }}
             <input type="number" min="0" max="59" name="minute" class="detail"
                    ng-model="currentDetailEvent.minute" placeholder="{{ 'placeholder.minute' | translate }}"
-                   ng-required="true"/>
+                   ng-required="false" ng-disabled="isUserCreator === false"/>
             </label>
           </div>
         </div>
@@ -172,23 +172,15 @@
         <div class="row">
           <div class="medium-6 columns">
             <label>Nom
-              <input type="text" ng-model="currentDetailEvent.name" ng-required="true" />
+              <input type="text" ng-model="currentDetailEvent.name" ng-required="true" ng-disabled="isUserCreator === false"/>
             </label>
           </div>
         </div>
         <br />
         <div class="row">
           <label>{{ 'description' | translate }}
-            <textarea class="medium-12 columns">{{currentDetailEvent.description}}</textarea>
+            <textarea class="medium-12 columns" ng-disabled="isUserCreator === false">{{currentDetailEvent.description}}</textarea>
           </label>
-        </div>
-        <br />
-        <div class="row">
-          <div class="medium-6 columns">
-            <input type="checkbox" id="join" ng-model="currentDetailEvent.join" ng-change="joinEvent()">
-            <label for="join">{{ 'calendar.join' | translate }}</label>
-            </input>
-          </div>
         </div>
         <br />
         <div class="row">
@@ -198,17 +190,29 @@
             </button>
           </div>
           <div class="medium-4 columns">
-            <popup-directive popup-button="deletePopupButtons" popup-label="{{ 'calendar.deleteConfirmation' | translate }}" button-label="Supprimer" ></popup-directive>
+            <popup-directive popup-button="deletePopupButtons" popup-label="{{ 'calendar.deleteConfirmation' | translate }}" button-label="Supprimer"  ng-show="isUserCreator === true"></popup-directive>
           </div>
           <div class="medium-4 columns">
-            <button id="detailEventSave" ng-click="detailEventSave()" ng-disabled="detailEventPopup.$invalid"
-                    class="button secondary expand">
+            <button id="detailEventSave" ng-click="detailEventSave(true)" ng-disabled="detailEventPopup.$invalid"
+                    class="button secondary expand" ng-show="isUserCreator === true">
               {{ 'save' | translate }}
             </button>
           </div>
         </div>
+        <div>
+          <br />
+          <div class="row">
+            <div class="medium-12 columns">
+              <button id="detailEventSave" ng-click="joinEvent()"
+                      class="button secondary expand" ng-show="isUserCreator === true">
+                {{ (currentDetailEvent.join === false ? 'calendar.join' : 'calendar.join.cancel') | translate }}
+              </button>
+            </div>
+            <br />
+          </div>
+        </div>
         <br />
-        <div class="row">
+        <div class="row medium-12 columns">
           <table class="table">
             <thead>
             <tr>
