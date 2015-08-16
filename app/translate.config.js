@@ -8,7 +8,7 @@
     function translateConfiguration($translateProvider) {
         $translateProvider.useStaticFilesLoader({
             prefix: '/',
-            suffix: '.json'
+            suffix: '.json.js'
         });
 
         $translateProvider.preferredLanguage('fr_FR');

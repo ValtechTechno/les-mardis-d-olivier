@@ -249,7 +249,7 @@ module.exports = function (grunt) {
             dot: true,
             dest: '<%= appConfig.dist %>',
             src: [
-              'index.html', 'fr_FR.json', '<%= appConfig.app %>/{,*/}*/*.html',
+              'index.html', 'fr_FR.json.js', '<%= appConfig.app %>/{,*/}*/*.html',
               'lib/jquery-ui-1.11.0.custom/images/*.*',
               "lib/foundation-5.5.1/js/vendor/modernizr.js",
               "lib/foundation-5.5.1/js/vendor/jquery.js",
