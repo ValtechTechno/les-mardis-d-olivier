@@ -18,6 +18,9 @@ select {
 .logo {
   width: 47px;
   height: 41px;
+  background-image: url('images/les-mardis-d-olivier.png');
+  background-size: 47px 41px;
+  background-repeat: no-repeat;
 }
 
 #toast-container.toast-top-full-width>div{
@@ -39,6 +42,7 @@ select {
   .logo {
     width: 52px;
     height: 45px;
+    background-size: 52px 45px;
   }
 
   #toast-container.toast-top-full-width>div{

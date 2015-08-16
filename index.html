@@ -2,15 +2,23 @@
 <html ng-app="mardisDolivier">
 <head>
   <meta charset="utf-8"/>
+  <meta http-equiv="Cache-control" content="max-age=86400">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Distribution Tool</title>
+  <!-- build:css assets/script.min.css-->
   <link rel="stylesheet" href="lib/foundation-5.5.1/css/foundation.min.css"/>
   <link rel="stylesheet" href="lib/jquery-ui-1.11.0.custom/jquery-ui.min.css"/>
   <link rel="stylesheet" href="lib/angularjs-toaster-0.4.14/toaster.min.css" />
   <link rel="stylesheet" href="lib/treasure-overlay-spinner/treasure-overlay-spinner.min.css" />
   <link rel="stylesheet" href="lib/angular-bootstrap-calendar/angular-bootstrap-calendar.min.css" />
   <link rel="stylesheet" href="index.css"/>
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <!-- endbuild -->
+
+  <!-- build:css assets/images/favicon-32x32.png -->
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <!-- endbuild -->
+
 </head>
 <body>
 <toaster-container toaster-options="{'time-out': 5000, 'close-button':true,'position-class': 'toast-top-full-width'}"></toaster-container>
@@ -19,7 +27,7 @@
     <nav class="top-bar" data-topbar role="navigation">
       <ul class="title-area">
         <li class="name">
-          <a ng-href='#/distribution/'><img class="logo" role="presentation" src="les-mardis-d-olivier.png"/></a>
+          <a ng-href='#/distribution/'><div class="logo" role="presentation"></div></a>
         </li>
         <li class="toggle-topbar menu-icon">
           <a><span>menu</span></a>
@@ -85,6 +93,8 @@
   </div>
 </div>
 
+<!-- build:js script.min.js -->
+<script src="lib/angularjs-crypto/sha256.min.js"></script>
 <script src="lib/foundation-5.5.1/js/vendor/modernizr.js"></script>
 <script src="lib/foundation-5.5.1/js/vendor/jquery.js"></script>
 <script src="lib/jquery-ui-1.11.0.custom/jquery-ui.min.js"></script>
@@ -104,9 +114,6 @@
 <script src="lib/angular-local-storage/angular-local-storage.min.js"></script>
 <script src="lib/pouchdb/pouchdb.min.js"></script>
 <script src="lib/angular-uuid/angular-uuid.js"></script>
-<script src="lib/angularjs-crypto/CryptoJSCipher.js"></script>
-<script src="lib/angularjs-crypto/angularjs-crypto.js"></script>
-<script src="lib/angularjs-crypto/sha256.min.js"></script>
 <script src="lib/treasure-overlay-spinner/treasure-overlay-spinner.min.js"></script>
 <script src="lib/angular-bootstrap-calendar/moment.min.js"></script>
 <script src="lib/angular-bootstrap-calendar/angular-bootstrap-calendar-tpls.min.js"></script>
@@ -144,7 +151,7 @@
 <script src="app/activities/activitiesMember.controller.js"></script>
 <script src="app/antenne/antenneAdmin.controller.js"></script>
 <script src="app/homepage/homepage.controller.js"></script>
-
+<!-- endbuild -->
 <script>
   $(document).foundation();
 </script>

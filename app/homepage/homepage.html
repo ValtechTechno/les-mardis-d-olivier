@@ -7,20 +7,17 @@
 
   <div class="row">
     <div class="medium-12 columns">
-      <button
-        class="button secondary medium-2 columns calendar-nav-button"
+      <button class="button secondary medium-2 columns calendar-nav-button"
         mwl-date-modifier
         date="calendarDay"
-        set-to-today ng-click="updateCurrentMonth()">
-        {{ currentMonthDisplayed }}
-      </button>
+        set-to-today ng-click="updateCurrentMonth()"> {{ currentMonthDisplayed }} </button>
 
       <button
         class="button secondary"
         mwl-date-modifier
         date="calendarDay"
         decrement="calendarView" ng-click="updateCurrentMonth()">
-        <
+        &#60
       </button>
 
       <button
@@ -28,7 +25,7 @@
         mwl-date-modifier
         date="calendarDay"
         increment="calendarView" ng-click="updateCurrentMonth()">
-        >
+        &#62
       </button>
 
       <button class="button secondary" ng-click="showAddEventPopup()">
@@ -203,7 +200,7 @@
           <br />
           <div class="row">
             <div class="medium-12 columns">
-              <button id="detailEventSave" ng-click="joinEvent()"
+              <button id="detailEventJoin" ng-click="joinEvent()"
                       class="button secondary expand" ng-show="isUserCreator === true">
                 {{ (currentDetailEvent.join === false ? 'calendar.join' : 'calendar.join.cancel') | translate }}
               </button>
