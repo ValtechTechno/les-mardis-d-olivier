@@ -305,6 +305,18 @@ module.exports = function (grunt) {
         src: '<%= appConfig.dist %>/assets/script.css',
         dest: '<%= appConfig.dist %>/assets/script.css'
       }
+    },
+    compress: {
+      main: {
+        options: {
+          archive: 'project.zip',
+          pretty: true
+        },
+        expand: true,
+        cwd: 'dist/',
+        src: ['**/*'],
+        dest: '/'
+      }
     }
   });
 
@@ -325,6 +337,10 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
+  grunt.registerTask('compress', [
+    'compress:main'
+  ]);
+
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -340,4 +356,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-image-embed');
+  grunt.loadNpmTasks('grunt-contrib-compress')
 };
