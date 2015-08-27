@@ -6,7 +6,8 @@ module.exports = function (grunt) {
 
   var appConfig = {
     app: 'app/',
-    dist: 'dist/'
+    dist: 'dist/',
+    package: 'package/'
   };
 
   grunt.initConfig({
@@ -322,11 +323,11 @@ module.exports = function (grunt) {
     compress: {
       main: {
         options: {
-          archive: 'project.zip',
+          archive: '<%= appConfig.package %>dist_'+ grunt.template.today('yyyy_mm_dd_hh_mm_ss')+'.zip',
           pretty: true
         },
         expand: true,
-        cwd: 'dist/',
+        cwd: '<%= appConfig.dist %>',
         src: ['**/*'],
         dest: '/'
       }
@@ -370,5 +371,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-image-embed');
-  grunt.loadNpmTasks('grunt-contrib-compress')
+  grunt.loadNpmTasks('grunt-contrib-compress');
 };
