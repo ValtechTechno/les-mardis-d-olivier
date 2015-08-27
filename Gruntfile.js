@@ -158,7 +158,20 @@ module.exports = function (grunt) {
           }
         ]
       },
-      server: '.tmp'
+      server: '.tmp',
+      build: {
+        files: [
+          {
+            dot: true,
+            src: [
+              '<%= appConfig.dist %>/script.js',
+              '<%= appConfig.dist %>/lib/',
+              '<%= appConfig.dist %>/assets/fonts/',
+              '<%= appConfig.dist %>/assets/script.css'
+            ]
+          }
+        ]
+      }
     },
 
     // Renames files for browser caching purposes
@@ -334,7 +347,8 @@ module.exports = function (grunt) {
     'cssmin',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'clean:build'
   ]);
 
   grunt.registerTask('compress', [
